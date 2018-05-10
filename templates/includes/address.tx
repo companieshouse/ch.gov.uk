@@ -1,0 +1,34 @@
+% if !$address {
+<p>No address registered</p>
+% } else {
+<p>
+        % if $address.care_of_name {
+          <% l('c/o') %> <% $address.care_of_name %><br />
+        % }
+        % if $address.po_box {
+            <% l('PO Box') %> <% $address.po_box %><br />
+        % }
+        % if $address.premises {
+            <% $address.premises %><br />
+        % }
+        % if $address.address_line_1 {
+            <% $address.address_line_1 %><br />
+        % }
+        % if $address.address_line_2 {
+            <% $address.address_line_2 %><br />
+        % }
+        % if $address.locality {
+            <% $address.locality %><br />
+        % }
+        % if $address.region {
+            <% $address.region %><br />
+        % }
+        % if $address.country {
+            <% $address.country %><br />
+        % }
+        % if $address.postal_code {
+            <% $address.postal_code %><br />
+        % }
+</p>
+% }
+

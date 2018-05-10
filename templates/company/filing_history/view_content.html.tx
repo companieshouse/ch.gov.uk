@@ -1,0 +1,113 @@
+%# this mini-macro returns a (space-prefixed) class list which handles the boilerplate of associating
+%# an element's visibility with the "Show filing type" checkbox.
+%# TODO for sprintf (and other Perl builtins): add Text::Xslate::Bridge::Star to CH::MojoX::Plugin::Xslate
+% macro sft_toggled -> { ' sft-toggled' ~ ($show_filing_type ? '' : ' js-hidden') }
+
+% if $company_filing_history.total_count == 0 { # no results
+    <p class="text">
+        <% tl( $c.fhe_lookup($company_filing_history.filing_history_status) ) %>
+    </p>
+    <p class="text">
+        <%
+            ln(
+                'Sorry, no filings in the selected category are available for this company.',
+                'Sorry, no filings in the selected categories are available for this company.',
+                $selected_category_count
+            )
+        %>
+    </p>
+% } else { # results
+    <p class="text">
+        <% tl( $c.fhe_lookup($company_filing_history.filing_history_status) ) %>
+    </p>
+    <table id="fhTable" class="full-width-table">
+        <caption class="visuallyhidden">Company Results (links open in a new window)</caption>
+        <tr>
+            <th class="nowrap">
+                Date <span class="visuallyhidden">(document was filed at Companies House)</span>
+            </th>
+            <th class="filing-type<% sft_toggled() %>">
+                Type
+            </th>
+            <th>
+                Description <span class="visuallyhidden">(of the document filed at Companies House)</span>
+            </th>
+            % if ( $image_service_active ) {
+                <th class="nowrap">
+                    View / Download <span class="visuallyhidden">(PDF file, link opens in new window)</span>
+                </th>
+            % }
+        </tr>
+        % for $company_filing_history.items -> $item {
+            <tr>
+                <td class="nowrap">
+                    % $c.isodate_as_short_string($item.date)
+                </td>
+                <td class="filing-type<% sft_toggled() %>">
+                    % $item.type
+                </td>
+                <td>
+                    % include "company/filing_history/transaction_description.html.tx" { item => $item };
+                    % if !$item.links.document_metadata {
+                      % if ($item._missing_message == 'unavailable') {
+                      <div class="form-hint">
+                        This document is currently unavailable, a copy can be ordered from the Contact Centre. Telephone +44 (0)303 1234 500. There is a £3.00 charge per document.
+                      </div>
+                      % }
+                      % if ($item._missing_message == 'available_in_5_days') {
+                      <div class="form-hint">
+                        This document is being processed and will be available in 5 days.
+                      </div>
+                      % }
+                    % }
+                </td>
+                % if $image_service_active {
+                    <td class="nowrap">
+                    % if $item.links.document_metadata {
+                    <div>
+                        <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %>>View PDF
+                        <span class="visuallyhidden"><% include "company/filing_history/transaction_description.html.tx" { item => $item } %> - link opens in a new window <% if ($item.pages) { %> - <% ln('%d page', '%d pages', $item.pages) } %></span></a>
+                        <% if ($item.pages) { %> (<% ln('%d page', '%d pages', $item.pages) %>)<% } %></div>
+                        % if !$item.paper_filed && $item.type == 'AA' && $item._xhtml_is_available {
+                        <div>
+                            <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'xhtml', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download iXBRL</a></div>
+                        % }
+                    % }
+                    </td>
+                % }
+            </tr>
+        % }
+    </table>
+
+    % if $company_filing_history.total_count > $entries_per_page {
+            <ul class="pager">
+                % if ($previous_page) {
+                    <li>
+                        <a id="previousButton" class="page" href="<% $c.url_with.query([ page => $previous_page ]) %>" data-page="<% $previous_page %>">
+                            Previous
+                        </a>
+                    </li>
+                % }
+                % for $page_set -> $page {
+                    <li>
+                        <a id="pageNo<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>" data-page="<% $page %>">
+                            % if $current_page_number == $page {
+                                <strong>
+                                    <% $page %>
+                                </strong>
+                            % } else {
+                                <% $page %>
+                            % }
+                        </a>
+                    </li>
+                % }
+                % if ($next_page) {
+                    <li>
+                        <a id="nextButton" class="page" href="<% $c.url_with.query([ page => $next_page ]) %>" data-page="<% $next_page %>">
+                            Next
+                        </a>
+                    </li>
+                % }
+            </ul>
+    % }
+% }

@@ -1,0 +1,55 @@
+% cascade base { title => 'Change registered office address' }
+
+% around content -> {
+<div class="text">
+    % include includes::page_header {title => $title}
+
+        <p>This information was submitted to Companies House on <% $c.date_as_string($transaction_data.closed_at) %> at <% $transaction_data.closed_at_time %>.</p>
+
+        <p>Company
+        <span class="heading-small"><% $transaction_data.company_name %> (<%$transaction_data.company_number %>)</span></p>
+
+        %if (defined $address_data.premises) {
+            <p id="premises">Building name or number
+            <span class="heading-small" id="premises-result"><% $address_data.premises %></span></p>
+        %}
+
+        %if (defined $address_data.address_line_1) {
+            <p id="address-line1">Address line 1
+            <span class="heading-small" id="address-line1-result"><% $address_data.address_line_1 %></span></p>
+        %}
+
+        %if (defined $address_data.address_line_2) {
+            <p id="address-line2">Address line 2
+            <span class="heading-small" id="address-line2-result"><% $address_data.address_line_2 %></span></p>
+        %}
+
+        %if (defined $address_data.locality) {
+            <p id="locality">Town
+            <span class="heading-small" id="locality-result"><% $address_data.locality %></span></p>
+        %}
+
+        %if (defined $address_data.region) {
+            <p id="locality">County
+            <span class="heading-small" id="region-result"><% $address_data.region %></span></p>
+        %}
+
+        %if (defined $address_data.postal_code) {
+            <p id="postal-code">Postcode
+            <span class="heading-small" id="postal-code-result"><% $address_data.postal_code %></span></p>
+        %}
+
+        %if (defined $address_data.country) {
+            <p id="country">Country
+            <span class="heading-small" id="country-result"><%
+                $address_data.country
+            %></span></p>
+        %}
+
+        %if (defined $address_data.po_box) {
+            <p id="po-box">PO Box
+            <span class="heading-small" id="po-box-result"><% $address_data.po_box %></span></p>
+        %}
+
+</div>
+% }

@@ -1,0 +1,11 @@
+% cascade base { title => 'Resubmit filing', searchpage => 1, disable_header_search => 1 }
+
+% around content -> {
+    % include includes::page_header {title => $title}
+    <p id="description" class="text">Please verify the filing was not recently resubmitted. It was last updated on <% $c.datetime_as_local_string($updated_at, "%e %B %Y at %T") %>.</p>
+    <form method="POST">
+        <div class="form-group">
+            <input type="submit" id="resubmit" name="resubmit" value="Resubmit filing" class="button">
+        </div>
+    </form>
+% }

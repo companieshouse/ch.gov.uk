@@ -1,0 +1,8 @@
+% if $has_errors {
+    <p class="validation group">
+    %   for $errors->$error {
+          <span class="error-message" id="<% $error.id %>"><% $error.text %></span>
+    %   }
+    </p>
+% }
+<input type="hidden" name="<% $name %>" id="<% $id %>" value="<% $value %>" >

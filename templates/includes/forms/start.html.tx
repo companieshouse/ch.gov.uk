@@ -1,0 +1,2 @@
+<!-- TODO add enctype support -->
+<form name="<% $name %>" action="<% $action %>" method="POST" enctype="multipart/form-data" class="form">

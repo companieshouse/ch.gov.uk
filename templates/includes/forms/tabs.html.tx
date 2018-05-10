@@ -1,0 +1,19 @@
+<div class="section-tabs js-tabs">
+	<div class="tab-navigation">
+		<ul class="">
+			% for $tabs -> $tab {
+				% if $tab.hidden { next; }
+			<li<% if $tab.value == $active_tab.value { %> class="active"<% } %>>
+				<a id="<% $tab.id %>" href="?<% $name %>=<% $tab.value %>"><% $tab.label %></a>
+			</li>
+			% }
+		</ul>
+      </div>
+</div>
+
+<div class="group js-tab-content tab-content ">
+% $form.hidden_field( name => $name, value => $value );
+% if $include {
+    % include $include { form => $form }
+% }
+</div>

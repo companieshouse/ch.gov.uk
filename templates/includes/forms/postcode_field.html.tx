@@ -1,0 +1,15 @@
+<div class="form-group<% if $has_errors { %> error<%} %>">
+    <label for="<% $id %>" class="form-label form-label-bold">
+    % $label;
+    % if $has_errors {
+    %   for $errors->$error {
+        	<span class="error-message" id="<% $error.id %>"><% $error.text %></span>
+    %   }
+    % }
+	</label>
+    <input type="text" name="<% $name %>" id="<% $id %>" value="<% $value %>" class="form-control form-control-1-8"
+    <% if $maxlength { %>maxlength="<% $maxlength %>"<% } %>
+    />
+    <input type="hidden" name="postcode_hint" value="1" />
+    <input type="submit" name="postcode_lookup[<% $name %>]" value="Find address" id="<% $id %>-lookup" class="button-link" />
+</div>

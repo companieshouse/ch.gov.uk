@@ -1,0 +1,6 @@
+---
+errors:
+  default:
+    mp3player: 
+      required: "A device must be selected"
+      matches: "Please select a valid device"

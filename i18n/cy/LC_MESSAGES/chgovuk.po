@@ -1,0 +1,89 @@
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2013-06-27 15:22+0200\n"
+"Last-Translator: admin <admin@ch.gov.uk>\n"
+"Language: cy\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n==2) ? 1 : 0;\n"
+"X-Generator: Weblate 1.6-dev\n"
+"X-POOTLE-MTIME: 1372257060.0\n"
+
+# W0014309
+#: ~/chgovuk/templates/company/view.html.tx:14
+msgid "A {company_type} incorporated on {incorporation_date}"
+msgstr "A {company_type} corfforwyd ar {incorporation_date}"
+
+#: ~/chgovuk/templates/company/view.html.tx:77
+msgid "Appoint a director"
+msgstr "Penodi cyfarwyddwr"
+
+#: ~/chgovuk/templates/company/view.html.tx:58
+msgid "Appointment date"
+msgstr "Dyddiad penodiad"
+
+#: ~/chgovuk/templates/company/view.html.tx:23
+msgid "Change address"
+msgstr "Newid cyfeiriad"
+
+# W0011021
+#: ~/chgovuk/templates/company/view.html.tx:12
+msgid "Company number"
+msgstr "Rhif cwmni"
+
+#: ~/chgovuk/templates/company/view.html.tx:59
+msgid "Date of birth"
+msgstr "Dyddiad geni"
+
+#: ~/chgovuk/templates/company/view.html.tx:53
+msgid "Directors and Secretaries"
+msgstr ""
+
+#: ~/chgovuk/templates/company/view.html.tx:47
+msgid "File annual return"
+msgstr ""
+
+#: ~/chgovuk/templates/company/view.html.tx:35
+msgid "File company accounts"
+msgstr ""
+
+#: ~/chgovuk/templates/company/view.html.tx:6
+msgid "File for this company"
+msgstr ""
+
+#: ~/chgovuk/templates/company/view.html.tx:32
+msgid "Last accounts made up to"
+msgstr "Cyfrifon diwethaf wedi'u diwallu hyd at"
+
+#: ~/chgovuk/templates/company/view.html.tx:44
+msgid "Last annual return made up to"
+msgstr ""
+
+#: ~/chgovuk/templates/company/view.html.tx:56
+msgid "Name"
+msgstr ""
+
+#: ~/chgovuk/templates/company/view.html.tx:28
+msgid "Next accounts made up to"
+msgstr ""
+
+#: ~/chgovuk/templates/company/view.html.tx:40
+msgid "Next annual return made up to"
+msgstr ""
+
+#: ~/chgovuk/templates/company/view.html.tx:19
+msgid "Registered office address"
+msgstr ""
+
+#: ~/chgovuk/templates/company/view.html.tx:57
+msgid "Role"
+msgstr ""
+
+#: ~/chgovuk/templates/company/view.html.tx:75
+msgid "View all directors and secretaries"
+msgstr ""
+
+# Test translation from google translate!
+msgid "{field} must not be blank"
+msgstr "{field} beidio â bod yn wag"

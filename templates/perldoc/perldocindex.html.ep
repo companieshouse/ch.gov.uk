@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= $title %></title>
+    %= javascript '/mojo/prettify/run_prettify.js'
+    %= stylesheet '/mojo/prettify/prettify-mojo.css'
+    %= stylesheet begin
+      a { color: inherit }
+      a:hover { color: #2a2a2a }
+      a img { border: 0 }
+      body {
+        background-color: #f5f6f8;
+        color: #445555;
+        font: 0.9em 'Helvetica Neue', Helvetica, sans-serif;
+        font-weight: normal;
+        line-height: 1.5em;
+        margin: 0;
+      }
+      h1, h2, h3 {
+        color: #2a2a2a;
+        font-size: 1.5em;
+        margin: 0;
+      }
+      h1 a, h2 a, h3 a { text-decoration: none }
+      pre {
+        background-color: #eee;
+        background: url(<%= url_for '/mojo/pinstripe.gif' %>);
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        color: #eee;
+        font: 0.8em Consolas, Menlo, Monaco, Courier, monospace;
+        line-height: 1.7em;
+        text-align: left;
+        text-shadow: #333 0 1px 0;
+        padding-bottom: 1.5em;
+        padding-top: 1.5em;
+        white-space: pre-wrap;
+      }
+      #footer {
+        padding-top: 1em;
+        text-align: center;
+      }
+      #perldoc {
+        background-color: #fff;
+        -moz-border-radius-bottomleft: 5px;
+        border-bottom-left-radius: 5px;
+        -moz-border-radius-bottomright: 5px;
+        border-bottom-right-radius: 5px;
+        -moz-box-shadow: 0px 0px 2px #ccc;
+        -webkit-box-shadow: 0px 0px 2px #ccc;
+        box-shadow: 0px 0px 2px #ccc;
+        margin-left: 5em;
+        margin-right: 5em;
+        padding: 3em;
+        padding-top: 70px;
+      }
+      /*#perldoc > ul a { text-decoration: none }*/
+      #wrapperlicious {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .greyed {
+         color: #999999;
+      } 
+    % end
+  </head>
+  <body>
+    %= include 'perldoc/mojobar'
+    % my $link = begin
+      %= link_to shift, shift
+    % end
+    <div id="wrapperlicious">
+        <div id="perldoc">
+        <h1><a id="toc">GUIDES</a></h1>
+        <ul>
+          % for my $guide (@$guides) {
+            <li>
+                %= $link->($guide->{name}, $guide->{path})
+            </li>
+          % }
+        </ul>
+
+        <hr>
+        <br>
+
+        <h1><a id="toc">MODULES</a></h1>
+        <ul>
+            <li><a href="#models">Models</a></li>
+            <li><a href="#roles">Roles</a></li>
+            <li><a href="#controllers">Controllers</a></li>
+            <li><a href="#adapters">Adapters</a></li>
+            <li><a href="#plugins">Plugins</a></li>
+            <li><a href="#other">Other</a></li>
+        </ul>
+        <br>
+        % my %labels = ( models     => 'Models',
+        %                roles      => 'Roles and Traits',
+        %                controllers=> 'Controllers',
+        %                adapters   => 'Data Adapters',
+        %                plugins    => 'Plugins',
+        %                other      => 'Other',
+        %              );
+        % foreach my $label (qw|models roles controllers adapters plugins other|) {
+        <h2><a name="<%= $label %>"><%= $labels{$label} %></a></h2>
+        <ul>
+            % for my $module (@{$modules->{$label}}) {
+            <li>
+                % if ($module->{has_doc}) {
+                %= $link->($module->{name}, $module->{path})
+                % } else {
+                <span class="greyed"><%= $module->{name} %></span>
+                % }
+
+            </li>
+            % }
+        </ul>
+        % } # label
+        </div>
+
+    </div>
+    <div id="footer">
+      %= link_to 'http://mojolicio.us' => begin
+        %= image '/mojo/logo-black.png', alt => 'Mojolicious logo'
+      % end
+    </div>
+  </body>
+</html>

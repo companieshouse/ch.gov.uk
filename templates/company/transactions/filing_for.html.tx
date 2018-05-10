@@ -1,0 +1,5 @@
+<p class="example-back-link">
+    Filing for
+    <a href="/company/<% $c.stash.company.company_number %>"><% $c.stash.company.company_name %>
+    (<% $c.stash.company.company_number %>)</a>
+</p>

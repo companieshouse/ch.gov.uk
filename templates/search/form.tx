@@ -1,0 +1,114 @@
+% if $search_type == "officers" {
+    <form id="search" action="/search/officers" method="get" accept-charset="utf-8" role="search"  class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
+% } elsif $search_type == 'disqualified-officers' {
+    <form id="search" action="/search/disqualified-officers" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
+% } elsif $search_type == 'all' {
+    <form id="search" action="/search" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header' ? 'search-header' : 'search-header js-search-hash' %>">
+% } else {
+    <form id="search" action="/search/companies" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
+% }
+
+% if ($header_or_body == 'header') {
+	<div class="content">
+% } else {
+% if !$results {
+    <h1 id="start-searching" class="main-title center">
+                <label class="heading-xlarge">
+                  Search the register
+                </label>
+    </h1>
+    <p id="search-cta-label">Enter company name, number or officer name</p>
+% }
+    <div class="search-bar-active">
+	    <div class="searchfield">
+% }
+        <label class="visuallyhidden" for="site-search-text">Enter company name, number or officer name</label>
+		    <input type="search" autocomplete="off" name="q" id="site-search-text" title="Search" value="<% $results.searchTerm %>" <% if ($header_or_body == 'header') { %> placeholder="Search"  class="header-search"<% } else { %> placeholder="Start here..." autofocus="autofocus" class="js-search-focus"<% } %> />
+% if ($header_or_body == 'header') {
+        <input class="submit" type="submit" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SiteSearch', 'Header']);"<% } %> id="search-btn" value="Search" />
+% } else {
+		<button type="submit" id="search-submit" class="search-submit">Search</button>
+		<p id='slowsearch' class='slow-search-msg' style='display:none'>Please press ENTER to search</p>
+% }
+	    </div>
+    </div>
+
+</form>
+
+% if ($header_or_body != 'header') {
+    % if !$results {
+    <div id="feature-info" class="grid-row">
+            % include '/includes/feature_info.tx'
+    </div>
+    % }
+% }
+
+%if $results {
+% include "search/tabs.tx" { SHOW_TABS => $SHOW_TABS || 0 };
+%}
+% # For JS only -------------------------------------------------------
+% if ($header_or_body != 'headerDEPRECATED'){
+
+% # Mustache.js templates for SAYT.
+
+<script id="noresults-template" type="text/html">
+    <div class="grid-row">
+        <div class="column-two-thirds">
+        		<article id="no-results" class="text">
+        				<h2 class="heading-large">No results found for "<span class='term'>{{term}}</span>"</h2>
+        				<p>
+                    Please try searching again using different search criteria.
+        				</p>
+        		</article>
+        </div>
+        % if $results.kind == 'search#disqualified-officers' {
+            <div class="column-third" id="disqualification-column">
+                <div class="quick-look font-xsmall" id="disqualification-info">
+                    <ul class="list list-bullet">
+                        <li><a href="/register-of-disqualifications/A" rel="external" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Register of disqualifications<span class="visuallyhidden">(link opens in a new window)</span></a></li>
+                        <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="visuallyhidden">(link opens in a new window)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        % }
+    </div>
+</script>
+
+<script id="tabs-template" type="text/html">
+    <div id="search-results-tabs" class="filter-bar js-tabs">
+        % include "search/js-tabs.tx";
+    </div>
+</script>
+
+<script id="hit-template" type="text/html">
+{{#type_is_company}}
+	<li class="type-company">
+		<h3>
+			<a href="{{url}}"title="View company"> {{{title}}}</a>
+		</h3>
+        {{#snippet}}<p class="meta crumbtrail inset">Matching previous names:<br/><span>{{{ snippet }}}</span></p>{{/snippet}}
+        <p class="meta crumbtrail"> {{{description}}} </p>
+        <p>{{{ address_snippet }}}</p>
+	</li>
+{{/type_is_company}}
+
+{{#type_is_officer}}
+	<li class="type-officer">
+		<h3><a href="{{url}}">{{{title}}}</a></h3>
+        {{#snippet}}<p class="meta crumbtrail inset">Matching appointment names:<br/><span>{{{ snippet }}}</span></p>{{/snippet}}
+        <p class="meta crumbtrail"> {{{description}}} </p>
+        <p>{{{ address_snippet }}}</p>
+	</li>
+{{/type_is_officer}}
+
+{{#type_is_disqualified-officer}}
+    <li class="type-disqualified-officer">
+        <h3><a href="{{url}}">{{{title}}}</a></h3>
+        {{#snippet}}<p class="meta crumbtrail inset">Matching disqualification names:<br/><span>{{{ snippet }}}</span></p>{{/snippet}}
+        <p class="meta crumbtrail"> {{{description}}} </p>
+        <p>{{{ address_snippet }}}</p>
+    </li>
+{{/type_is_disqualified-officer}}
+</script>
+
+% } # End-if ($header_or_body != 'header'){

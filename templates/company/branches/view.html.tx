@@ -1,0 +1,42 @@
+% cascade base { title=> $company.company_name ~" - UK Establishments (free company information from Companies House)", classes=>"profile" }
+% around content -> {
+% include '/includes/company/page_header.tx'
+
+% include '/includes/company/tabs.tx' { active => 'ukestablishment-tab' };
+% if $number_of_branches == 0 { # no branches found for this company 
+    <p class="text">
+        <%
+            l('Sorry, no branches are available for this company.');
+        %>
+    </p>
+% } else { # display the branches for this company
+    <dl>
+        <dt id="total-branches" class="heading-medium"><% $number_of_branches %> UK establishments</dt>
+        <dd id="company-branches-breakdown"><% $number_of_branches_open %> open, <% $number_of_branches_closed %> closed</dd>
+    </dl>
+    <table class="full-width-table" id="branchTable">
+        <tr>
+            <th>Name</th>
+            <th>Number</th>
+            <th>Town</th>
+            <th>Status</th>
+       </tr>
+       % for $branches.items -> $item {
+            <tr>
+                <td class="nowrap">
+                    <a href="<% $item.links.company %>"><% $item.company_name %></a>
+                </td>
+                <td>
+                    % $item.company_number
+                </td>
+                <td>
+                    % $item.locality
+                </td>
+                <td>
+                    % $item.company_status
+                </td>
+            </tr>
+        % }
+    </table>
+% }
+%}

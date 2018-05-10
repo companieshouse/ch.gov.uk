@@ -1,0 +1,6 @@
+% for [ 'premises', 'line_1', 'line_2', 'town', 'postcode' ] -> $field {
+%     if $address[ $namespace ? $namespace ~ '[' ~ $field ~ ']' : $field ] {
+%         ', ' if $field != 'premises'
+%         $address[ $namespace ? $namespace ~ '[' ~ $field ~ ']' : $field ]
+%     }
+% }

@@ -1,0 +1,110 @@
+% cascade base { title => 'Your filings ' ~ $form_header.get_submissionNumber, disable_header_search => 1 }
+
+
+% around content -> {
+
+      
+               <header class="text">
+                  <h1 class="heading-xlarge">
+                     Your filings
+                  </h1>
+               </header>
+
+
+                    %if ($no_filings){
+                            <p class="text">You have not filed anything on Companies House beta service.</p>
+                    %}else{
+ 
+                       <p class="text">This is a list of company information filed by <strong><% $user %></strong> within the last 30 days.</p>
+               
+                       <table id=rf_table class="activity">
+                           <tr>
+                               <th>Date &amp; Time</th>
+                               <th>Company number</th>
+                               <th>Submission number</th>
+                               <th>Filing description</th>
+                               <th>Status</th>
+                           </tr>
+                           % for $recent_filings -> $transaction {
+                               <tr>
+                                   <td>
+                                       <ul>
+                                            <li><% $transaction.closed_at_date %></li>
+                                            <li><% $transaction.closed_at_time %></li>
+                                       </ul>
+                                   </td>
+                                   <td><% $transaction.company_number %></td>
+
+                                % if $c.can_do('/admin/transaction-lookup') {
+                                        <td><a  id="viewTransaction<% $~transaction %>" href="<% $c.url_for('admin_transaction', transaction_number => $transaction.id) %>"><% $transaction.id %></a></td>
+                                        <td>
+                                            <ul>
+                                                % for $transaction.filings -> $filing {
+                                                    <li><% $c.cv_lookup('filing_type', $filing.filing_type) %></li>
+                                                % }
+                                            </ul> 
+                                       </td>
+                                %}else{
+                                        <td><% $transaction.id %></td>
+                                        <td>
+                                             <ul>
+                                                 % for $transaction.filings -> $filing {
+                                                     <li><% $c.cv_lookup('filing_type', $filing.filing_type) %></li>
+                                                     <li><a id="viewSubmission<% $~transaction %><% $~filing%>" href="<% $c.url_for('show_registered_office_resource', transaction_number => $transaction.id) %>"
+                                                     >View submission</a></li>
+                                                 % }
+                                             </ul> 
+                                        </td>
+                                %}
+                                   <td>
+                                         <ul>
+                                            % for $transaction.filings -> $filing {
+                                                <li>
+                                                    <% $c.cv_lookup('filing_status', $filing.status) %>
+                                                </li>
+                                                % if $c.has_admin_permissions {}else{
+                                                        <br>
+                                                   % }
+                                            % }
+                                        </ul> 
+                                        
+                                   </td>
+                               </tr>
+                           % }
+                       </table>
+                        
+                        % if $filings_count > $entries_per_page {
+                            <ul class="pager">
+                                % if ($previous_page) {
+                                    <li>
+                                        <a id="previousButton" class="page" href="<% $c.url_with.query([ page => $previous_page ]) %>">
+                                            Previous
+                                        </a>
+                                    </li>
+                                % }
+                                % for $page_set -> $page {
+                                    <li>
+                                        <a id="pageNo<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>">
+                                            % if $current_page_number == $page {
+                                                <strong>
+                                                    <% $page %>
+                                                </strong>
+                                            % } else {
+                                                <% $page %>
+                                            % }
+                                        </a>
+                                    </li>
+                                % }
+                                % if ($next_page) {
+                                    <li>
+                                        <a id="nextButton" class="page" href="<% $c.url_with.query([ page => $next_page ]) %>">
+                                            Next
+                                        </a>
+                                    </li>
+                                % }
+                            </ul>
+                        %}
+                    % }
+% }
+
+

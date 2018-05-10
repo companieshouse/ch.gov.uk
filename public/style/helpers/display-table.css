@@ -1,0 +1,105 @@
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica");
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* line 7, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table {
+  padding-bottom: 2em;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+/* line 13, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table th {
+  padding-top: 0.5em;
+  margin-top: 1em;
+  text-align: left;
+}
+/* line 19, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td {
+  line-height: 1.25;
+  overflow: hidden;
+  padding: 0.5em 0 0.5em 0;
+  border-top: 1px solid #dee0e2;
+}
+/* line 25, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td a {
+  display: block;
+  vertical-align: top;
+}
+@media (min-width: 769px) {
+  /* line 25, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+  .display-table td a {
+    display: inline-block;
+    width: 34%;
+  }
+}
+/* line 34, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td a span {
+  display: block;
+  float: left;
+}
+/* line 38, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td a .title {
+  width: 34%;
+  text-decoration: underline;
+}
+/* line 43, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td a.button {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 14px;
+  font-size: 1.4rem;
+  line-height: 1.42857;
+  font-weight: 400;
+  text-transform: none;
+}
+@media (max-width: 640px) {
+  /* line 43, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+  .display-table td a.button {
+    font-size: 1.2rem;
+    line-height: 1.25;
+  }
+}
+/* line 47, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td span.subtitle {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  font-weight: 300;
+  text-transform: none;
+  color: #6f777b;
+  text-decoration: none;
+  margin: 0;
+  width: 65%;
+}
+@media (max-width: 640px) {
+  /* line 47, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+  .display-table td span.subtitle {
+    font-size: 1.4rem;
+    line-height: 1.14286;
+  }
+}
+@media (min-width: 769px) {
+  /* line 47, ../../../../app/assets/stylesheets/helpers/display-table.scss */
+  .display-table td span.subtitle {
+    display: inline-block;
+  }
+}

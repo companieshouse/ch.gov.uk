@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dev Helper Plugin Tests</title>
+</head>
+<body>
+<h1>Helper Plugin Tests</h1>
+<h2>FormHelpers Plugin</h2>
+
+<p>This section displays examples of the form elements available via the plugin helper "FormsHelper" and is
+used in conjunction with the test module "FormHelpers.t".
+</p>
+<div>
+<form action="#" method="get" accept-charset="utf-8" class="search-header search-header-2 js-search-hash" role="search">
+% my $form = $c.form( model => '' );
+<div>
+<h3>Example select field</h3>
+% $form.select_field  ( label => 'Label for select:',
+%                       name => $name ~ '[select]',
+%                       list  =>    [
+%                                       {'opt_1'           => 'Option 1'},
+%                                       {'opt_9'           => 'Option 9'},
+%                                       {'opt_7'           => 'Option 7'},
+%                                       {'opt_2'           => 'Option 2'},
+%                                       {'opt_3'           => 'Option 3'},
+%                                       {'opt_4'           => 'Option 4'},
+%                                       {'opt_8'           => 'Option 8'},
+%                                       {'opt_6'           => 'Option 6'},
+%                                       {'opt_0'           => 'Option 0'},
+%                                       {'opt_5'           => 'Option 5'},
+%                                   ],
+%                     );
+</div>
+<div>
+<h3>Example text field</h3>
+% $form.text_field ( label => 'Label for text field:', name => $name ~ '[text]' );
+</div>
+<div>
+<h3>Example postcode lookup field</h3>
+% $form.text_field ( label => 'Label for postcode lookup field', name => $name ~ '[postcode]', as => 'postcode' );
+</div>
+<div>
+<h3>Example checkbox </h3>
+% $form.checkbox ( label => 'Label for checkbox:', name => $name ~ '[check]' );
+</div>
+<div>
+<h3>Example submit button </h3>
+% $form.submit_button ( label => 'Label for submit_button:', name => $name ~ '[submit]' );
+</div>
+<div>
+<h3>Example radio button </h3>
+<% $form.radio (  
+    label   => 'Label for radio button.', 
+    name    => $name ~ '[radio]',
+    options => [
+        { label => 'option 1', value => '0' },
+        { label => 'option 2', value => '1' },
+    ],
+); 
+%>
+</div>
+<div>
+<h3>Example file upload field </h3>
+<% $form.file_field (  
+    label   => 'Label for file upload field.', 
+    name    => $name ~ '[upload]',
+); 
+%>
+</form>
+</div>
+</body>
+</html>

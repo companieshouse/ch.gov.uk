@@ -1,0 +1,24 @@
+<div class="section-tabs js-tabs">
+    <ul>
+        % include "/includes/company/tab.tx" { tabid => 'company-overview-tab', page => '', title => '<span class="visuallyhidden">Company </span>Overview' }
+
+        % if $company.links.filing_history {
+        %     include "/includes/company/tab.tx" { tabid => 'filing-history-tab',   page => '/filing-history', title => 'Filing history' }
+        % }
+        % if $company.links.officers || $company.links.persons_with_significant_control || $company.links.persons_with_significant_control_statements {
+        %     include "/includes/company/tab.tx" { tabid => 'people-tab',         page => '/officers',       title => 'People' };
+        % }
+        % if $company.links.charges && ($c.config.feature.mortgage || $c.can_do('/admin/mortgages')) {
+        %     include "/includes/company/tab.tx" { tabid => 'charges-tab',        page => '/charges',      title => 'Charges' };
+        % }
+        % if $company.links.insolvency {
+        %     include "/includes/company/tab.tx" { tabid => 'insolvency-tab',   page => '/insolvency',     title => 'Insolvency' };
+        % }
+        % if $company.links.registers {
+        %     include "/includes/company/tab.tx" { tabid => 'register-tab', page => '/registers', title => 'Registers' };
+        % }
+        % if $company.links.uk_establishments {
+        %     include "/includes/company/tab.tx" { tabid => 'ukestablishment-tab',   page => '/ukestablishments',     title => 'UK establishments' };
+        % }
+    </ul>
+</div>

@@ -1,0 +1,13 @@
+% cascade base {title => "Submitted JSON document", searchpage => 1, classes=>"search ancillary", disable_header_search => 1}
+
+% around content -> {
+    <a class="link-back" id="back-button" href="javascript:history.back()">Back</a>
+
+    % include includes::page_header {title => $title}
+
+    <div id="resource"> </div>
+
+    <div class="json">
+        <pre><code><% $data_json %></code></pre>
+    </div>
+% }

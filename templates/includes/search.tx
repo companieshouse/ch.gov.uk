@@ -1,0 +1,13 @@
+<div class="ui-widget container-content search">
+    <form action="/search" method="POST">
+		<label for="search" class="hidden">Search</label>
+		<input id="search" name="q" value="<% $q %>" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-autocomplete-input" type="text" data-api-url="<% %apiurl %>" data-api-old="http://api.orctel.internal:9005/search"  />
+        <select name="filter" id="filter">
+          <option value="">All</option>
+          <option value="company" <%     if $filter_company == 1 {    %>selected="1"<% } %>>Companies</option>
+          <option value="officer" <%     if $filter_officer == 1      %>selected="1"<% } %>>Directors and Secretaries</option>
+          <option value="information" <% if $filter_information == 1 {%>selected="1"<% } %>>information</option>
+          </select>
+		<input id="search-submit" type="submit" name="search" value="Search" class="submit-search button positive regular"/>
+    </form>
+</div>

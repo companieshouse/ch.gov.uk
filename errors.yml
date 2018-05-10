@@ -1,0 +1,389 @@
+---
+errors:
+  default:
+    type=integer: "{field} is not a valid integer"
+    type=string: "{field} is not a valid string"
+    type=double: "{field} is not a valid double"
+    radio: 
+      required: "An option must be selected"
+      matches: "Please select a valid option"
+    select_field: 
+      required: "An option from the '{field}' list must be selected"
+    required: "{field} is required"
+    minlength: "{field} must be at least {length} characters"
+    maxlength: "{field} cannot be more than {length} characters"
+    value_in_set: "{field} has a value not in required set"
+    matches: "{field} - field contains invalid characters"
+    postcode_error: "Postcode lookup service unavailable - enter address details manually"
+    postcode_lookup_nomatch: "Postcode could not be found - enter address details manually"
+    postcode_country_mismatch: "The country and postcode do not match"
+    postcode_valid_for_country: "The country and postcode do not match"
+    postcode_bad_uk: "The postcode is not a valid UK postcode format"
+    valid_postcode: "The postcode is not a valid UK postcode format"
+    postcode_lookup_failure: "Please enter a valid postcode"
+    postcode_invalid_welsh_english: "The company postcode must be in England or Wales"
+    postcode_invalid_english: "The company postcode must be in England or Wales"
+    postcode_invalid_scottish: "The company postcode must be in Scotland"
+    postcode_warn_scottish: "Companies registered in Scotland must have their postcode in Scotland"
+    postcode_invalid_welsh: "The company postcode must be in Wales"
+    postcode_invalid_northern_ireland: "The company postcode must be in Northern Ireland"
+    country_invalid_welsh_english: "The company address must be in England or Wales"
+    country_invalid_english: "The company address must be in England or Wales"
+    country_invalid_scottish: "The company address must be in Scotland"
+    country_warn_scottish: "Companies registered in Scotland must have their address in Scotland"
+    country_invalid_welsh: "The company address must be in Wales"
+    country_invalid_northern_ireland: "The company address must be in Northern Ireland"
+    no_duplicate: "You can't select the same option more than once" 
+    valid_date: "{field} is not a valid date"
+    future_date: "{field} must not be in the future"
+    no_change: "No changes made"
+    before_cap09_date: "For all transactions before 01/10/2009, please download the 1985 Act paper forms from our website."
+    before_incorporation_date: "{field} must not be before the date of incorporation"
+    invalid_day_month_year: "Invalid combination of day/month/year"
+    invalid_day_month: "Invalid combination of day/month"
+
+    company_not_found: "Company not found"
+    transaction_not_exist: "This transaction does not exist for this company"
+    transaction_not_open: "This transaction is no longer open"
+
+  ch_gov_uk:
+    models:
+      company:
+        transactions:
+
+          appoint_natural_director:
+            date_of_birth:
+              under_16: "Director is underage - must be 16 years or older"
+            home_address_linked_confirm:
+              required: "Confirmation of linking the home address to the correspondence address is required"
+            correspondence_address_linked_confirm:
+              required: "Confirmation of linking the correspondence address to the registered office address is required"
+            home_address_linked:
+              correspondence_address_has_care_of_or_pobox: "You can't link to the correspondence address as it contains a 'c/o' or 'PO Box'"
+              correspondence_address_linked: "You can't link to the correspondence address as it is already linked to the registered office address. Please enter the home address manually."
+              home_address_exempt: "You can't link to the correspondence address, if you have confirmed the director is exempt from disclosing their home address."
+
+          appoint_natural_member:
+            date_of_birth:
+              under_16: "Member is underage - must be 16 years or older"
+            correspondence_address_linked_confirm:
+              required: "Confirmation of linking the correspondence address to the registered office address is required"
+            home_address_linked:
+              correspondence_address_has_care_of_or_pobox: "You can't link to the correspondence address as it contains a 'c/o' or 'PO Box'"
+              correspondence_address_linked: "You can't link to the correspondence address as it is already linked to the registered office address. Please enter the home address manually."
+              home_address_exempt: "You can't link to the correspondence address, if you have confirmed the member is exempt from disclosing their home address."
+            home_address_linked_confirm:
+              required: "Confirmation of linking the home address to the correspondence address is required"
+            designation_status:
+              llp_designated_only: "You are not permitted to appoint a non-designated member.  This LLP has opted to have only designated members."
+            confirm_designated_status:
+              required: "Please select a designation status"
+
+          appoint_corporate_member:
+            designation_status:
+              llp_designated_only: "You are not permitted to appoint a non-designated member.  This LLP has opted to have only designated members."
+            confirm_designated_status:
+              required: "Please select a designation status"
+
+          appoint_natural_secretary:
+            correspondence_address_linked_confirm:
+              required: "Confirmation of linking the correspondence address to the registered office address is required"
+
+          appoint_corporate_director:
+            corporate_officer:
+              is_eea:
+                required: "Is the company a European Economic Area company?"
+
+          change_natural_director:
+            no_change:
+              required: "No changes made"
+            home_address_linked_confirm:
+              required: "Confirmation of linking the home address to the correspondence address is required"
+            correspondence_address_linked_confirm:
+              required: "Confirmation of linking the correspondence address to the registered office address is required"
+            home_address_linked:
+              correspondence_address_has_care_of_or_pobox: "You can't link to the correspondence address as it contains a 'c/o' or 'PO Box'"
+              correspondence_address_linked: "You can't link to the correspondence address as it is already linked to the registered office address. Please enter the home address manually."
+              home_address_exempt: "You can't link to the correspondence address, if you have confirmed the director is exempt from disclosing their home address."
+
+          change_account_ref_date:
+            account_period_changing:
+              required: "Current or previous period is required"
+              after_filing_deadline: "The deadline for amending this period has passed"
+            new_accounting_reference_date:
+              required: "New accounting period end date is required"
+              period_unchanged: "The accounting period date has not been changed"
+              date_too_early: "The new accounting period end date cannot be on or before the end of the end of the previous period"
+              period_too_long: "The accounting period cannot be more than 18 months long. If company is in administration, please file a paper version of this form instead."
+              first_period_too_long: "The first accounting period end cannot be more than 18 months from the date of incorporation"
+            extension_reason:
+              required: "An option has to be selected"
+              extend_option_not_applicable: "The accounting period is being shortened so selected option is not applicable"
+            secretary_of_state_code:
+              secretary_of_state_code_not_required: "Secretary of state code not required"
+              minlength: "Secretary of State authorisation code has an invalid value - it must be 4 characters long"
+              maxlength: "Secretary of State authorisation code has an invalid value - it must be 4 characters long"
+
+          register_charge:
+            creation_date:
+              before_incorporation_date: "The Date of Creation must be on or after the date of incorporation"
+              creation_date_early: "The date you have entered is outside of the 21-day limit to file a charge"
+              future_date: "Creation Date must not be in the future"
+              required: "Creation Date is required"
+              valid_date: "Date is not valid"
+            person_entitled_1:
+              required: "At least one person has to be entitled"
+              matches: "Name contains invalid characters"
+            person_entitled_2:
+              matches: "Name contains invalid characters"
+            person_entitled_3:
+              matches: "Name contains invalid characters"
+            person_entitled_4:
+              matches: "Name contains invalid characters"
+            additional_persons_entitled:
+              additional_chargees: "Additional Chargees is not valid if you have given fewer than 4 Chargee names"
+              number_of_chargees: "You must choose whether there are more than four persons entitled"
+            charge_description:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+              maxlength: "A maximum of {length} characters can be entered"
+            fixed_charge_or_security:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+            floating_charge:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+            file_upload:
+              file_too_big: "The deed is too big. It must be no bigger than 10 MB."
+              invalid_pdf_version: "The PDF version you have used is unacceptable. Please use PDF versions 1.2 to 1.7."
+              not_pdf: "The deed is not in a PDF format. PDF versions 1.2 to 1.7 are acceptable."
+              required: "You have not selected a deed. Please try again."
+            charge_certification:
+              required: "Statement must be entered"
+              maxlength: "A maximum of {length} characters can be entered"
+            certified_by:
+              required: "Name must be entered"
+              matches: "Name contains invalid characters"
+
+          register_charge_llp:
+            creation_date:
+              before_incorporation_date: "The Date of Creation must be on or after the date of incorporation"
+              creation_date_early: "The date you have entered is outside of the 21-day limit to file a charge"
+              future_date: "Creation Date must not be in the future"
+              required: "Creation Date is required"
+              valid_date: "Date is not valid"
+            person_entitled_1:
+              required: "At least one person has to be entitled"
+              matches: "Name contains invalid characters"
+            person_entitled_2:
+              matches: "Name contains invalid characters"
+            person_entitled_3:
+              matches: "Name contains invalid characters"
+            person_entitled_4:
+              matches: "Name contains invalid characters"
+            additional_persons_entitled:
+              additional_chargees: "Additional Chargees is not valid if you have given fewer than 4 Chargee names"
+              number_of_chargees: "You must choose whether there are more than four persons entitled"
+            charge_description:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+              maxlength: "A maximum of {length} characters can be entered"
+            fixed_charge_or_security:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+            floating_charge:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+            file_upload:
+              file_too_big: "The deed is too big. It must be no bigger than 10 MB."
+              invalid_pdf_version: "The PDF version you have used is unacceptable. Please use PDF versions 1.2 to 1.7."
+              not_pdf: "The deed is not in a PDF format. PDF versions 1.2 to 1.7 are acceptable."
+              required: "You have not selected a deed. Please try again."
+            charge_certification:
+              required: "Statement must be entered"
+              maxlength: "A maximum of {length} characters can be entered"
+            certified_by:
+              required: "Name must be entered"
+              matches: "Name contains invalid characters"
+
+          register_acquisition:
+            creation_date:
+              before_charge_reform_date: "The Date of Creation cannot be before 6th April 2013"
+              future_date: "Creation Date must not be in the future"
+              required: "Creation Date is required"
+              valid_date: "Date is not valid"
+            acquisition_date:
+              before_creation_date: "The acquisition date of the charge cannot be before the creation date"
+              before_incorporation_date: "The acquisition date must be on or after the date of incorporation"
+              future_date: "Acquisition Date must not be in the future"
+              required: "Acquisition Date is required"
+              valid_date: "Date is not valid"
+            person_entitled_1:
+              required: "At least one person has to be entitled"
+              matches: "Name contains invalid characters"
+            person_entitled_2:
+              matches: "Name contains invalid characters"
+            person_entitled_3:
+              matches: "Name contains invalid characters"
+            person_entitled_4:
+              matches: "Name contains invalid characters"
+            additional_persons_entitled:
+              additional_chargees: "Additional Chargees is not valid if you have given fewer than 4 Chargee names"
+              number_of_chargees: "You must choose whether there are more than four persons entitled"
+            charge_description:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+              maxlength: "A maximum of {length} characters can be entered"
+            fixed_charge_or_security:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+            floating_charge:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+            file_upload:
+              file_too_big: "The deed is too big. It must be no bigger than 10 MB."
+              invalid_pdf_version: "The PDF version you have used is unacceptable. Please use PDF versions 1.2 to 1.7."
+              not_pdf: "The deed is not in a PDF format. PDF versions 1.2 to 1.7 are acceptable."
+              required: "You have not selected a deed. Please try again."
+            charge_certification:
+              required: "Statement must be entered"
+              maxlength: "A maximum of {length} characters can be entered"
+            certified_by:
+              required: "Name must be entered"
+              matches: "Name contains invalid characters"
+
+          register_acquisition_llp:
+            creation_date:
+              before_charge_reform_date: "The Date of Creation cannot be before 6th April 2013"
+              future_date: "Creation Date must not be in the future"
+              required: "Creation Date is required"
+              valid_date: "Date is not valid"
+            acquisition_date:
+              before_creation_date: "The acquisition date of the charge cannot be before the creation date"
+              before_incorporation_date: "The acquisition date must be on or after the date of incorporation"
+              future_date: "Acquisition Date must not be in the future"
+              required: "Acquisition Date is required"
+              valid_date: "Date is not valid"
+            person_entitled_1:
+              required: "At least one person has to be entitled"
+              matches: "Name contains invalid characters"
+            person_entitled_2:
+              matches: "Name contains invalid characters"
+            person_entitled_3:
+              matches: "Name contains invalid characters"
+            person_entitled_4:
+              matches: "Name contains invalid characters"
+            additional_persons_entitled:
+              additional_chargees: "Additional Chargees is not valid if you have given fewer than 4 Chargee names"
+              number_of_chargees: "You must choose whether there are more than four persons entitled"
+            charge_description:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+              maxlength: "A maximum of {length} characters can be entered"
+            fixed_charge_or_security:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+            floating_charge:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+            file_upload:
+              file_too_big: "The deed is too big. It must be no bigger than 10 MB."
+              invalid_pdf_version: "The PDF version you have used is unacceptable. Please use PDF versions 1.2 to 1.7."
+              not_pdf: "The deed is not in a PDF format. PDF versions 1.2 to 1.7 are acceptable."
+              required: "You have not selected a deed. Please try again."
+            charge_certification:
+              required: "Statement must be entered"
+              maxlength: "A maximum of {length} characters can be entered"
+            certified_by:
+              required: "Name must be entered"
+              matches: "Name contains invalid characters"
+
+          satisfy_charge:
+            satisfaction:
+              required: "Please select either full or part satisfied"
+            delivery_interest:
+              required: "Please enter your interest in the charge"
+              matches: "'Interest In Charge' is not valid"
+              minlength: "Please enter at least 3 characters"
+            delivery_name:
+              required: "The 'name' must not be blank!"
+              matches: "Please enter a valid Name"
+            address:
+              care_of:
+                matches: "'Care Of' is not valid"
+              po_box:
+                matches: "PO Box is not valid"
+
+          satisfy_charge_llp:
+            satisfaction:
+              required: "Please select either full or part satisfied"
+            delivery_interest:
+              required: "Please enter your interest in the charge"
+              matches: "'Interest In Charge' is not valid"
+              minlength: "Please enter at least 3 characters"
+            delivery_name:
+              required: "The 'name' must not be blank!"
+              matches: "Please enter a valid Name"
+            address:
+              care_of:
+                matches: "'Care Of' is not valid"
+              po_box:
+                matches: "PO Box is not valid"
+
+          terminate_director:
+            resignation_date:
+              before_appointment_date: "{field} must not be before the date of appointment of this director"
+            confirm_officer_resignation:
+              required: "Please confirm that you want to terminate this director's appointment"
+
+          terminate_secretary:
+            resignation_date:
+              before_appointment_date: "{field} must not be before the date of appointment of this secretary"
+            confirm_officer_resignation:
+              required: "Please confirm that you want to terminate this secretary's appointment"
+          
+          terminate_member:
+            resignation_date:
+              before_cap09_date: "For all transactions before 01/10/2009, please download the 1985 Act paper forms from our website."
+              before_incorporation_date: "{field} must not be before the date of incorporation"
+              before_appointment_date: "{field} must not be before the date of appointment of this member"
+            confirm_officer_resignation:
+              required: "Please confirm that you want to terminate this member's appointment"  
+              
+          release_charge:
+            part_or_full:
+             required: "Please select either part or full"
+            released:
+             required: "Please select cease, release or both"
+            description:
+              required: "Please enter a description"
+              matches: "Invalid characters are not allowed"
+            delivery_interest:
+              required: "The 'interest in charge' must not be blank!"
+              matches: "'Interest In Charge' is not valid"
+              minlength: "Please enter at least 3 characters"
+            delivery_name:
+              required: "The 'name' must not be blank!"
+              matches: "Please enter a valid Name"
+            address:
+              care_of:
+                matches: "'Care Of' is not valid"
+              po_box:
+                matches: "PO Box is not valid"
+
+          release_charge_llp:
+            part_or_full:
+             required: "Please select either part or full"
+            released:
+             required: "Please select cease, release or both"
+            description:
+              required: "Please enter a description"
+              matches: "Invalid characters are not allowed"
+            delivery_interest:
+              required: "The 'interest in charge' must not be blank!"
+              matches: "'Interest In Charge' is not valid"
+              minlength: "Please enter at least 3 characters"
+            delivery_name:
+              required: "The 'name' must not be blank!"
+              matches: "Please enter a valid Name"
+            address:
+              care_of:
+                matches: "'Care Of' is not valid"
+              po_box:
+                matches: "PO Box is not valid"
+
+          change_of_name:
+            proposed_name:
+              maxlength: "The proposed name and name ending combined exceed the maximum 160 characters permitted"
+              name_not_changed: "New name is the same as the current name"
+              invalid_characters: "The new name contains symbols that are not permitted within the first characters of a name"
+            notice_given:
+              required: "Please confirm that the name has been resolved to be changed to the proposed name"

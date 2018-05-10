@@ -1,0 +1,314 @@
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica");
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* CSS 3 Mixins
+
+  Add them as you need them. This should let us manage vendor prefixes in one place.
+ */
+/* Cross-browser shims
+
+  Ways of normalising properties across browsers.
+ */
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* Usage:
+   @include inline-block
+
+   or
+
+   @include inline-block("250px")
+
+   which gives a min-height to the inline-block elements.
+*/
+/* Contain floats usage:
+
+   .this-has-floated-children {
+     @extend %contain-floats;
+   }
+
+*/
+/* line 49, ../../../../vendor/govuk_frontend_toolkit/stylesheets/_shims.scss */
+#local-header .header-wrapper:after, #local-header .header-wrapper .header-global:after, #local-header .header-wrapper .header-global .header-logo:after,
+#local-header .header-wrapper .header-global .site-search:after, form#search .content:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* line 12, ../../../../app/assets/stylesheets/colours.scss */
+.warning {
+  color: #b10e1e;
+}
+
+/* line 15, ../../../../app/assets/stylesheets/colours.scss */
+.notification {
+  color: #ffbf47;
+}
+
+/* line 17, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header {
+  background-color: #dee0e2;
+  width: 100%;
+  border-bottom: 1px solid #bfc1c3;
+}
+/* line 22, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper {
+  max-width: 990px;
+  margin: 0 auto;
+  padding: 0.5em 15px;
+}
+@media (max-width: 640px) {
+  /* line 22, ../../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .header-wrapper {
+    padding: 0.5em 0;
+  }
+}
+/* line 38, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper .header-global .header-logo,
+#local-header .header-wrapper .header-global .site-search {
+  width: 49%;
+  float: left;
+}
+@media (min-width: 769px) {
+  /* line 38, ../../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .header-wrapper .header-global .header-logo,
+  #local-header .header-wrapper .header-global .site-search {
+    width: 33.33%;
+  }
+}
+@media screen and (max-width: 379px) {
+  /* line 38, ../../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .header-wrapper .header-global .header-logo,
+  #local-header .header-wrapper .header-global .site-search {
+    width: auto;
+    float: none;
+  }
+}
+/* line 51, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper .header-global .header-logo .content,
+#local-header .header-wrapper .header-global .site-search .content {
+  margin: 0 15px;
+}
+/* line 55, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper .header-global .header-logo {
+  margin: 5px 0 2px;
+}
+/* line 58, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper .header-global .site-search {
+  float: right;
+}
+/* line 65, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper .header-global .site-search .content {
+  margin: 10px 15px;
+}
+/* line 72, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header #logo {
+  float: left;
+  position: relative;
+  width: 362px;
+  height: 50px;
+  overflow: hidden;
+}
+/* line 79, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header #logo img {
+  position: absolute;
+  top: 0;
+  border: none;
+      /* scale oversized image to container bounds
+      width: 200%;
+      height: 300%;
+	*/
+}
+/* line 93, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header #logo:hover img {
+  top: -50px;
+}
+/* line 98, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .search-toggle {
+  display: none;
+}
+@media screen and (max-width: 379px) {
+  /* line 98, ../../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .search-toggle {
+    display: block;
+    float: right;
+    top: 0;
+    height: 30px;
+    width: 36px;
+    padding: 0;
+    margin: 0 15px;
+    overflow: hidden;
+    text-indent: -5000px;
+    background-color: #005696;
+    background-image: url("https://assets.digital.cabinet-office.gov.uk/static/search-button.png");
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+  /* line 127, ../../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .search-toggle:active {
+    top: 0;
+  }
+}
+@media only screen and (max-width: 379px) and (-webkit-min-device-pixel-ratio: 2), only screen and (max-width: 379px) and (min--moz-device-pixel-ratio: 2), only screen and (max-width: 379px) and (-o-min-device-pixel-ratio: 20 / 10), only screen and (max-width: 379px) and (min-device-pixel-ratio: 2), only screen and (max-width: 379px) and (min-resolution: 192dpi), only screen and (max-width: 379px) and (min-resolution: 2dppx) {
+  /* line 98, ../../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .search-toggle {
+    background-size: 52.5px 35px;
+    background-position: 100% 50%;
+  }
+}
+/* line 132, ../../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .search-toggle.js-hidden {
+  display: none;
+}
+
+/* line 137, ../../../../app/assets/stylesheets/helpers/header.scss */
+form#search .content {
+  position: relative;
+  background: #fff;
+  border: 1px solid #bfc1c3;
+  border-bottom: 1px solid #0b0c0c;
+}
+/* line 144, ../../../../app/assets/stylesheets/helpers/header.scss */
+form#search label {
+  float: left;
+  height: 35px;
+  line-height: 35px;
+  text-indent: 15px;
+  overflow: hidden;
+  display: block;
+  margin-right: 10px;
+}
+/* line 153, ../../../../app/assets/stylesheets/helpers/header.scss */
+.js-enabled form#search label {
+  float: none;
+  position: absolute;
+  left: 0;
+  top: 1px;
+  z-index: 1;
+  width: 100%;
+  margin-right: 0;
+}
+/* line 163, ../../../../app/assets/stylesheets/helpers/header.scss */
+form#search input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  width: 50%;
+  min-width: 0;
+  display: block;
+  margin: 0;
+  border: 0;
+  height: 35px;
+  padding: 6px 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+/* line 179, ../../../../app/assets/stylesheets/helpers/header.scss */
+form#search input#site-search-text {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.4375;
+  font-weight: 300;
+  text-transform: none;
+  position: relative;
+  padding: 6px;
+  z-index: 3;
+  background: transparent;
+}
+@media (max-width: 640px) {
+  /* line 179, ../../../../app/assets/stylesheets/helpers/header.scss */
+  form#search input#site-search-text {
+    font-size: 1.4rem;
+    line-height: 1.76923;
+  }
+}
+/* line 187, ../../../../app/assets/stylesheets/helpers/header.scss */
+form#search input#site-search-text.focus, form#search input#site-search-text:focus {
+  background: #fff;
+}
+/* line 194, ../../../../app/assets/stylesheets/helpers/header.scss */
+.js-enabled form#search input#site-search-text {
+  width: 86%;
+  width: -webkit-calc(100% - 37px);
+  width: calc(100% - 37px);
+}
+/* line 200, ../../../../app/assets/stylesheets/helpers/header.scss */
+form#search input.submit {
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  top: 0;
+  width: 35px;
+  height: 35px;
+  border: 1px solid #005696;
+  border-width: 0 0 0 1px;
+  border-left-color: #222;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  overflow: hidden;
+  text-indent: -5000px;
+  color: white;
+  background-color: #005696;
+  background-image: url("https://assets.digital.cabinet-office.gov.uk/static/search-button.png");
+  background-repeat: no-repeat;
+  background-position: 0 50%;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  /* line 200, ../../../../app/assets/stylesheets/helpers/header.scss */
+  form#search input.submit {
+    background-size: 52.5px 35px;
+    background-position: 100% 50%;
+  }
+}
+/* line 235, ../../../../app/assets/stylesheets/helpers/header.scss */
+form#search input.submit:hover {
+  background-color: #0073c9;
+}
+@media screen and (max-width: 379px) {
+  /* line 136, ../../../../app/assets/stylesheets/helpers/header.scss */
+  form#search {
+    display: none;
+    width: 100%;
+  }
+  /* line 256, ../../../../app/assets/stylesheets/helpers/header.scss */
+  form#search #site-search-text {
+    width: 80%;
+  }
+}
+/* line 260, ../../../../app/assets/stylesheets/helpers/header.scss */
+form#search.js-visible {
+  display: block;
+}

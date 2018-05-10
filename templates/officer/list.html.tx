@@ -1,0 +1,20 @@
+% cascade base { title => 'Officer Listing' }
+% # XXX THIS PAGE IS PROBABLY  D E A D
+% # XXX LEAVING HERE UNTIL WE'RE SURE!!!!!!!!!
+
+% around content -> {
+    <p class="company-nav">
+        <a href="/company/<% $stash.company.company_number %>">
+            <% $stash.company.company_name %> (<% $stash.company.company_number %>)
+        </a>
+    </p>
+    <div class="browse-container full-width group">
+        % include '/includes/officer_listing.tx' { officers => $officers.officers };
+        % include '/includes/pager.tx' {
+            url              => $c.url_with,
+            current_page     => $officers.page,
+            number_of_pages  => $officers.number_of_pages,
+            show_either_side => 3
+        }
+    </div>
+% }

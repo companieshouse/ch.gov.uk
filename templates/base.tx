@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!--[if lt IE 9]><html class="lte-ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--><html lang="en"><!--<![endif]--><head>
+   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<!-- Company numbers are not taken as a phone number -->
+   <meta name="format-detection" content="telephone=no">
+
+   <title data-id="<% $route_name %>"><% $title %></title>
+
+	<meta name="description" content="<% if $company.company_name { %><% $company.company_name %> - <% } %>Free company information from Companies House including registered office address, filing history, accounts, annual return, officers, charges, business activity">
+
+   <script>
+      (function(){if(navigator.userAgent.match(/IEMobile\/10\.0/)){var d=document,c="appendChild",a=d.createElement("style");a[c](d.createTextNode("@-ms-viewport{width:auto!important}"));d.getElementsByTagName("head")[0][c](a);}})();
+   </script>
+
+   <!--[if gt IE 8]><!--><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/govuk-template.css" media="screen" rel="stylesheet" type="text/css"><!--<![endif]-->
+   <!--[if IE 6]><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/govuk-template-ie6.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+   <!--[if IE 7]><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/govuk-template-ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+   <!--[if IE 8]><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/govuk-template-ie8.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+
+   <link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/govuk-template-print.css" media="print" rel="stylesheet" type="text/css">
+
+   <!--[if IE 8]>
+      <script type="text/javascript">
+         (function(){if(window.opera){return;}
+         setTimeout(function(){var a=document,g,b={families:(g=
+         ["nta"]),urls:["https://assets.digital.cabinet-office.gov.uk/static/fonts-ie8-a7369d48db4c172b4371ab9def59c5c9.css"]},
+         c="https://assets.digital.cabinet-office.gov.uk/static/vendor/goog/webfont-debug-96870cf9f159ed811fd43c39bdf4656b.js",d="script",
+         e=a.createElement(d),f=a.getElementsByTagName(d)[0],h=g.length;WebFontConfig
+         ={custom:b},e.src=c,f.parentNode.insertBefore(e,f);for(;h=h-1;a.documentElement
+         .className+=' wf-'+g[h].replace(/\s/g,'').toLowerCase()+'-n4-loading');},0)
+      })()
+  </script>
+  <![endif]-->
+
+   <!--[if gte IE 9]><!-->
+   <!--link href="https://assets.digital.cabinet-office.gov.uk/static/fonts-607c54f71c7c1f98257595cedaa13a34.css" media="all" rel="stylesheet" type="text/css" -->
+   <!--<![endif]-->
+
+   <!--[if lt IE 9]>
+    <script src="//<% $cdn_url %>/javascripts/vendor/assets-digital-cabinet-office-gov-uk-static/ie.js" type="text/javascript"></script>
+   <![endif]-->
+
+   <link rel="shortcut icon" href="//<% $cdn_url %>/images/favicon.ico" type="image/x-icon">
+
+   <!-- For third-generation iPad with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="144x144" href="//<% $cdn_url %>/images/apple-touch-icon-144x144.png">
+   <!-- For iPhone with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="114x114" href="//<% $cdn_url %>/images/apple-touch-icon-114x114.png">
+   <!-- For first- and second-generation iPad: --><link rel="apple-touch-icon-precomposed" sizes="72x72" href="//<% $cdn_url %>/images/apple-touch-icon-72x72.png">
+   <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: --><link rel="apple-touch-icon-precomposed" href="//<% $cdn_url %>/images/apple-touch-icon-57x57.png">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta property="og:image" content="//<% $cdn_url %>/images/opengraph-image.jpg">
+
+   <!--[if gt IE 8]><!--><!--<link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/application.css" media="screen" rel="stylesheet" type="text/css">--><!--<![endif]-->
+   <!--[if IE 6]><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/application-ie6.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+   <!--[if IE 7]><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/application-ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+   <!--[if IE 8]><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/application-ie8.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+
+   <link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/print.css" media="print" rel="stylesheet" type="text/css">
+
+   <!--[if gt IE 8]><!--><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/frontend-application.css" media="screen" rel="stylesheet" type="text/css"><!--<![endif]-->
+
+   <!--[if IE 6]><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/frontend-application-ie6.css" media="screen" rel="stylesheet" type="text/css" /><![endif]--><!--[if IE 7]><link href="//<% $cdn_url %>/style/assets-digital-cabinet-office-gov-uk-static/frontend-application-ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]--><!--[if IE 8]><link href="//<% $cdn_url %>/style/assets-digital-cabinet-office-gov-uk-static/frontend-application-ie8.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
+
+   <!-- Companies House Styles and Scripts -->
+
+   <!--[if gt IE 8]><!--><link href="//<% $cdn_url %>/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css"><!--<![endif]-->
+   <!--[if IE 6]><link href="//<% $cdn_url %>/stylesheets/application-ie6.css" media="screen" rel="stylesheet" type="text/css"><![endif]-->
+   <!--[if IE 7]><link href="//<% $cdn_url %>/stylesheets/application-ie7.css" media="screen" rel="stylesheet" type="text/css"><![endif]-->
+   <!--[if IE 8]><link href="//<% $cdn_url %>/stylesheets/application-ie8.css" media="screen" rel="stylesheet" type="text/css"><![endif]-->
+
+   <link href="//<% $cdn_url %>/stylesheets/print.css" media="print" rel="stylesheet" type="text/css">
+
+  <link href="//<% $cdn_url %>/stylesheets/jquery-ui.css" rel="stylesheet" />
+
+  <!-- Global config of Require.js -->
+  % macro app_js -> { $require_js? $require_js : 'ch_default' }
+  <script>var global = global || {}; global.CDN_ROOT = '//<% $cdn_url %>'</script>
+  <script src='//<% $cdn_url %>/javascripts/vendor/require.js'></script>
+  <script src='//<% $cdn_url %>/javascripts/app/accounts-pdf.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+  require(['//<% $cdn_url %>/javascripts/require-global-config.js'], function () {
+    console.log('Loaded require-global-config.js');
+    // Specific to this 'action'
+        require(['//<% $cdn_url %>/javascripts/app/feedback.js'], function () {
+            console.log('Required feedback.js.');
+        });
+        require(['//<% $cdn_url %>/javascripts/app/<% app_js() %>.js'], function () {
+            console.log('Required <% app_js() %>.js.');
+        });
+  });
+  </script>
+
+   <!-- End of Companies House Styles and Scripts -->
+
+
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml">
+
+</head>
+
+<body>
+  <script>
+    document.body.className += ' js-enabled';
+  </script>
+
+  <div class="entire-wrapper">
+
+   <div id="skiplink-container">
+      <div>
+         <a href="#content" class="skiplink">Skip to main content</a>
+      </div>
+   </div>
+
+  <!-- // CH.GOV.UK HEADER -->
+  <header role="banner" id="global-header">
+    <div class="header-wrapper">
+      <div class="header-global">
+        <div class="header-logo">
+          <a href="/" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo" class="content">
+            Companies House
+          </a>
+% if ! $disable_header_search {
+			<!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
+% }
+        </div>
+
+
+      </div>
+    </div>
+  </header>
+  <!--end header-->
+
+  <main id="page-container" class="search <% $classes %>" role="main">
+
+        <div class="phase-banner">
+            <p>
+              <strong class="phase-tag">BETA</strong>
+              <span>This is a trial service &mdash; your <a href="https://www.research.net/r/chbeta" target="_blank" <% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);"<% } %>>feedback<span class="visuallyhidden">(link opens a new window)</span></a> will help us to improve it.</span>
+            </p>
+        </div>
+
+    % if $user_bar != false {
+        <div class="js-toggle-nav" id="global-nav">
+              % if $c.is_signed_in {
+              <a href="#navigation" class="js-header-toggle"><% $c.user_email %>
+                <span class="visuallyhidden">Click to expand or collapse</span>
+              </a>
+              % } else {
+              <a id="user-signin-mobile" href="<% $c.url_for('user_sign_in') %>" class="sign-in">Sign in / Register</a>
+              % }
+              <nav role="navigation" class="content<% if !$c.is_signed_in { %> mobile-hidden<% } %>">
+                  <ul id="navigation">
+                  % if $c.is_signed_in {
+
+                        <li id="signed-in-user" class="user"><% $c.user_email %>: </li>
+
+                        <li><a href="<% $c.external_url_for('manage_user_details') %>">Your details</a></li>
+
+                        <li><a id="recent_filings" href="<% $c.config.url_for.companies_house_search_page %><%"/user/transactions"%>">Your filings</a></li>
+
+                        % if !$c.config.disable_follow {
+                            <li><a id="following" href="<% $c.config.monitor.gui_url %>">Companies you follow</a></li>
+                        % }
+
+                        <li><a id="user-signout" href="<% $c.url_for('user_sign_out') %>">Sign out</a></li>
+
+                  % } else {
+
+                        <li class="unauthenticated"><a id="user-signin" href="<% $c.url_for('user_sign_in') %>">Sign in / Register</a></li>
+
+                  % }
+                    </ul>
+		            <% $c.adminNavigation %>
+              </nav>
+        </div>
+    % }
+
+% if ! $disable_header_search {
+
+  <div class="column-full-width">
+	  % include "search/banner.tx" { header_or_body => 'header' }
+  </div><!-- column-end -->
+
+% }
+    <div id="<% (! $disable_header_search) ? 'content-container' : 'search-container' %>">
+	% block content -> { ; }
+    </div>
+
+  </main>
+
+  <!--end main-->
+  <div class="push"></div>
+
+
+</div> <!-- end of entire-wrapper -->
+
+% if ! $c.config.disable_feedback_form {
+    <!-- powered by feedback.js -->
+    <div class="feedback-wrapper">
+    	 % include "includes/feedback.tx" { header_or_body => 'header' }
+    </div>
+
+% }
+
+    <footer class="group js-footer" id="footer" role="contentinfo">
+        <nav>
+          <div>
+            <ul>
+	   			<li><a href="http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml" target="_blank">Policies</a></li>
+	            <li><a href="/help/cookies">Cookies</a></li>
+	            <li><a href="/help/contact-us">Contact us</a></li>
+             	<li><a href="https://developer.companieshouse.gov.uk/" target="_blank">Developers</a></li>
+	        </ul>
+         </div>
+        </nav>
+    </footer>
+    <!--end footer-->
+
+    <div id="global-app-error" class="app-error hidden"></div>
+
+   <!-- BEGIN Companies House Scripts -->
+    <% include 'includes/piwik.tx' %>
+   <!-- End of Companies House Scripts -->
+</body>
+</html>

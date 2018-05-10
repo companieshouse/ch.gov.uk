@@ -1,0 +1,1 @@
+<a id="expand-form" href="<% $url %>"><% $text %></a>

@@ -1,0 +1,23 @@
+	    <ul class="search-tabs">
+	        <% if $officers { %>
+	        	<li id='peoples-tab' class="active">
+	                <a id='officers-link' href='#'>Officers</a>
+	        	</li>
+	        <% } else { %>
+	        	<li id='peoples-tab'>
+	                <a id='officers-link' href="<% $c.url_for("company_officers") %>" >Officers</a>
+	        	</li>
+	        <% } %>
+
+            <% if ($c.config.feature.psc == 1) { %>
+                <% if $pscs { %>
+	            	<li id='pscs-tab' class="active">
+	                    <a id='pscs-link' href='#'>Persons with significant control</a>
+	            	</li>
+	            <% } else { %>
+	            	<li id='pscs-tab'>
+	                    <a id='pscs-link' href="<% $c.url_for("list_pscs") %>" >Persons with significant control</a>
+	            	</li>
+	            <% } %>
+            <% } %>
+	    </ul>

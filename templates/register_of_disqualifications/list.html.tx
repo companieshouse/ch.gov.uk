@@ -1,0 +1,83 @@
+% cascade base { title => 'Register Of Disqualifications - ' ~ $active_letter, disable_header_search => 1 }
+
+% around content -> {
+
+       <div class="active">
+            <header>
+                <h1 class="heading-xlarge">Register of disqualifications</h1>
+            </header>
+
+            <ul class="pager pager-a-z" id="alphabetical-pager">
+                % for $alphabet -> $letter {
+                    % if $active_letter == $letter {
+                        <li class="active">
+                            <a href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="visuallyhidden">Only show surnames beginning with</span><%= $letter %></a>
+                        </li>
+                    % } else {
+                        <li class="inactive">
+                            <a href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="visuallyhidden">Only show surnames beginning with</span><%= $letter %></a>
+                        </li>
+                    % }
+                % }
+            </ul>
+
+            % if $disqualifications.total_results > 0 {
+                <table class="full-width-table">
+                    <caption class="visuallyhidden">Register of disqualifications</caption>
+                    <tr>
+                        <th scope="col">
+                            Name <span class="visuallyhidden">(of disqualified director</span>
+                        </th>
+                        <th scope="col">
+                            Date of birth <span class="visuallyhidden">(of disqualified director)</span>
+                        </th>
+                        <th scope="col">
+                            Post Town <span class="visuallyhidden">(where disqualified director lives)</span>
+                        </th>
+                    </tr>
+                    % for $disqualifications.items -> $item {
+                        <tr>
+                            <td><a href="<%= $item.links.self %>"><%= $item.title %></a></td>
+                            <td><%= $c.isodate_as_string($item.date_of_birth) %></td>
+                            <td><%= $item.address.locality %></td>
+                        </tr>
+                    % }
+                </table>
+            % } else {
+                <h2 class="heading-medium">There are no disqualified officer details available for surnames beginning with <%= $active_letter %></h2>
+            % }
+        </div>
+
+        % if $pager.show_pager {
+        <div class="search-meta" id="search-meta">
+                <ul class="pager" id="pager">
+                    % if ($pager.previous_page) {
+                        <li>
+                            <a class="page" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
+                                Previous
+                            </a>
+                        </li>
+                    % }
+                    % for $pager.pages_in_set -> $page {
+                        <li>
+                            % if $pager.current_page == $page {
+                                <span id="page-<% $page %>" class="page">
+                                <% $page %></span>
+                            % } else {
+                                <a id="page-<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>">
+                                <% $page %></a>
+                            % }
+                        </li>
+                    % }
+                    % if ($pager.next_page) {
+                        <li>
+                            <a class="page" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
+                                Next
+                            </a>
+                        </li>
+                    % }
+                </ul>
+        </div>
+        % }
+
+% }

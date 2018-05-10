@@ -1,0 +1,122 @@
+---
+errors:
+  default:
+    radio: 
+      required: "An option must be selected"
+      matches: "Please select a valid option"
+    select_field: 
+      required: "An option from the '{field}' list must be selected"
+    required: "{field} is required"
+    minlength: "{field} must be at least {length} characters"
+    maxlength: "{field} cannot be more than {length} characters"
+    value_in_set: "{field} has a value not in required set"
+    matches: "{field} - field contains invalid characters"
+    postcode_error: "Postcode could not be found - please enter address details manually"
+    postcode_lookup_nomatch: "Postcode could not be found - please enter address details manually"
+    postcode_country_mismatch: "The country and postcode do not match"
+    postcode_bad_uk: "The postcode is not a valid UK postcode format"
+    postcode_lookup_failure: "Please enter a valid postcode"
+    postcode_invalid_welsh_english: "Companies registered in England or Wales must have their address in England or Wales"
+    postcode_invalid_english: "Companies registered in England or Wales must have their address in England or Wales"
+    postcode_invalid_scottish: "Companies registered in Scotland must have their address in Scotland"
+    postcode_warn_scottish: "Companies registered in Scotland must have their address in Scotland"
+    postcode_invalid_welsh: "The address for a 'Wales' company must be located in Wales"
+    postcode_invalid_northern_ireland: "Companies registered in Northern Ireland must have their address in Northern Ireland"
+    no_duplicate: "You can't select the same option more than once" 
+    valid_date: "{field} is not a valid date"
+    future_date: "{field} must not be in the future"
+    no_change: "No changes made"
+
+  ch_gov_uk:
+    models:
+      company:
+        transactions:
+
+          appoint_natural_director:
+            date_of_birth:
+              under_16: "Director is underage - must be 16 years or older"
+            appointment_date:
+              before_cap09_date: "For all transactions before 01/10/2009, please download the 1985 Act paper forms from our website."
+              before_incorporation_date: "{field} must not be before the date of incorporation"
+            home_address_linked_confirm:
+              required: "Confirmation of linking the home address to the correspondence address is required"
+            correspondence_address_linked_confirm:
+              required: "Confirmation of linking the correspondence address to the registered office address is required"
+            home_address_linked:
+              correspondence_address_has_care_of_or_pobox: "You can't link to the correspondence address as it contains a 'c/o' or 'PO Box'"
+              correspondence_address_linked: "You can't link to the correspondence address as it is already linked to the registered office address. Please enter the home address manually."
+              home_address_exempt: "You can't link to the correspondence address, if you have confirmed the director is exempt from disclosing their home address."
+
+          register_charge:
+            creation_date:
+              before_incorporation_date: "The Date of Creation must be on or after the date of incorporation"
+              creation_date_early: "The Date of Creation must be no earlier than 21 days before the date of submission"
+              future_date: "Creation Date must not be in the future"
+              required: "Creation Date is required"
+              valid_date: "Date is not valid"
+            person_entitled_1:
+              required: "At least one person has to be entitled"
+              matches: "Name contains invalid characters"
+            person_entitled_2:
+              matches: "Name contains invalid characters"
+            person_entitled_3:
+              matches: "Name contains invalid characters"
+            person_entitled_4:
+              matches: "Name contains invalid characters"
+            additional_persons_entitled:
+              additional_chargees: "Additional Chargees is not valid if you have given fewer than 4 Chargee names"
+            charge_description:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+              maxlength: "A maximum of {length} characters can be entered"
+            fixed_charge_or_security:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+            floating_charge:
+              charge_details_required: "At least one of Charge Description, Fixed Charge or Fixed Security, or Floating Charge must be provided"
+            file_upload:
+              file_too_big: "The deed is too big. It must be no bigger than 10 MB."
+              invalid_pdf_version: "The PDF version you have used is unacceptable. Please use PDF versions 1.2 to 1.7."
+              not_pdf: "The deed is not in a PDF format. PDF versions 1.2 to 1.7 are acceptable."
+              required: "You have not selected a deed. Please try again."
+            charge_certification:
+              required: "Statement must be entered"
+              maxlength: "A maximum of {length} characters can be entered"
+            certified_by:
+              required: "Name must be entered"
+              matches: "Name contains invalid characters"
+
+          satisfy_charge:
+            satisfaction:
+              required: "Please select either full or part satisfied"
+            delivery_interest:
+              required: "Please enter your interest in the charge"
+              matches: "'Interest In Charge' is not valid"
+              minlength: "Please enter at least 3 characters"
+            delivery_name:
+              required: "The 'name' must not be blank!"
+              matches: "Please enter a valid Name"
+            address:
+              care_of:
+                matches: "'Care Of' is not valid"
+              po_box:
+                matches: "PO Box is not valid"
+
+          release_charge:
+            part_or_full:
+             required: "Please select either part or full"
+            released:
+             required: "Please select cease, release or both"
+            description:
+              required: "Please enter a description"
+              matches: "Invalid characters are not allowed"
+            delivery_interest:
+              required: "The 'interest in charge' must not be blank!"
+              matches: "'Interest In Charge' is not valid"
+              minlength: "Please enter at least 3 characters"
+            delivery_name:
+              required: "The 'name' must not be blank!"
+              matches: "Please enter a valid Name"
+            address:
+              care_of:
+                matches: "'Care Of' is not valid"
+              po_box:
+                matches: "PO Box is not valid"

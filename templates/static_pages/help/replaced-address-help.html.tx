@@ -1,0 +1,13 @@
+% cascade base { title => 'Companies House', searchpage => 1, disable_header_search => 1 }
+% around content -> {
+    <article class="text">
+                <h1 id="replaced-address-header"  class="heading-xlarge">
+                         Replaced registered office address
+                </h1>
+                <p>The registered office address for this company has been changed by the Registrar to the Companies House default address.</p>
+
+                <p>The company can only change its registered office address from the default address by filing a paper form <a href="https://www.gov.uk/government/collections/companies-house-forms-file-a-change-of-address" rel="external">AD01</a>.</p>
+
+                <p>Evidence of the company's link to the new registered office address must be supplied with the paper AD01.</p>
+    </article>
+% }

@@ -1,0 +1,213 @@
+% cascade base { title=> $officer.name ~" - Personal Appointments (free information from Companies House)", require_js => "transactions/company/officer_appointments_view" }
+% around content -> {
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes -->
+<script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script>  <!-- Needed for new GDS-style radio buttons and checkboxes -->
+
+    <header class="text">
+        <h1 class="heading-xlarge" id="officer-name"><% $officer.name %></h1>
+    </header>
+
+    <div class="js-only">
+        <form id="appointments-filter" class="form grid-row">
+            <div class="column-half">
+                <h2 class="heading-medium filter-appointments" id="officer-filter">
+                        Filter appointments
+                </h2>
+                <fieldset>
+                <legend class="visuallyhidden">Filter appointments</legend>
+                % for $categories -> $category {
+                    <label for="appointments-category-<% $category.id %>" class="block-label selection-button-checkbox">
+                        <input id="appointments-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
+                        <% l($category.name) %>
+                    </label>
+                % }
+                </fieldset>
+                <input class="button js-hidden" type="submit" value="Apply filter">
+            </div>
+        </form>
+    </div>
+
+    <div class="appointments">
+        <h2 class="heading-medium" id="personal-appointments">
+            % if ($is_active_filter_set and $officer.total_results == 0) {
+                There are no current appointments for this officer
+            % } else {
+                Total number of appointments <% $officer.total_results %>
+            % }
+        </h2>
+
+        % if $officer.date_of_birth {
+            <dl style="margin-bottom: 50px;">
+                <dt id="officer-date-of-birth-field">Date of birth</dt>
+                <dd class="data" id="officer-date-of-birth-value"><% $c.suppressed_date_as_string($officer.date_of_birth) %></dd>
+            </dl>
+        % }
+
+        <div class="appointments-list">
+            % for $officer.appointments -> $appointment {
+                <div class="appointment-<% $~appointment.count %>">
+                    <h2 class="heading-medium heading-with-border" id="company-name-<% $~appointment.count %>">
+                        <a href="<% $appointment.links.company %>"><% $appointment.appointed_to.company_name %> (<% $appointment.appointed_to.company_number %>)</a>
+                    </h2>
+                    <div class="grid-row">
+                        <dl class="column-third">
+                            <dt id="company-status-field-<% $~appointment.count %>">Company status</dt>
+                            <dd class="data" id="company-status-value-<% $~appointment.count %>">
+                                <% $c.cv_lookup( 'company_status', $appointment.appointed_to.company_status ) %>
+                            </dd>
+                        </dl>
+                        <dl class="column-two-thirds">
+                            <dt id="correspondence-address-field-<% $~appointment.count %>"><% l('Correspondence address') %></dt>
+                            <dd class="data" id="correspondence-address-value-<% $~appointment.count %>"><% $c.address_as_string($appointment.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 }) %></dd>
+                        </dl>
+                    </div>
+
+                    <div class="grid-row">
+
+                        <dl class="column-third">
+                            <dt id="appointment-type-field-<% $~appointment.count %>"><% l('Role') %>
+                                % if $appointment.resigned_on {
+                                    <span id="appointment-status-tag-<% $~appointment.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
+                                % } else if $appointment.appointed_to.company_status == 'active' {
+                                    <span id="<% $appointment.appointed_to.company_number %>-appointment-status-tag-<% $~appointment.count %>" class="status-tag font-xsmall">Active</span>
+                                % }
+                            </dt>
+                            <dd id="appointment-type-value<% $~appointment.count %>" class="data">
+                                <% $c.cv_lookup( 'officer_role', $appointment.officer_role) %>
+                            </dd>
+                        </dl>
+
+                        <dl class="column-third">
+                            % if $appointment.appointed_on {
+                                <dt id="appointed-field<% $~appointment.count %>"><% l('Appointed on') %></dt>
+                                <dd id="appointed-value<% $~appointment.count %>" class="data">
+                                    <% $c.isodate_as_string($appointment.appointed_on) %>
+                                </dd>
+                            % } else {
+                                <dt id="appointed-field<% $~appointment.count %>"><% l('Appointed before') %></dt>
+                                <dd id="appointed-value<% $~appointment.count %>" class="data">
+                                    <% $c.isodate_as_string($appointment.appointed_before) %>
+                                </dd>
+                            % }
+                        </dl>
+
+                        % if $appointment.resigned_on {
+                            <dl class="column-third">
+                                <dt id="resigned-field-<% $~appointment.count %>"><% l('Resigned on') %></dt>
+                                <dd id="resigned-value-<% $~appointment.count %>" class="data">
+                                    <% $c.isodate_as_string( $appointment.resigned_on ) %>
+                                </dd>
+                            </dl>
+                        % }
+
+                    </div> <%# /grid-row%>
+
+                    <div class="grid-row">
+
+                        % if $appointment.nationality {
+                            <dl class="column-third">
+                                <dt id="nationality-field<% $~appointment.count %>"><% l('Nationality') %></dt>
+                                <dd id="nationality-value<% $~appointment.count %>" class="data">
+                                    <% $appointment.nationality %>
+                                </dd>
+                            </dl>
+                        % }
+
+                        % if $appointment.country_of_residence {
+                            <dl class="column-third">
+                                <dt id="country-of-residence-field-<% $~appointment.count %>"><% l('Country of residence') %></dt>
+                                <dd id="country-of-residence-value<% $~appointment.count %>" class="data">
+                                    <% $appointment.country_of_residence %>
+                                </dd>
+                            </dl>
+                        % }
+
+                        % if $appointment.occupation {
+                            <dl class="column-third">
+                                <dt id="occupation-field-<% $~appointment.count %>"><% l('Occupation') %></dt>
+                                <dd id="occupation-value-<% $~appointment.count %>" class="data">
+                                    <% $appointment.occupation %>
+                                </dd>
+                            </dl>
+                        % }
+
+                    </div> <%# /grid-row%>
+
+                    % if $appointment.identification {
+                        <h3 class="identification-type-<% $~appointment.count %>">
+                            % if ($appointment.identification.identification_type == 'non-eea') {
+                                Registered in a
+                            % } else {
+                                Registered in an
+                            % }
+                            <% $c.cv_lookup( 'identification_type', $appointment.identification.identification_type ) %> <a href="/help/corporate-officer-identification-type">What's this?</a>
+                        </h3>
+                        <div class="grid-row">
+                            % if $appointment.identification.legal_authority {
+                                <dl class="column-third">
+                                    <dt id="legal-authority-field-<% $~appointment.count %>">Law governed</dt>
+                                    <dd class="data" id="legal-authority-value-<% $~appointment.count %>"><% $appointment.identification.legal_authority %></dd>
+                                </dl>
+                            % }
+
+                            % if $appointment.identification.legal_form {
+                                <dl class="column-third">
+                                    <dt id="legal-form-field-<% $~appointment.count %>">Legal form</dt>
+                                    <dd class="data" id="legal-form-value-<% $~appointment.count %>"><% $appointment.identification.legal_form %></dd>
+                                </dl>
+                            % }
+
+                            % if $appointment.identification.place_registered {
+                                <dl class="column-third">
+                                    <dt id="place-registered-field-<% $~appointment.count %>">Register location</dt>
+                                    <dd class="data" id="place-registered-value-<% $~appointment.count %>"><% $appointment.identification.place_registered %></dd>
+                                </dl>
+                            % }
+                        </div>
+                        <div class="grid-row">
+                            % if $appointment.identification.registration_number {
+                                <dl class="column-third">
+                                    <dt id="registration-number-field-<% $~appointment.count %>">Registration number</dt>
+                                    <dd class="data" id="registration-number-value-<% $~appointment.count %>"><% $appointment.identification.registration_number %></dd>
+                                </dl>
+                            % }
+                        </div>
+                    % }
+                </div>
+            % }
+        </div>
+    </div>
+
+    % if $officer.total_results > $paging.entries_per_page {
+        <ul class="pager">
+            % if ($paging.previous_page) {
+                <li>
+                    <a class="page" id="previous-page" href="<% $c.url_for %>?page=<% $paging.previous_page %>">
+                        Previous
+                    </a>
+                </li>
+            % }
+            % for $paging.page_set -> $page {
+                <li>
+                    <a class="page" id="page-number-<% $~page.count %>" href="<% $c.url_for %>?page=<% $page %>">
+                        % if $paging.current_page_number == $page {
+                            <strong>
+                                <% $page %>
+                            </strong>
+                        % } else {
+                            <% $page %>
+                        %}
+                    </a>
+                </li>
+            % }
+            % if ($paging.next_page) {
+                <li>
+                    <a class="page" id="next-page" href="<% $c.url_for %>?page=<% $paging.next_page %>">
+                        Next
+                    </a>
+                </li>
+            % }
+        </ul>
+    % }
+% }

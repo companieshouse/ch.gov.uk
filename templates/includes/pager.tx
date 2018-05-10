@@ -1,0 +1,34 @@
+% if $number_of_pages > 1 {
+	
+        <ul class="pager">
+			%# The $show_either_side varible is the number of page links to show either side of the selected page number, before showing hellip. 
+            %#  Works best if odd (I think), otherwise hellip may be shown e.g. between pages 16 and 18 which should otherwise show 17.
+			
+			% my $show_lo = $current_page - $show_either_side == $show_either_side ? $current_page - $show_either_side - 1 : $current_page - $show_either_side;
+			% my $show_hi = $current_page + $show_either_side == $number_of_pages - ($show_either_side - 1) ? $current_page + $show_either_side + 1 : $current_page + $show_either_side;
+			
+			% if $current_page > 1 {
+				<li><a href="<% $url.query([page => $current_page - 1]) %>" class="previous">Previous</a></li>
+			% }
+			% for [1..$number_of_pages] -> $i {
+				% if $i > 1 && $i < $show_lo {
+					% if $i == $show_lo - 1 {
+						<li>&hellip;</li>
+					% }
+				% } elsif $i < $number_of_pages && $i > $show_hi {
+					% if $i == $show_hi + 1 {
+						<li>&hellip;</li>
+					% }
+				% } else {
+					% if $i == $current_page {
+						<li><span class="pager_button pager_selected"><% $i %></span></li>
+					% } else {
+						<li><a href="<% $url.query([page => $i, expand => nil]) %>"><% $i %></a></li>
+					% }
+				% }
+			% }
+			% if $current_page < $number_of_pages {
+				<li class="next"><a href="<% $url.query([page => $current_page + 1, expand => nil]) %>" class="next">Next</a></li>
+			% }
+        </ul>
+% }

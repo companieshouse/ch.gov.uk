@@ -1,0 +1,8 @@
+app_name: ch.gov.uk
+group: web
+#  Make sure all service with /transaction/ based routes have a weight LOWER than 1000
+# Make sure all service with /transaction/ based routes have a weight LOWER than 1000
+# This has the highest weight, as it is the absolute fallback application
+weight: 999999
+routes:
+   1: /.*

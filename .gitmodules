@@ -1,0 +1,3 @@
+[submodule "api-enumerations"]
+	path = api-enumerations
+	url = git@github.com:companieshouse/api-enumerations.git

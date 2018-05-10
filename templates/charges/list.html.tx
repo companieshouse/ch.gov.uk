@@ -1,0 +1,84 @@
+% cascade base { title=> $company.company_name ~" - Charges (free information from Companies House)", require_js => 'transactions/charges-listing' }
+
+% around content -> {
+    <p class="company-nav"><a href="/company/<% $stash.company.company_number %>"><% $stash.company.company_name %> (<% $stash.company.company_number %>)</a></p>
+    <article role="article" class="text">
+        <header>
+            <h1 class="heading-xlarge">Charges</h1>
+        </header>
+
+        % for $charges.charges -> $charge {
+            <ul class="data">
+            % if $charge.collapse_short_particulars {
+                <a name="<% $charge.mortgage_id %>"></a>
+            % }
+            % if $charge.expand_short_particulars {
+                <a name="<% $charge.mortgage_id %>"></a>
+            % }
+
+            % if $charge.charge_number.is_formattable {
+                <li>Charge code: <strong><% $charge.charge_number %></strong></li>
+            % }
+
+            % if $charge.creation_date {
+                <li>Created: <strong><% $c.isodate_as_string($charge.creation_date) %></strong></li>
+            % }
+
+            % if $charge.acquired_date {
+                <li>Acquired: <strong><% $c.isodate_as_string($charge.acquired_date) %></strong></li>
+            % }
+
+            % if $charge.registered_by {
+                <li>Persons entitled: <strong><% $charge.registered_by %></strong></li>
+            % }
+
+            % if ($charge.more_than_four_entitled == 'Y') {
+                <li>There are more than four persons entitled to this charge</li>
+            % }
+            % if $charge.charge_number.is_formattable {
+                % if $charge.short_particulars {
+                <li class="more-less">Description:
+                    <pre class="more-block"><% $charge.short_particulars %></pre>
+                </li>
+                % }
+                % } else {
+                <li class="more-less">Short particulars:
+                    <pre class="more-block"><% $charge.short_particulars %></pre>
+                </li>
+            % }
+
+            % if $charge.description {
+                <li>Description:
+                    <pre><% $charge.description %></pre>
+                </li>
+            % }
+
+
+            % if ($type == "satisfy") {
+                % if $c.company_is_llp($company_number) {
+                    <li><a href="charges/<% $charge.mortgage_id %>/satisfy-charge-llp" class="button positive regular right">Satisfy</a></li>
+                % }
+                % else {
+                    <li><a href="charges/<% $charge.mortgage_id %>/satisfy-charge" class="button positive regular right">Satisfy</a></li>
+                % }
+            % }
+
+            % if ($type == "release") {
+                % if $c.company_is_llp($company_number) {
+                    <li><a href="charges/<% $charge.mortgage_id %>/release-charge-llp" class="button positive regular right">Cease or Release</a></li>
+                % }
+                % else {
+                    <li><a href="charges/<% $charge.mortgage_id %>/release-charge" class="button positive regular right">Cease or Release</a></li>
+                % }
+            % }
+            </ul>
+        % }
+        % if ($charges.number_of_pages == 0) {
+            <h2 class="heading-xlarge">No Charges Available</h2>
+        % }
+        % else {
+            % include "/includes/pager.tx" { url => $c.url_with('charges'), current_page => $charges.page, number_of_pages => $charges.number_of_pages, show_either_side => 3}
+        % }
+    </article>
+% }
+

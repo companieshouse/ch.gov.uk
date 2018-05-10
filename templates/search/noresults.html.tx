@@ -1,0 +1,34 @@
+% cascade base {
+%	title => 'Search Companies House',
+%	require_js => 'search',
+%	classes => "search",
+%	disable_header_search => 1
+% }
+%
+% around content -> {
+        <div class="column-full-width">
+%       include 'search/form.tx'
+        <div class="grid-row">
+             <div class="column-two-thirds">
+		             <article id="no-results" class="text">
+    			       <% if $results.searchTerm { %>
+		    		         <h2 class="heading-large" id="no-results" >No results found for "<% $results.searchTerm %>"</h2>
+				             <p>
+				                 Please try searching again using different search criteria.
+				             </p>
+			           <% } %>
+             </div>
+            % if $results.kind == 'search#disqualified-officers' {
+                <div class="column-third" id="disqualification-column">
+                    <div class="quick-look font-xsmall" id="disqualification-info">
+                        <ul class="list-bullet">
+                            <li><a href="/register-of-disqualifications/A" rel="external" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %> target="_blank">Register of disqualifications<span class="visuallyhidden">(link opens in a new window)</span></a></li>
+                            <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="visuallyhidden">(link opens in a new window)</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            % }
+        </div>
+    </article>
+  </div><!-- column-end -->
+% }

@@ -1,0 +1,1 @@
+    <input type="submit" id="<% $id %>" name="<% $name %>" value="<% $label %>" class="<% if ( $class ) { %><%$class%><% } else { %>button<% } %>" <% if $disabled { %>disabled="disabled"<% } %>/>

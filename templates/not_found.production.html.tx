@@ -1,0 +1,13 @@
+% cascade base { title => 'Page not found' }
+
+% around content -> {
+<article class="text">
+    	<header>
+        	<h1 id="page-not-found-header" class="heading-xlarge">
+            		This page cannot be found
+        	</h1>
+	</header>
+        <p>Check that you have entered the correct web address or try using the search.</p>
+        <p>If you still can't find what you're looking for email <a href="mailto:enquiries@companieshouse.gov.uk">enquiries@companieshouse.gov.uk</a></p>
+</article>
+% }

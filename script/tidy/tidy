@@ -1,0 +1,162 @@
+#!/usr/bin/env perl
+use strict;
+use 5.16.0;
+
+=head1 NAME
+
+tidy - simple tidier
+
+=head1 SYNOPSIS
+
+  perl tidy
+
+=head1 DESCRIPTION
+
+Quick test interface to perltidy to output what *would* be tidied into simple HTML format.
+
+=cut
+
+use File::Find;
+use File::Path;
+use Perl::Tidy;
+
+use Readonly;
+
+Readonly my $FILE_FILTER => qr/\.pm$/;
+Readonly my $SRC_DIR     => 'lib/';
+Readonly my $OUT_DIR     => 'tidied/';
+
+createOutputDir();
+
+my %g_index = ();
+
+print "Tidying: ";
+find(
+    {
+        wanted  => \&tidyFile,
+        no_chdir => 1,
+    },
+    "$SRC_DIR"
+);
+say " done";
+
+# Create index file for jenkins
+chdir($OUT_DIR);
+open IDX, ">index.html";
+print IDX <<EOT
+<html>
+<head>
+
+</head>
+<body>
+EOT
+;
+
+my @keys = sort keys %g_index;
+foreach my $key (@keys) {
+    my $path = $key;
+    my $name = $g_index{$key};
+    $path =~ s/tidied\///;
+    print IDX qq|<a href="$path">$name</a><br>|;
+}
+
+print IDX <<EOT
+</body>
+</html>
+EOT
+;
+close IDX;
+chdir("..");
+
+# ============================================================================== 
+
+sub tidyFile
+{
+    my $file = $_;
+
+    return if ($file !~ $FILE_FILTER);
+
+    my $out = $file;
+    $out =~ s/$SRC_DIR/tidied\//;
+    
+    # Create the output path if it doesn't exist
+    (my $outDir = $out) =~ s/\/[^\/]+$//;
+    if (!-e $outDir) {
+        File::Path::make_path($outDir);
+    }
+
+    # Now run the vanilla perltidy formatter on our pre-formatted file
+    my $errorFlag = Perl::Tidy::perltidy(
+                        source      => $file,
+                        destination => "$out.html",
+                        postfilter  => \&tidy_postFilter, # TODO create real files not html when ready
+                    );
+
+    print $errorFlag?'.':'X'; # Progress
+
+    $g_index{ "$out.html" } = "$file";
+
+    return;
+}
+
+# ------------------------------------------------------------------------------  
+
+sub tidy_preFilter
+{
+    my ($content) = @_;
+
+    while( my ($log) = ($content =~ s/(trace.*\;)//s )) {
+        print "Got log line '$log'\n";
+    }
+
+    return $content;
+}
+
+# ------------------------------------------------------------------------------ 
+
+=head2 [string] tidy_postFilter( $content )
+
+Called by C<Perl::Tidy> after formatting has been completed to apply any
+final formatting on the transformed output.
+
+Wraps with HTML tags for display.
+
+	@param   content [string]    transformed output
+    @returns post filtered output
+
+=cut
+
+sub tidy_postFilter
+{
+    my ($content) = @_;
+
+    $content = <<EOT
+<html>
+<body>
+<pre>
+<code>
+$content
+</code>
+</pre>
+</body>
+</html>
+EOT
+;
+
+    return $content;
+}
+
+# ------------------------------------------------------------------------------ 
+
+sub createOutputDir
+{
+    if (-e $OUT_DIR) {
+        File::Path::remove_tree($OUT_DIR);
+    }
+    File::Path::make_path($OUT_DIR);
+}
+
+# ============================================================================== 
+
+__END__
+

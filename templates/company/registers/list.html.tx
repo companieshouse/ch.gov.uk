@@ -1,0 +1,111 @@
+% cascade base { title => $company.company_name ~" - Registers (free information from Companies House)", require_js => "toggle_links"}
+
+% around content -> {
+    % include '/includes/company/page_header.tx'
+    % include '/includes/company/tabs.tx' { active => 'register-tab' };
+    <div id="list-of-registers">
+        % if $directors {
+            % register_type_details($directors);
+            % if $secretaries || $persons_with_significant_control || $usual_residential_address || $members || $llp_members || $llp_usual_residential_address {
+                <br><br>
+                <hr class="exemption">
+            % }
+        % }
+
+        % if $secretaries {
+            % register_type_details($secretaries);
+            % if $persons_with_significant_control || $usual_residential_address || $members || $llp_members || $llp_usual_residential_address {
+                <br><br>
+                <hr class="exemption">
+            % }
+        % }
+
+        % if $persons_with_significant_control {
+            % register_type_details($persons_with_significant_control);
+            % if $usual_residential_address || $members || $llp_members || $llp_usual_residential_address {
+                <br><br>
+                <hr class="exemption">
+            % }
+        % }
+
+        % if $usual_residential_address {
+            % register_type_details($usual_residential_address);
+            % if $members || $llp_members || $llp_usual_residential_address {
+                <br><br>
+                <hr class="exemption">
+            % }
+        % }
+
+        % if $members {
+            % register_type_details($members);
+            % if $llp_members || $llp_usual_residential_address {
+                <br><br>
+                <hr class="exemption">
+            % }
+        % }
+
+        % if $llp_members {
+            % register_type_details($llp_members);
+            % if $llp_usual_residential_address {
+                <br><br>
+                <hr class="exemption">
+            % }
+        % }
+
+        % if $llp_usual_residential_address {
+            % register_type_details($llp_usual_residential_address);
+        % }
+    </div>
+% }
+
+% macro register_type_details -> $register_type_var {
+    % if $register_type_var {
+        % if $register_type_var.register_link {
+                <h2 class="heading-medium"><a href="/company/<%$company.company_number%>/registers/<%$register_type_var.register_type%>">Register of <%lcfirst($c.cv_lookup('register_types', $register_type_var.register_type))%></a></h2>
+        % } else if $register_type_var.members_pdf {
+                <h2 class="heading-medium"><a href="<% $c.url_for('filing_history_document', filing_history_id => $register_type_var.members_pdf.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="<%$register_type_var.register_type%>-created-link">Register of members<span class="visuallyhidden"> for <% l($c.md_lookup('filing_type', $register_type_var.members_pdf.filing_type)) %></span></a><% if ($register_type_var.members_pdf.pages) { %> <span class="font-xsmall">(PDF, <% ln('%d page', '%d pages', $register_type_var.members_pdf.pages) %>)</span> <% } %></h2>
+        % } else {
+                <h2 class="heading-medium">Register of <%lcfirst($c.cv_lookup('register_types',$register_type_var.register_type))%></h2>
+        % }
+    % }
+    % if $register_type_var.current_location == 'public-register' {
+        <span>Information held on the <strong><% lc($c.cv_lookup('register_locations', $register_type_var.current_location)) %></strong> since <% $c.isodate_as_string($register_type_var.last_move) %> </span>
+    % } else {
+        <span>Information <strong><% lc($c.cv_lookup('register_locations', $register_type_var.current_location)) %></strong> since <% $c.isodate_as_string($register_type_var.last_move) %> </span>
+    % }
+    <a id="register-of-<%$register_type_var.register_type%>" class="toggle-link pseudoLink" href="javascript:void(0);" onclick="toggleLink('<%$register_type_var.register_type%>');">
+         <span id="view-<%$register_type_var.register_type%>">View history</span>
+         <span class="visuallyhidden"> of <%$register_type_var.register_type%> </span>
+         <span id="hide-<%$register_type_var.register_type%>" class="js-hidden">Hide history</span>
+         <span class="toggle-arrows" id="<%$register_type_var.register_type%>-hidden">&#9658;</span> <span class="js-hidden" id="<%$register_type_var.register_type%>-show">&#9660;</span>
+    </a>
+    % if $register_type_var.register_type == 'members' && $register_type_var.current_location == 'public-register' && !$register_type_var.members_pdf  {
+        <p class="form-hint">Check the company's <a href="/company/<%$company.company_number%>/filing-history">filing history</a> for updates to this register</p>
+    % }
+    <div id="<%$register_type_var.register_type%>" class="toggle-hidden js-hidden">
+        <table class="full-width-table" id="<%$register_type_var.register_type%>-table">
+            <tbody>
+                <tr>
+                    <th class="nowrap thirty-percent">Dates</th>
+                    <th class="nowrap fifty-percent">Location</th>
+                    <th class="nowrap twenty-percent">View / Download</th>
+                </tr>
+                % for $register_type_var.items -> $item {
+                    <tr>
+                        %if $~item.is_first {
+                            <td class="nowrap"><% $c.isodate_as_short_string($item.moved_on) %></td>
+                        % } else {
+                            <td class="nowrap"><% $c.isodate_as_short_string($item.moved_on) %> - <% $c.isodate_as_short_string($~item.peek_prev.moved_on) %></td>
+                        % }
+                        <td><% $c.cv_lookup('register_locations', $item.register_moved_to) %></td>
+                        % if defined $item.resource_url {
+                            <td><a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="<%$register_type_var.register_type%>-created-link">View PDF<span class="visuallyhidden"> for Register of <%$register_type_var.register_type%> as of <% $c.isodate_as_string($register_type_var.last_move) %> Link opens in new window </span></a><% if ($item.pages) { %> (<% ln('%d page', '%d pages', $item.pages) %>)<% } %></td>
+                        % } else {
+                            <td><span id="no-image-link">-</span></td>
+                        % }
+                    </tr>
+                % }
+            </tbody>
+        </table>
+    </div>
+% }

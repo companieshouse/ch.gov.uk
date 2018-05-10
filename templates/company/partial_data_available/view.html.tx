@@ -1,0 +1,61 @@
+% cascade base { title=> $company.company_name ~" - Overview (free company information from Companies House)", classes=>"profile" }
+
+% around content -> {
+    % include '/includes/company/page_header.tx'
+
+    % include '/includes/company/tabs.tx' { active => 'company-overview-tab' };
+
+    % my $company_status = $c.cv_lookup( 'company_status', $company.company_status);
+    % if $company_status == $c.cv_lookup( 'company_status', 'converted-closed') {
+        <div class="grid-row">
+            <dl class="column-two-thirds">
+                <dt><% l('Company status')%></dt>
+                % my $company_status_detail = $c.cv_lookup( 'company_status_detail', $company.company_status_detail);
+                <dd class="text data" id="company-status">
+                    <% l('{status}', { status => $company_status})%>
+                % if $company_status_detail {
+                    <span class="normal" id="company-status-detail">&mdash; <% l(' {status_detail}', { status_detail => $company_status_detail })%></span>
+                % }
+                </dd>
+            </dl>
+        </div>
+    % }
+
+    <div class="grid-row">
+        <dl class="column-two-thirds">
+            <dt><% l('Company type')%></dt>
+            <dd class="text data" id="company-type">
+                <% l($c.cv_lookup( 'company_summary', $company.type)) %>
+            </dd>
+        </dl>
+    </div>
+
+    <div class="grid-row">
+        <dl class="column-two-thirds">
+            <dd class="text data">
+                % if $company.partial_data_available {
+                    <p>
+                        <br>
+                        % if $company.partial_data_available == "full-data-available-from-financial-conduct-authority-mutuals-public-register" {
+                            <br>
+                            <span class="normal">Refer to the Financial Conduct Authority
+                            <a href="https://mutuals.fsa.gov.uk" target="_blank" rel="external">Mutuals Public Register<span class="visuallyhidden"> Links opens in a new tab/window</a>
+                            for further information about this company</span>
+                        % } else if $company.partial_data_available == "full-data-available-from-department-of-the-economy" {
+                            <br>
+                            <span class="normal">Refer to the
+                            <a href="https://www.economy-ni.gov.uk/services/credit-union-industrial-and-provident-society-search" target="_blank" rel="external">Department for the Economy<span class="visuallyhidden"> Links opens in a new tab/window</a>
+                            for further information about this company</span>
+                        % } else if $company.partial_data_available == "full-data-available-from-the-company" {
+                            <br>
+                            <span class="normal">Contact the company directly for further information</span>
+                        % } else if $company.partial_data_available == "full-data-available-from-financial-conduct-authority" {
+                            <br>
+                            <span class="normal">Refer to the Financial Conduct Authority for further information about this company</span>
+                        % }
+                    </p>
+                % }
+            </dd>
+        </dl>
+    </div>
+% }

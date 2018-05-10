@@ -1,0 +1,20 @@
+% cascade base { title => $title, form_page => 1, }
+% around content -> {
+
+    % include "company/transactions/filing_for.html.tx"
+
+	<header class="text">
+		<h1 class="heading-xlarge"><% $title %></h1>
+		% block additional_header -> {}
+	</header>
+
+	% $form.start( action => $c.url_for, name => $node.node );
+
+	% block form_content -> {}
+
+	% block form_submit -> {
+	%   include "includes/forms/transaction_submit_buttons.html.tx";
+	% }
+
+	% $form.end;
+% }

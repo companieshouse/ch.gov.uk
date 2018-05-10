@@ -1,0 +1,30 @@
+% cascade base { title => 'Follow ' ~ $company.company_name , form_page => 1, classes => "transaction service" }
+% around content -> {
+	<div role="article" class="text follow-confirmation">
+        <h1 class="heading-xlarge" id="follow-company-title"><% l('Follow a company') %></h1>
+        <div class="text" id="follow-company-confirmation-prompt">
+            <h2 class="heading-large"><% $company.company_name %> (<% $company.company_number %>)</h2>
+            <p>
+                <% l("The email address we'll use to send notifications of the companies activity is") %>
+                <span style="font-weight:700;" class="follow-email"><% $c.acting_as_email %></span>
+            </p>
+            <p>
+                <% l('Are you sure you want to follow this company?') %> <span class="form-hint"><% l('You can unfollow this company at any time.') %></span>
+            </p>
+            <div class="form-group">
+                <a href="<% $c.url_for('company_follow') %>" class="button" id="follow-company-confirmed""
+                    % if $c.config.piwik.embed {
+                        onclick="javascript:_paq.push(['trackEvent', 'FollowCompanyConfirmed']);"
+                    % }
+                >Yes</a>
+                <p class="action-link">
+                    <a href="<% $c.url_for('company') %>" id="follow-company-cancelled"
+                        % if $c.config.piwik.embed {
+                            onclick="javascript:_paq.push(['trackEvent', 'FollowCompanyCancelled']);"
+                        % }
+                    >Cancel</a>
+                </p>
+            </div>        
+        </div>
+    </div>
+% }

@@ -1,0 +1,53 @@
+% cascade base { title => 'Choose download type' }
+% around content -> {
+	<div role="article" class="text">
+
+            <p class="example-back-link text">
+                <a href="/company/<% $company.company_number %>"><% $company.company_name %>
+                    (<% $company.company_number %>)
+                </a>
+            </p>
+            <h1 class="heading-xlarge">Download</h1>
+            <p><strong><% $item.type %></strong> filed on <strong><% $c.isodate_as_string($item.date) %></strong></p>
+            <p><% include "company/filing_history/transaction_description.html.tx" %></p>
+            % if $metadata.resources {
+                <ul>
+                    % if ($metadata.resources['application/pdf']) {
+                        <li id="pdf">
+                            <a href="<% $c.url_for('document_download', id => $item._document_id, document_type => 'pdf') %>">PDF</a>
+                            <% if ($metadata.pages) { ' (' ~ ln('%d page', '%d pages', $metadata.pages) ~ ')' } %>
+                        </li>
+                    % }
+                    % if ($metadata.resources['text/csv']) {
+                        <li id="csv">
+                            <a href="<% $c.url_for('document_download', id => $item._document_id, document_type => 'csv') %>">CSV</a>
+                        </li>
+                    % }
+                    % if ($metadata.resources['application/ixbrl']) {
+                        <li id="ixbrl">
+                            <a href="<% $c.url_for('document_download', id => $item._document_id, document_type => 'ixbrl') %>">IXBRL</a>
+                        </li>
+                    % }
+                    % if ($metadata.resources['application/xml']) {
+                        <li id="xml">
+                            <a href="<% $c.url_for('document_download', id => $item._document_id, document_type => 'xml') %>">XML</a>
+                        </li>
+                    % }
+                    % if ($metadata.resources['application/json']) {
+                        <li id="json">
+                            <a href="<% $c.url_for('document_download', id => $item._document_id, document_type => 'json') %>">JSON</a>
+                        </li>
+                    % }
+                    % if ($metadata.resources['application/xhtml+xml']) {
+                        <li id="xhtml">
+                            <a href="<% $c.url_for('document_download', id => $item._document_id, document_type => 'xhtml') %>">XHTML</a>
+                        </li>
+                    % }
+                </ul>
+            %}
+
+    </div>
+
+
+% }
+

@@ -1,0 +1,43 @@
+% cascade base { title => 'Confirmation of submission for ' ~ $transaction.transaction_number , form_page=>1, classes=>"transaction service" }
+% around content -> {
+
+    <div class="text">
+
+        <div class="govuk-box-highlight">
+            <p>
+                <strong><% $company.company_name %></strong><br>
+                Company number <% $company.company_number %>
+            </p>
+            <h1 class="bold-large">Change of registered office address received</h1>
+            <br>
+            <p>on <span class="bold-medium"><% $c.isodate_as_string($transaction.closed_at) %></span> at <strong class="bold-medium"><% $c.isodate_as_string($transaction.closed_at, '%l:%M%P') %></strong></p>
+            <p>
+                Reference number<br>
+                <strong class="bold-medium"><% $transaction.id %></strong>
+            </p>
+        </div>
+
+        <p>We have sent you a confirmation email at <strong><% $c.acting_as_email %></strong> with your reference number.</p>
+        <p>If you've not received the confirmation, check your spam or junk mail folder. You should <a href="/help/contact-us">contact us</a> if you haven't had an email within 30 minutes.</p>
+        <p>We'll send a second email to confirm that your filing has been processed (normally within 2 working days).</p>
+        <p>You can go to '<a href="/user/transactions">Your filings</a>' to check the status or get a copy of what you have filed.</p>
+
+        <p><a class="js-only" href="javascript:window.print()">Print this page for your records</a></p>
+
+        <div class="form-group">
+            <a class="button" href="/company/<% $c.stash('company_number') %>" role="button">Return to company overview</a>
+        </div>
+        
+        <p><span>This is a new service. Help us improve it by <a href="https://www.research.net/r/chbeta" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">completing our quick survey<span class="visuallyhidden">(link opens a new window)</span></a>.</span></p>
+
+    </div>
+
+    % if $c.config.piwik.embed {
+    <script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(['setCustomVariable', 3,'FormType','<% $session.form_type_hack %>','visit']);
+    _paq.push(['trackGoal', 1]);
+    </script>
+    %}
+
+% }

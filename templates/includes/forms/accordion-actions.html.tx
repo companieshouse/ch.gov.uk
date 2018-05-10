@@ -1,0 +1,8 @@
+%   if ($section && $section == $name) {
+<div class="accordion-actions">
+	<p class="action group">
+%   	$form.submit_button( label => ($form.section_is_complete($section) ? 'Update' : 'Continue'), name => 'continue', id => 'continue' );
+%         $form.submit_button( label => ($form.section_is_complete($section) ? 'Cancel' : 'Complete later'), name => 'cancel_section', id => 'cancel', class => 'button-secondary' );
+	</p>
+</div>
+%   }

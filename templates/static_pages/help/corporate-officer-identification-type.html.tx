@@ -1,0 +1,20 @@
+% cascade base { title => 'EEA and Non-EEA companies - Companies House service', searchpage => 1, disable_header_search => 1 }
+% around content -> {
+    <article class="text">
+        <h1 class="heading-xlarge">
+            EEA and Non-EEA companies
+        </h1>
+
+        <h2 class="heading-medium">
+            EEA (European Economic Area) company
+        </h2>
+
+        <p>An EEA company is one to which The First Company Law Directive applies. This company is required to provide details of the register where the company file is kept, including the relevant state. An EEA company is not determined by its geographical location within an EEA country.</p>
+
+        <h2 class="heading-medium">
+            Non-EEA (Non European Economic Area) company
+        </h2>
+
+        <p>A non-EEA company is one to which the First Company Law Directive does not apply. This company is a corporate body or firm that is a legal person under its governing law, e.g. a Limited Liability Partnership. A non-EEA company is not determined by its geographical location.</p>
+    </article>
+% }

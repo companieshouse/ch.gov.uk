@@ -1,0 +1,438 @@
+
+
+% cascade base { title=> $company.company_name ~" - Overview (free company information from Companies House)", classes=>"profile" }
+
+% around content -> {
+
+    % include '/includes/company/page_header.tx'
+
+    % include '/includes/company/tabs.tx' { active => 'company-overview-tab' };
+    <dl>
+    % if $company.company_number == $c.authorised_company and $company.registered_office_is_in_dispute {
+              <dt> <span id="roa-dispute" ><% l('Registered office address replaced') %></span> <a id="dispute-help-link"  href="/help/replaced-address-help.html"><% l("what's this?") %></a></dt>
+              <dd class="text data">
+              % $c.address_as_string( $company.registered_office_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
+              </dd>
+    % } else if $company.company_number == $c.authorised_company and $company.undeliverable_registered_office_address {
+                <dt id="roa-undeliverable" ><% l('Undeliverable registered office address') %> <a href="/help/registered-office-address-undeliverable.html"><% l("what's this") %>?</a></dt>
+    % } else if $company.type != "charitable-incorporated-organisation" && $company.type != "scottish-charitable-incorporated-organisation" {
+            % given $company.type {
+            %   when "uk-establishment" {
+                  <dt><% l('UK establishment office address') %></dt>
+            %   }
+            %   when "oversea-company" {
+                  <dt><% l('Overseas company address') %></dt>
+            %   }
+            %   when "scottish-partnership" {
+                  <dt><% l('Service address') %></dt>
+            %   }
+            %   default {
+                  <dt><% l('Registered office address') %></dt>
+            %   }
+            % }
+            <dd class="text data">
+            % if $company.type == "oversea-company" and $company.registered_office_address.size() == 0 {
+                <% l('Refer to parent registry') %>
+            % }
+            % else {
+                % $c.address_as_string( $company.registered_office_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
+                % if $company.company_number == $c.authorised_company && !$c.config.disable_filing {
+                    <br />
+                    <a href="<% $c.url_for %><%
+                       if $c.company_is_llp($company.company_number) {
+                          "/change-registered-office-address-llp"
+                       } else {
+                          "/change-registered-office-address"
+                       } %>" id="change-registered-office-address" class="normal"><% l('Change address') %>
+                    </a>
+                % }
+            % }
+            </dd>
+    % }
+    </dl>
+
+  %  if $company.type == "uk-establishment" {
+    <div class="grid-row">
+        <dl class="column-quarter">
+            <dt><% l('Status')%></dt>
+          % my $company_status = $c.cv_lookup( 'company_status', $company.company_status);
+              <dd class="text data" id="company-status">
+                  <% l('{status}', { status => $company_status})%>
+              </dd>
+        </dl>
+
+        <dl class="column-quarter">
+            <dt><% l('Opened on')%></dt>
+            % my $creation_date = $c.cv_lookup( 'date_of_creation', $company.date_of_creation);
+            <dt id="creation-date"><% l($creation_date)%></dt>
+            <dd class="data" id="creation-date"><% $c.isodate_as_string($company.date_of_creation) %></dd>
+       </dl>
+
+        % if $company.branch_company_details.business_activity {
+            <dl class="column-half">
+                <dt><% l('Type of business')%></dt>
+                    % my $business_activity = $c.cv_lookup('business_activity', $company.branch_company_details.business_activity);
+                    <dd class="text data" id="type-of-business">
+                    <% l('{business_activity}', { business_activity => $company.branch_company_details.business_activity})%>
+                    </dd>
+           </dl>
+        % }
+    </div>
+    <hr>
+
+    <div class="grid-row">
+        <dl class="column-two-thirds">
+            <br>
+            <dt><% l('This is a UK establishment of')%></dt>
+            <a href="<%'/company/' ~ $company.branch_company_details.parent_company_number  %>"  id="parent_number_link"><%($company.branch_company_details.parent_company_name)%></a>
+            <br>
+            <br>
+            <dt><% l('Company number')%></dt>
+            <dd class="text data" id="parent_company_number">
+                % $company.branch_company_details.parent_company_number
+            </dd>
+        </dl>
+    </div>
+
+  % } else {
+
+    <div class="grid-row">
+        % if $company.company_status {
+            <dl class="column-two-thirds">
+                <dt><% l('Company status')%></dt>
+                % my $company_status = $c.cv_lookup( 'company_status', $company.company_status);
+                % my $company_status_detail = $c.cv_lookup( 'company_status_detail', $company.company_status_detail);
+                <dd class="text data" id="company-status">
+                    <% l('{status}', { status => $company_status})%>
+                % if $company_status_detail {
+                    <span class="normal" id="company-status-detail">&mdash; <% l(' {status_detail}', { status_detail => $company_status_detail })%></span>
+                % }
+                </dd>
+            </dl>
+        % }
+
+        % if $company.date_of_cessation {
+            % my $cessation_label = $c.cv_lookup( 'cessation_label_for_status', $company.company_status );
+            % if $cessation_label {
+                <dl class="column-third">
+                    <dt id="cessation-date-label"><% l($cessation_label)%></dt>
+                    <dd class="data" id="cessation-date"><% $c.isodate_as_string($company.date_of_cessation) %></dd>
+                </dl>
+            % }
+        % }
+    </div>
+
+    <div class="grid-row">
+        <dl class="column-two-thirds">
+            <dt><% l('Company type')%></dt>
+            <dd class="text data" id="company-type">
+                <% l($c.cv_lookup( 'company_summary', $company.type)) %>
+                 % if $c.config.pflp_feature_enabled {
+                   % if $company.subtype {
+                       % my $company_subtype = $c.cv_lookup( 'company_subtype', $company.subtype);
+                       <br><span class="normal" id="company_subtype"><% l($company_subtype) %></span>
+                   % }
+                 % }
+                 % else {
+                     % if $company.is_community_interest_company {
+                        <span class="normal" id="cic-indicator">&mdash; <% l('Community Interest Company (CIC)') %></span>
+                     % }
+                   % }
+                % }
+            </dd>
+        </dl>
+
+        <dl class="column-third">
+            % if $company.date_of_creation {
+                <dt id="company-birth-type"><% l($c.cv_lookup( 'company_birth_type', $company.type)) %></dt>
+                <dd class="data" id="company-creation-date"><% $c.isodate_as_string($company.date_of_creation) %></dd>
+            % }
+        </dl>
+    </div>
+    % if $company.foreign_company_details.is_a_credit_financial_institution {
+        <p>This company is a credit/financial institution</p>
+    % }
+    <div class="grid-row">
+       % if $company.accounts.last_accounts.made_up_to || $company.accounts.next_made_up_to || $company.accounts.next_due || $company.accounts.overdue {
+         <div class="column-half">
+           % my $overseas_type1   = $company.foreign_company_details.accounting_requirement.terms_of_account_publication == "accounts-publication-date-supplied-by-company";
+           % my $overseas_type2   = $company.foreign_company_details.accounting_requirement.terms_of_account_publication == "accounting-publication-date-does-not-need-to-be-supplied-by-company";
+           % my $overseas_type3_4 = $company.foreign_company_details.accounting_requirement.terms_of_account_publication == "accounting-reference-date-allocated-by-companies-house";
+
+           % # Don't display the title if overseas_type2 and no last accounts made up to
+           % if $overseas_type2 {
+             % if $company.accounts.last_accounts.made_up_to {
+                   <h2 class="heading-medium"><strong>Accounts</strong></h2>
+                   <p>
+                       <% l('Last accounts made up to') %>
+                       <strong><% $c.isodate_as_string($company.accounts.last_accounts.made_up_to) %></strong>
+                   </p>
+             % }
+           % }
+           % else {
+                % if $company.accounts.overdue == 1 and ($company.type != "oversea-company" and $company.type != "uk-establishment"){
+                    <div class="help-notice overdue"><h2 class="heading-medium">Accounts overdue</h2></div>
+                % } else {
+                    <h2 class="heading-medium"><strong>Accounts</strong></h2>
+                % }
+
+                % if $overseas_type1 && $company.foreign_company_details.accounts {
+                %   #  Only display this data for Required to Publish (account type 1) company
+                %   my $accounts = $company.foreign_company_details.accounts;
+                    <p>Required to publish accounts from
+                    <strong><% $c.day_month_as_string($accounts.account_period_from.day, $accounts.account_period_from.month) %></strong> to
+                    <strong><% $c.day_month_as_string($accounts.account_period_to.day, $accounts.account_period_to.month) %></strong> within
+                    <strong><% $company.foreign_company_details.accounts.must_file_within.months %> months</strong> under parent law</p>
+                % }
+                % else if $company.accounts.next_made_up_to {
+                    <p>
+                        % if defined $company.accounts.last_accounts.made_up_to || $overseas_type3_4 {
+                        %    l('Next accounts made up to')
+                        % } else {
+                            % l('First accounts made up to')
+                        % }
+                        % if $company.accounts.next_made_up_to {
+                            <strong><% $c.isodate_as_string($company.accounts.next_made_up_to) %></strong>
+                        % }
+                        % if $company.accounts.next_due {
+                            <br>
+                            due by
+                            <strong><% $c.isodate_as_string($company.accounts.next_due) %></strong>
+                        % }
+                    </p>
+
+                    % if $company.company_number == $c.authorised_company && !$c.config.disable_filing {
+                        % if $file_accounts {
+                            <p>
+                                  <a href="<% $c.external_url_for('file_accounts', company_number => $company.company_number)%>" id="file-accounts" data-event-id="file-accounts" class="button piwik-event"><% l('File accounts') %>
+                                </a>
+                            </p>
+                        % }
+                    % }
+
+                % }
+                % if $company.latest_made_up_date {
+                    <p>Last accounts made up to <strong><% $c.isodate_as_string($company.latest_made_up_date) %></strong></p>
+                % }
+                % if $company.accounts.last_accounts.made_up_to {
+                      <p>
+                      <% l('Last accounts made up to') %>
+                      <strong><% $c.isodate_as_string($company.accounts.last_accounts.made_up_to) %></strong>
+                      </p>
+                % }
+                <!-- // to be reinstated
+                % if !$c.company_is_llp($company.company_number) {
+                  % if $company.company_number == $c.authorised_company {
+                      <p><a href=""><% l('File company accounts') %></a></p>
+                  % }
+                % }
+                % if $company.company_number == $c.authorised_company {
+                      <p>
+                      <a href="<% $c.url_for %>/change-account-reference-date" id="change-account-ref-date-link">
+                          Change accounting reference date</a>
+                      </p>
+                % }
+                -->
+           % }
+         </div>
+      % }
+
+      % if $company.confirmation_statement.size() {
+         <div class="column-half">
+         %  if $company.confirmation_statement.overdue == 1 {
+                <div class="help-notice overdue"><h2 class="heading-medium">Confirmation statement overdue</h2></div>
+         %  } else {
+                <h2 class="heading-medium"><strong>Confirmation statement</strong></h2>
+         %  }
+         % if $company.confirmation_statement.next_made_up_to {
+              <p>
+         %    if ($company.confirmation_statement.last_made_up_to) {
+         %       l('Next statement date')
+         %    } else {
+         %       l('First statement date')
+         %    }
+              <strong><% $c.isodate_as_string($company.confirmation_statement.next_made_up_to) %></strong> <br>
+              due by <strong><% $c.isodate_as_string($company.confirmation_statement.next_due) %></strong>
+              </p>
+         %  }
+         %  if $company.confirmation_statement.last_made_up_to {
+                <p>
+                <% l('Last statement dated') %> <strong><% $c.isodate_as_string($company.confirmation_statement.last_made_up_to) %></strong>
+                </p>
+         %  }
+         </div>
+      % }
+
+      % if $company.annual_return.size() && ! $company.confirmation_statement.last_made_up_to {
+            <div class="column-half">
+            % if $company.annual_return.overdue == 1 {
+                <div class="help-notice overdue"><h2 class="heading-medium">Annual return overdue</h2></div>
+            % } else {
+                <h2 class="heading-medium"><strong>Annual return</strong></h2>
+            % }
+            % if $company.annual_return.next_made_up_to {
+               <p>
+               % if ($company.annual_return.last_made_up_to) {
+               %    l('Next annual return made up to')
+               % } else {
+               %    l('First annual return made up to')
+               % }
+               <strong><% $c.isodate_as_string($company.annual_return.next_made_up_to ) %></strong>
+               % if ($company.annual_return.next_due){
+                   <br />due by <strong><% $c.isodate_as_string($company.annual_return.next_due) %></strong>
+               % }
+           %  }
+           %  if $company.annual_return.last_made_up_to {
+                  <p>
+                  <% l('Last annual return made up to') %>
+                  <strong><% $c.isodate_as_string($company.annual_return.last_made_up_to) %></strong>
+                  </p>
+           %  }
+           </div>
+        % }
+    </div>
+
+    % if $company.show_officer_summary {
+        <h2 class="heading-medium" id="header">
+            Officers
+        </h2>
+
+        % if ($company.officer_summary.active_count + $company.officer_summary.resigned_count == 0) {
+            <p id="no-officers-found">
+                No officers found
+            </p>
+        % } else {
+            <p id="appointment-count">
+                <% $company.officer_summary.active_count %>
+                <%
+                    ln(
+                        'current officer /',
+                        'current officers /',
+                        $company.officer_summary.active_count
+                    )
+                %>
+                <% $company.officer_summary.resigned_count %>
+                <%
+                    ln(
+                        'resignation',
+                        'resignations',
+                        $company.officer_summary.resigned_count
+                    )
+                %>
+            </p>
+            % include 'includes/officer_listing.tx' { officers => $company.officer_summary.officers, link => "officers/" };
+
+            <ul class="navigation-list">
+                <li><a id="view-officers" href="<% $c.url_for %>/officers" id="">View all officer information</a></li>
+            </ul>
+        % }
+    % }
+
+    % if $c.company_has_no_sic($company.company_number) == 0 {
+        <h2 id="sic-title" class="heading-medium">Nature of business (SIC)</h2>
+    %   if $company.sic_codes.size() {
+          <ul>
+    %       for $company.sic_codes -> $sic {
+              <li>
+    %            my $sic_code_desc = $c.cv_lookup( 'sic_descriptions', $sic);
+                 <span id="sic<% $~sic %>">
+                    <% $sic %> - <% $sic_code_desc %>
+                 </span>
+              </li>
+    %       }
+          </ul>
+    %   } else {
+            <p id="no-sic" class="text">To be provided on next annual return.</p>
+    %   }
+    % }
+    % if $company.show_previous_names {
+    %    if ($company.previous_company_names) {
+            <h2 class="heading-medium" id="header">  Previous company names </h2>
+            <table id="previousNameTable" class="full-width-table">
+            <caption class="visuallyhidden">Previous company names</caption>
+            <tr>
+                <th><% l('Name') %></th>
+                <th><% l('Period') %></th>
+            </tr>
+    %       for $company.previous_company_names -> $previous_name {
+                <tr>
+                    <td id="previous-name-<% $~previous_name.count %>">
+                        <% $previous_name.name %>
+                    </td>
+                    <td id="previous-date-<% $~previous_name.count %>">
+                        <% $c.isodate_as_short_string( $previous_name.effective_from ) %> -
+                        <% $c.isodate_as_short_string( $previous_name.ceased_on ) %>
+                    </td>
+                </tr>
+    %       }
+            </table>
+    %    }
+    % }
+    % if $company.foreign_company_details {
+        <h2 class="heading-medium">Company details in the country of incorporation</h2>
+       % my $foreign_details = $company.foreign_company_details;
+        <div class="grid-row">
+        % if $foreign_details.originating_registry.country {
+            <dl class="column-third">
+                <dt>Incorporated in</dt>
+                <dd class="text data" id="incorporated_in"><% $foreign_details.originating_registry.country %></dd>
+            </dl>
+        % }
+        % if $foreign_details.registration_number {
+          <dl class="column-third">
+            <dt>Registration number</dt>
+            <dd class="text data" id="registration_number"><% $company.foreign_company_details.registration_number %></dd>
+          </dl>
+        % }
+        % if $foreign_details.legal_form {
+          <dl class="column-third">
+            <dt id="">Legal form </dt>
+            <dd class="data" id="legal_form"><% $company.foreign_company_details.legal_form %></dd>
+          </dl>
+        % }
+        </div>
+
+        % if $foreign_details.originating_registry.name {
+          <div class="grid-row">
+            <dl class="column-two-thirds">
+               <dt>Parent registry</dt>
+               <dd class="text data" id="parent_registry"><% $company.foreign_company_details.originating_registry.name %></dd>
+             </dl>
+           </div>
+        % }
+
+        % if $foreign_details.governed_by {
+          <div class="grid-row">
+            <dl class="column-two-thirds">
+              <dt>Governing law</dt>
+              <dd class="text data" id="governing_law"><% $company.foreign_company_details.governed_by %></dd>
+            </dl>
+          </div>
+        % }
+
+        % if $foreign_details.business_activity{
+          <div class="grid-row">
+            <dl class="column-two-thirds">
+              <dt>Objects of the company</dt>
+              <dd class="text data" id="business_activity"><% ucfirst (lc($company.foreign_company_details.business_activity)) %></dd>
+            </dl>
+          </div>
+        % }
+    % }
+
+    % if $company.type == "charitable-incorporated-organisation" || $company.type == "scottish-charitable-incorporated-organisation" {
+      <div class="grid-row">
+        <dl class="column-two-thirds">
+          <dt>Charity number</dt>
+          <dd class="text data" id="charity_number"><% $company.external_registration_number %></dd>
+        </dl>
+      </div>
+      % if $company.type == "charitable-incorporated-organisation"  {
+          <p id="cio-further-info" class="text">Refer to the Charity Commission <a href="http://apps.charitycommission.gov.uk/showcharity/registerofcharities/RegisterHomePage.aspx">Register of Charities</a> for further information about this charity</p>
+      % } else if $company.type == "scottish-charitable-incorporated-organisation"  {
+          <p id="cio-further-info" class="text">Refer to the Scottish Charity Regulator <a href="https://www.oscr.org.uk/">Scottish Charity Register</a> for further information about this charity</p>
+      % }
+    % }
+
+  %}
+% }

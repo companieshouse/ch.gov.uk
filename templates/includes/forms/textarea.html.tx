@@ -1,0 +1,17 @@
+<div class="<% if $has_errors { %>validation <%} %> group">
+    % if $has_errors {
+    %   for $errors->$error {
+          <span class="error-message" id="<% $error.id %>"><% $error.text %></span>
+    %   }
+    % }
+    <p><% $label %></p>
+    % if $note {
+        <p class="hint"><% $note %></p>
+    % }
+    <textarea name="<% $name %>" id="<% $id %>"
+              <% if $cols        { %>cols="<% $cols %>"<% } %>
+              <% if $rows        { %>rows="<% $rows %>"<% } %>
+              <% if $maxlength   { %>maxlength="<% $maxlength %>"<% } %>
+              <% if $placeholder { %>placeholder="<% $placeholder %>"<% } %>
+              class="" ><% $value %></textarea>
+</div>

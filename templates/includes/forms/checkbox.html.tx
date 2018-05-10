@@ -1,0 +1,11 @@
+<p class="<% if $has_errors { %>validation <%} %>option group">
+    % if $has_errors {
+    %   for $errors->$error {
+          <span class="error-message" id="<% $error.id %>"><% $error.text %></span>
+    %   }
+    % }
+    <label id="<% $id %>-label" for="<% $id %>">
+    <input type="checkbox" id="<% $id %>" name="<% $name %>" value="1" <% if $value || $c.param($name) { %>checked="checked"<% } %> />
+	<% $label %>
+	</label>
+</p>

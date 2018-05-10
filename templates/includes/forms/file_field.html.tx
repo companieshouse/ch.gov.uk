@@ -1,0 +1,18 @@
+<p class="<% if $has_errors { %>validation <%} %> group">
+    % if $has_errors {
+    %   for $errors->$error {
+          <span class="error-message" id="<% $error.id %>"><% $error.text %></span>
+    %   }
+    % }
+    <label><% $label %></label>
+    % if $value{
+        <% $value.filename %>
+        (<% $filesize ~ ' ' ~$units%>)
+        <input type=hidden name="<% $name %>" value="<% $value.index %>" />    
+        <input type="submit" name="file_delete[<% $name %>]" value="Remove" class="button-secondary" />
+    % } else {
+        <input type="file" name="<% $name %>" />
+        <input type="submit" name="file_upload[<% $name %>]" value="Upload" class="button-secondary" />
+    % }
+    <input type="hidden" name="file_upload_hint" value="1" />
+</p>

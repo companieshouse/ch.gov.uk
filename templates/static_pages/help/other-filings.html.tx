@@ -1,0 +1,34 @@
+% cascade base { title => 'Other document filings - Companies House service', disable_header_search => 1, user_bar => false }
+% around content -> {
+
+<ul>
+    <li><a href="/" class="link-back">Back</a></li>
+</ul>
+
+<div class="text">
+    <header>
+        <h1 class="heading-xlarge">Other document filings</h1>
+    </header>
+
+    <p>During the beta service development you should continue to use <a href="https://www.gov.uk/government/organisations/companies-house/about/about-our-services#webfiling">WebFiling<span class="visuallyhidden"> Link opens in new tab/window</span></a> to file your company information online.</p>
+
+    <p>This includes:</p>
+
+    <ul class="list list-bullet">
+        <li>confirmation statements</li>
+        <li>company accounts</li>
+        <li>directors and company secretaries - for example new appointments, resignations, or changes to personal details</li>
+        <li>changing company name</li>
+        <li>changing accounting reference date</li>
+    </ul>
+
+    <h2 class="heading-medium">If you haven't used the WebFiling service before</h2>
+
+    <p>You'll need to <a href="https://ewf.companieshouse.gov.uk//runpage?page=webfilingRegister&signUpPage.lang=en">register a password and email address<span class="visuallyhidden"> Link opens in new tab/window</span></a>, then request an authentication code for your company - which is sent to your company's registered office by post, so allow plenty of time for delivery.</p>
+
+    <div class="form-group">
+    <a href="https://ewf.companieshouse.gov.uk/" class="button">Go to WebFiling</a>
+    </div><!--end form-group-->
+</div><!--end text-->
+
+% }

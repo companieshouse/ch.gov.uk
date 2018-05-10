@@ -1,0 +1,4 @@
+<% for $c.config.languages.kv() -> $pair { %>
+	<% next if $pair.key == $lang %>
+	<li><a href="<% $c.url_for_lang($pair.key) %>"><% l($pair.value.name) %></a></li>
+<% } %>

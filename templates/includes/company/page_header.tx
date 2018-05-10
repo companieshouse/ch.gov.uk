@@ -1,0 +1,51 @@
+<div class="company-header">
+        <p id="company-name" class="heading-xlarge"><% $company.company_name %></p>
+        <p id="company-number">
+        % if $company.type == 'uk-establishment' {
+        <% l('UK establishment number') %>
+        % }
+        % else {
+            <% l('Company number') %>
+          % }
+            <strong><% $company.company_number %></strong>
+        </p>
+
+        <div class="actions">
+           % if !$c.config.disable_follow {
+               % if ($c.config.private_beta_follow && $c.is_signed_in) || !$c.config.private_beta_follow {
+                   % if $following_company {
+                      <a href="<% $c.external_url_for('unfollow_company', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs]) %> " class="button" id="unfollow-this-company"
+                          % if $c.config.piwik.embed {
+                              onclick="javascript:_paq.push(['trackEvent', 'UnfollowCompany']);"
+                          % }
+                      ><% l('Unfollow this company') %>
+                      </a>
+                    % } else {
+                      <a href="<% $c.external_url_for('follow_company', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs ]) %>" class="button" id="follow-this-company"
+                          % if $c.config.piwik.embed {
+                              onclick="javascript:_paq.push(['trackEvent', 'FollowCompany']);"
+                          % }
+                      ><% l('Follow this company') %>
+                      </a>
+                    % }
+                % }
+            % }
+            % if $company.company_number == $c.authorised_company {
+                  <a href="<% $c.sign_url($c.external_url_for('make_authcode_change', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs])) %>" id="manage_auth_code" class="font-xsmall">Manage company authentication</a>
+            % }
+            % if !$c.config.disable_filing {
+                % if $company.can_file {
+                    % if !$c.has_admin_permissions {
+                        % if $company.company_number != $c.authorised_company {
+                            <a href="<% $c.url_for('company_authorise').query(['return_to' => $c.url_for]) %>" id="file-for-this-company" class="button"
+                                % if $c.config.piwik.embed {
+                                    onclick="javascript:_paq.push(['trackEvent', 'FileForCompany', 'FilingHistory']);"
+                                % }
+                            ><% l('File for this company') %>
+                            </a>
+                        % }
+                    % }
+                % }
+            % }
+      </div>
+</div>

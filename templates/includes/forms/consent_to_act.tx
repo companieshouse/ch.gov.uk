@@ -1,0 +1,69 @@
+<div class="section-intro">
+% if $is_corporate {
+    <p>Three items of personal information are required from the person authorising this appointment.</p>
+% } else {
+    <p>Three items of personal information are required in place of a real signature.</p>
+% }
+% if $cta_for == 'director' {
+    <p>This information represents the consent to act of the new director.</p>
+% } elsif $cta_for == 'secretary' {
+    <p>This information represents the consent to act of the new secretary.</p>
+% } elsif $cta_for == 'member' {
+    <p>This information represents the consent to act of the new member.</p>
+% }
+</div>
+<%
+  for [ 1..3 ] -> $row_num {
+    if $cta_by == 'member' {
+      include 'includes/forms/consent_to_act_row.tx' { form => $form, name => $name, row => $row_num, cta_qns => [
+                  {'birth'               => "What is the member's place of birth?"},
+                  {'telephone'           => "What is the member's telephone number?"},
+                  {'national-insurance'  => "What is the member's national insurance number?"},
+                  {'passport'            => "What is the member's passport number?"},
+                  {'mother-maiden-name'  => "What is the member's mother's maiden name?"},
+                  {'eye-colour'          => "What is the member's eye colour?"},
+                  {'father-first-name'   => "What is the member's father's first name?"},
+      ] }
+    } elsif $cta_by == 'secretary' {
+      include 'includes/forms/consent_to_act_row.tx' { form => $form, name => $name, row => $row_num, cta_qns => [
+                  {'birth'               => "What is the secretary's place of birth?"},
+                  {'telephone'           => "What is the secretary's telephone number?"},
+                  {'national-insurance'  => "What is the secretary's national insurance number?"},
+                  {'passport'            => "What is the secretary's passport number?"},
+                  {'mother-maiden-name'  => "What is the secretary's mother's maiden name?"},
+                  {'eye-colour'          => "What is the secretary's eye colour?"},
+                  {'father-first-name'   => "What is the secretary's father's first name?"},
+      ] }
+    } elsif $cta_by == 'director' {
+      include 'includes/forms/consent_to_act_row.tx' { form => $form, name => $name, row => $row_num, cta_qns => [
+                  {'birth'               => "What is the director's place of birth?"},
+                  {'telephone'           => "What is the director's telephone number?"},
+                  {'national-insurance'  => "What is the director's national insurance number?"},
+                  {'passport'            => "What is the director's passport number?"},
+                  {'mother-maiden-name'  => "What is the director's mother's maiden name?"},
+                  {'eye-colour'          => "What is the director's eye colour?"},
+                  {'father-first-name'   => "What is the director's father's first name?"},
+      ] }
+    } elsif $cta_by == 'authoriser' {
+      include 'includes/forms/consent_to_act_row.tx' { form => $form, name => $name, row => $row_num, cta_qns => [
+                  {'birth'               => "What is the authoriser's place of birth?"},
+                  {'telephone'           => "What is the authoriser's telephone number?"},
+                  {'national-insurance'  => "What is the authoriser's national insurance number?"},
+                  {'passport'            => "What is the authoriser's passport number?"},
+                  {'mother-maiden-name'  => "What is the authoriser's mother's maiden name?"},
+                  {'eye-colour'          => "What is the authoriser's eye colour?"},
+                  {'father-first-name'   => "What is the authoriser's father's first name?"},
+      ] }
+    } elsif $cta_by == 'presenter' {
+      include 'includes/forms/consent_to_act_row.tx' { form => $form, name => $name, row => $row_num, cta_qns => [
+                  {'birth'               => "What is the presenter's place of birth?"},
+                  {'telephone'           => "What is the presenter's telephone number?"},
+                  {'national-insurance'  => "What is the presenter's national insurance number?"},
+                  {'passport'            => "What is the presenter's passport number?"},
+                  {'mother-maiden-name'  => "What is the presenter's mother's maiden name?"},
+                  {'eye-colour'          => "What is the presenter's eye colour?"},
+                  {'father-first-name'   => "What is the presenter's father's first name?"},
+      ] }
+    }
+  }
+%>

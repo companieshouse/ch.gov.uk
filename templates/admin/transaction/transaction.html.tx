@@ -1,0 +1,127 @@
+% cascade base { title => 'Transaction', searchpage => 1, disable_header_search => 1 }
+
+% around content -> {
+    % include includes::page_header {title => $title}
+
+    <% if $emailed || $resubmitted { %>
+      <div id="action-confirmation" class="text">
+        <% if $emailed     { %><p>The accepted / rejected email has been queued.</p><% } %>
+        <% if $resubmitted { %><p>The filing has been re-submitted.</p><% } %>
+      </div>
+    <% } %>
+
+    <table>
+        <tr>
+            <th id="transaction-id">Submission number</th>
+            <td id="transaction-id-result"><% $transaction.id %></td>
+        </tr>
+        <tr>
+            <th id="company-name">Company name</th>
+            <td id="company-name-result"><% $transaction.company_name %></td>
+        </tr>
+        <tr>
+            <th id="company-number">Company number</th>
+            <td id="company-number-result"><% $transaction.company_number %></td>
+        </tr>
+        <tr>
+            <th id="created-by">Created by</th>
+            <td id="created-by-result"><% $transaction.creator.display_name %></td>
+        </tr>
+        <tr>
+            <th id="creators-email">Creator's email</th>
+            <td id="creators-email-result"><% $transaction.creator.email %></td>
+        </tr>
+        <tr>
+            <th id="creators-id">Creator's id</th>
+            <td id="creators-id-result"><% $transaction.creator.id %></td>
+        </tr>
+        <tr>
+            <th id="created-on">Created at</th>
+            <td id="created-on-result"><% $c.isodatetime_as_string($transaction.created_at) %></td>
+        </tr>
+        <tr>
+            <th id="updated-on">Updated at</th>
+            <td id="updated-on-result"><% $c.isodatetime_as_string($transaction.updated_at) %></td>
+        </tr>
+        <tr>
+            <th id="receipt-date">Receipt date</th>
+            <td id="receipt-date-result"><% $c.isodatetime_as_string($transaction.closed_at) %></td>
+        </tr>
+        <tr>
+            <th id="transaction-status">Status</th>
+            <td id="transaction-status-result"><% $transaction.status %></td>
+        </tr>
+    </table>
+
+    <h2 class="heading-large">Filings</h2>
+
+    <% if $transaction.filings { %>
+
+        <table>
+            <tr>
+                <th id="filing-type">Filing Type</th>
+                <th id="barcode">Barcode</th>
+                <th id="resource-status">Status</th>
+                <th id="accepted-rejected-dates">Accepted/Rejected Date</th>
+                <th id="updated-at">Updated at</th>
+                <th id="resource-json-link">Submitted Data</th>
+                <th id="available-action-link">Action</th>
+            </tr>
+            % for $transaction.filings -> $filing {
+                % if $filing.reject_reasons {
+                    <tr class="no-border-bottom">
+                % } else {
+                    <tr>
+                % }
+                <td id="filing-type-result-<% $~filing.count %>"><% $filing.type %></td>
+                <td id="barcode-result-<% $~filing.count %>"><% $filing.barcode %></td>
+                <td id="resource-status-result-<% $~filing.count %>"><% $filing.status %></td>
+                <td id="accepted-rejected-dates-results-<% $~filing.count %>">
+                    <div id="rejected-at-date-<% $~filing.count %>"><% $c.datetime_as_local_string($filing.rejected_at) %></div>
+                    <div id="accepted-at-date-<% $~filing.count %>"><% $c.datetime_as_local_string($filing.accepted_at) %></div>
+                </td>
+                <td id="resource-updated-at-<% $~filing.count %>"><% $c.datetime_as_local_string($filing.updated_at) %></td>
+                <td><a id="resource-json-link-result-<% $~filing.count %>" href="<% $c.url_for('admin_transaction_resource_details', transaction_id => $transaction.id, resource_name => $filing.resource) %>">View</a></td>
+                % if ( $transaction.status == "closed" ) {
+                    % if ($c.can_do('/admin/filing/resend')) {
+                        % if ( $filing.status == 'accepted' ) {
+                            <td><a id="send-email-link-<% $~filing.count %>" href="<% $c.url_for('admin_email_view', transaction_id => $transaction.id, barcode => $filing.barcode) %>">Resend accepted email</a></td>
+                        % } elsif ( $filing.status == 'rejected' ) {
+                            <td><a id="send-email-link-<% $~filing.count %>" href="<% $c.url_for('admin_email_view', transaction_id => $transaction.id, barcode => $filing.barcode) %>">Resend rejected email</a></td>
+                        % }
+                    % }
+                    % if ( $c.can_do('/admin/filing/resubmit') && $filing.status != "accepted" && $filing.status != "rejected" && defined $filing.barcode ) {
+                        <td><a id="resubmit-filing-<% $~filing.count %>" href="<% $c.url_for('admin_filing_confirm', transaction_id => $transaction.id, barcode => $filing.barcode) %>">Resubmit filing</a></td>
+                    % } elsif( $c.can_do('/admin/filing/resubmit') && $filing.status == "queued") {
+                        <td><a id="resubmit-filing-<% $~filing.count %>" href="<% $c.url_for('admin_filing_confirm_no_barcode', transaction_id => $transaction.id) %>">Resubmit filing</a></td>
+                    % } else {
+                        <td id="no-action"></td>
+                    % }
+                % } else {
+                    <td id="no-action"></td>
+                % }
+            </tr>
+            % if $filing.reject_reasons {
+                <tr id="reject-reason">
+                    <td colspan="6">
+                        <p class="heading-xsmall"><strong>Reject reasons</strong></p>
+                        <ul id="reject-reason-result-<% $~filing.count %>">
+                        % for $filing.reject_reasons -> $error {
+                            <li><% $error.english %></li>
+                        % }
+                        </ul>
+                    </td>
+                </tr>
+            % } }
+        </table>
+
+    <% } else { %>
+
+        <p id="no-resources-found" class="text">No resources or submitted data found</p>
+
+    <% } %>
+
+      <ul id="json-options" class="text">
+        <li><a id="transaction-json-link" href="<% $c.url_for('admin_transaction_details', transaction_id => $transaction.id) %>">View full transaction document</a></li>
+      </ul>
+% }

@@ -1,0 +1,122 @@
+---
+base:
+  url: <BASE_URL>
+
+api:
+  url: <ERIC_LOCAL_URL>
+  key: <CHS_API_KEY>
+
+cdn:
+  url: <CDN_HOST>
+  script_dir: <CDN_SCRIPT_DIR>
+
+cookie_signing_key: "<COOKIE_SECRET>"
+
+accounts_template:
+  url: <ACCOUNTS_TEMPLATE_URL>
+
+postcode:
+  url: "<POSTCODE_SERVICE_URL>"
+
+cache:
+  backend       : 'MojoX::Plugin::AnyCache::Backend::Mojo::Redis'
+  serialiser    : 'MojoX::Plugin::AnyCache::Serialiser::MessagePack'
+  server        : "<CACHE_SERVER>"
+  redis_protocol: Protocol::Redis::XS
+
+cookie_domain: "<COOKIE_DOMAIN>"
+
+security:
+    oauth2_request_key : "<CH_OAUTH2_REQUEST_KEY>"
+
+url_sign_salt: "<URL_SIGNING_SALT>"
+
+identity_providers:
+    companies_house:
+        redirect_uri  : '<CHS_URL>/oauth2/user/callback'
+        client_id     : '<CHS_CH_CLIENT_ID>'
+        client_secret : '<CHS_CH_CLIENT_SECRET>'
+        authorize_url : '<ACCOUNT_URL>/oauth2/authorise'
+        token_url     : '<ACCOUNT_LOCAL_URL>/oauth2/token'
+        profile_url   : '<ACCOUNT_LOCAL_URL>/user/profile'
+        home_url      : '<CHS_URL>'
+
+external_url_for:
+  manage_user_details : '<ACCOUNT_URL>/user/account'
+  make_authcode_change: '<ACCOUNT_URL>/company/:company_number/authcode/change'
+  follow_company      : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-follow'
+  unfollow_company    : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-unfollow'
+  file_accounts       : '<CHS_URL>/company/:company_number/submit-abridged-accounts/criteria'
+
+admin_url_for:
+  roles                        : <ACCOUNT_URL>/admin/roles
+  queues                       : <CHS_BACKEND_URL>/admin/queues
+  refresh_company              : <CHS_BACKEND_URL>/admin/company/
+  user_search                  : <ACCOUNT_URL>/admin/user/search
+  transaction                  : <CHS_URL>/admin/transactions/:transaction_id
+  transaction_by_company_number: <CHS_URL>/admin/company/:company_number/transactions
+  monitor                      : <CHS_MONITOR_GUI_URL>/admin/monitor
+
+filing_history:
+  items_per_page: 25
+
+officer_appointments:
+  items_per_page: 35
+
+piwik:
+  url: "<PIWIK_URL>"
+  site_id: <PIWIK_SITE_ID>
+  embed: <PIWIK_EMBED>
+
+statsd:
+  host: "<STATSD_HOST>"
+  port: "<STATSD_PORT>"
+
+queue_api:
+  url:  <QUEUE_API_LOCAL_URL>
+
+private_beta_follow: <PRIVATE_BETA_FOLLOW>
+disable_filing: <DISABLE_FILING>
+disable_follow: <DISABLE_FOLLOW>
+
+web_proxy:
+  doc_api: <WEB_PROXY_DOC_API_HTTP>
+  monitor_api: <WEB_PROXY_MONITOR_API_HTTP>
+
+elasticsearch:
+  max_pages: <ELASTIC_SEARCH_MAX_PAGES>
+  max_results: <ELASTIC_SEARCH_MAX_RESULTS>
+
+feature:
+    mortgage: <MORTGAGE_FEATURE>
+    psc: <PSC_FEATURE>
+
+image_service_start_date: <IMAGE_SERVICE_START_DATE>
+
+disable_download_xhtml_link: <DISABLE_DOWNLOAD_XHTML_LINK>
+
+recently_filed_days: <RECENTLY_FILED_DAYS>
+
+unavailable_date: <UNAVAILABLE_DATE>
+
+disable_previous_names: <DISABLE_PREVIOUS_NAMES>
+
+display_image_disabled_message: <IMAGE_DISABLED_MESSAGE>
+image_disabled_message_header: <IMAGE_DISABLED_MESSAGE_HEADER>
+image_disabled_message_text: <IMAGE_DISABLED_MESSAGE_TEXT>
+
+disable_feedback_form: <DISABLE_FEEDBACK_FORM>
+monitor:
+  api_url: <CHS_MONITOR_API_LOCAL_URL>
+  gui_url: <CHS_MONITOR_GUI_URL>
+
+confirmation_statement_available_date: <CONFIRMATION_STATEMENT_AVAILABLE_DATE>
+
+xhtml_available_date: <XHTML_AVAILABLE_DATE>
+
+pflp_feature_enabled: <PFLP_FEATURE_ENABLED>
+
+file_accounts_available_date: <FILE_ACCOUNTS_AVAILABLE_DATE>
+
+max_memory_usage: <MAX_MEMORY_USAGE>
+shared_memory_percentage: <SHARED_MEMORY_PERCENTAGE>

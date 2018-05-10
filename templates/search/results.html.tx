@@ -1,0 +1,133 @@
+% cascade base {
+% 	title => 'Companies House',
+% 	searchpage => 1,
+% 	classes=>"search",
+% 	disable_header_search => 1
+% }
+%
+% around content -> {
+
+% # --------------------------------> set show_tabs to 1 for officers
+%
+
+<div class="column-full-width">
+
+    % include "search/form.tx" {SHOW_TABS => 0, RESULTS_CONTAINER => 0}
+
+    <div class="grid-row">
+        <div class="column-two-thirds">
+
+            <article id="services-information-results">
+
+            % if $results.total_results {
+        			<h1 class="visuallyhidden">Search the register – results</h1>
+				<h2 class="visuallyhidden">All results</h2>
+				<ul id='results' class="results-list">
+
+                    % for $results.items -> $item {
+                        % $c._create_highlighting($item);
+
+                        % if $item.kind == "searchresults#officer" {
+                            <li class="type-officer">
+                                <h3><a href="<% $item.links.self %>"><% $item.title | mark_raw %></a></h3>
+                                <% if $item.snippet { %>
+                                    <p class="meta crumbtrail inset">Matching appointment names: <br/><span><% $item.snippet | mark_raw %></span></p>
+                                <% } %>
+                                <p class="meta crumbtrail"><% $item.description %></p>
+                                <p><% $item.address_snippet | mark_raw %></p>
+                            </li>
+                        % } elsif $item.kind == "searchresults#company" {
+                            <li class="type-company">
+                                <h3>
+                                    <!-- $item._score -->
+                                    <a href="<% $item.links.self %>"
+                                        <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SearchSuggestions', 'SearchResult-<% $~item +1%>' ]);"<% } %>title="View company">
+                                        <% $c.format_title( $item ) | mark_raw %>
+                                    </a>
+                                </h3>
+                                <% if $item.snippet { %>
+                                    <p class="meta crumbtrail inset">Matching previous names: <br/><span><% $item.snippet | mark_raw %></span></p>
+                                <% } %>
+                                <p class="meta crumbtrail"> <% $c.format_description( $item) | mark_raw %> </p>
+                                <p><% $item.address_snippet | mark_raw %></p>
+                            </li>
+                        % } elsif $item.kind == "searchresults#disqualified-officer" {
+                            <li class="type-disqualification">
+                                <h3><a href="<% $item.links.self %>"><% $item.title | mark_raw %></a></h3>
+                                <% if $item.snippet { %>
+                                    <p class="meta crumbtrail inset">Matching disqualification names: <br/><span><% $item.snippet | mark_raw %></span></p>
+                                <% } %>
+                                <p class="meta crumbtrail"><% $item.description %></p>
+                                <p><% $item.address_snippet | mark_raw %></p>
+                            </li>
+                        % } # End-if
+                    % } # Next
+                </ul>
+
+            % } # End-if results.total_results
+
+            % if ( $pager.current_page == $pager.page_limit ) {
+                <p class="search-meta">
+                    <strong>You have reached the last available page. The closest <%= $pager.results_limit %> matches have been returned, please refine your search criteria.</strong>
+                </p>
+            % }
+        </div>
+
+        % if $results.kind == 'search#disqualified-officers' {
+            <div class="column-third" id="disqualification-column">
+                <div class="quick-look font-xsmall" id="disqualification-info">
+                    <ul class="list-bullet">
+                        <li><a href="/register-of-disqualifications/A" rel="external" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Register of disqualifications<span class="visuallyhidden">(link opens in a new window)</span></a></li>
+                        <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="visuallyhidden">(link opens in a new window)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        % }
+    </div>
+</article><!-- search-container -->
+
+% if $pager.show_pager {
+    <div class="search-meta" id="search-meta">
+        <ul class="pager" id="pager">
+            % if ($pager.previous_page) {
+                <li>
+                    <a class="page" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
+                        Previous
+                    </a>
+                </li>
+            % }
+            % for $pager.pages_in_set -> $page {
+                <li>
+                    % if $page <= $pager.page_limit {
+                        % if $pager.current_page == $page {
+                            <span class="visuallyhidden">Page </span>
+                            <span id="page-<% $page %>" class="page"><% $page %></span>
+                            <span class="visuallyhidden"> of <% $pager.total_pages %></span>
+                        % } else {
+                            <a id="page-<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>">
+                            <span class="visuallyhidden">Page </span><% $page %><span class="visuallyhidden"> of <% $pager.total_pages %></span></a>
+                        % }
+                    % }
+                </li>
+            % }
+            % if ($pager.current_page < $pager.page_limit && $pager.next_page) {
+                <li>
+                    <a class="page" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
+                        Next
+                    </a>
+                </li>
+            % }
+        </ul>
+        <p>
+            <% $c.format_number($total_hits) %>
+            % if ($pager.total_entries==1) {
+                match
+            % } else {
+                matches
+            % }
+            found
+        </p>
+    </div><!-- ends search-meta -->
+% }
+    </div><!-- column-end -->
+% }

@@ -1,0 +1,21 @@
+% cascade company::transactions::transaction { title => $title, form_page => 1 }
+% around additional_header -> {
+    <% $form.expand_form_link( text => 'Expand form' ) %>
+% }
+% around form_content -> {
+    % $form.sections()
+% }
+
+% around form_submit -> {
+    % if (!$section || $section == 'summary') {
+	<div class="validation-summary important">
+          <p><strong>Important</strong>: Please ensure all the information above is correct before you proceed.</p>
+	</div>
+    %      include "includes/forms/transaction_submit_buttons.html.tx" { form => $form, submit_label => $submit_label }  ; 
+    <div>
+    % } else {
+    %      include "includes/forms/transaction_submit_buttons.html.tx" { form => $form, submit_label => $submit_label, disabled => 'disabled' }; 
+    % }
+    </div>
+    % $form.end;
+% }

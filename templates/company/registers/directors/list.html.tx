@@ -1,0 +1,183 @@
+% cascade base { title=> $company.company_name ~" - Registered Directors (free information from Companies House)"}
+% around content -> {
+    % include '/includes/company/page_header.tx'
+    % include '/includes/company/tabs.tx' { active => 'register-tab' };
+
+    <ol role="breadcrumb" class="breadcrumb">
+        <li><a id="charges-index" href="/company/<% $company_number %>/registers"><% l('Registers') %></a></li>
+        <li><% l('Register of directors') %></li>
+    </ol>
+    <div class="appointments-list">
+        % for $directors.items -> $director {
+            <div class="appointment-<% $~director.count %>">
+                % if $~director.is_first {
+                    <h2 class="heading-medium">
+                        <span id="director-name-<% $~director.count %>">
+                            <a href="<% $director.links.officer.appointments %>"><% $director.name %></a>
+                        </span>
+                    </h2>
+                % } else {
+                    <h2 class="heading-medium heading-with-border">
+                        <span id="director-name-<% $~director.count %>">
+                            <a href="<% $director.links.officer.appointments %>"><% $director.name %></a>
+                        </span>
+                    </h2>
+                % }
+
+                <dl>
+                    <dt id="director-address-field-<% $~director.count %>"><% l('Correspondence address') %></dt>
+                    <dd class="data" id="director-address-value-<% $~director.count %>">
+                        % $c.address_as_string( $director.address, { include_care_of => 1, title_case_care_of => 1 } )
+                    </dd>
+                </dl>
+
+                <div class="grid-row">
+                    % if $director.date_of_birth {
+                        <dl class="column-quarter">
+                            <dt><% l('Date of birth') %></dt>
+                            <dd id="director-date-of-birth-<% $~director.count %>" class="data">
+                                <% $c.isodate_as_string( $director.date_of_birth ) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $director.appointed_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Appointed on') %></dt>
+                            <dd id="director-appointed-on-<% $~director.count %>" class="data">
+                                <% $c.isodate_as_string( $director.appointed_on ) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                </div> <%# /grid-row%>
+
+                <div class="grid-row">
+                    % if $director.nationality {
+                        <dl class="column-quarter">
+                            <dt><% l('Nationality') %></dt>
+                            <dd id="director-nationality-<% $~director.count %>" class="data">
+                                <% $director.nationality %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $director.country_of_residence {
+                        <dl class="column-quarter">
+                            <dt><% l('Country of residence') %></dt>
+                            <dd id="director-country-of-residence-<% $~director.count %>" class="data">
+                                <% $director.country_of_residence %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $director.occupation {
+                        <dl class="column-quarter">
+                            <dt><% l('Occupation') %></dt>
+                            <dd id="director-occupation-<% $~director.count %>" class="data">
+                                <% $director.occupation %>
+                            </dd>
+                        </dl>
+                    % }
+
+                </div> <%# /grid-row %>
+
+                % if $director.identification.identification_type == 'non-eea' {
+                    <h3 class=""><% l('Registered in a Non European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                % }
+                % else if $director.identification.identification_type == 'eea' {
+                    <h3 class=""><% l('Registered in a European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                % }
+
+                <div class="grid-row">
+                    % if $director.identification.legal_authority {
+                        <dl class="column-quarter">
+                            <dt><% l('Law governed') %></dt>
+                            <dd id="director-legal-authority-<% $~director.count %>" class="data">
+                                <% $director.identification.legal_authority %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $director.identification.legal_form {
+                        <dl class="column-quarter">
+                            <dt><% l('Legal form') %></dt>
+                            <dd id="director-legal-form-<% $~director.count %>" class="data">
+                                <% $director.identification.legal_form %>
+                            </dd>
+                        </dl>
+                    % }
+                    % if $director.identification.place_registered {
+                        <dl class="column-quarter">
+                            <dt><% l('Placed registered') %></dt>
+                            <dd id="director-register-location-<% $~director.count %>" class="data">
+                                <% $director.identification.place_registered %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+
+                <div class="grid-row">
+                    % if $director.identification.registration_number {
+                        <dl class="column-quarter">
+                            <dt><% l('Registration number') %></dt>
+                            <dd id="director-registration-number-<% $~director.count %>" class="data">
+                                <% $director.identification.registration_number %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+
+            % if ($director.former_names) {
+                <div class="grid-row">
+                  <dl class="column-two-thirds">
+                      <dt>Previous names</dt>
+            %         for $director.former_names -> $former_name {
+                          <dd class="data" id="">
+                              <% ucfirst (lc($former_name.forenames)) %> <% ucfirst (lc($former_name.surname)) %><br>
+                          </dd>
+            %         }
+                  </dl>
+                </div>
+            % }
+          </div>
+        % }
+        % else {
+            <h2 class="heading-small">
+                There are no active directors 
+            </h2>
+        % }
+    </div>
+
+    % if $directors.total_results > $paging.entries_per_page {
+        <ul class="pager">
+            % if ($paging.previous_page) {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $paging.previous_page %>">
+                        Previous
+                    </a>
+                </li>
+            % }
+            % for $paging.page_set -> $page {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $page %>">
+                        % if $paging.current_page_number == $page {
+                            <strong>
+                                <% $page %>
+                            </strong>
+                        % } else {
+                            <% $page %>
+                        %}
+                    </a>
+                </li>
+            % }
+            % if ($paging.next_page) {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $paging.next_page %>">
+                        Next
+                    </a>
+                </li>
+            % }
+        </ul>
+    %}
+% }

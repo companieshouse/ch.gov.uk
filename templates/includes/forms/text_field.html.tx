@@ -1,0 +1,21 @@
+<div class="form-group<% if $group_class { %> <% $group_class %><% } %><% if $has_errors { %> error<%} %>">
+
+    % if $has_errors {
+        <a name="<% $errors[0].id %>"></a>
+    % }
+
+    <label for="<% $id %>" class="form-label form-label-bold    ">
+    % $label;
+    % if $has_errors {
+    %   for $errors->$error {
+        	<span id="<% $error.id %>" class="error-message"><% $error.text %></span>
+    %   }
+    % }
+    % if $hint {
+        <span class="form-hint"><% $hint %></span>
+    % }
+	</label>
+    <input type="text" name="<% $name %>" id="<% $id %>" value="<% $value %>"
+    <% if $maxlength { %>maxlength="<% $maxlength %>"<% } %> <% if $placeholder { %>placeholder="<% $placeholder %>"<% } %>
+    <% if $class { %> class="form-control <% $class %>" <% } else { %> class="form-control" <% } %> />
+</div>

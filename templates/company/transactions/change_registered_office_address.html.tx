@@ -1,0 +1,13 @@
+% cascade company::transactions::transaction { title => 'Change of registered office address', form => $c.form( model => $transaction.model ), require_js => 'transactions/change-registered-office-address', submit_label => "Submit changes" }
+% before form_content -> {
+    %  include 'company/transactions/current_address.html.tx' { form => $form }
+% }
+
+% around form_content -> {
+<fieldset>
+    <legend class="heading-medium text">What is the new address of the company?</legend>
+    % $c.include_later('includes/forms/errors', form => $form, form_title => 'Filing Error');
+    % include 'includes/forms/address.tx' { form => $form, name => 'address', include_po_box => 1 }
+</fieldset>
+% }
+

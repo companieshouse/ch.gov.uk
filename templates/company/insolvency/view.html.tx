@@ -1,0 +1,73 @@
+% cascade base { title=> $company.company_name ~" - Insolvency (free information from Companies House)" }
+% around content -> {
+% include '/includes/company/page_header.tx'
+
+% include '/includes/company/tabs.tx' { active => 'insolvency-tab' };
+  % for $insolvency.cases.reverse()->$case {
+    % if $~case.is_first{
+      %if $~case.size == 1 {
+        <p id="case_count" class="heading-medium sub-heading"><% $~case.size %> Insolvency case</p>
+      % }
+      % else {
+        <p id="case_count" class="heading-medium sub-heading"><% $~case.size %> Insolvency cases</p>
+      % }
+      % if $display_scottish_insolvency_msg {
+           <p class="text">
+      %    tl($c.cv_lookup('notes', $display_scottish_insolvency_msg))
+          </p>
+      %}
+    % }
+
+    <p class="heading-medium <% if $~case.index > 0 { ' heading-with-border' } %>" id="case-<% $case.number %>"><% l('Case number ') %> <% $case.number %> &mdash;
+    % if $case.type == 'administrative-receiver' && $company.jurisdiction == 'scotland' {
+    %      l($c.cv_lookup('insolvency_case_type', 'scottish-administrative-receiver'))
+    % }
+    % else {
+    %       l($c.cv_lookup('insolvency_case_type', $case.type))
+    % }
+    </p>
+    % if $case.dates {
+    <div class="grid-row">
+    % include 'includes/insolvency_case_dates.tx' { case_type => $case.type, case_dates => $case.dates, case_number => $case.number };
+    </div>
+    % }
+
+    % if $case.practitioners {
+      % for $case.practitioners->$practitioner {
+      <div class="grid-row">
+        <dl class="column-half">
+            <dt id="case_<% $case.number %>_practitioner_<%$~practitioner.index + 1%>_role">
+              % if $practitioner.role == "proposed-liquidator" {
+                  <% l('Proposed Practitioner') %>
+              % }
+              % else {
+                  <% l('Practitioner') %>
+              % }
+              </dt>
+              <dd id="case_<% $case.number %>_practitioner_<%$~practitioner.index + 1%>_name" class="data"><% $practitioner.name %><br />
+              <span id="case_<% $case.number %>_practitioner_<%$~practitioner.index + 1%>_address" class="normal"><% $practitioner.address %></dd>
+        </dl>
+          % if $practitioner.appointed_on {
+          <dl class="column-quarter">
+              <dt id="case_<% $case.number %>_practitioner_<%$~practitioner.index + 1%>_appointed_on_title"><% l('Appointed on ') %></dt>
+              <dd id="case_<% $case.number %>_practitioner_<%$~practitioner.index + 1%>_appointed_on" class="data"><% $practitioner.appointed_on %></dd>
+          </dl>
+          % }
+          % if $practitioner.ceased_to_act_on {
+          <dl class="column-quarter">
+              <dt id="case_<% $case.number %>_practitioner_<%$~practitioner.index + 1%>_ceased_to_act_on_title"><% l('Ceased to act ') %></dt>
+              <dd id="case_<% $case.number %>_practitioner_<%$~practitioner.index + 1%>_ceased_to_act_on" class="data"><% $practitioner.ceased_to_act_on %></dd>
+          </dl>
+          % }
+      </div> <!-- grid-row -->
+      % }
+    % }
+
+    % if defined $case.links.charge {
+      <p>
+        <a id="case_<% $case.number %>_charge_link" href="<% $case.links.charge %>"><% l('View charge information') %></a>
+      </p>
+    % }
+  % }
+
+% }

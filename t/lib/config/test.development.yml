@@ -1,0 +1,6 @@
+---
+errors:
+  default:
+    mp4player: 
+      required: "A video device must be selected"
+      matches: "Please select a valid video device"

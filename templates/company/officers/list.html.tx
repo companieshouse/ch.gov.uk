@@ -1,0 +1,256 @@
+% cascade base { title=> $company.company_name ~" - Officers (free information from Companies House)", require_js => "transactions/company/officer_listing_view" }
+% around content -> {
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes-->
+<script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes-->
+
+    % include '/includes/company/page_header.tx'
+
+    % include '/includes/company/tabs.tx' { active => 'people-tab' };
+
+    % include '/includes/company/people_tabs.tx' { active => 'officers-tab' };
+
+    <div class="js-only">
+        <form id="officer-filter" class="form grid-row">
+            <div class="column-half">
+                <h2 class="heading-medium filter-appointments" id="officer-filter-h2">
+                        Filter officers
+                </h2>
+                <fieldset>
+                    <legend class="visuallyhidden">Filter officers</legend>
+                    % for $categories -> $category {
+                            <label for="officer-category-<% $category.id %>" class="block-label selection-button-checkbox">
+                                <input id="officer-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
+                                <% l($category.name) %>
+                            </label>
+                    % }
+                </fieldset>
+                <input class="button js-hidden" type="submit" value="Apply filter">
+            </div>
+        </form>
+    </div>
+
+    <h2 class="heading-medium" id="company-appointments">
+        % if (!$is_active_filter_set) {
+            % if $officers.active_count + $officers.inactive_count + $officers.resigned_count == 0 {
+                    There are no officer details available for this company.
+            % } else {
+                <% $officers.active_count + $officers.inactive_count + $officers.resigned_count %>
+                <%
+                    ln(
+                        'officer ',
+                        'officers ',
+                        $officers.active_count + $officers.inactive_count + $officers.resigned_count
+                    )
+                %>
+                / <% $officers.resigned_count %>
+                <%
+                    ln(
+                        'resignation',
+                        'resignations',
+                        $officers.resigned_count
+                    )
+                %>
+            % }
+        % } else {
+            % if $officers.active_count == 0 {
+                There are no current officers available for this company.
+            % } else {
+                <% $officers.active_count %>
+                <%
+                    ln(
+                        'current officer ',
+                        'current officers ',
+                        $officers.active_count + $officers.inactive_count + $officers.resigned_count
+                    )
+                %>
+            % }
+        % }
+    </h2>
+
+    <div class="appointments-list">
+        % for $officers.items -> $officer {
+            <div class="appointment-<% $~officer.count %>">
+                % if $~officer.is_first {
+                    <h2 class="heading-medium">
+                        <span id="officer-name-<% $~officer.count %>">
+                            <a href="<% $officer.links.officer.appointments %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $officer.name %></a>
+                        </span>
+
+                % } else {
+                    <h2 class="heading-medium heading-with-border">
+                        <span id="officer-name-<% $~officer.count %>">
+                            <a href="<% $officer.links.officer.appointments %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $officer.name %></a>
+                        </span>
+                    </h2>
+
+                   % }
+</h2>
+
+                <dl>
+                    <dt id="officer-address-field-<% $~officer.count %>"><% l('Correspondence address') %></dt>
+                    <dd class="data" id="officer-address-value-<% $~officer.count %>">
+                        % $c.address_as_string( $officer.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                    </dd>
+                </dl>
+
+                <div class="grid-row">
+
+                    %# this is always displayed
+                    <dl class="column-quarter">
+                        <dt><% l('Role') %>
+                            % if $officer.resigned_on  {
+                               <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
+                            % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' {
+                               <span id="officer-status-tag-<% $~officer.count %>" class="status-tag font-xsmall">Active</span>
+                            % }
+                        </dt>
+                        <dd id="officer-role-<% $~officer.count %>" class="data">
+                            <% $c.cv_lookup( 'officer_role', $officer.officer_role) %>
+                        </dd>
+                    </dl>
+
+                    % if $officer.date_of_birth {
+                        <dl class="column-quarter">
+                            <dt><% l('Date of birth') %></dt>
+                            <dd id="officer-date-of-birth-<% $~officer.count %>" class="data">
+                            % if ($officer._authorised_dob) {
+                                <% $c.isodate_as_string( $officer.date_of_birth ) %>
+                            % } else {
+                                <% $c.isodate_as_string( $officer.date_of_birth, "%B %Y" ) %>
+                            % }
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $officer.appointed_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Appointed on') %></dt>
+                            <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.appointed_on ) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $officer.resigned_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Resigned on') %></dt>
+                            <dd id="officer-resigned-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.resigned_on ) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                </div> <%# /grid-row%>
+
+                <div class="grid-row">
+                    % if $officer.nationality {
+                        <dl class="column-quarter">
+                            <dt><% l('Nationality') %></dt>
+                            <dd id="officer-nationality-<% $~officer.count %>" class="data">
+                                <% $officer.nationality %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $officer.country_of_residence {
+                        <dl class="column-quarter">
+                            <dt><% l('Country of residence') %></dt>
+                            <dd id="officer-country-of-residence-<% $~officer.count %>" class="data">
+                                <% $officer.country_of_residence %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $officer.occupation {
+                        <dl class="column-quarter">
+                            <dt><% l('Occupation') %></dt>
+                            <dd id="officer-occupation-<% $~officer.count %>" class="data">
+                                <% $officer.occupation %>
+                            </dd>
+                        </dl>
+                    % }
+
+                </div> <%# /grid-row %>
+
+                % if $officer.identification.identification_type == 'non-eea' {
+                    <h3 class=""><% l('Registered in a Non European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                % }
+                % else if $officer.identification.identification_type == 'eea' {
+                    <h3 class=""><% l('Registered in a European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                % }
+
+                <div class="grid-row">
+                    % if $officer.identification.legal_authority {
+                        <dl class="column-quarter">
+                            <dt><% l('Law governed') %></dt>
+                            <dd id="officer-legal-authority-<% $~officer.count %>" class="data">
+                                <% $officer.identification.legal_authority %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $officer.identification.legal_form {
+                        <dl class="column-quarter">
+                            <dt><% l('Legal form') %></dt>
+                            <dd id="officer-legal-form-<% $~officer.count %>" class="data">
+                                <% $officer.identification.legal_form %>
+                            </dd>
+                        </dl>
+                    % }
+                    % if $officer.identification.place_registered {
+                        <dl class="column-quarter">
+                            <dt><% l('Placed registered') %></dt>
+                            <dd id="officer-register-location-<% $~officer.count %>" class="data">
+                                <% $officer.identification.place_registered %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+
+                <div class="grid-row">
+                    % if $officer.identification.registration_number {
+                        <dl class="column-quarter">
+                            <dt><% l('Registration number') %></dt>
+                            <dd id="officer-registration-number-<% $~officer.count %>" class="data">
+                                <% $officer.identification.registration_number %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+            </div>
+        % }
+    </div>
+
+    % if $officers.total_results > $paging.entries_per_page {
+        <ul class="pager">
+            % if ($paging.previous_page) {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $paging.previous_page %>">
+                        Previous
+                    </a>
+                </li>
+            % }
+            % for $paging.page_set -> $page {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $page %>">
+                        % if $paging.current_page_number == $page {
+                            <strong>
+                                <% $page %>
+                            </strong>
+                        % } else {
+                            <% $page %>
+                        %}
+                    </a>
+                </li>
+            % }
+            % if ($paging.next_page) {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $paging.next_page %>">
+                        Next
+                    </a>
+                </li>
+            % }
+        </ul>
+    %}
+% }

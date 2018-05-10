@@ -1,0 +1,5 @@
+% $form.select_field  ( label => 'Question '~$row,
+%                       name  => $name ~ '[question_' ~ $row ~ ']',
+%                       list  => $cta_qns,
+%                     );
+% $form.text_field ( label => 'Answer '~$row, name => $name ~ '[answer_' ~ $row ~ ']' );

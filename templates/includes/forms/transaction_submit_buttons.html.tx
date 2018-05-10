@@ -1,0 +1,7 @@
+<div class="form-group">
+%   $form.submit_button( label => $submit_label // 'Submit', name => 'submit', id => 'submit', disabled => $disabled );
+	<p class="action-link">
+%   $form.submit_button( label => 'Cancel', name => 'cancel', id => 'cancel', class => 'button-link' );
+	</p>
+</div>
+ <div class="push"></div>

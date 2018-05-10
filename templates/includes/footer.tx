@@ -1,0 +1,13 @@
+    <div id="footer">
+      	<div class="container">
+            <ul class="inline">
+                <li><i class="icon-envelope"></i> Email <a href="mailto:enquiries@companieshouse.gov.uk" class="">
+                <!-- DS:W0011637 -->enquiries@companieshouse.gov.uk<!-- DE:W0011637 --></a></li>
+                <li> <i class="icon-bell"></i>
+                Telephone +44 (0)303 1234 500 <em>8:30am to 6pm (UK time) Monday to Friday</em></li>
+                <li><a href="help/en/stdwf/faqHelp.html" class="" target="_blank"><i class="icon-question-sign"></i> <!-- DS:W0012003 -->Help<!-- DE:W0012003 --></a></li>
+                <li class="pull-right"><a href="#"><i class="icon-chevron-up"></i>
+                <!-- DS:NOCHANGE -->Back to top<!-- DE:NOCHANGE --></a></li> 
+            </ul>
+ 		</div> <!--/container-->
+    </div> <!--/footer-->

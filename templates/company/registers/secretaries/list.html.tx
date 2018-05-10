@@ -1,0 +1,130 @@
+% cascade base { title=> $company.company_name ~" - Registered Secretaries (free information from Companies House)"}
+% around content -> {
+    % include '/includes/company/page_header.tx'
+    % include '/includes/company/tabs.tx' { active => 'register-tab' };
+
+    <ol role="breadcrumb" class="breadcrumb">
+        <li><a id="charges-index" href="/company/<% $company_number %>/registers"><% l('Registers') %></a></li>
+        <li><% l('Register of secretaries') %></li>
+    </ol>
+    <div class="appointments-list">
+        % for $secretaries.items -> $secretary {
+            <div class="appointment-<% $~secretary.count %>">
+                % if $~secretary.is_first {
+                    <h2 class="heading-medium">
+                        <span id="officer-name-<% $~secretary.count %>">
+                            <a href="<% $secretary.links.officer.appointments %>"><% $secretary.name %></a>
+                        </span>
+                    </h2>
+                % } else {
+                    <h2 class="heading-medium heading-with-border">
+                        <span id="officer-name-<% $~secretary.count %>">
+                            <a href="<% $secretary.links.officer.appointments %>"><% $secretary.name %></a>
+                        </span>
+                    </h2>
+                % }
+
+                <dl>
+                    <dt id="officer-address-field-<% $~secretary.count %>"><% l('Correspondence address') %></dt>
+                    <dd class="data" id="officer-address-value-<% $~secretary.count %>">
+                        % $c.address_as_string( $secretary.address, { include_care_of => 1, title_case_care_of => 1 } )
+                    </dd>
+                </dl>
+
+                <div class="grid-row">
+                    % if $secretary.appointed_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Appointed on') %></dt>
+                            <dd id="officer-appointed-on-<% $~secretary.count %>" class="data">
+                                <% $c.isodate_as_string( $secretary.appointed_on ) %>
+                            </dd>
+                        </dl>
+                    % }
+                </div>
+
+                % if $secretary.identification.identification_type == 'non-eea' {
+                    <h3 class=""><% l('Registered in a Non European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                % }
+                % else if $secretary.identification.identification_type == 'eea' {
+                    <h3 class=""><% l('Registered in a European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                % }
+
+                <div class="grid-row">
+                    % if $secretary.identification.legal_authority {
+                        <dl class="column-quarter">
+                            <dt><% l('Law governed') %></dt>
+                            <dd id="secretary-legal-authority-<% $~secretary.count %>" class="data">
+                                <% $secretary.identification.legal_authority %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $secretary.identification.legal_form {
+                        <dl class="column-quarter">
+                            <dt><% l('Legal form') %></dt>
+                            <dd id="secretary-legal-form-<% $~secretary.count %>" class="data">
+                                <% $secretary.identification.legal_form %>
+                            </dd>
+                        </dl>
+                    % }
+                    % if $secretary.identification.place_registered {
+                        <dl class="column-quarter">
+                            <dt><% l('Placed registered') %></dt>
+                            <dd id="secretary-register-location-<% $~secretary.count %>" class="data">
+                                <% $secretary.identification.place_registered %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+
+                <div class="grid-row">
+                    % if $secretary.identification.registration_number {
+                        <dl class="column-quarter">
+                            <dt><% l('Registration number') %></dt>
+                            <dd id="secretary-registration-number-<% $~secretary.count %>" class="data">
+                                <% $secretary.identification.registration_number %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+            </div> 
+        % }
+        % else {
+            <h2 class="heading-small">
+                There are no active secretaries 
+            </h2>
+        % }
+    </div>
+
+    % if $secretaries.total_results > $paging.entries_per_page {
+        <ul class="pager">
+            % if ($paging.previous_page) {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $paging.previous_page %>">
+                        Previous
+                    </a>
+                </li>
+            % }
+            % for $paging.page_set -> $page {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $page %>">
+                        % if $paging.current_page_number == $page {
+                            <strong>
+                                <% $page %>
+                            </strong>
+                        % } else {
+                            <% $page %>
+                        %}
+                    </a>
+                </li>
+            % }
+            % if ($paging.next_page) {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $paging.next_page %>">
+                        Next
+                    </a>
+                </li>
+            % }
+        </ul>
+    %}
+% }

@@ -1,0 +1,1542 @@
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica");
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* CSS 3 Mixins
+
+  Add them as you need them. This should let us manage vendor prefixes in one place.
+ */
+/* Cross-browser shims
+
+  Ways of normalising properties across browsers.
+ */
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* Usage:
+   @include inline-block
+
+   or
+
+   @include inline-block("250px")
+
+   which gives a min-height to the inline-block elements.
+*/
+/* Contain floats usage:
+
+   .this-has-floated-children {
+     @extend %contain-floats;
+   }
+
+*/
+/* line 49, ../../../vendor/govuk_frontend_toolkit/stylesheets/_shims.scss */
+#local-header .header-wrapper:after, #local-header .header-wrapper .header-global:after, #local-header .header-wrapper .header-global .header-logo:after,
+#local-header .header-wrapper .header-global .site-search:after, form#search .content:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* line 126, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button {
+  background-color: #006435;
+  position: relative;
+  top: 0;
+  display: -moz-inline-stack;
+  display: inline-block;
+  padding: 0.35em 0.5em 0.15em 0.5em;
+  border: none;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -webkit-box-shadow: 0 2px 0 #00180c;
+  -moz-box-shadow: 0 2px 0 #00180c;
+  box-shadow: 0 2px 0 #00180c;
+  line-height: 1.25;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  color: white;
+}
+/* line 31, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:visited {
+  background-color: #006435;
+}
+/* line 35, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:hover, .button:focus {
+  background: #004b27;
+}
+/* line 38, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:active {
+  top: 2px;
+  -webkit-box-shadow: 0 0 0 #006435;
+  -moz-box-shadow: 0 0 0 #006435;
+  box-shadow: 0 0 0 #006435;
+}
+/* line 46, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button.disabled, .button[disabled="disabled"], .button[disabled] {
+  opacity: 0.5;
+}
+/* line 48, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button.disabled:hover, .button[disabled="disabled"]:hover, .button[disabled]:hover {
+  cursor: default;
+  background-color: #006435;
+}
+/* line 52, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button.disabled:active, .button[disabled="disabled"]:active, .button[disabled]:active {
+  top: 0;
+  -webkit-box-shadow: 0 2px 0 #00180c;
+  -moz-box-shadow: 0 2px 0 #00180c;
+  box-shadow: 0 2px 0 #00180c;
+}
+/* line 65, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:hover, .button:focus, .button:visited {
+  color: white;
+}
+/* line 79, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:before {
+  content: "";
+  height: 110%;
+  width: 100%;
+  display: block;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 89, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:active:before {
+  top: -10%;
+  height: 120%;
+}
+/* line 102, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button[rel="external"]:after {
+  display: none;
+  content: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* line 130, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary {
+  background-color: #dee0e2;
+  position: relative;
+  top: 0;
+  display: -moz-inline-stack;
+  display: inline-block;
+  padding: 0.35em 0.5em 0.15em 0.5em;
+  border: none;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -webkit-box-shadow: 0 2px 0 #b5babe;
+  -moz-box-shadow: 0 2px 0 #b5babe;
+  box-shadow: 0 2px 0 #b5babe;
+  line-height: 1.25;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  color: #0b0c0c;
+}
+/* line 31, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:visited {
+  background-color: #dee0e2;
+}
+/* line 35, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:hover, .button-secondary:focus {
+  background: #d0d3d6;
+}
+/* line 38, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:active {
+  top: 2px;
+  -webkit-box-shadow: 0 0 0 #dee0e2;
+  -moz-box-shadow: 0 0 0 #dee0e2;
+  box-shadow: 0 0 0 #dee0e2;
+}
+/* line 46, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary.disabled, .button-secondary[disabled="disabled"], .button-secondary[disabled] {
+  opacity: 0.5;
+}
+/* line 48, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary.disabled:hover, .button-secondary[disabled="disabled"]:hover, .button-secondary[disabled]:hover {
+  cursor: default;
+  background-color: #dee0e2;
+}
+/* line 52, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary.disabled:active, .button-secondary[disabled="disabled"]:active, .button-secondary[disabled]:active {
+  top: 0;
+  -webkit-box-shadow: 0 2px 0 #b5babe;
+  -moz-box-shadow: 0 2px 0 #b5babe;
+  box-shadow: 0 2px 0 #b5babe;
+}
+/* line 72, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:hover, .button-secondary:focus, .button-secondary:visited {
+  color: #0b0c0c;
+}
+/* line 79, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:before {
+  content: "";
+  height: 110%;
+  width: 100%;
+  display: block;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 89, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:active:before {
+  top: -10%;
+  height: 120%;
+}
+/* line 102, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary[rel="external"]:after {
+  display: none;
+  content: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* line 134, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning {
+  background-color: #b10e1e;
+  position: relative;
+  top: 0;
+  display: -moz-inline-stack;
+  display: inline-block;
+  padding: 0.35em 0.5em 0.15em 0.5em;
+  border: none;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -webkit-box-shadow: 0 2px 0 #6a0812;
+  -moz-box-shadow: 0 2px 0 #6a0812;
+  box-shadow: 0 2px 0 #6a0812;
+  line-height: 1.25;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  color: white;
+}
+/* line 31, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:visited {
+  background-color: #b10e1e;
+}
+/* line 35, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:hover, .button-warning:focus {
+  background: #990c1a;
+}
+/* line 38, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:active {
+  top: 2px;
+  -webkit-box-shadow: 0 0 0 #b10e1e;
+  -moz-box-shadow: 0 0 0 #b10e1e;
+  box-shadow: 0 0 0 #b10e1e;
+}
+/* line 46, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning.disabled, .button-warning[disabled="disabled"], .button-warning[disabled] {
+  opacity: 0.5;
+}
+/* line 48, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning.disabled:hover, .button-warning[disabled="disabled"]:hover, .button-warning[disabled]:hover {
+  cursor: default;
+  background-color: #b10e1e;
+}
+/* line 52, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning.disabled:active, .button-warning[disabled="disabled"]:active, .button-warning[disabled]:active {
+  top: 0;
+  -webkit-box-shadow: 0 2px 0 #6a0812;
+  -moz-box-shadow: 0 2px 0 #6a0812;
+  box-shadow: 0 2px 0 #6a0812;
+}
+/* line 65, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:hover, .button-warning:focus, .button-warning:visited {
+  color: white;
+}
+/* line 79, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:before {
+  content: "";
+  height: 110%;
+  width: 100%;
+  display: block;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 89, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:active:before {
+  top: -10%;
+  height: 120%;
+}
+/* line 102, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning[rel="external"]:after {
+  display: none;
+  content: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica");
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* line 6, ../../../app/assets/stylesheets/typography.scss */
+.browse-container, .browse-container p {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  font-weight: 300;
+  text-transform: none;
+}
+@media (max-width: 640px) {
+  /* line 6, ../../../app/assets/stylesheets/typography.scss */
+  .browse-container, .browse-container p {
+    font-size: 1.4rem;
+    line-height: 1.14286;
+  }
+}
+
+/* line 12, ../../../app/assets/stylesheets/colours.scss */
+.warning {
+  color: #b10e1e;
+}
+
+/* line 15, ../../../app/assets/stylesheets/colours.scss */
+.notification {
+  color: #ffbf47;
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica");
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* line 9, ../../../app/assets/stylesheets/views.scss */
+header.page-header {
+  padding-bottom: 0;
+  display: block;
+  margin: 0 0 1em 0;
+  padding: 1em 2em 0 0;
+}
+@media (max-width: 800px) {
+  /* line 9, ../../../app/assets/stylesheets/views.scss */
+  header.page-header {
+    margin: 0;
+  }
+}
+@media (max-width: 640px) {
+  /* line 9, ../../../app/assets/stylesheets/views.scss */
+  header.page-header {
+    padding: 1em 1em 0.5em 0;
+  }
+}
+/* line 24, ../../../app/assets/stylesheets/views.scss */
+header.page-header .skip-to-related {
+  position: absolute;
+  left: -9999em;
+}
+/* line 29, ../../../app/assets/stylesheets/views.scss */
+header.page-header h1 {
+  width: 700px;
+  font-family: "nta", Arial, sans-serif;
+  font-size: 48px;
+  font-size: 4.8rem;
+  line-height: 1.04167;
+  font-weight: 400;
+  text-transform: none;
+  padding-top: 10px;
+  padding-top: 1rem;
+  padding-bottom: 10px;
+  padding-bottom: 1rem;
+  font-weight: 400;
+}
+@media (max-width: 640px) {
+  /* line 29, ../../../app/assets/stylesheets/views.scss */
+  header.page-header h1 {
+    font-size: 3.2rem;
+    line-height: 1.09375;
+  }
+}
+@media (min-width: 641px) {
+  /* line 29, ../../../app/assets/stylesheets/views.scss */
+  header.page-header h1 {
+    padding-top: 0.7rem;
+    padding-bottom: 1.3rem;
+  }
+}
+@media (max-width: 640px) {
+  /* line 29, ../../../app/assets/stylesheets/views.scss */
+  header.page-header h1 {
+    width: auto;
+    padding: 0;
+  }
+}
+/* line 38, ../../../app/assets/stylesheets/views.scss */
+header.page-header h1 span {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 19px;
+  font-size: 1.9rem;
+  line-height: 1;
+  font-weight: 400;
+  text-transform: none;
+  display: block;
+  margin-bottom: 0.25em;
+  text-shadow: none;
+}
+@media (max-width: 640px) {
+  /* line 38, ../../../app/assets/stylesheets/views.scss */
+  header.page-header h1 span {
+    font-size: 1.6rem;
+    line-height: 1.25;
+  }
+}
+/* line 50, ../../../app/assets/stylesheets/views.scss */
+header.page-header h2 {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 24px;
+  font-size: 2.4rem;
+  line-height: 1.25;
+  font-weight: 400;
+  text-transform: none;
+  color: inherit;
+  margin: 0;
+}
+@media (max-width: 640px) {
+  /* line 50, ../../../app/assets/stylesheets/views.scss */
+  header.page-header h2 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+}
+/* line 55, ../../../app/assets/stylesheets/views.scss */
+header.page-header .button {
+  float: right;
+  margin: 20px 0;
+}
+@media (max-width: 640px) {
+  /* line 55, ../../../app/assets/stylesheets/views.scss */
+  header.page-header .button {
+    margin: 0 0 15px 0;
+  }
+}
+
+/* line 65, ../../../app/assets/stylesheets/views.scss */
+.category-description {
+  margin: 0 0 1em 0;
+}
+/* line 67, ../../../app/assets/stylesheets/views.scss */
+.category-description p {
+  margin: 0 0 0.5em 0;
+}
+
+/* line 72, ../../../app/assets/stylesheets/views.scss */
+.browse-container {
+  background-color: white;
+  min-height: 35em;
+  padding: 0 2em 2em 2em;
+}
+@media (max-width: 640px) {
+  /* line 72, ../../../app/assets/stylesheets/views.scss */
+  .browse-container {
+    padding: 0 1em 2em 1em;
+    min-height: auto;
+  }
+}
+
+/* line 87, ../../../app/assets/stylesheets/views.scss */
+ul {
+  margin: 0;
+  padding: 0;
+}
+/* line 91, ../../../app/assets/stylesheets/views.scss */
+ul li {
+  list-style: none;
+  margin-bottom: 1em;
+}
+/* line 95, ../../../app/assets/stylesheets/views.scss */
+ul li p {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  font-weight: 300;
+  text-transform: none;
+  word-wrap: break-word;
+}
+@media (max-width: 640px) {
+  /* line 95, ../../../app/assets/stylesheets/views.scss */
+  ul li p {
+    font-size: 1.4rem;
+    line-height: 1.14286;
+  }
+}
+/* line 101, ../../../app/assets/stylesheets/views.scss */
+ul.categories {
+  padding: 1em 0 0 0;
+  width: 100%;
+}
+/* line 105, ../../../app/assets/stylesheets/views.scss */
+ul.categories li {
+  margin: 0 -2em;
+  padding: 1em 2em;
+}
+/* line 109, ../../../app/assets/stylesheets/views.scss */
+ul.categories li h2 {
+  margin: 0;
+}
+/* line 113, ../../../app/assets/stylesheets/views.scss */
+ul.categories li h2, ul.categories li p {
+  width: 65.5%;
+}
+@media (max-width: 640px) {
+  /* line 113, ../../../app/assets/stylesheets/views.scss */
+  ul.categories li h2, ul.categories li p {
+    width: auto;
+  }
+}
+/* line 121, ../../../app/assets/stylesheets/views.scss */
+ul.categories li:nth-child(odd) {
+  background-color: #f8f8f8;
+}
+/* line 127, ../../../app/assets/stylesheets/views.scss */
+ul.sub-categories {
+  padding: 0;
+}
+/* line 134, ../../../app/assets/stylesheets/views.scss */
+ul.sub-categories li {
+  border-top: solid 1px #bfc1c3;
+  float: left;
+  margin-right: 3.5%;
+  margin-bottom: 1.5em;
+  width: 31%;
+}
+/* line 141, ../../../app/assets/stylesheets/views.scss */
+ul.sub-categories li:nth-child(3n) {
+  margin-right: 0;
+}
+/* line 145, ../../../app/assets/stylesheets/views.scss */
+ul.sub-categories li:nth-child(3n+1) {
+  clear: left;
+}
+@media (max-width: 640px) {
+  /* line 134, ../../../app/assets/stylesheets/views.scss */
+  ul.sub-categories li {
+    float: none;
+    margin-right: 0;
+    width: auto;
+  }
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica");
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* CSS 3 Mixins
+
+  Add them as you need them. This should let us manage vendor prefixes in one place.
+ */
+/* Cross-browser shims
+
+  Ways of normalising properties across browsers.
+ */
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* Usage:
+   @include inline-block
+
+   or
+
+   @include inline-block("250px")
+
+   which gives a min-height to the inline-block elements.
+*/
+/* Contain floats usage:
+
+   .this-has-floated-children {
+     @extend %contain-floats;
+   }
+
+*/
+/* line 49, ../../../vendor/govuk_frontend_toolkit/stylesheets/_shims.scss */
+#local-header .header-wrapper:after, #local-header .header-wrapper .header-global:after, #local-header .header-wrapper .header-global .header-logo:after,
+#local-header .header-wrapper .header-global .site-search:after, form#search .content:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* line 12, ../../../app/assets/stylesheets/colours.scss */
+.warning {
+  color: #b10e1e;
+}
+
+/* line 15, ../../../app/assets/stylesheets/colours.scss */
+.notification {
+  color: #ffbf47;
+}
+
+/* line 17, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header {
+  background-color: #dee0e2;
+  width: 100%;
+  border-bottom: 1px solid #bfc1c3;
+}
+/* line 22, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper {
+  max-width: 990px;
+  margin: 0 auto;
+  padding: 0.5em 15px;
+}
+@media (max-width: 640px) {
+  /* line 22, ../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .header-wrapper {
+    padding: 0.5em 0;
+  }
+}
+/* line 38, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper .header-global .header-logo,
+#local-header .header-wrapper .header-global .site-search {
+  width: 49%;
+  float: left;
+}
+@media (min-width: 769px) {
+  /* line 38, ../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .header-wrapper .header-global .header-logo,
+  #local-header .header-wrapper .header-global .site-search {
+    width: 33.33%;
+  }
+}
+@media screen and (max-width: 379px) {
+  /* line 38, ../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .header-wrapper .header-global .header-logo,
+  #local-header .header-wrapper .header-global .site-search {
+    width: auto;
+    float: none;
+  }
+}
+/* line 51, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper .header-global .header-logo .content,
+#local-header .header-wrapper .header-global .site-search .content {
+  margin: 0 15px;
+}
+/* line 55, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper .header-global .header-logo {
+  margin: 5px 0 2px;
+}
+/* line 58, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper .header-global .site-search {
+  float: right;
+}
+/* line 65, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .header-wrapper .header-global .site-search .content {
+  margin: 10px 15px;
+}
+/* line 72, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header #logo {
+  float: left;
+  position: relative;
+  width: 362px;
+  height: 50px;
+  overflow: hidden;
+}
+/* line 79, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header #logo img {
+  position: absolute;
+  top: 0;
+  border: none;
+      /* scale oversized image to container bounds
+      width: 200%;
+      height: 300%;
+	*/
+}
+/* line 93, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header #logo:hover img {
+  top: -50px;
+}
+/* line 98, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .search-toggle {
+  display: none;
+}
+@media screen and (max-width: 379px) {
+  /* line 98, ../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .search-toggle {
+    display: block;
+    float: right;
+    top: 0;
+    height: 30px;
+    width: 36px;
+    padding: 0;
+    margin: 0 15px;
+    overflow: hidden;
+    text-indent: -5000px;
+    background-color: #005696;
+    background-image: url("https://assets.digital.cabinet-office.gov.uk/static/search-button.png");
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+  /* line 127, ../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .search-toggle:active {
+    top: 0;
+  }
+}
+@media only screen and (max-width: 379px) and (-webkit-min-device-pixel-ratio: 2), only screen and (max-width: 379px) and (min--moz-device-pixel-ratio: 2), only screen and (max-width: 379px) and (-o-min-device-pixel-ratio: 20 / 10), only screen and (max-width: 379px) and (min-device-pixel-ratio: 2), only screen and (max-width: 379px) and (min-resolution: 192dpi), only screen and (max-width: 379px) and (min-resolution: 2dppx) {
+  /* line 98, ../../../app/assets/stylesheets/helpers/header.scss */
+  #local-header .search-toggle {
+    background-size: 52.5px 35px;
+    background-position: 100% 50%;
+  }
+}
+/* line 132, ../../../app/assets/stylesheets/helpers/header.scss */
+#local-header .search-toggle.js-hidden {
+  display: none;
+}
+
+/* line 137, ../../../app/assets/stylesheets/helpers/header.scss */
+form#search .content {
+  position: relative;
+  background: #fff;
+  border: 1px solid #bfc1c3;
+  border-bottom: 1px solid #0b0c0c;
+}
+/* line 144, ../../../app/assets/stylesheets/helpers/header.scss */
+form#search label {
+  float: left;
+  height: 35px;
+  line-height: 35px;
+  text-indent: 15px;
+  overflow: hidden;
+  display: block;
+  margin-right: 10px;
+}
+/* line 153, ../../../app/assets/stylesheets/helpers/header.scss */
+.js-enabled form#search label {
+  float: none;
+  position: absolute;
+  left: 0;
+  top: 1px;
+  z-index: 1;
+  width: 100%;
+  margin-right: 0;
+}
+/* line 163, ../../../app/assets/stylesheets/helpers/header.scss */
+form#search input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  width: 50%;
+  min-width: 0;
+  display: block;
+  margin: 0;
+  border: 0;
+  height: 35px;
+  padding: 6px 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+/* line 179, ../../../app/assets/stylesheets/helpers/header.scss */
+form#search input#site-search-text {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.4375;
+  font-weight: 300;
+  text-transform: none;
+  position: relative;
+  padding: 6px;
+  z-index: 3;
+  background: transparent;
+}
+@media (max-width: 640px) {
+  /* line 179, ../../../app/assets/stylesheets/helpers/header.scss */
+  form#search input#site-search-text {
+    font-size: 1.4rem;
+    line-height: 1.76923;
+  }
+}
+/* line 187, ../../../app/assets/stylesheets/helpers/header.scss */
+form#search input#site-search-text.focus, form#search input#site-search-text:focus {
+  background: #fff;
+}
+/* line 194, ../../../app/assets/stylesheets/helpers/header.scss */
+.js-enabled form#search input#site-search-text {
+  width: 86%;
+  width: -webkit-calc(100% - 37px);
+  width: calc(100% - 37px);
+}
+/* line 200, ../../../app/assets/stylesheets/helpers/header.scss */
+form#search input.submit {
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  top: 0;
+  width: 35px;
+  height: 35px;
+  border: 1px solid #005696;
+  border-width: 0 0 0 1px;
+  border-left-color: #222;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  overflow: hidden;
+  text-indent: -5000px;
+  color: white;
+  background-color: #005696;
+  background-image: url("https://assets.digital.cabinet-office.gov.uk/static/search-button.png");
+  background-repeat: no-repeat;
+  background-position: 0 50%;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  /* line 200, ../../../app/assets/stylesheets/helpers/header.scss */
+  form#search input.submit {
+    background-size: 52.5px 35px;
+    background-position: 100% 50%;
+  }
+}
+/* line 235, ../../../app/assets/stylesheets/helpers/header.scss */
+form#search input.submit:hover {
+  background-color: #0073c9;
+}
+@media screen and (max-width: 379px) {
+  /* line 136, ../../../app/assets/stylesheets/helpers/header.scss */
+  form#search {
+    display: none;
+    width: 100%;
+  }
+  /* line 256, ../../../app/assets/stylesheets/helpers/header.scss */
+  form#search #site-search-text {
+    width: 80%;
+  }
+}
+/* line 260, ../../../app/assets/stylesheets/helpers/header.scss */
+form#search.js-visible {
+  display: block;
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica");
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* CSS 3 Mixins
+
+  Add them as you need them. This should let us manage vendor prefixes in one place.
+ */
+/* Cross-browser shims
+
+  Ways of normalising properties across browsers.
+ */
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* Usage:
+   @include inline-block
+
+   or
+
+   @include inline-block("250px")
+
+   which gives a min-height to the inline-block elements.
+*/
+/* Contain floats usage:
+
+   .this-has-floated-children {
+     @extend %contain-floats;
+   }
+
+*/
+/* line 49, ../../../vendor/govuk_frontend_toolkit/stylesheets/_shims.scss */
+#local-header .header-wrapper:after, #local-header .header-wrapper .header-global:after, #local-header .header-wrapper .header-global .header-logo:after,
+#local-header .header-wrapper .header-global .site-search:after, form#search .content:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* line 126, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button {
+  background-color: #006435;
+  position: relative;
+  top: 0;
+  display: -moz-inline-stack;
+  display: inline-block;
+  padding: 0.35em 0.5em 0.15em 0.5em;
+  border: none;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -webkit-box-shadow: 0 2px 0 #00180c;
+  -moz-box-shadow: 0 2px 0 #00180c;
+  box-shadow: 0 2px 0 #00180c;
+  line-height: 1.25;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  color: white;
+}
+/* line 31, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:visited {
+  background-color: #006435;
+}
+/* line 35, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:hover, .button:focus {
+  background: #004b27;
+}
+/* line 38, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:active {
+  top: 2px;
+  -webkit-box-shadow: 0 0 0 #006435;
+  -moz-box-shadow: 0 0 0 #006435;
+  box-shadow: 0 0 0 #006435;
+}
+/* line 46, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button.disabled, .button[disabled="disabled"], .button[disabled] {
+  opacity: 0.5;
+}
+/* line 48, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button.disabled:hover, .button[disabled="disabled"]:hover, .button[disabled]:hover {
+  cursor: default;
+  background-color: #006435;
+}
+/* line 52, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button.disabled:active, .button[disabled="disabled"]:active, .button[disabled]:active {
+  top: 0;
+  -webkit-box-shadow: 0 2px 0 #00180c;
+  -moz-box-shadow: 0 2px 0 #00180c;
+  box-shadow: 0 2px 0 #00180c;
+}
+/* line 65, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:hover, .button:focus, .button:visited {
+  color: white;
+}
+/* line 79, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:before {
+  content: "";
+  height: 110%;
+  width: 100%;
+  display: block;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 89, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:active:before {
+  top: -10%;
+  height: 120%;
+}
+/* line 102, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button[rel="external"]:after {
+  display: none;
+  content: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* line 130, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary {
+  background-color: #dee0e2;
+  position: relative;
+  top: 0;
+  display: -moz-inline-stack;
+  display: inline-block;
+  padding: 0.35em 0.5em 0.15em 0.5em;
+  border: none;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -webkit-box-shadow: 0 2px 0 #b5babe;
+  -moz-box-shadow: 0 2px 0 #b5babe;
+  box-shadow: 0 2px 0 #b5babe;
+  line-height: 1.25;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  color: #0b0c0c;
+}
+/* line 31, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:visited {
+  background-color: #dee0e2;
+}
+/* line 35, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:hover, .button-secondary:focus {
+  background: #d0d3d6;
+}
+/* line 38, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:active {
+  top: 2px;
+  -webkit-box-shadow: 0 0 0 #dee0e2;
+  -moz-box-shadow: 0 0 0 #dee0e2;
+  box-shadow: 0 0 0 #dee0e2;
+}
+/* line 46, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary.disabled, .button-secondary[disabled="disabled"], .button-secondary[disabled] {
+  opacity: 0.5;
+}
+/* line 48, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary.disabled:hover, .button-secondary[disabled="disabled"]:hover, .button-secondary[disabled]:hover {
+  cursor: default;
+  background-color: #dee0e2;
+}
+/* line 52, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary.disabled:active, .button-secondary[disabled="disabled"]:active, .button-secondary[disabled]:active {
+  top: 0;
+  -webkit-box-shadow: 0 2px 0 #b5babe;
+  -moz-box-shadow: 0 2px 0 #b5babe;
+  box-shadow: 0 2px 0 #b5babe;
+}
+/* line 72, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:hover, .button-secondary:focus, .button-secondary:visited {
+  color: #0b0c0c;
+}
+/* line 79, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:before {
+  content: "";
+  height: 110%;
+  width: 100%;
+  display: block;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 89, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:active:before {
+  top: -10%;
+  height: 120%;
+}
+/* line 102, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary[rel="external"]:after {
+  display: none;
+  content: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* line 134, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning {
+  background-color: #b10e1e;
+  position: relative;
+  top: 0;
+  display: -moz-inline-stack;
+  display: inline-block;
+  padding: 0.35em 0.5em 0.15em 0.5em;
+  border: none;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -webkit-box-shadow: 0 2px 0 #6a0812;
+  -moz-box-shadow: 0 2px 0 #6a0812;
+  box-shadow: 0 2px 0 #6a0812;
+  line-height: 1.25;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  color: white;
+}
+/* line 31, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:visited {
+  background-color: #b10e1e;
+}
+/* line 35, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:hover, .button-warning:focus {
+  background: #990c1a;
+}
+/* line 38, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:active {
+  top: 2px;
+  -webkit-box-shadow: 0 0 0 #b10e1e;
+  -moz-box-shadow: 0 0 0 #b10e1e;
+  box-shadow: 0 0 0 #b10e1e;
+}
+/* line 46, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning.disabled, .button-warning[disabled="disabled"], .button-warning[disabled] {
+  opacity: 0.5;
+}
+/* line 48, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning.disabled:hover, .button-warning[disabled="disabled"]:hover, .button-warning[disabled]:hover {
+  cursor: default;
+  background-color: #b10e1e;
+}
+/* line 52, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning.disabled:active, .button-warning[disabled="disabled"]:active, .button-warning[disabled]:active {
+  top: 0;
+  -webkit-box-shadow: 0 2px 0 #6a0812;
+  -moz-box-shadow: 0 2px 0 #6a0812;
+  box-shadow: 0 2px 0 #6a0812;
+}
+/* line 65, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:hover, .button-warning:focus, .button-warning:visited {
+  color: white;
+}
+/* line 79, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:before {
+  content: "";
+  height: 110%;
+  width: 100%;
+  display: block;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 89, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:active:before {
+  top: -10%;
+  height: 120%;
+}
+/* line 102, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning[rel="external"]:after {
+  display: none;
+  content: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* line 18, ../../../app/assets/stylesheets/helpers/elements.scss */
+.button {
+  background-color: #006435;
+  position: relative;
+  top: 0;
+  display: -moz-inline-stack;
+  display: inline-block;
+  padding: 0.35em 0.5em 0.15em 0.5em;
+  border: none;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -webkit-box-shadow: 0 2px 0 #00180c;
+  -moz-box-shadow: 0 2px 0 #00180c;
+  box-shadow: 0 2px 0 #00180c;
+  line-height: 1.25;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  color: white;
+  padding-bottom: 0.35em;
+}
+/* line 31, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:visited {
+  background-color: #006435;
+}
+/* line 35, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:hover, .button:focus {
+  background: #004b27;
+}
+/* line 38, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:active {
+  top: 2px;
+  -webkit-box-shadow: 0 0 0 #006435;
+  -moz-box-shadow: 0 0 0 #006435;
+  box-shadow: 0 0 0 #006435;
+}
+/* line 46, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button.disabled, .button[disabled="disabled"], .button[disabled] {
+  opacity: 0.5;
+}
+/* line 48, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button.disabled:hover, .button[disabled="disabled"]:hover, .button[disabled]:hover {
+  cursor: default;
+  background-color: #006435;
+}
+/* line 52, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button.disabled:active, .button[disabled="disabled"]:active, .button[disabled]:active {
+  top: 0;
+  -webkit-box-shadow: 0 2px 0 #00180c;
+  -moz-box-shadow: 0 2px 0 #00180c;
+  box-shadow: 0 2px 0 #00180c;
+}
+/* line 65, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:hover, .button:focus, .button:visited {
+  color: white;
+}
+/* line 79, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:before {
+  content: "";
+  height: 110%;
+  width: 100%;
+  display: block;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 89, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button:active:before {
+  top: -10%;
+  height: 120%;
+}
+/* line 102, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button[rel="external"]:after {
+  display: none;
+  content: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* line 22, ../../../app/assets/stylesheets/helpers/elements.scss */
+.button-secondary {
+  background-color: #dee0e2;
+  position: relative;
+  top: 0;
+  display: -moz-inline-stack;
+  display: inline-block;
+  padding: 0.35em 0.5em 0.15em 0.5em;
+  border: none;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -webkit-box-shadow: 0 2px 0 #b5babe;
+  -moz-box-shadow: 0 2px 0 #b5babe;
+  box-shadow: 0 2px 0 #b5babe;
+  line-height: 1.25;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  color: #0b0c0c;
+  padding-bottom: 0.35em;
+}
+/* line 31, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:visited {
+  background-color: #dee0e2;
+}
+/* line 35, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:hover, .button-secondary:focus {
+  background: #d0d3d6;
+}
+/* line 38, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:active {
+  top: 2px;
+  -webkit-box-shadow: 0 0 0 #dee0e2;
+  -moz-box-shadow: 0 0 0 #dee0e2;
+  box-shadow: 0 0 0 #dee0e2;
+}
+/* line 46, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary.disabled, .button-secondary[disabled="disabled"], .button-secondary[disabled] {
+  opacity: 0.5;
+}
+/* line 48, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary.disabled:hover, .button-secondary[disabled="disabled"]:hover, .button-secondary[disabled]:hover {
+  cursor: default;
+  background-color: #dee0e2;
+}
+/* line 52, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary.disabled:active, .button-secondary[disabled="disabled"]:active, .button-secondary[disabled]:active {
+  top: 0;
+  -webkit-box-shadow: 0 2px 0 #b5babe;
+  -moz-box-shadow: 0 2px 0 #b5babe;
+  box-shadow: 0 2px 0 #b5babe;
+}
+/* line 72, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:hover, .button-secondary:focus, .button-secondary:visited {
+  color: #0b0c0c;
+}
+/* line 79, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:before {
+  content: "";
+  height: 110%;
+  width: 100%;
+  display: block;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 89, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary:active:before {
+  top: -10%;
+  height: 120%;
+}
+/* line 102, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-secondary[rel="external"]:after {
+  display: none;
+  content: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* line 26, ../../../app/assets/stylesheets/helpers/elements.scss */
+.button-warning {
+  background-color: #b10e1e;
+  position: relative;
+  top: 0;
+  display: -moz-inline-stack;
+  display: inline-block;
+  padding: 0.35em 0.5em 0.15em 0.5em;
+  border: none;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -webkit-box-shadow: 0 2px 0 #6a0812;
+  -moz-box-shadow: 0 2px 0 #6a0812;
+  box-shadow: 0 2px 0 #6a0812;
+  line-height: 1.25;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  color: white;
+  padding-bottom: 0.35em;
+}
+/* line 31, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:visited {
+  background-color: #b10e1e;
+}
+/* line 35, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:hover, .button-warning:focus {
+  background: #990c1a;
+}
+/* line 38, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:active {
+  top: 2px;
+  -webkit-box-shadow: 0 0 0 #b10e1e;
+  -moz-box-shadow: 0 0 0 #b10e1e;
+  box-shadow: 0 0 0 #b10e1e;
+}
+/* line 46, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning.disabled, .button-warning[disabled="disabled"], .button-warning[disabled] {
+  opacity: 0.5;
+}
+/* line 48, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning.disabled:hover, .button-warning[disabled="disabled"]:hover, .button-warning[disabled]:hover {
+  cursor: default;
+  background-color: #b10e1e;
+}
+/* line 52, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning.disabled:active, .button-warning[disabled="disabled"]:active, .button-warning[disabled]:active {
+  top: 0;
+  -webkit-box-shadow: 0 2px 0 #6a0812;
+  -moz-box-shadow: 0 2px 0 #6a0812;
+  box-shadow: 0 2px 0 #6a0812;
+}
+/* line 65, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:hover, .button-warning:focus, .button-warning:visited {
+  color: white;
+}
+/* line 79, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:before {
+  content: "";
+  height: 110%;
+  width: 100%;
+  display: block;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 89, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning:active:before {
+  top: -10%;
+  height: 120%;
+}
+/* line 102, ../../../vendor/govuk_toolkit_extension/stylesheets/_buttons.scss */
+.button-warning[rel="external"]:after {
+  display: none;
+  content: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+@font-face {
+  font-family: GDS-Logo;
+  src: local("HelveticaNeue"), local("Helvetica Neue"), local("Arial"), local("Helvetica");
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+/* line 7, ../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table {
+  padding-bottom: 2em;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+/* line 13, ../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table th {
+  padding-top: 0.5em;
+  margin-top: 1em;
+  text-align: left;
+}
+/* line 19, ../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td {
+  line-height: 1.25;
+  overflow: hidden;
+  padding: 0.5em 0 0.5em 0;
+  border-top: 1px solid #dee0e2;
+}
+/* line 25, ../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td a {
+  display: block;
+  vertical-align: top;
+}
+@media (min-width: 769px) {
+  /* line 25, ../../../app/assets/stylesheets/helpers/display-table.scss */
+  .display-table td a {
+    display: inline-block;
+    width: 34%;
+  }
+}
+/* line 34, ../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td a span {
+  display: block;
+  float: left;
+}
+/* line 38, ../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td a .title {
+  width: 34%;
+  text-decoration: underline;
+}
+/* line 43, ../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td a.button {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 14px;
+  font-size: 1.4rem;
+  line-height: 1.42857;
+  font-weight: 400;
+  text-transform: none;
+}
+@media (max-width: 640px) {
+  /* line 43, ../../../app/assets/stylesheets/helpers/display-table.scss */
+  .display-table td a.button {
+    font-size: 1.2rem;
+    line-height: 1.25;
+  }
+}
+/* line 47, ../../../app/assets/stylesheets/helpers/display-table.scss */
+.display-table td span.subtitle {
+  font-family: "nta", Arial, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  font-weight: 300;
+  text-transform: none;
+  color: #6f777b;
+  text-decoration: none;
+  margin: 0;
+  width: 65%;
+}
+@media (max-width: 640px) {
+  /* line 47, ../../../app/assets/stylesheets/helpers/display-table.scss */
+  .display-table td span.subtitle {
+    font-size: 1.4rem;
+    line-height: 1.14286;
+  }
+}
+@media (min-width: 769px) {
+  /* line 47, ../../../app/assets/stylesheets/helpers/display-table.scss */
+  .display-table td span.subtitle {
+    display: inline-block;
+  }
+}

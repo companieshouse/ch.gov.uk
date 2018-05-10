@@ -1,0 +1,29 @@
+% $form.text_field    ( label => 'Building name or number',     name => $name ~ '[premises]'   );
+% $form.text_field    ( label => 'Postcode',                    name => $name ~ '[postcode]', as => 'postcode' );
+%
+
+% if ($form.errors_count) {
+           <div>
+% }
+% else {
+           <div class="link-hidden" id="hidden-<%- $name %>" data-hidden-label="Enter address manually">
+% }
+
+% $form.text_field    ( label => 'Address line 1',              name => $name ~ '[line_1]'     );
+% $form.text_field    ( label => 'Address line 2 (optional)',   name => $name ~ '[line_2]'     );
+% $form.text_field    ( label => 'Town',                        name => $name ~ '[town]'       );
+% $form.text_field    ( label => 'County or region (optional)', name => $name ~ '[county]'     );
+% $form.select_field  ( label => 'Country',                     name => $name ~ '[country]',
+%                       list  => $country_list
+%                     );
+% if ($other_country) {
+%   $form.text_field    ( label => 'Other Country', name => $name ~ '[other_country]'     );
+% }
+% if $include_care_of {
+%   $form.text_field    ( label => 'Care of (c/o) (optional)', name => $name ~ '[care_of]'   );
+% }
+% if $include_po_box {
+%   $form.text_field    ( label => 'PO box number (optional)', name => $name ~ '[po_box]'    );
+% }
+% block extend_address -> {}
+</div>

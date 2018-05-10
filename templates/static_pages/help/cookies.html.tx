@@ -1,0 +1,96 @@
+% cascade base { title => 'Cookies - Companies House service', disable_header_search => 1 }
+% around content -> {
+
+   <article class="text" id="content">
+
+      <h1 class="heading-xlarge">
+        Cookies
+      </h1>
+      <p>Companieshouse.gov.uk puts small files (known as ‘cookies’) onto your computer to collect information about how you browse the site.</p>
+
+      <p class="heading-medium">Cookies are used to</p>
+      <ul class="list-bullet">
+        <li>measure how you use the website so it can be updated and improved based on your needs</li>
+        <li>remember the notifications you’ve seen so that we don’t show them to you again</li>
+      </ul>
+
+      <p>Companieshouse.gov.uk cookies aren’t used to identify you personally.</p>
+      <p>Find out more about <a href="http://www.aboutcookies.org/" rel="external">how to manage cookies</a>.</p>
+
+      <p class="heading-medium">How cookies are used on companieshouse.gov.uk</p>
+      <p class="heading-small">Measuring website usage</p>
+      <p>We collect logs on our servers that tell us how people use this site. We do this to make sure it’s
+      meeting your needs and to understand how we could do it better. Cookies are used to give us more
+      information in these logs.</p>
+
+      <p>The logs are analysed to tell us what pages you visit, how long you are on the site, how you got here
+       and what you click on. We do not collect or store your personal information (eg your name or address)
+       so this information cannot be used to identify who you are.</p>
+      
+      <div class="panel-indent">
+        <p>We do not allow external organisations to access, use or share any of this analytics data,
+          which is stored on in-house servers.</p>
+      </div>     
+
+      <p class="heading-medium">Our analytics tools set the following cookies:</p>
+
+      <table>
+        <thead>
+          <tr>
+
+          <th>Name</th><th>Purpose</th><th>Expires</th>
+
+        </tr></thead><tbody><tr>
+
+          <td>_pk_id.*</td><td>Used to improve our understanding of how people use our website and services, through web analytics</td><td>2 Years</td>
+
+        </tr><tr>
+
+          <td>_pk_ref.*</td><td>Used to improve our understanding of how people use our website and services, through web analytics</td><td>2 Years</td>
+
+        </tr><tr>
+
+          <td>_pk_ses.*</td><td>Used to improve our understanding of how people use our website and services, through web analytics</td><td></td>
+
+        </tr>
+      </tbody>
+    </table>
+
+
+        <p class="heading-medium">Managing your current visit</p>
+
+      <table>
+
+        <thead>
+          <tr>
+
+          <th>Name</th><th>Purpose</th><th>Expires</th>
+
+        </tr></thead>
+
+        <tbody>
+          <tr>
+          <td>_SID</td><td>A session identifier. A unique random value that allows the site to recognise your movement around the site as being from one computer. Contains no personal information and cannot be used to identify a user.</td><td>When you close your browser</td>
+
+        </tr><tr>
+          <td>_FLP</td><td>Used to manage the Companies House service users sign-in journey. Contains no personal information and cannot be used to identify a user.</td><td>Persistent</td>
+
+        </tr><tr>
+          <td>_PIN</td><td>Used to manage the Companies House service users sign-in journey. Contains no personal information and cannot be used to identify a user.</td><td>When you close your browser</td>
+
+        </tr><tr>
+          <td>_ZXS</td><td>Used to manage the Companies House service users sign-in journey. Contains no personal information and cannot be used to identify a user.</td><td>When you close your browser</td>
+
+        </tr><tr>
+          <td>sft</td><td>Used to manage the users preferences during their Companies House service journey.</td><td>10 years</td>
+
+        </tr><tr>
+          <td>__prefs</td><td>Used to remember when you have seen important notices, so you do not see them again.</td><td>5 years</td>
+
+        </tr>
+      </tbody>
+    </table>
+
+      </article>
+    <!--end content-->
+% }

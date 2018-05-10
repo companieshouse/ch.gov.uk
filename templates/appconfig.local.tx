@@ -1,0 +1,118 @@
+url_sign_salt: 'dummy_url_sign_salt'
+
+: if $env.API_HOST && $env.API_KEY {
+api:
+  url: "http://<: $env.API_HOST :>"
+  key: "<: $env.API_KEY :>"
+: } else {
+  'api' key not generated
+: }
+
+: if $env.CHS_INTERNAL_API_HOST {
+queue_api:
+  url: "http://<: $env.CHS_INTERNAL_API_HOST :>"
+: } else {
+  'queue_api' key not generated
+: }
+
+identity_providers:
+: if $env.API_CLIENT_ID && $env.API_CLIENT_SECRET && $env.CH_HOST && $env.ACCOUNT_HOST {
+  companies_house:
+    client_id     : "<: $env.API_CLIENT_ID :>"
+    client_secret : "<: $env.API_CLIENT_SECRET :>"
+    redirect_uri  : 'http://<: $env.CH_HOST :>/oauth2/user/callback'
+    private_key   : "account.ch.gov.uk.private.pem"
+    authorize_url : 'http://<: $env.ACCOUNT_HOST :>/oauth2/authorise'
+    token_url     : 'http://<: $env.ACCOUNT_HOST :>/oauth2/token'
+    profile_url   : 'http://<: $env.ACCOUNT_HOST :>/user/profile'
+    home_url      : 'http://<: $env.CH_HOST :>'
+: } else {
+  'companies_house' key not generated
+: }
+
+adobeFormServer:
+  submitURL: "http://wswebdev2.orcel.internal:8080/easubmit"
+
+: if $env.CDN_HOST {
+cdn:
+  url: "<: $env.CDN_HOST :>"
+  script_dir: "<: $env.CDN_SCRIPT_DIR :>"
+: } else {
+  'cdn' key not generated
+: }
+
+: if $env.CH_PORT {
+hypnotoad:
+  listen: ['http://*:<: $env.CH_PORT :>']
+: } else {
+  'hypnotoad' key not generated
+: }
+
+: if $env.CH_MONGODB_URI {
+mongodb:
+  uri : "<: $env.CH_MONGODB_URI :>"
+: } else {
+  'mongodb' key not generated
+: }
+
+: if $env.CH_DOMAIN {
+cookie_domain:    "<:= $env.CH_DOMAIN :>"
+: }
+
+: if $env.CH_HOSTNAME {
+languages:
+  en: {host: "<:= $env.CH_HOSTNAME :>", name: "English"}
+: }
+
+: if $env.SESSION_HOST && $env.SESSION_PORT {
+session:
+  replicas: [ { cluster: [ { host: "<:= $env.SESSION_HOST :>", port: <:= $env.SESSION_PORT :> } ] } ]
+: }
+
+: if $env.ACCOUNT_HOST {
+external_url_for:
+  manage_user_details: 'http://<:= $env.ACCOUNT_HOST :>/user/account'
+  make_authcode_change: 'http://<:= $env.ACCOUNT_HOST :>/company/:company_number/authcode/change'
+: } else {
+  'external_url_for' key not generated
+: }
+
+: if $env.FH_PAGE_SIZE {
+  filing_history:
+     items_per_page: 100
+: }
+
+: if $env.ACCOUNT_HOST && $env.CH_HOST && $env.BACKEND_ADMIN_HOST {
+admin_url_for:
+  roles: http://<:= $env.ACCOUNT_HOST :>/admin/roles
+  queues: http://<:= $env.BACKEND_ADMIN_HOST :>/admin/queues
+  refresh_company: http://<:= $env.BACKEND_ADMIN_HOST :>/admin/company/
+  user_search: http://<:= $env.ACCOUNT_HOST :>/admin/user/search
+  transaction: http://<:= $env.CH_HOST :>/admin/transaction/:transaction_id
+  transaction_by_barcode: http://<:= $env.CH_HOST :>/admin/transaction-by-barcode/:barcode
+: } else {
+  'admin_url_for' key not generated
+: }
+
+: if $env.ANYCACHE_BACKEND && $env.ANYCACHE_SERVER {
+cache:
+  backend: "<:= $env.ANYCACHE_BACKEND :>"
+  server:  <:= $env.ANYCACHE_SERVER :>
+  serialiser: MojoX::Plugin::AnyCache::Serialiser::MessagePack
+  redis_protocol: Protocol::Redis::XS
+: } else {
+  'cache' key not generated
+: }
+
+: if $env.STATSD_HOST && $env.STATSD_PORT {
+statsd:
+  host: "<: $env.STATSD_HOST :>"
+  port: "<: $env.STATSD_PORT :>"
+: }
+
+: if $env.PIWIK_URL && $env.PIWIK_SITE_ID && $env.PIWIK_EMBED {
+piwik:
+  url: "<:= $env.PIWIK_URL :>"
+  site_id: <:= $env.PIWIK_SITE_ID :>
+  embed: <:= $env.PIWIK_EMBED :>
+: }

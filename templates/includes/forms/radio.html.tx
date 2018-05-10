@@ -1,0 +1,22 @@
+<fieldset class="<% if $has_errors { %>validation <%} %> group">
+   	<legend class="visuallyhidden"><% $label %></legend>
+    % if $has_errors {
+    %   for $errors->$error {
+          <span class="error-message" id="<% $error.id %>"><% $error.text %></span>
+    %   }
+    % }
+    % if $note {
+        <p class="hint"><% $note %></p>
+    % }
+    <ul>
+    % for $options->$option {
+        <li>
+        <label for="<% $option.id %>">
+        <input type="radio" id="<% $option.id %>" name="<% $name %>" value="<% $option.value %>"
+        <% if $value == $option.value { %>checked="checked"<% } %> />
+        <% $option.label %>
+        </label>
+        </li>
+    % }
+    </ul>
+</fieldset>

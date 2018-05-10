@@ -1,0 +1,44 @@
+% cascade base { title=> $company.company_name ~" - Charges (free information from Companies House)", require_js => "transactions/company/mortgage_index_view" }
+% around content -> {
+% include '/includes/company/page_header.tx'
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes -->
+<script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script>  <!-- Needed for new GDS-style radio buttons and checkboxes -->
+
+% include '/includes/company/tabs.tx' { active => 'charges-tab' };
+
+    <div class="js-only">
+        <form id="mortgage-filter" class="form grid-row">
+            <div class="column-half">
+                <h2 class="heading-medium"><% l('Filter charges') %></h2>
+
+                <fieldset>
+                    <legend class="visuallyhidden">Filter charges</legend>
+                    % for $filters -> $filter {
+                        <label id="filter-<% $filter.id %>_label" for="filter-<% $filter.id %>" class="block-label selection-button-checkbox">
+                            <input id="filter-<% $filter.id %>" name="filter" value="<% $filter.id %>" type="checkbox" <% $filter.checked ? 'checked' : '' %> />
+                                <% l($filter.name) %>
+                        </label>
+
+                        % if $~filter.count == $split_filter_at {
+                            </div>
+                            <div class="column-quarter">
+                        % }
+                    % }
+                </fieldset>
+                <input id="submit-filter" class="button js-hidden" type="submit" value="<% l('Apply filter') %>">
+        </form>
+    </div>
+    % if $no_mortgages_found != 1  {
+        <dl>
+            <dt class="heading-medium total-mortgages" id="company-mortgages"><% $mortgages.unfiltered_count %> <% $mortgages.unfiltered_count == 1 ? l('charge registered') : l('charges registered') %></dt>
+            <dd id="company-mortgages-breakdown">
+                <% $mortgages.outstanding_count %> <% l('outstanding') %>, <% $mortgages.satisfied_count %> <% l('satisfied') %>, <% $mortgages.part_satisfied_count %> <% l('part satisfied') %>
+            </dd>
+        </dl>
+    % }
+
+    <div id="mortgage-content" class="mortgages-list">
+        % include 'company/mortgages/view_content.html.tx'
+    </div>
+% }

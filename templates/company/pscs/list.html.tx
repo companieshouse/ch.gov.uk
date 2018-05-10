@@ -1,0 +1,331 @@
+% cascade base { title=> "Persons with significant control" }
+% around content -> {
+
+    % include '/includes/company/page_header.tx'
+
+    % include '/includes/company/tabs.tx' { active => 'people-tab' };
+
+    % include '/includes/company/people_tabs.tx' { active => 'pscs-tab' };
+
+    % if $exemptions  {
+         <div class="warning-overview">
+               <p id="exemption-info" class="heading-small">
+           % if $pscs.total_results == 0 {
+                The PSC information is not available because: 
+           % } else {
+                The PSC information is no longer updated at Companies House because:
+           % }
+                </p>
+             % for $exemptions.keys() -> $key {
+                 <ul class="list list-bullet">
+                     <li id="<% $exemptions[$key].exemption_type %>-exemption"> <% tl($c.exemption_lookup($exemptions[$key].exemption_type, 'exemption_description'), $exemptions[$key].items[0] ) %></li>
+                 </ul>
+             % }
+         </div>
+    % }
+
+        % if $pscs.total_results == 0 && $exemptions { 
+        % } else if $pscs.total_results == 0 {
+            <p class="text" id="no-pscs">
+            There are no persons with significant control or statements available for this company.
+        % } else {
+            <p class="heading-medium total-appointments" id="company-pscs">
+            <% $pscs.active_psc_count %>
+            % if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' { 
+                <%
+                    ln(
+                        'active person with significant control /',
+                        'active persons with significant control /',
+                        $pscs.active_psc_count
+                    )
+                %>
+            % } else {
+                <%
+                    ln(
+                        'person with significant control /',
+                        'persons with significant control /',
+                        $pscs.active_psc_count
+                    )
+                %>
+            % }
+
+            <% $pscs.active_statement_count %>
+            % if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' { 
+                <%
+                    ln(
+                        'active statement',
+                        'active statements',
+                        $pscs.active_statement_count
+                    )
+                %>
+            % } else {
+                <%
+                    ln(
+                        'statement',
+                        'statements',
+                        $pscs.active_statement_count
+                    )
+                %>
+            % }
+        % }
+    </p>
+
+
+    <div class="appointments-list">
+        % for $pscs.items -> $psc {
+            
+            % if $psc.name || $psc.description{ 
+            
+            <div class="appointment-<% $~psc.count %>">
+                % if $~psc.is_first {
+                    <h2 class="heading-medium">
+                        <span id="psc-name-<% $~psc.count %>">
+                           % if $psc.name { 
+                               <span><b><% $psc.name %></b></span>
+                           % } else {
+                                Protected person with significant control
+                           % }
+                        </span>
+                        % if $psc.ceased_on || $psc.ceased {
+                            <span id="psc-status-tag-<% $~psc.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
+                        % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed'{
+                            <span id="psc-status-tag-<% $~psc.count %>" class="status-tag font-xsmall">Active</span>
+                        % }
+                    </h2>
+                % } else {
+                    <h2 class="heading-medium heading-with-border">
+                        <span id="psc-name-<% $~psc.count %>">
+                           % if $psc.name { 
+                               <span><b><% $psc.name %></b></span>
+                           % } else {
+                                Protected person with significant control
+                           % }
+                        </span>
+                        % if $psc.ceased_on || $psc.ceased {
+                            <span id="psc-status-tag-<% $~psc.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
+                        % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed'{
+                            <span id="psc-status-tag-<% $~psc.count %>" class="status-tag font-xsmall">Active</span>
+                        % }
+                    </h2>
+                % }
+                
+                % if $psc.address {
+                    <dl>
+                        <dt id="psc-address-field-<% $~psc.count %>"><% l('Correspondence address') %></dt>
+                        <dd class="data" id="psc-address-value-<% $~psc.count %>">
+                            % $c.address_as_string( $psc.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                        </dd>
+                    </dl>
+                % }
+
+                <div class="grid-row">
+
+                    % if $psc.description {
+                         <dl class="column-half">
+                            <dd id="psc-description-<% $~psc.count %>" class="data">
+                                <% $c.psc_lookup($psc.description, 'super_secure_description') %>
+                            </dd>
+                        </dl>
+                    % } 
+ 
+                    % if $psc.notified_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Notified on') %></dt>
+                            <dd id="psc-notified-on-<% $~psc.count %>" class="data">
+                                <% $c.isodate_as_string( $psc.notified_on ) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $psc.ceased_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Ceased on') %></dt>
+                            <dd id="psc-ceased-on-<% $~psc.count %>" class="data">
+                                <% $c.isodate_as_string( $psc.ceased_on ) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $psc.date_of_birth {
+                        <dl class="column-quarter">
+                            <dt><% l('Date of birth') %></dt>
+                            <dd id="psc-date-of-birth-<% $~psc.count %>" class="data">
+                            % if ($psc._authorised_dob) {
+                                <% $c.isodate_as_string( $psc.date_of_birth ) %>
+                            % } else {
+                                <% $c.isodate_as_string( $psc.date_of_birth, "%B %Y" ) %>
+                            % }
+                            </dd>
+                        </dl>
+                    % }
+                    
+                    % if $psc.nationality {
+                        <dl class="column-quarter">
+                            <dt><% l('Nationality') %></dt>
+                            <dd id="psc-nationality-<% $~psc.count %>" class="data">
+                                <% $psc.nationality %>
+                            </dd>
+                        </dl>
+                    % }
+
+
+                </div> <%# /grid-row%>
+
+
+                <div class="grid-row">
+                        % if $psc.identification.legal_authority {
+                            <dl class="column-half">
+                                <dt><% l('Governing law') %></dt>
+                                <dd id="psc-legal-authority-<% $~psc.count %>" class="data">
+                                    <% $psc.identification.legal_authority %>
+                                </dd>
+                            </dl>
+                        % }
+
+                        % if $psc.identification.legal_form {
+                            <dl class="column-half">
+                                <dt><% l('Legal form') %></dt>
+                                <dd id="psc-legal-form-<% $~psc.count %>" class="data">
+                                     <% $psc.identification.legal_form %>
+                                </dd>
+                            </dl>
+                        % }
+
+                    </div> <%# /grid-row %>
+                    
+                    <div class="grid-row">
+
+                        % if $psc.identification.place_registered {
+                            <dl class="column-half">
+                                <dt><% l('Place registered') %></dt>
+                                <dd id="psc-place-registered-<% $~psc.count %>" class="data">
+                                    <% $psc.identification.place_registered %>
+                                </dd>
+                            </dl>
+                        % }
+
+                        % if $psc.identification.registration_number {
+                            <dl class="column-half">
+                                <dt><% l('Registration number') %></dt>
+                                <dd id="psc-registration-number-<% $~psc.count %>" class="data">
+                                    <% $psc.identification.registration_number %>
+                                </dd>
+                            </dl>
+                        % }
+
+
+
+                    </div> <%# /grid-row %>
+ 
+
+
+                <div class="grid-row">
+
+                % if $psc.natures_of_control {
+                        <dl class="column-two-thirds">
+                            <dt><% l('Nature of control') %></dt>
+                            % for $psc.natures_of_control -> $noc {
+                            <dd id="psc-noc-<% $~psc.count %>" class="data">
+                                <% $c.psc_lookup($noc, 'short_description') %>
+                            </dd>
+                            % }
+                        </dl>
+                    % }
+
+
+                    % if $psc.country_of_residence {
+                        <dl class="column-third">
+                            <dt><% l('Country of residence') %></dt>
+                            <dd id="psc-country-of-residence-<% $~psc.count %>" class="data">
+                                <% $psc.country_of_residence %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $psc.identification.country_registered {
+                        <dl class="column-third">
+                            <dt><% l('Incorporated in') %></dt>
+                            <dd id="psc-country-registered-<% $~psc.count %>" class="data">
+                                <% $psc.identification.country_registered %>
+                            </dd>
+                        </dl>
+                    % }
+
+
+
+                </div> <%# /grid-row %>
+                
+
+            </div>
+
+            % } 
+            
+            % if $psc.statement {
+
+            <div class="appointment-<% $~psc.count %>">
+                % if $~psc.is_first {
+                    <h2 class="heading-medium">
+                        <span id="psc-statement-label-<% $~psc.count %>">
+                            Statement
+                        </span>
+                        % if $psc.ceased_on {
+                            <span id="statement-status-tag-<% $~psc.count %>" class="status-tag ceased-tag font-xsmall">Withdrawn</span>
+                        % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed'{
+                            <span id="statement-status-tag-<% $~psc.count %>" class="status-tag font-xsmall">Active</span>
+                        % }
+                    </h2>
+                % } else {
+                    <h2 class="heading-medium heading-with-border">
+                        <span id="psc-statement-label-<% $~psc.count %>">
+                            Statement
+                        </span>
+                        % if $psc.ceased_on {
+                            <span id="statement-status-tag-<% $~psc.count %>" class="status-tag ceased-tag font-xsmall">Withdrawn</span>
+                        % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed'{
+                            <span id="statement-status-tag-<% $~psc.count %>" class="status-tag font-xsmall">Active</span>
+                        % }
+                    </h2>
+                % }
+
+                <div class="grid-row">
+                    
+                         <dl class="column-half">
+                            <dd id="psc-statement-<% $~psc.count %>" class="data">
+                            % if $psc.statement_6_flag {
+                                <% tl($c.psc_lookup($psc.statement, 'statement_description'), $psc) %>
+                            % } else {
+                                <% $c.psc_lookup($psc.statement, 'statement_description') %>
+                            % }
+                            </dd>
+                        </dl>
+                     % if $psc.notified_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Notified on') %></dt>
+                            <dd id="psc-statement-notified-on-<% $~psc.count %>" class="data">
+                                <% $c.isodate_as_string($psc.notified_on) %>
+                            </dd>
+                        </dl>
+
+                        % }
+ 
+                    % if $psc.ceased_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Withdrawn on') %></dt>
+                            <dd id="psc-statement-ceased-on-<% $~psc.count %>" class="data">
+                                <% $c.isodate_as_string($psc.ceased_on) %>
+                            </dd>
+                        </dl>
+
+                        % }
+               
+
+                    </div> <%# /grid-row %>
+                </div>
+
+
+            % }
+
+        % }
+    </div>
+
+% }

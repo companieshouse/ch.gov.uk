@@ -1,0 +1,12 @@
+<p class="text">
+	Current address
+	<br />
+    % if $care_of_name {
+        <% l('c/o') %> <% $care_of_name %>,
+    % }
+    % if $po_box {
+        <% l('PO Box') %> <% $po_box %>,
+    % }
+
+	% $old_address;
+</p>

@@ -1,0 +1,36 @@
+% cascade base { title => 'File abridged accounts - Companies House service', disable_header_search => 1, user_bar => false }
+% around content -> {
+
+<ul>
+    <li><a href="/" class="link-back">Back</a></li>
+</ul>
+
+<div class="text">
+    <header>
+        <h1 class="heading-xlarge">File abridged accounts</h1>
+    </header>
+
+    <p>You can now file abridged accounts here too. While we develop this new service, you should continue to use <a href="https://www.gov.uk/government/organisations/companies-house/about/about-our-services#webfiling">WebFiling<span class="visuallyhidden"> Link opens in new tab/window</span></a> for other types of accounts.</p>
+
+    <h2 class="heading-medium">How to use the service</h2>
+    <p>You'll need to:</p>
+
+    <ul class="list list-bullet">
+        <li>enter your company name or number in <a href="/">‘Search the register’<span class="visuallyhidden"> Link opens in new tab/window</span></a></li>
+        <li>select ‘File for this company’ on the company overview page</li>
+        <li>sign in or register to Companies House</li>
+        <li>enter your company authentication code</li>
+        <li>select ‘File accounts’</li>
+    </ul>
+
+    <h2 class="heading-medium">Signing in</h2>
+
+    <p>If you normally use WebFiling to file your accounts, you won’t be able to use your WebFiling sign-in details here. You’ll have to register for a new password for the new service.</p>
+
+    <p>Your company authentication code won’t change.</p>
+
+    <h3 class="heading-small">Get help</h3>
+    <p>If you need any help with the service, please <a href="/help/contact-us">contact us<span class="visuallyhidden"> Link opens in new tab/window</span></a>.</p>
+</div><!--end text-->
+
+% }

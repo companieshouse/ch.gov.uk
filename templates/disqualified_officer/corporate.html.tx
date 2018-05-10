@@ -1,0 +1,27 @@
+<header class="text">
+    <h1 class="heading-xlarge"><% $name %></h1>
+</header>
+
+<div class="disqualifications">
+
+    <div class="grid-row">
+
+        % if $company_number {
+            <dl class="column-quarter">
+                <dt><% l('Company number') %> </dt>
+                <dd class="data">
+                    <% $company_number %>
+                </dd>
+            </dl>
+        % }
+
+        % if $country_of_registration {
+            <dl class="column-quarter">
+                <dt><% l('Country of registration') %> </dt>
+                <dd class="data">
+                    <% $country_of_registration %>
+                </dd>
+            </dl>
+        % }
+
+    </div>

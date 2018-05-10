@@ -1,0 +1,162 @@
+% cascade base { title=> $company.company_name ~" - Registered Members (free information from Companies House)"}
+% around content -> {
+    % include '/includes/company/page_header.tx'
+    % include '/includes/company/tabs.tx' { active => 'register-tab' };
+
+    <ol role="breadcrumb" class="breadcrumb">
+        <li><a id="charges-index" href="/company/<% $company_number %>/registers"><% l('Registers') %></a></li>
+        <li><% l('Register of members') %></li>
+    </ol>
+    <div class="appointments-list">
+        % for $members.items -> $member {
+            <div class="appointment-<% $~member.count %>">
+                % if $~member.is_first {
+                    <h2 class="heading-medium">
+                        <span id="member-name-<% $~member.count %>">
+                            <a href="<% $member.links.officer.appointments %>"><% $member.name %></a>
+                        </span>
+                    </h2>
+                % } else {
+                    <h2 class="heading-medium heading-with-border">
+                        <span id="member-name-<% $~member.count %>">
+                            <a href="<% $member.links.officer.appointments %>"><% $member.name %></a>
+                        </span>
+                    </h2>
+                % }
+
+                <dl>
+                    <dt id="member-address-field-<% $~member.count %>"><% l('Correspondence address') %></dt>
+                    <dd class="data" id="member-address-value-<% $~member.count %>">
+                        % $c.address_as_string( $member.address, { include_care_of => 1, title_case_care_of => 1 } )
+                    </dd>
+                </dl>
+
+                <div class="grid-row">
+                    % if $member.date_of_birth {
+                        <dl class="column-quarter">
+                            <dt><% l('Date of birth') %></dt>
+                            <dd id="member-date-of-birth-<% $~member.count %>" class="data">
+                                <% $c.isodate_as_string( $member.date_of_birth ) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $member.appointed_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Appointed on') %></dt>
+                            <dd id="member-appointed-on-<% $~member.count %>" class="data">
+                                <% $c.isodate_as_string( $member.appointed_on ) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $member.country_of_residence {
+                        <dl class="column-quarter">
+                            <dt><% l('Country of residence') %></dt>
+                            <dd id="member-country-of-residence-<% $~member.count %>" class="data">
+                                <% $member.country_of_residence %>
+                            </dd>
+                        </dl>
+                    % }
+
+                </div> <%# /grid-row%>
+
+                % if $member.identification.identification_type == 'non-eea' {
+                    <h3 class=""><% l('Registered in a Non European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this") %>?</a></h3>
+                % }
+                % else if $member.identification.identification_type == 'eea' {
+                    <h3 class=""><% l('Registered in a European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this") %>?</a></h3>
+                % }
+
+                <div class="grid-row">
+                    % if $member.identification.legal_authority {
+                        <dl class="column-quarter">
+                            <dt><% l('Law governed') %></dt>
+                            <dd id="member-legal-authority-<% $~member.count %>" class="data">
+                                <% $member.identification.legal_authority %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $member.identification.legal_form {
+                        <dl class="column-quarter">
+                            <dt><% l('Legal form') %></dt>
+                            <dd id="member-legal-form-<% $~member.count %>" class="data">
+                                <% $member.identification.legal_form %>
+                            </dd>
+                        </dl>
+                    % }
+                    % if $member.identification.place_registered {
+                        <dl class="column-quarter">
+                            <dt><% l('Placed registered') %></dt>
+                            <dd id="member-register-location-<% $~member.count %>" class="data">
+                                <% $member.identification.place_registered %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+
+                <div class="grid-row">
+                    % if $member.identification.registration_number {
+                        <dl class="column-quarter">
+                            <dt><% l('Registration number') %></dt>
+                            <dd id="member-registration-number-<% $~member.count %>" class="data">
+                                <% $member.identification.registration_number %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+
+            % if ($member.former_names) {
+                <div class="grid-row">
+                  <dl class="column-two-thirds">
+                      <dt>Previous names</dt>
+            %         for $member.former_names -> $former_name {
+                          <dd class="data" id="">
+                              <% ucfirst (lc($former_name.forenames)) %> <% ucfirst (lc($former_name.surname)) %><br>
+                          </dd>
+            %         }
+                  </dl>
+                </div>
+            % }
+          </div>
+        % }
+        % else {
+            <h2 class="heading-small">
+                There are no active members 
+            </h2>
+        % }
+    </div>
+
+    % if $members.total_results > $paging.entries_per_page {
+        <ul class="pager">
+            % if ($paging.previous_page) {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $paging.previous_page %>">
+                        Previous
+                    </a>
+                </li>
+            % }
+            % for $paging.page_set -> $page {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $page %>">
+                        % if $paging.current_page_number == $page {
+                            <strong>
+                                <% $page %>
+                            </strong>
+                        % } else {
+                            <% $page %>
+                        %}
+                    </a>
+                </li>
+            % }
+            % if ($paging.next_page) {
+                <li>
+                    <a class="page" href="<% $c.url_for %>?page=<% $paging.next_page %>">
+                        Next
+                    </a>
+                </li>
+            % }
+        </ul>
+    %}
+% }

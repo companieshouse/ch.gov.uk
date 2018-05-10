@@ -1,0 +1,11 @@
+% cascade base {title => "Submitted JSON document", searchpage => 1, classes=>"search ancillary", disable_header_search => 1}
+
+% around content -> {
+    % include includes::page_header {title => $title}
+
+    <div id="resource">Resource: <% $resource_name %></div>
+
+    <div class="json">
+        <pre><code><% $data_json %></code></pre>
+    </div>
+% }

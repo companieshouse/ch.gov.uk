@@ -1,0 +1,20 @@
+% cascade base { title => 'Registered office address undeliverable - Companies House service', searchpage => 1, disable_header_search => 1 }
+% around content -> {
+    <article class="text">
+                <h1 class="heading-xlarge">
+                         Registered office address undeliverable
+                </h1>
+                <p>Companies House have received returned mail from this registered office address.</p>
+
+                <p>Check the address displayed.</p>
+
+                <p>If the address is wrong select the ‘Change address’ link and update the information.</p>
+
+                <p>It is important to keep the address up to date as the company must be able to deal with all official letters and notices.</p>
+
+                <p>If the address is correct, email <a href="mailto:enquiries@companieshouse.gov.uk">enquiries@companieshouse.gov.uk</a> and the marker can be removed.</p>
+    </article>
+% }
+
+
+

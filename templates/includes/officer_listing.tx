@@ -1,0 +1,29 @@
+<table id="officerTable" class="full-width-table">
+    <tr>
+        <th><% l('Name') %></th>
+        <th><% l('Role') %></th>
+        <th><% l('Appointed on') %></th>
+        <th><% l('Date of birth') %></th>
+    </tr>
+    % for $officers->$officer {
+    <tr>
+        <td id="officer-name-<% $~officer.count %>">
+            <% $officer.name %>
+        </td>
+        <td id="officer-role-<% $~officer.count %>">
+            <% #Temporary fix until api enumerations model is implemented
+                $c.cv_lookup('officer_role', $officer.officer_role) %>
+        </td>
+        <td id="officer-appointed-on-<% $~officer.count %>">
+            <% $c.isodate_as_short_string( $officer.appointed_on ) %>
+        </td>
+        <td id="officer-date-of-birth-<% $~officer.count %>">
+            % if ($officer._authorised_dob) {
+                <% $c.isodate_as_string( $officer.date_of_birth, "%d %b %Y" ) %>
+            % } else {
+                <% $c.isodate_as_string( $officer.date_of_birth, "%B %Y" ) %>
+            % }
+        </td>
+    </tr>
+    % }
+</table>

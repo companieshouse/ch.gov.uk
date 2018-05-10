@@ -1,0 +1,32 @@
+% # List of date documents for each insolvency case type. The order of the dates
+% # in each list determines the order they will be displayed on the screen.
+%
+
+% my $date_fields = {
+%    "compulsory-liquidation"                     => [ "petitioned-on", "wound-up-on", "concluded-winding-up-on", "dissolved-on", 'due-to-be-dissolved-on' ],
+%    "creditors-voluntary-liquidation"            => [ "wound-up-on", "due-to-be-dissolved-on", "dissolved-on" ],
+%    "members-voluntary-liquidation"              => [ "wound-up-on", "due-to-be-dissolved-on", "dissolved-on", "declaration-solvent-on" ],
+%    "in-administration"                          => [ "administration-started-on", "administration-ended-on", "dissolved-on" ],
+%    "corporate-voluntary-arrangement"            => [ "voluntary-arrangement-started-on", "voluntary-arrangement-ended-on" ],
+%    "corporate-voluntary-arrangement-moratorium" => [ "moratorium-started-on" ],
+%    "administration-order"                       => [ "administration-started-on", "administration-discharged-on" ],
+%    "receiver-manager"                           => [ "instrumented-on" ],
+%    "administrative-receiver"                    => [ "instrumented-on" ],
+%    "foreign-insolvency"                         => [ ],
+% };
+
+% # display case dates for a insolvency case
+% for $date_fields[$case_type]->$field {
+%    for $case_dates->$date {
+%        if $date.type == $field { 
+%            display_date($date.type, $date.date, $case_number);
+%        }
+%    }
+% }
+
+% macro display_date -> $type, $date, $case_number{
+    <dl class="column-quarter">
+	    <dt id="<% $type %>_title_<% $case_number %>"><% l($c.cv_lookup('insolvency_case_date_type', $type)) %></dt>
+	    <dd id="<% $type %>_date_<% $case_number %>" class="data"><% $date %></dd>
+    </dl>
+% }

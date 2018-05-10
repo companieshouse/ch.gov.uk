@@ -1,0 +1,5 @@
+<header class="text">
+	<h1 class="heading-xlarge" id="page-header">
+	<% $title %>
+	</h1>
+</header>

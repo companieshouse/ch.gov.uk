@@ -1,0 +1,14 @@
+% cascade base { title => 'Server error' }
+
+% around content -> {
+    <header class="text">
+        <h1 class="heading-xlarge">
+            Sorry we are experiencing technical difficulties
+        </h1>
+    </header>
+    <article class="text">
+            <p>Try again in a few moments.</p>
+            <p>If this problem continues email <a href="mailto:enquiries@companieshouse.gov.uk<% if $exception_id { %>?subject=CHS website exception <% $exception_id %><% } %>">enquiries@companieshouse.gov.uk</a>.</p>
+    </article>
+</div>
+% }

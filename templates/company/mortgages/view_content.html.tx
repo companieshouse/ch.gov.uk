@@ -1,0 +1,118 @@
+% if $no_mortgages_found == 1  { # no results
+    <p id="no-mortgage-results" class="text">
+        <%
+            ln(
+                'There are no outstanding or part satisfied charges available for this company.',
+                $selected_filters_count
+            )
+        %>
+    </p>
+% } else { # results
+    % for $mortgages.items->$charge {
+        <div class="mortgage-<%$~charge.index + 1%>">
+
+            % if defined $charge.charge_code {
+                <h2 class="heading-medium<% if $~charge.index > 0 { ' heading-with-border' }%>">
+                    <a id="mortgage-heading-<% $~charge.index + 1%>" href="<% $charge.links.self %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 4]);"<% } %>><% l('Charge code') %> <% $charge.charge_code %></a>
+                </h2>
+            % } else {
+                <h2 class="heading-medium<% if $~charge.index > 0 { ' heading-with-border' }%>">
+                    <a id="mortgage-heading-<% $~charge.index + 1%>" href="<% $charge.links.self %>"><% $charge.classification.description %></a>
+                </h2>
+            % }
+
+            <div class="grid-row">
+                % if defined $charge.created_on {
+                    <dl class="column-quarter">
+                        <dt id="mortgage-created-on-label-<% $~charge.index + 1%>"><% l('Created') %></dt>
+                        <dd class="data" id="mortgage-created-on-<%$~charge.index + 1%>"><% $charge.created_on %></dd>
+                    </dl>
+                % }
+
+                % if defined $charge.delivered_on {
+                    <dl class="column-quarter">
+                            <dt id="mortgage-delivered-on-label-<% $~charge.index + 1%>"><% l('Delivered') %></dt>
+                        <dd class="data" id="mortgage-delivered-on-<%$~charge.index + 1%>"><% $charge.delivered_on %></dd>
+                    </dl>
+                % }
+
+                <dl class="column-half">
+                    <dt id="mortgage-status-label-<% $~charge.index + 1%>"><% l('Status') %></dt>
+                    <dd class="data" id="mortgage-status-<%$~charge.index + 1%>">
+                        <% l($c.md_lookup('status', $charge.status)) %>
+                        % if ($charge.status == 'satisfied' || $charge.status == 'fully-satisfied') && defined $charge.satisfied_on {
+                            <span class="normal"><% l('on') %></span> <% $charge.satisfied_on %>
+                        % }
+                    </dd>
+                </dl>
+            </div>
+
+            <div class="text">
+                % if defined $charge.charge_code && $charge.classification.type == 'nature-of-charge' {
+                    <h3 class="heading-small" id="nature-of-charge-label-<% $~charge.index + 1%>"><% l('Nature of charge') %></h3>
+                    <p id="nature-of-charge-<%$~charge.index + 1%>"><% $charge.classification.description %></p>
+                % }
+
+                 % if defined $charge.assets_ceased_released {
+                    <h3 class="heading-small" id="assets-ceased-released-label-<%$~charge.index + 1%>"><% l('Assets ceased/released') %></h3>
+                    <p id="assets-ceased-released-<%$~charge.index + 1%>"><% l($c.md_lookup('assets-ceased-released', $charge.assets_ceased_released ))%></p>
+                % }
+
+                % if $charge.persons_entitled.size() > 0 {
+                    <h3 class="heading-small" id="mortgage-persons-entitled-label-<% $~charge.index + 1%>"><% l('Persons entitled') %></h3>
+
+                    <ul id="persons-entitled-<%$~charge.index + 1%>">
+                        % for $charge.persons_entitled->$person {
+                            <li id="persons-entitled-<% $~person.index + 1 %>-charge-<%$~charge.index + 1%>"><% $person.name %></li>
+                        % }
+                    </ul>
+
+                    % if $charge.more_than_four_persons_entitled {
+                        <br />
+                        <span class="font-xsmall" id="mortgage-more-than-4-persons-entitled-<%$~charge.index + 1%>">
+                            <% l('There are more than four persons entitled to the charge. Please see the deed to view their names.') %>
+                        </span>
+                    % }
+                % }
+
+                % if defined $charge.particulars_label && defined $charge.particulars_string {
+                    <h3 class="heading-small" id="mortgage-particulars-label-<% $~charge.index + 1%>"><% l($charge.particulars_label) %></h3>
+                    <p id="mortgage-particulars-<%$~charge.index + 1%>"><% $charge.particulars_string %><% if $charge.particulars_string_trimmed == 1 { %>&hellip;<% } %></p>
+                % }
+
+
+            </div>
+        </div>
+    % }
+    % if $mortgages.total_count > $entries_per_page {
+            <ul class="pager">
+                % if ($previous_page) {
+                    <li>
+                        <a id="previousButton" class="page" href="<% $c.url_with.query([ page => $previous_page ]) %>" data-page="<% $previous_page %>">
+                            Previous
+                        </a>
+                    </li>
+                % }
+                % for $page_set -> $page {
+                    <li>
+                        <a id="pageNo<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>" data-page="<% $page %>">
+                            % if $current_page_number == $page {
+                                <strong>
+                                    <% $page %>
+                                </strong>
+                            % } else {
+                                <% $page %>
+                            % }
+                        </a>
+                    </li>
+                % }
+                % if ($next_page) {
+                    <li>
+                        <a id="nextButton" class="page" href="<% $c.url_with.query([ page => $next_page ]) %>" data-page="<% $next_page %>">
+                            Next
+                        </a>
+                    </li>
+                % }
+            </ul>
+    % }
+% }

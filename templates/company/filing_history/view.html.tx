@@ -1,0 +1,146 @@
+% cascade base { title => $company.company_name ~" - Filing history (free information from Companies House)", classes => "filing-history", require_js => "transactions/company/filing_history_view" }
+%# a widget/block that allows a) "Show form type" to be toggled on/off b) results to be filtered by category
+% block category_console -> {
+        <form class="form">
+            <div class="form-group form-group-block">
+                <div class="block-label selection-button-checkbox">
+                    <label for="show-filing-type">
+                        <input
+                            id="show-filing-type"
+                            type="checkbox"<% $show_filing_type ? ' checked' : '' %> />
+                        <% l('Show filing type') %>
+                    </label>
+                </div>
+                <div class="form-group form-group-block filters">
+                    <h2 class="filter-by-category-heading">
+                        Filter by category
+                    </h2>
+                    <fieldset>
+                        <legend class="visuallyhidden">Filter by category</legend>
+                        % for $available_categories.kv() -> $category { # sorted by key
+                            % my $id   = $category.key;
+                            % my $name = $category.value;
+
+                            <div class="block-label selection-button-checkbox">
+
+                                <label for="filter-category-<% $id %>">
+                                    <input
+                                       id="filter-category-<% $id %>"
+                                       name="category"
+                                       value="<% $id %>"
+                                       type="checkbox"
+                                       <% $selected_categories[$id] ? 'checked' : '' %> />
+                                    <% l($name) %>
+                                </label>
+                            </div>
+                        % }
+                    </fieldset>
+                    <input id="submit-filter-by-category" class="button js-hidden" type="submit" value="<% l('Apply filter') %>"/>
+                </div>
+            </div>
+        </form>
+% }
+
+% around content -> {
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+     <script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes -->
+     <script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script>  <!-- Needed for new GDS-style radio buttons and checkboxes -->
+
+
+    % include '/includes/company/page_header.tx'
+    % include '/includes/company/tabs.tx' { active => 'filing-history-tab' };
+
+% if $company.type == "uk-establishment" {
+<div class="grid-row">
+    <dl class="column-two-thirds">
+    <dt>
+    % l('Transactions are available from the filing history of the overseas company ')
+      </dt>
+      <dd class="text data" id="parent_company_link">
+<a href="<%'/company/' ~ $company.branch_company_details.parent_company_number ~ '/filing-history' %>" id="parent_number_link"><%($company.branch_company_details.parent_company_name)%></a>
+    </dd>
+      </dl>
+</div>
+% } else {
+    % if $company_filing_history.total_count > 0 || $selected_category_count > 0 {
+        <div class="js-only">
+            <form id="filing-history-filter" class="form grid-row font-xsmall">
+                <div class="column-quarter">
+                    <h2 class="heading-medium">Filter by category</h2>
+                    <label for="show-filing-type" class="block-label selection-button-checkbox">
+                        <input id="show-filing-type" type="checkbox"<% $show_filing_type ? ' checked' : '' %> />
+                        <strong><% l('Show filing type') %></strong>
+                    </label>
+                </div>
+                <br>
+                % if $disable_confirmation_statement_filter {
+                    <div class="column-third">
+                        <fieldset>
+                            <legend class="visuallyhidden">Confirmation statement filters</legend>
+                            % for $categories -> $category {
+                                % if $category.id == "confirmation-statement" {
+                                    <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small">
+                                        <input id="filter-category-<% $category.id %>" name="category" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
+                                        <% l('Annual returns') %>
+                                    </label>
+                                % } else {
+                                    <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small">
+                                        <input id="filter-category-<% $category.id %>" name="category" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
+                                        <% l($category.name) %>
+                                    </label>
+                                % }
+
+                                % if $~category.count == $split_category_at {
+                                    </div>
+                                    <div class="column-third">
+                                % }
+                            % }
+                        </fieldset>
+                        <input id="submit-filter-by-category" class="button js-hidden" type="submit" value="<% l('Apply filter') %>"/>
+                    </div>
+                % } else {
+                    <div class="column-quarter">
+                        <fieldset>
+                            <legend class="visuallyhidden">Confirmation statement filters</legend>
+                            % for $categories -> $category {
+                                <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small">
+                                    <input id="filter-category-<% $category.id %>" name="category" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
+                                    <% l($category.name) %>
+                                </label>
+
+                                % if $~category.count == $split_category_at {
+                                    </div>
+                                    <div class="column-half">
+                                % }
+                            % }
+                        </fieldset>
+                        <input id="submit-filter-by-category" class="button js-hidden" type="submit" value="<% l('Apply filter') %>"/>
+                    </div>
+                % }
+            </form>
+        </div>
+    % }
+        % if $company_filing_history.total_count == 0 && $selected_category_count == 0 {
+            % my $fh_status = $company_filing_history.filing_history_status;
+
+            <p id="infoMessage" class="text">
+                <% tl( $c.fhe_lookup($fh_status )) %>
+            </p>
+            <%
+                if ( $fh_status == 'filing-history-available' ||
+                    $fh_status == 'filing-history-available-no-images-limited-partnership-from-1988' ||
+                    $fh_status == 'filing-history-available-limited-partnership-from-2014' ||
+                    $fh_status == 'filing-history-available-assurance-company-before-2004' ) {
+            %>
+                <p id="noFilingsMessage" class="text">
+                    <% l('Sorry, no filings are available for this company.') %>
+                </p>
+                % }
+
+        % } else {
+                <div id="filing-history-content">
+                    % include 'company/filing_history/view_content.html.tx'
+                </div>
+        % }
+    %}
+% }

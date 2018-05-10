@@ -1,0 +1,14 @@
+% cascade base { title => 'Transaction', searchpage => 1, disable_header_search => 1 }
+
+% around content -> {
+    <a class="link-back" id="back-button" href="javascript:history.back()">Back</a>
+
+    % include includes::page_header {title => $title ~ ' ' ~ $transaction_id}
+
+    % if !$transaction {
+        <p><strong>Transaction not found.</strong></p>
+    % } else {
+        % include '/includes/transaction.tx'
+    % }
+
+% }

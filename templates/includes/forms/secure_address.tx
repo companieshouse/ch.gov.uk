@@ -1,0 +1,14 @@
+% cascade "includes/forms/address.tx";
+%
+% around extend_address -> {
+%
+    % if $secure_for == 'director' {
+            <div class="link-hidden" id="hidden-home-address-exemption" data-hidden-label="Has the director been granted exemption from disclosing their home address?">
+    %       $form.checkbox      ( label => "I confirm that an SR04 form has been submitted to apply for exemption to not disclose the director's home/residential address to credit reference agencies.", name => 'home_address_exempt' );
+            </div>
+    % } elsif $secure_for == 'member' {
+    %   $form.checkbox      ( label => "I confirm that an SR04 form has been submitted to apply for exemption to not disclose the member's home/residential address to credit reference agencies.", name => 'home_address_exempt' );
+    % } else {
+    %   $form.hidden_field ( name => $name ~ '[secure_ind]', value => 'N' );
+    % }
+% }

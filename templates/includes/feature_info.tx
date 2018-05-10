@@ -1,0 +1,22 @@
+<div class="column-third">
+    <h2 class="heading-medium">Current features include</h2>
+    <ul class="list list-bullet">
+      <li><a href="/accounts/guidance">File abridged accounts</a><sup class="label phase-tag">New</sup></li>
+      <li>Change a registered office address</a><sup class="label phase-tag">New</sup></li>
+      <li>View company data and document images</li>
+      <li>Search for disqualified directors</li>
+      <li>Follow companies</li>
+    </ul>
+</div>
+<div class="column-third">
+    <h2 class="heading-medium">Planned features</h2>
+    <ul class="list-bullet">
+        <li><a href="/help/other-filings">Other document filings</a></li>
+    </ul>
+</div>
+<div class="column-third">
+    <h2 class="heading-medium">Other useful tools</h2>
+    <ul class="list list-bullet">
+      <li><a href="/company-name-availability" target="_blank">Company name availability checker<span class="visuallyhidden">Link opens in new window</span></a></li>
+    </ul>
+</div>

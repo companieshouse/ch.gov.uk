@@ -1,0 +1,10 @@
+% cascade base { title => 'Your filings ', disable_header_search => 1 }
+
+% around content -> {
+
+% include includes::transactions {transactions => $recent_filings}
+
+% if !$recent_filings {
+    <p class="text" id="no-filings-text">You have not filed anything on Companies House beta service.</p>
+% }
+% }

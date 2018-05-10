@@ -1,0 +1,78 @@
+% cascade base { title=> "Company Name Availability Checker - Companies House", classes=>"profile", disable_header_search => 1 }
+% around content -> {
+        
+        <div class="column-full-width">
+                <h1 class="main-title left" id="start-searching"">
+                    <label for="site-search-text" class="heading-xlarge">
+                        Company name availability checker
+                    </label>
+                </h1>
+
+                <p>Enter proposed company name</p>
+
+            <form id="name-availability-search" action="/company-name-availability" method="get" accept-charset="utf-8" role="name-availability-search" class="search-header js-search-hash">
+
+                <div class="searchfield">
+                    <input type="search" autocomplete="off" name="q" id="company-name-availability-search-text" title="Search" value="<% $query %>" placeholder="Search" autofocus="autofocus" class="js-search-focus" />
+                    <button type="submit" id="search-submit" class="search-submit">Search</button>
+                    <p id="slowsearch" class="slow-search-msg" style="display:none">Please press ENTER to search</p>
+                </div>
+            </form>
+        </div>
+
+     <div class="grid-row">
+            <div class="column-two-thirds">
+
+              <div class="js-tabs">
+                <h2 class="heading-small"><% $message | raw %></h2>
+                <!--<h2 class="heading-small">The following are considered to be the "same as" your chosen name so would prevent it being registered:</h2>-->
+
+              </div>
+
+              <article id="services-information-results" class="text">
+
+                <h2 class="visuallyhidden">All results</h2>
+                % if $total_results == 0 {
+                    <h2 class="heading-small">
+                        No exact company name matches found for "<% $query | uc %>"
+                    </h2>
+                    <p>
+                        <a target="_blank" href="https://www.gov.uk/register-a-company-online">
+                            Register a private limited company online
+                            <span class="visuallyhidden">Link opens in a new window</span>
+                        </a>
+                    </p>
+
+                % } elsif $total_results > 0 {
+                
+                    <h2 class="heading-small">
+                        The company name "<b><% $query | uc %></b>" is considered to be the 'same as' the existing names shown below:
+                    </h2>
+
+                % }
+
+                % if $show_error {
+
+                    <h2 class="heading-small">
+                        Companies House are unable to check the availability of this name online, please telephone our Contact Centre on 
+                        +44 (0) 303 1234 500.
+                    </h2>
+    
+                % } 
+                        
+                <ul id="results" class="results-list">
+                  % for $companies.items -> $item {
+                    <li class="type-company">
+                        <h3>
+                            <% $item.title | mark_raw %>
+                        </h3>
+                        <p><% $item.description | mark_raw %></p>
+                        <p><% $item.snippet | mark_raw %></p>
+                        <p><% $c.cv_lookup('company_type', $item.company_type) %></p>
+                    </li>
+                    %}                        
+                </ul>
+        </div>
+    </div>
+
+% }

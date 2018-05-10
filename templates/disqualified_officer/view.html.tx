@@ -1,0 +1,137 @@
+% cascade base { title => $name ~ ' - Disqualification Details (free disqualification information from Companies House)' }
+
+% around content -> {
+
+        % if $is_corporate_officer {
+              % include '/disqualified_officer/corporate.html.tx'
+        % } else {
+              % include '/disqualified_officer/natural.html.tx'
+        % }
+
+        <hr class="section">
+        <h2 class="heading-large">Disqualifications</h2>
+        <div class="disqualification">
+            % for $disqualifications -> $disqualification {
+                <h2 class="heading-medium">
+                    <% $c.disqualified_officer_description_lookup( 'disqualification_type', $disqualification.disqualification_type ) %>
+                    % if $disqualification.heard_on {
+                        (<% $c.isodate_as_string($disqualification.heard_on) %>)
+                    % }
+                    % else if $disqualification.undertaken_on {
+                        (<% $c.isodate_as_string($disqualification.undertaken_on) %>)
+                    % }
+                </h2>
+                <dl class="">
+                    <dt>Address provided by the disqualifying authority</dt>
+                    <dd class="data"><% $c.address_as_string( $disqualification.address ) %></dd>
+                </dl>
+                <div class="grid-row">
+                    <dl class="column-third">
+                        <dt>Start date</dt>
+                        <dd class="data"><% $c.isodate_as_string( $disqualification.disqualified_from ) %></dd>
+                    </dl>
+                    <dl class="column-third">
+                        <dt>End date</dt>
+                        <dd class="data"><% $c.isodate_as_string( $disqualification.disqualified_until ) %></dd>
+                    </dl>
+                </div>
+                <div class="grid-row">
+                    % if $disqualification.case_identifier {
+                        <dl class="column-third">
+                            <dt>Case Reference</dt>
+                            <dd class="data"><% $disqualification.case_identifier %></dd>
+                        </dl>
+                    % }
+                    % if $disqualification.court_name {
+                        <dl class="column-third">
+                            <dt>Court</dt>
+                            <dd class="data"><% $disqualification.court_name %></dd>
+                        </dl>
+                    % }
+                </div>
+                % if $disqualification.company_names {
+                    <dl class="text">
+                        <dt>Disqualified for conduct while acting for</dt>
+                        <dd class="data">
+                            <ul class="list-bullet">
+                                % for $disqualification.company_names -> $company_name {
+                                    <li><% $company_name %></li>
+                                % }
+                            </ul>
+                        </dd>
+                    </dl>
+                % }
+                % if $disqualification.reason {
+                    <dl class="text">
+                        <dt>Reason</dt>
+                        % if $disqualification.reason.section {
+                            <dd class="data"><% $c.disqualified_officer_description_lookup('act', $disqualification.reason.act) ~ ' (Section ' ~ $disqualification.reason.section ~ '): ' ~ $c.disqualified_officer_description_lookup('description_identifier', $disqualification.reason.description_identifier) %></dd>
+                        % } else if $disqualification.reason.article {
+                            <dd class="data"><% $c.disqualified_officer_description_lookup('act', $disqualification.reason.act) ~ ' (Article ' ~ $disqualification.reason.article ~ '): ' ~ $c.disqualified_officer_description_lookup('description_identifier', $disqualification.reason.description_identifier) %></dd>
+                        % }
+                    </dl>
+                % }
+                % if $disqualification.last_variation {
+                    <h3 class="heading-small margin-top-0">Variation of disqualification</h3>
+                    <div class="">
+                        <div class="column">
+                            <table class="full-width-table">
+                                <thread>
+                                      <tr>
+                                            <th scope="col">Date of variation</th>
+                                            <th scope="col">Case reference</th>
+                                            <th scope="col">Court</th>
+                                      </tr>
+                                </thread>
+                                      <tbody>
+                                      <tr>
+                                            <td> <% $c.isodate_as_string( $disqualification.last_variation.varied_on ) %> </td>
+                                            <td> <% $disqualification.last_variation.case_identifier %> </td>
+                                            <td> <% $disqualification.last_variation.court_name %> </td>
+                                      </tr>
+                                      </tbody>
+                            </table>
+                        </div>
+                    </div>
+                % } elsif !$~disqualification.is_last {
+                    <hr class="exemption">
+                % }
+            % }
+        </div>
+        % if $exemptions {
+            <hr class="section">
+            <h2 class="heading-large leadin">Exemptions</h2>
+            <p class="leadin">Permission has been granted by the court to act for the following company(s)</p>
+            <div class="exemptions">
+            % for $exemptions -> $exemption {
+                <div class="exemption">
+                % for $exemption.company_names -> $company_name {
+                    <h3 class="heading-medium margin-top-0"><% $company_name %> </h3>
+                    <div class="grid-row">
+                        <dl class="column-third">
+                            <dt>Start Date</dt>
+                            <dd class="data"><% $c.isodate_as_string( $exemption.granted_on )%> </dd>
+                        </dl>
+                        <dl class="column-third">
+                            <dt>End Date</dt>
+                            <dd class="data"> <% $c.isodate_as_string( $exemption.expires_on ) %> </dd>
+                        </dl>
+                        % if $exemption.court_name {
+                            <dl class="column-third">
+                                <dt>Court</dt>
+                                <dd class="data"> <% $exemption.court_name%> </dd>
+                            </dl>
+                        % }
+                    </div>
+                    % if !$~company_name.is_last {
+                        <hr class="exemption">
+                    % }
+                % }
+                </div>
+                % if !$~exemption.is_last {
+                    <hr class="exemption">
+                % }
+            % }
+        % }
+    </div>
+% }

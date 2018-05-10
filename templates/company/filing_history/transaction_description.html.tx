@@ -1,0 +1,84 @@
+%# this mini-macro returns a (space-prefixed) class list which handles the boilerplate of associating
+%# an element's visibility with the "Show filing type" checkbox.
+%# TODO for sprintf (and other Perl builtins): add Text::Xslate::Bridge::Star to CH::MojoX::Plugin::Xslate
+% macro sft_toggled -> { ' sft-toggled' ~ ($show_filing_type ? '' : ' js-hidden') }
+
+<% tl($item.description_values.description) || tl($c.fhd_lookup($item.description), $item.description_values)  %>
+% if $item.description_values.capital {
+   <ul>
+    % for $item.description_values.capital -> $capital_data {
+    %    if ( ! $capital_data.date || ($item.description == 'capital-cancellation-treasury-shares-with-date-currency-capital-figure' || 'second-filing-capital-cancellation-treasury-shares-with-date-currency-capital-figure')) {
+            <li><% $capital_data.currency %> <% $capital_data.figure %></li>
+    %    }
+    %    else {
+            <li><% $capital_data.currency %> <% $capital_data.figure %> on <% $capital_data.date %></li>
+    %    }
+    % }
+   </ul>
+% }
+% if $item.description_values.alt_capital {
+   <ul>
+   % for $item.description_values.alt_capital -> $capital_data {
+   %     if $~capital_data.index == 0 {
+             <% tl($c.fhd_lookup($capital_data.description), $capital_data) %>
+   %     }
+         <li><% $capital_data.currency %> <% $capital_data.figure %>  <% if $capital_data.date { %> on <% $c.isodate_as_string($capital_data.date) %> <% } %></li>
+   % }
+   </ul>
+% }
+% if $item.associated_filings {
+    % for $item.associated_filings -> $associated_item {
+    %   if $associated_item.description_values.capital {
+        <br />
+        <% tl($c.fhd_lookup($associated_item.description), $associated_item.description_values) %>
+        <ul>
+        % for $associated_item.description_values.capital -> $capital_data {
+           <li><% $capital_data.currency %> <% $capital_data.figure %></li>
+        % }
+        </ul>
+    %   }
+    %   else {
+        <ul class="list-bullet">
+            <li>
+                <span class="child-doc-type<% sft_toggled() %>">
+                    <% $associated_item.type %> &#8208;
+                </span>
+                <%
+                    tl($associated_item.description_values.description) ||
+                    tl($c.fhd_lookup($associated_item.description), $associated_item.description_values)
+                %>
+            </li>
+        </ul>
+        % }
+    % }
+% }
+% if $item.resolutions {
+    <ul class="list-bullet">
+        % for $item.resolutions -> $resolution {
+            <li>
+                <span class="child-doc-type<% sft_toggled() %>">
+                    <% $resolution.type %> &#8208;
+                </span>
+                <%
+                    tl($resolution.description_values.description) ||
+                    tl($c.fhd_lookup($resolution.description), $resolution.description_values)
+                %>
+            </li>
+        % }
+    </ul>
+% }
+% if $item.annotations {
+    <ul class="list-bullet">
+        % for $item.annotations -> $annotation {
+            <li>
+                <span class="child-doc-type<% sft_toggled() %>">
+                    <% l("ANNOTATION") %>
+                </span>
+                <%
+                    tl($annotation.description_values.description) ||
+                    tl($c.fhd_lookup($annotation.description), $annotation.description_values)
+                %>
+            </li>
+        % }
+    </ul>
+% }

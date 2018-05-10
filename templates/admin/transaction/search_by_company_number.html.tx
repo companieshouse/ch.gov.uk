@@ -1,0 +1,10 @@
+% my $title = 'Transactions for company number'
+% cascade base {title => $title, disable_header_search => 1}
+
+% around content -> {
+    % include includes::transactions {title => $title ~ ' ' ~ $search}
+
+    % if !$transactions {
+        <p><strong>No results found.</strong></p>
+    % }
+% }

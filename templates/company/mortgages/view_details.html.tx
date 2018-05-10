@@ -1,0 +1,209 @@
+% cascade base { title=> "Charge", , require_js => "transactions/company/mortgage_details_view" }
+% around content -> {
+% include '/includes/company/page_header.tx'
+
+% include '/includes/company/tabs.tx' { active => 'charges-tab' };
+
+<ol role="breadcrumb" class="breadcrumb">
+    <li><a id="charges-index" href="/company/<% $company_number %>/charges"><% l('Charges') %></a></li>
+    <li>
+        % if defined $charge.charge_code {
+            <% l('Charge code') %> <% $charge.charge_code %>
+        % } else {
+            <% $charge.breadcrumb %><% if $charge.breadcrumb_trimmed == 1 { %>&hellip;<% } %>
+        % }
+    </li>
+</ol>
+
+% if defined $charge.charge_code {
+    <header>
+        <h2 id="mortgage-heading" class="heading-large">
+            <span class="heading-secondary"><% l('Charge code') %></span> <% $charge.charge_code %>
+        </h2>
+    </header>
+% } else {
+    <header class="text">
+        <h2 id="mortgage-heading" class="<% if $charge.use_medium_heading { ' heading-medium' } else { 'heading-large' }%>">
+            <% $charge.classification.description %>
+        </h2>
+    </header>
+% }
+
+<div class="grid-row">
+    % if defined $charge.created_on {
+        <dl class="column-quarter">
+            <dt id="mortgage-created-on-label"><% l('Created') %></dt>
+            <dd class="data" id="mortgage-created-on"><% $charge.created_on %></dd>
+        </dl>
+    % }
+
+    % if defined $charge.delivered_on {
+        <dl class="column-quarter">
+            <dt id="mortgage-delivered-on-label"><% l('Delivered') %></dt>
+            <dd class="data" id="mortgage-delivered-on"><% $charge.delivered_on %></dd>
+        </dl>
+    % }
+
+    <dl class="column-half">
+        <dt id="mortgage-status-label"><% l('Status') %></dt>
+        <dd class="data" id="mortgage-status">
+            <% l($c.md_lookup('status', $charge.status)) %>
+            % if ($charge.status == 'satisfied' || $charge.status == 'fully-satisfied') && defined $charge.satisfied_on {
+                <span class="normal"><% l('on') %></span> <% $charge.satisfied_on %>
+            % }
+        </dd>
+    </dl>
+</div>
+
+<div class="grid-row">
+        <dl class="column-half">
+            <dt id="mortgage-created-label"><% l('Transaction Filed') %></dt>
+            <dd class="data">
+                % if defined $charge.creation_transaction.filing_type {
+                    <span id="mortgage-created-type"><% l($c.md_lookup('filing_type', $charge.creation_transaction.filing_type)) %></span>
+                <br />
+                % }
+            </dd>
+            <ul>
+                % if defined $charge.creation_transaction.resource_url {
+                    <a href="<% $c.url_for('filing_history_document', filing_history_id => $charge.creation_transaction.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="mortgage-created-link">View PDF<span class="visuallyhidden"> for <% l($c.md_lookup('filing_type', $charge.creation_transaction.filing_type)) %></span></a><% if ($charge.creation_transaction.pages) { %> (<% ln('%d page', '%d pages', $charge.creation_transaction.pages) %>)<% } %>
+                % } else {
+                    <span id="no-image-link">Image unavailable</span>
+                % }
+            </ul>
+        </dl>
+
+    % if defined $charge.acquired_on {
+        <dl class="column-quarter">
+            <dt id="mortgage-acquired-on-label"><% l('Acquisition date') %></dt>
+            <dd class="data" id="mortgage-acquired-on"><% $charge.acquired_on %></dd>
+        </dl>
+    % }
+</div>
+
+<div class="text">
+    % if defined $charge.charge_code && $charge.classification.type == 'nature-of-charge' {
+        <h3 class="heading-small" id="nature-of-charge-label"><% l('Nature of charge') %></h3>
+        <p id="nature-of-charge"><% $charge.classification.description %></p>
+    % }
+
+    % if defined $charge.assets_ceased_released {
+        <h3 class="heading-small" id="assets-ceased-released-label"><% l('Assets ceased/released') %></h3>
+        <p id="assets-ceased-released"><% l($c.md_lookup('assets-ceased-released', $charge.assets_ceased_released ))%></p>
+    % }
+
+    % if $charge.persons_entitled.size() > 0 {
+        <h3 class="heading-small" id="mortgage-persons-entitled-label"><% l('Persons entitled') %></h3>
+
+        <ul id="persons-entitled">
+            % for $charge.persons_entitled->$person {
+                <li id="persons-entitled-<% $~person.index + 1 %>"><% $person.name %></li>
+            % }
+        </ul>
+
+        % if $charge.more_than_four_persons_entitled {
+            <br />
+            <span class="font-xsmall" id="mortgage-more-than-4-persons-entitled">
+                <% l('There are more than four persons entitled to the charge. Please see the deed to view their names.') %>
+            </span>
+        % }
+    % }
+
+    % if defined $charge.secured_details {
+        <h3 class="heading-small" id="mortgage-amount-secured-label"><% l($c.md_lookup('secured-details-description', $charge.secured_details.type)) %></h3>
+        <p id="mortgage-amount-secured"><% $charge.secured_details.description %></p>
+    % }
+
+    % if defined $charge.particulars_label {
+        <h3 class="heading-small" id="mortgage-particulars-label"><% l($charge.particulars_label) %></h3>
+        <p>
+            % if defined $charge.particulars && defined $charge.particulars.description {
+                <span id="mortgage-particulars"><% $charge.particulars.description %></span><br />
+            % }
+            % if $charge.particulars.contains_fixed_charge {
+                <span id="contains-fixed-charge"><% l($c.md_lookup('particular-flags', 'contains_fixed_charge')) %>.</span><br />
+            % }
+            % if $charge.particulars.contains_floating_charge {
+                <span id="contains-floating-charge"><% l($c.md_lookup('particular-flags', 'contains_floating_charge')) %>.</span><br />
+            % }
+            % if $charge.particulars.floating_charge_covers_all {
+                <span id="floating-charge-covers-all"><% l($c.md_lookup('particular-flags', 'floating_charge_covers_all')) %>.</span><br />
+            % }
+            % if $charge.particulars.contains_negative_pledge {
+                <span id="contains-negative-pledge"><% l($c.md_lookup('particular-flags', 'contains_negative_pledge')) %>.</span><br />
+            % }
+            % if $charge.particulars.chargor_acting_as_bare_trustee {
+                <span id="chargor-acting-as-bare-trustee"><% l($c.md_lookup('particular-flags', 'chargor_acting_as_bare_trustee')) %>.</span>
+            % }
+        </p>
+    % }
+
+    % if $charge.scottish_alterations.has_restricting_provisions {
+        <h3 class="heading-small" id="mortgage-restricting-provisions-label"><% l('Restricting provisions') %></h3>
+        <p id="mortgage-restricting-provisions"><% l('Companies are expressly prohibited from creating subsequent fixed securities having priority over or ranking equally with the floating charge') %></p>
+    % }
+
+    % if $charge.show_alterations_statement {
+        <h3 class="heading-small" id="mortgage-alterations-label"><% l('Alterations') %></h3>
+        <p id="mortgage-alterations"><% l('Alterations have been applied to this charge') %></p>
+    % }
+
+</div>
+
+% if $charge.transactions.size() > 0 {
+    <h3 class="heading-medium" id="additional-filings-label"><% l('Additional transactions filed against this charge') %></h3>
+    <table>
+        <caption class="visuallyhidden">Additional transactions filed against this charge (PDF links open in a new window)</caption>
+        <tbody>
+            <tr>
+                <th><% l('Type') %><span class="visuallyhidden">(of transaction)</span></th>
+                <th><% l('Delivered') %><span class="visuallyhidden">(to Companies House on this date)</span></th>
+                <th><% l('View / Download') %><span class="visuallyhidden">(PDF file, link opens in new window)</span></th>
+                % if $charge.show_insolvency_column {
+                    <th><% l('Insolvency case') %><span class="visuallyhidden">(link opens in same window)</span></th>
+                % }
+            </tr>
+            % for $charge.transactions->$filing {
+                <tr>
+                    <td>
+                        <span id="additional-filing-type-<% $~filing.index + 1 %>"><% l($c.md_lookup('filing_type', $filing.filing_type)) %></span>
+                    </td>
+                    <td>
+                        % if defined $filing.delivered_on {
+                            <span id="additional-filing-date-<% $~filing.index + 1 %>"><% $filing.delivered_on %></span>
+                        % }
+                    </td>
+                    <td>
+                        % if defined $filing.resource_url {
+                            <a href="<% $c.url_for('filing_history_document', filing_history_id => $filing.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="mortgage-created-link">View PDF<span class="visuallyhidden"> for <% l($c.md_lookup('filing_type', $filing.filing_type)) %></span></a><% if ($filing.pages) { %> (<% ln('%d page', '%d pages', $filing.pages) %>)<% } %>
+                        % } else {
+                            <span id="no-image-link">Image unavailable</span>
+                        % }
+                    </td>
+                    % if $charge.show_insolvency_column {
+                        <td>
+                            % if defined $filing.links.insolvency_case {
+                                <a href="<% $filing.links.insolvency_case %>" id="additional-filing-insolvency-link-<% $~filing.index + 1 %>"><% l('View case') %></a>
+                            % }
+                        </td>
+                    % }
+                </tr>
+            % }
+        </tbody>
+    </table>
+% }
+
+% if $charge.insolvency_cases.size() > 0 {
+    <h3 class="heading-medium" id="insolvency-cases-label"><% l('Insolvency cases against this charge') %></h3>
+    <ul class="list-bullet">
+        % for $charge.insolvency_cases->$insolvency_case {
+            % if defined $insolvency_case.links && defined $insolvency_case.links.case {
+                <li>
+                    <a id="insolvency-case-<% $~insolvency_case.index + 1 %>" href="<% $insolvency_case.links.case %>"><% l('Insolvency case') %> <% $insolvency_case.case_number %></a>
+                </li>
+            % }
+        % }
+    </ul>
+% }
+
+% }

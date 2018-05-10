@@ -1,0 +1,27 @@
+<header class="text">
+    <h1 class="heading-xlarge"><% $name %></h1>
+</header
+
+<div class="disqualifications">
+
+    <div class="grid-row">
+
+        % if $date_of_birth {
+            <dl class="column-quarter">
+                <dt><% l('Date of birth') %></dt>
+                <dd class="data">
+                    <% $c.isodate_as_string( $date_of_birth ) %>
+                </dd>
+            </dl>
+        % }
+
+        % if $nationality {
+            <dl class="column-quarter">
+                <dt><% l('Nationality') %></dt>
+                <dd class="data">
+                    <% $nationality %>
+                </dd>
+            </dl>
+        % }
+
+    </div>

@@ -1,0 +1,23 @@
+% cascade base { title => 'Error page' }
+
+% around content -> {
+    <article class="text">
+        <p class="heading-xlarge">
+            <span id="error-description">
+                % if $description {
+                    <% $description %>
+                % } else {
+                    <% $c.config.errors.default[$error] %>
+                % }
+            </span> - error <span id="error-code"><% $status %></span>
+        </p>
+                
+        <p>Check that you have entered the correct web address or try using the search.</p>
+            % if $check_your_filings {
+                <p>Check 'Your Filings' for the progress of the transaction.</p>
+            % }
+            <p><% l('If you still can\'t find what you\'re looking for email ') %><a href="mailto:enquiries@companieshouse.gov.uk">enquiries@companieshouse.gov.uk</a><% l(' and include the error code above.') %></p>
+        </div>
+    </article>
+</div>
+% }

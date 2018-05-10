@@ -1,0 +1,163 @@
+<div class="your-filings">
+<div class="one-filing rejected">
+    <h2 class="heading-medium">
+        <a id="company-name" href="/company/<% $transaction.company_number %>"><% $transaction.company_name %> </a>
+        <span id="company-number">Company number <Strong><% $transaction.company_number %></Strong></span>
+    </h2>
+
+    <div class="grid-row">
+        <div class="column-third column-description" id="description">
+            Description<strong id="description"><% $transaction.description %></strong>
+
+            % if $c.has_admin_permissions {
+                <br>
+                <div class-"column-third">
+                    % if $transaction.created_by.email {
+                        Email <strong id="email"><% $transaction.created_by.email %></strong>
+                    % }
+                </div>
+            % }
+
+            % if $c.can_do('/admin/transaction-lookup') {
+                <td><a class="admin-link" id="view-transaction" href="<% $c.url_for('admin_transaction_details', transaction_number => $transaction.id) %>"> View transaction</a></td>
+            % }
+        </div>
+            <div class="column-third column-reference" id="reference-number">
+                Reference number<strong><% $transaction.id %></strong>
+            </div>
+            % if $transaction.status == "open" {
+                <div class="column-third column-status" id="status">
+                    Status<strong> Incomplete </strong>
+                </div>
+          % } else if $transaction.status == "closed" && !$transaction.filings {
+                <div class="column-third column-status" id="status">
+                    Status<strong> Processing </strong>
+                </div>
+          % } else {
+                <div class="column-third column-received_on" id="received-on">
+                    Received on <strong><% $transaction.closed_at_date %> at <% $transaction.closed_at_time %></strong>
+                </div>
+          % }
+      </div>
+      <!--grid-row-->
+    <div>
+
+    % if $transaction.filings {
+        <table id="rf_table">
+            <thead>
+                <tr>
+                    <th class="description"></th>
+                    <th class="status">Status</th>
+                    <th class="status">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                % for $transaction.filings.kv() -> $filing {
+                    <tr>
+                        % if $filing.value.status == "accepted" {
+
+                            <td id = "submission-description-<% $~filing.count %>"><% $filing.value.description %>
+                                % if $c.can_do('/admin/transaction-lookup') {
+                                    <br><a class="admin-link" id="view-json-<% $~filing %>" href="<% $c.url_for('admin_transaction_resource_details').query(transaction_id => $transaction.id, submission_id=>$filing.key) %>"> View JSON </a></td>
+                                % }
+                            </td>
+                            <td id = "submission-status-<% $~filing.count %>"><strong class="status">Accepted</strong></td>
+                            <td id = "view-submission-<% $~filing.count %>">
+
+                            % if $c.can_do('/admin/transaction-lookup') {
+                                % if $filing.value.type != 'registered-office-address' {
+                                  <div id="widget">
+                                      <a class="render-accounts-document" href="#"> View </a>
+                                      <div id="status-widget" class="widget-footer hidden">
+                                      <div id="status">
+                                        <div id="process-spinner" class="process-spinner"></div>
+                                        <span id="process-status" class="process-status">Status: in-progress</span>
+                                      </div>
+                                      <input type="hidden" id="document-data" data-resource-url="<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html" data-user-id="<% $c.user_id %>"/>
+                                    </div>
+                                % }
+                             % }
+                          </td>
+
+                        % } else if $filing.value.status == "processing" {
+
+                            <td id = "submission-description-<% $~filing.count %>"><% $filing.value.description %>
+                                % if $c.can_do('/admin/transaction-lookup') {
+                                    <br><a class="admin-link" id="view-json-<% $~filing %>" href="<% $c.url_for('admin_transaction_resource_details').query(transaction_id => $transaction.id, submission_id=>$filing.key) %>"> View JSON </a></td>
+                                % }
+                            </td>
+
+                            <td id = "submission-status-<% $~filing.count %>"><strong class="status">Processing</strong></td>
+                            <td id = "view-submission-<% $~filing.count %>">
+                            % if $c.can_do('/admin/transaction-lookup') {
+                              % if $filing.value.type != 'registered-office-address' {
+                                  <div id="widget">
+                                    <a class="render-accounts-document" href="#"> View </a>
+                                    <div id="status-widget" class="widget-footer hidden">
+                                    <div id="status">
+                                      <div id="process-spinner" class="process-spinner"></div>
+                                      <span id="process-status" class="process-status">Status: in-progress</span>
+                                    </div>
+                                    <input type="hidden" id="document-data" data-resource-url="<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html" data-user-id="<% $c.user_id %>"/>
+                                  </div>
+                              % }
+                            % }
+                            </td>
+
+                        % } else {
+
+                            <td class="rejected-type" id="submission-description-<% $~filing.count %>"><% $filing.value.description %>
+                                % if $c.can_do('/admin/transaction-lookup') {
+                                    <br><a class="admin-link" id="view-json-<% $~filing %>" href="<% $c.url_for('admin_transaction_resource_details').query(transaction_id => $transaction.id, submission_id=>$filing.key) %>"> View JSON </a>
+                                % }
+                                % if $filing.value.reject_reasons {
+                                <details>
+
+                                    <summary><span class="summary id = "why-was-this-rejected">Why was this rejected?</span></summary>
+                                    <div class="panel panel-border-narrow" id="reject-reasons-<% $~filing.count %>">
+                                        <ul class="list list-bullet font-xsmall">
+                                            % for $filing.value.reject_reasons-> $reject_reason {
+                                                % for $reject_reason.kv() -> $reason {
+                                                % if $reason.key() == "english" {
+                                                    <li id = "transaction-<% $~filing.count %>-reject-reason-<% $~reject_reason.count %>"><% $reason.value %></li>
+                                                % }
+                                                % }
+                                            % }
+                                        </ul>
+                                    </div>
+                                </details>
+                                % }
+                            </td>
+                            <td>
+                                <div class="notice" id = "transaction-<% $~filing.count %>-submission-status-<% $~filing.count %>">
+                                    <i class="icon icon-important" id="icon-important-<% $~filing.count %>"><span class="visually-hidden">Warning</span></i>
+                                    <strong class="bold-small">Rejected</strong>
+                                </div>
+                            </td>
+                            <td>
+                            % if $c.can_do('/admin/transaction-lookup') {
+                              % if $filing.value.type != 'registered-office-address' {
+                                  <div id="widget">
+                                    <a class="render-accounts-document" href="#"> View </a>
+                                    <div id="status-widget" class="widget-footer hidden">
+                                    <div id="status">
+                                      <div id="process-spinner" class="process-spinner"></div>
+                                      <span id="process-status" class="process-status">Status: in-progress</span>
+                                    </div>
+                                    <input type="hidden" id="document-data" data-resource-url="<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html" data-user-id="<% $c.user_id %>"/>
+                                  </div>
+                                % }
+                              % }
+                            </td>
+
+                            % }
+                        </tr>
+                      % }
+                  </tbody>
+              </table>
+              % }
+          </div>
+          <div id="download-button"></div>
+      </div>
+  </div>
+% }
