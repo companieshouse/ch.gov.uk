@@ -17,7 +17,7 @@ sub search_by_company_number {
 
     $self->stash(search => $company_number);
 
-    $self->ch_api->company($company_number)->transactions->get->on(
+    $self->ch_api->private->company($company_number)->transactions->get->on(
         success => sub {
             my ($api, $tx) = @_;
 
