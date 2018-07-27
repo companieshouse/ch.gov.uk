@@ -73,7 +73,7 @@
                                         <div id="process-spinner" class="process-spinner"></div>
                                         <span id="process-status" class="process-status">Status: in-progress</span>
                                       </div>
-                                      <input type="hidden" id="document-data" data-resource-url="<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html" data-user-id="<% $c.user_id %>"/>
+                                      <input type="hidden" id="document-data" data-resource-url="/private<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html" data-user-id="<% $c.user_id %>"/>
                                     </div>
                                 % }
                              % }
@@ -98,7 +98,7 @@
                                       <div id="process-spinner" class="process-spinner"></div>
                                       <span id="process-status" class="process-status">Status: in-progress</span>
                                     </div>
-                                    <input type="hidden" id="document-data" data-resource-url="<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html" data-user-id="<% $c.user_id %>"/>
+                                    <input type="hidden" id="document-data" data-resource-url="/private<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html" data-user-id="<% $c.user_id %>"/>
                                   </div>
                               % }
                             % }
@@ -144,7 +144,7 @@
                                       <div id="process-spinner" class="process-spinner"></div>
                                       <span id="process-status" class="process-status">Status: in-progress</span>
                                     </div>
-                                    <input type="hidden" id="document-data" data-resource-url="<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html" data-user-id="<% $c.user_id %>"/>
+                                    <input type="hidden" id="document-data" data-resource-url="/private<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html" data-user-id="<% $c.user_id %>"/>
                                   </div>
                                 % }
                               % }
