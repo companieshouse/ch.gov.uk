@@ -29,8 +29,14 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="feedback-email"><strong>What is your email address?</strong> (optional) </label>
-                <input autocomplete="off" id ="feedback-email" class="form-control" name="customer_email" type="email" value="">
+                <input autocomplete="off" id="feedback-email" class="form-control" name="customer_email" type="email" value="">
             </div>
+            % if ! $c.config.disable_feedback_form_authcode_field {
+                <div class="form-group" id="auth-form-group">
+                    <label class="form-label" id="auth-code-label" for="feedback-auth"><strong>Enter these characters to prove you're not a robot </strong></label>
+                    <input autocomplete="off" id="feedback-auth" class="form-control form-control-1-8" required name="customer_auth" type="numbers" value="">
+                </div>
+            % }
             <input type="submit" class="button" id="submit-report" value="Submit report">
         </fieldset>
         </form>

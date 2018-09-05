@@ -105,6 +105,8 @@ display_image_disabled_message: <IMAGE_DISABLED_MESSAGE>
 image_disabled_message_header: <IMAGE_DISABLED_MESSAGE_HEADER>
 image_disabled_message_text: <IMAGE_DISABLED_MESSAGE_TEXT>
 
+disable_feedback_form_authcode_field: <DISABLE_FEEDBACK_FORM_AUTHCODE_FIELD>
+
 disable_feedback_form: <DISABLE_FEEDBACK_FORM>
 monitor:
   api_url: <CHS_MONITOR_API_LOCAL_URL>
