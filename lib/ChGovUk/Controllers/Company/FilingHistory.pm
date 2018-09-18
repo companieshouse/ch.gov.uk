@@ -47,11 +47,6 @@ sub view {
     $self->stash->{image_service_active} = $self->can_view_images;
     # FIXME: ^^^ Remove this when Doc API goes live (and in template) ^^^
 
-    # FIXME: vvv Remove this when XBRL is working (and in template) vvv
-    my $disable_download_xhtml_link = $self->config->{disable_download_xhtml_link} || 0;
-    $self->stash(disable_download_xhtml_link => $disable_download_xhtml_link);
-    # FIXME: ^^^ Remove this when XBRL is working (and in template) ^^^
-
     # FIXME: remove this when confirmation-statement goes live - also in template
     my $confirmation_statement_available_date = $self->config->{confirmation_statement_available_date} || '2016-06-30';
 

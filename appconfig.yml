@@ -93,8 +93,6 @@ feature:
 
 image_service_start_date: <IMAGE_SERVICE_START_DATE>
 
-disable_download_xhtml_link: <DISABLE_DOWNLOAD_XHTML_LINK>
-
 recently_filed_days: <RECENTLY_FILED_DAYS>
 
 unavailable_date: <UNAVAILABLE_DATE>
