@@ -37,7 +37,7 @@
 
                         <form method="post" action="<% $c.url_for('admin_transaction_reprocess', transaction_number => $transaction.id) %>">
                             <div class="form-group">
-                                <input type="submit" id="reprocess" name="reprocess" class="admin-link" value="Reprocess transaction" class="button">
+                                <input type="submit" id="reprocess" name="reprocess" class="admin-link" value="Reprocess transaction">
                             </div>
                         </form>
                         
