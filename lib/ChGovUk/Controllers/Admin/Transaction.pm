@@ -240,8 +240,50 @@ sub transaction_json {
 
     $self->_get_new_transaction($delay, $delay->begin(0));
 }
+
 #-------------------------------------------------------------------------------
 
+sub transaction_reprocess {
+    my ($self) = @_;
+    
+    $self->render_later;
+    
+    my $transaction_id = $self->stash('transaction_number');
+    
+    $self->ch_api->private->transactions($transaction_id)->reprocess->create->on(
+        success => sub {
+            my ($api, $tx) = @_;
+            
+            return $self->render;
+        },
+        failure => sub {
+            my ($api, $tx) = @_;
+            my $error_code = $tx->error->{code} // 0;
+            my $error_message = $tx->error->{message};
+            
+            my $message;
+            
+            if (defined $error_code and $error_code == 403) {
+                $message = sprintf 'Transaction [%s] - Failed to reprocess non-closed transaction [%s]: [%s]', $transaction_id, $error_code, $error_message;
+            } else {
+                $message = sprintf 'Transaction [%s] - Failure occurred reprocessing transaction [%s]: [%s]', $transaction_id, $error_code, $error_message;
+            }
+            
+            error $message [ADMIN TRANSACTION_REPROCESS];
+            return $self->render_exception($message);
+        },
+        error => sub {
+            my ($api, $error) = @_;
+
+            my $message = sprintf 'Transaction [%s] - Error occurred reprocessing transaction: [%s]', $transaction_id, $error;
+            
+            error $message [ADMIN TRANSACTION_REPROCESS];
+            return $self->render_exception($message);
+        }
+    )->execute;
+}
+
+#-------------------------------------------------------------------------------
 
 sub resource_json {
     my ($self) = @_;
