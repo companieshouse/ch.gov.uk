@@ -28,7 +28,8 @@ sub register {
     $admin_route->get('/transactions/:transaction_number')->to('admin-transaction#filing');
     $admin_route->get('/company/:company_number/transactions')->name('admin_transaction_by_company_number')->to('admin-transaction#search_by_company_number');
     $admin_route->get('/view_json')->name('admin_transaction_resource_details')->to('admin-transaction#submission_json');
-    $transaction->get ('/details')->name('admin_transaction_details')->to('admin-transaction#transaction_json');
+    $transaction->get('/details')->name('admin_transaction_details')->to('admin-transaction#transaction_json');
+    $transaction->post('/reprocess')->name('admin_transaction_reprocess')->to('admin-transaction#transaction_reprocess');
 
     my $filing = $transaction->route('/:barcode');
     $filing->get ('/email')->name('admin_email_view')->to('admin-transaction#email_confirm');

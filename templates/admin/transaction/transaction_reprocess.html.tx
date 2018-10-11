@@ -1,0 +1,11 @@
+% cascade base {title => 'Transaction reprocess request', searchpage => 1, classes=>"search ancillary", disable_header_search => 1}
+
+% around content -> {
+<a class="link-back" id="back-button" href="javascript:history.back()">Back</a>
+
+<div class="inner-block">
+    % include includes::page_header {title => $title}
+
+    Transaction <% $transaction_number %> will be reprocessed.
+</div>
+% }
