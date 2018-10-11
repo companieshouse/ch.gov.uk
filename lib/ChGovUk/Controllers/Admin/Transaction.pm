@@ -240,6 +240,7 @@ sub transaction_json {
 
     $self->_get_new_transaction($delay, $delay->begin(0));
 }
+
 #-------------------------------------------------------------------------------
 
 sub transaction_reprocess {
