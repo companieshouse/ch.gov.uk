@@ -33,6 +33,8 @@ sub startup {
     $self->plugin('MojoX::JSON::XS');
 
     $self->plugin('CH::MojoX::Administration::Plugin');
+    
+    # Configure web path to role name mappings
     $self->plugin('CH::MojoX::UserPermissions::Plugin', map => [
         {path => qr#^/admin/roles(/.*)?$#,  urn => '/admin/roles'},
         {path => qr#^/admin/user(/.*)/transactions?$#,   urn => '/admin/user/filings'},
