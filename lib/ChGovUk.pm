@@ -40,7 +40,7 @@ sub startup {
         {path => qr#^/admin/search(/.*)?$#, urn => '/admin/search'},
         {path => qr#^/admin/transaction/.*?/.*?/resubmit$#, urn => '/admin/filing/resubmit'},
         {path => qr#^/admin/transaction/.*?/.*?/email$#,    urn => '/admin/filing/resend'},
-        {path => qr#^/admin/transaction.*$#,               urn => '/admin/transaction-lookup'},
+        {path => qr#^/admin/transactions/.*$#,              urn => '/admin/transaction-lookup'},
     ]);
 
     $self->plugin('CH::MojoX::Plugin::QueueAPI');
