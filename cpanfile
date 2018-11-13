@@ -3,7 +3,11 @@
 # XXX unlike the rest of this file, the order in this
 # section is important.
 
+# Pin dependencies for api-enumerations files to be read correctly
+requires 'Locale::Messages', '==1.29';
+requires 'YAML::XS', '==0.74';
 requires 'YAML', '==1.26';
+
 requires 'Mojo::Redis', '==1.02'; # Needs to be before MojoX::Plugin::AnyCache
 requires 'Log::Log4perl', '==1.49'; # Needs to be before CH::Perl
 requires 'Log::Log4perl::Appender::Fluent', '==0.04'; # Needs to be before CH::Perl
