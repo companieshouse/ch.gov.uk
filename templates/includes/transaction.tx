@@ -21,6 +21,17 @@
             % if $c.can_do('/admin/transaction-lookup') {
                 <td><a class="admin-link" id="view-transaction" href="<% $c.url_for('admin_transaction_details', transaction_number => $transaction.id) %>"> View transaction</a></td>
             % }
+            
+            % if $c.can_do('/admin/transaction-reprocess') && $transaction.status == "closed" {
+
+                <form method="post" action="<% $c.url_for('admin_transaction_reprocess', transaction_number => $transaction.id) %>">
+                    <div class="form-group">
+                        <input type="submit" id="reprocess" name="reprocess" class="admin-link" value="Reprocess transaction">
+                    </div>
+                </form>
+                
+            % }
+            
         </div>
             <div class="column-third column-reference" id="reference-number">
                 Reference number<strong><% $transaction.id %></strong>
