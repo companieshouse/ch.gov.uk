@@ -33,6 +33,8 @@ sub startup {
     $self->plugin('MojoX::JSON::XS');
 
     $self->plugin('CH::MojoX::Administration::Plugin');
+    
+    # Configure web path to role name mappings
     $self->plugin('CH::MojoX::UserPermissions::Plugin', map => [
         {path => qr#^/admin/roles(/.*)?$#,  urn => '/admin/roles'},
         {path => qr#^/admin/user(/.*)/transactions?$#,   urn => '/admin/user/filings'},
@@ -40,7 +42,7 @@ sub startup {
         {path => qr#^/admin/search(/.*)?$#, urn => '/admin/search'},
         {path => qr#^/admin/transaction/.*?/.*?/resubmit$#, urn => '/admin/filing/resubmit'},
         {path => qr#^/admin/transaction/.*?/.*?/email$#,    urn => '/admin/filing/resend'},
-        {path => qr#^/admin/transaction.*$#,               urn => '/admin/transaction-lookup'},
+        {path => qr#^/admin/transactions/.*$#,              urn => '/admin/transaction-lookup'},
     ]);
 
     $self->plugin('CH::MojoX::Plugin::QueueAPI');
