@@ -41,7 +41,7 @@ sub list {
                     for my $resource (keys %{$doc->{resources}}) {
                         
                         # Determine whether the document kind supports save and resume;
-                        # new serviceas will use the 'resource#sub-resource' format
+                        # new services should use the 'resource#sub-resource' format
                         my $doc_kind = $doc->{resources}->{$resource}->{kind};
                         
                         if ($doc_kind eq "accounts" || $doc_kind =~ '#') {
