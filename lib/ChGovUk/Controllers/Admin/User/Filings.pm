@@ -38,9 +38,14 @@ sub list {
                     $doc->{closed_at_time} = CH::Util::DateHelper->isotime_as_string($doc->{closed_at})->strftime("%l:%M%P");
 		        }
                 if ( $doc->{status} eq "open" && $doc->{resources}){
-                    for my $resource (  keys %{$doc->{resources}}) {
-                        if ( $doc->{resources}->{$resource}->{kind} eq "accounts" ){
-                           $self->_build_resume_link($doc, $resource);
+                    for my $resource (keys %{$doc->{resources}}) {
+                        
+                        # Determine whether the document kind supports save and resume;
+                        # new serviceas will use the 'resource#sub-resource' format
+                        my $doc_kind = $doc->{resources}->{$resource}->{kind};
+                        
+                        if ($doc_kind eq "accounts" || $doc_kind =~ '#') {
+                            $self->_build_resume_link($doc, $resource);
                         }
                     }
                 }
