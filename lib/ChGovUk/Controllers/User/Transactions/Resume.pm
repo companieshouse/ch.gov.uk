@@ -133,8 +133,9 @@ sub _get_resource_document {
                     error "Resource [%s] not found", $resource_link;
                     $self->render_not_found;
                  }
-                 my $message = sprintf "Failure retrieving links resource: %s". $resource_link;
-                 error "Failure retrieving links resource: %s", $resource_link [RESUME LINK];
+                 
+                 my $message = "Failure retrieving links resource: " . $resource_link;
+                 error "%s", $message [RESUME LINK];
                  $self->render_exception($message);
              },
              error => sub {
