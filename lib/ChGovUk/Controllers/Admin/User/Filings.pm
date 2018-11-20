@@ -26,7 +26,6 @@ sub list {
         user_id        => $self->param('user_id')
     };
 
-
     $self->ch_api->user->user_transactions($query)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
@@ -40,10 +39,10 @@ sub list {
                 if ( $doc->{status} eq "open" && $doc->{resources}){
                     for my $resource (keys %{$doc->{resources}}) {
                         
-                        # Determine whether the document kind supports save and resume;
-                        # new services should use the 'resource#sub-resource' format
                         my $doc_kind = $doc->{resources}->{$resource}->{kind};
                         
+                        # Determine whether the document kind supports save and resume;
+                        # new services should use the 'resource#sub-resource' format
                         if ($doc_kind eq "accounts" || $doc_kind =~ '#') {
                             $self->_build_resume_link($doc, $resource);
                         }
