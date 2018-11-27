@@ -31,7 +31,7 @@ sub resume {
                 $self->render_not_found;
             }
             
-            # TODO Render redirect confirmation for external links
+            # TODO Check domain matches expected value and render error on failure
             
             $self->redirect_to($resume_link);
         },
