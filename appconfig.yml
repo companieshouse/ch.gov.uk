@@ -1,6 +1,7 @@
 ---
+
 base:
-  url: <BASE_URL>
+  url: <CHS_URL>
 
 api:
   url: <ERIC_LOCAL_URL>

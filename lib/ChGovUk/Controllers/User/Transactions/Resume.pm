@@ -27,11 +27,16 @@ sub resume {
             my $resume_link = $transaction->{links}->{resume};
             
             if (encode_base64url(sha1($resume_link)) ne $encoded_id) {
-                error "The transaction resume link does not match the encoded id";
-                $self->render_not_found;
+                my $message = "The transaction resume link does not match the encoded id";
+                error "%s", $message;
+                $self->render_exception($message);
             }
             
-            # TODO Check domain matches expected value and render error on failure
+            if ($resume_link !~ /^$config->{base}->{url}/) {
+                my $message = "The transaction resume link does not begin with the expected protocol or domain: ";
+                error "%s", $message;
+                $self->render_exception($message);
+            }
             
             $self->redirect_to($resume_link);
         },
