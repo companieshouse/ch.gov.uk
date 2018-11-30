@@ -11,6 +11,7 @@ use Digest::SHA qw(sha1);
 use MIME::Base64 qw(encode_base64url);
 
 #-------------------------------------------------------------------------------
+
 sub resume {
     my ($self) = @_;
     
@@ -32,8 +33,10 @@ sub resume {
                 $self->render_exception($message);
             }
             
-            if ($resume_link !~ /^$config->{base}->{url}/) {
-                my $message = "The transaction resume link does not begin with the expected protocol or domain: ";
+            my $base_url = quotemeta($self->config->{base}->{url});
+            
+            if ($resume_link !~ /^$base_url.*/) {
+                my $message = "The transaction resume link does not begin with the expected protocol or domain: " . $resume_link;
                 error "%s", $message;
                 $self->render_exception($message);
             }
