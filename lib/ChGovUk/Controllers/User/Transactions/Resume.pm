@@ -7,7 +7,6 @@ use CH::Util::Pager;
 use CH::Util::DateHelper;
 use POSIX qw(strftime);
 use Mojo::IOLoop::Delay;
-use Digest::SHA qw(sha1);
 use MIME::Base64 qw(encode_base64url);
 
 #-------------------------------------------------------------------------------
@@ -27,7 +26,7 @@ sub resume {
             
             my $resume_link = $transaction->{links}->{resume};
             
-            if (encode_base64url(sha1($resume_link)) ne $encoded_id) {
+            if (encode_base64url($resume_link) ne $encoded_id) {
                 my $message = "The transaction resume link does not match the encoded id";
                 error "%s", $message;
                 $self->render_exception($message);

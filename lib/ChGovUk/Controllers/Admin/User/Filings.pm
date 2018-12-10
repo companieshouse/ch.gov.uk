@@ -6,7 +6,6 @@ use CH::Perl;
 use CH::Util::Pager;
 use CH::Util::DateHelper;
 use POSIX qw(strftime);
-use Digest::SHA qw(sha1);
 use MIME::Base64 qw(encode_base64url);
 
 #-------------------------------------------------------------------------------
@@ -79,9 +78,9 @@ sub _build_resume_link {
     my ($self, $transaction, $resume_link) = @_;
     
     my $transaction_id = $transaction->{id};
-    my $encoded_resource_key = encode_base64url(sha1($resume_link));
+    my $encoded_resume_link = encode_base64url($resume_link);
     
-    $transaction->{resume_link} = "/user/transactions/" . $transaction_id . "/resume?id=" . $encoded_resource_key;
+    $transaction->{resume_link} = "/user/transactions/" . $transaction_id . "/resume?id=" . $encoded_resume_link;
     return;
 }
 
