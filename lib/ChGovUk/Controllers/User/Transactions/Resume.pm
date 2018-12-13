@@ -16,7 +16,7 @@ sub resume {
     
     $self->render_later;
     
-    my $encoded_id = $self->param('id');
+    my $encoded_resume_link = $self->param('link');
     
     $self->ch_api->transactions($self->stash('transaction_number'))->get->on(
         success => sub {
@@ -26,19 +26,17 @@ sub resume {
             
             my $resume_link = $transaction->{links}->{resume};
             
-            if (encode_base64url($resume_link) ne $encoded_id) {
-                my $message = "The transaction resume link does not match the encoded id";
+            if (encode_base64url($resume_link) ne $encoded_resume_link) {
+                my $message = "The transaction resume link does not match the encoded link url";
                 error "%s", $message;
                 $self->render_exception($message);
             }
             
-            my $base_url = quotemeta($self->config->{base}->{url});
-            
-            if ($resume_link !~ /^$base_url.*/) {
-                my $message = "The transaction resume link does not begin with the expected protocol or domain: " . $resume_link;
-                error "%s", $message;
-                $self->render_exception($message);
-            }
+            # TODO: When support is added for third party (i.e. external) resume links, a check will need
+            # to be performed here to verify that the resume link matches a trusted domain for a given
+            # software vendor. A mechanism will be needed for adding the vendor to the transaction resource
+            # at creation time, and for registering one or more trusted domains that should be checked here.
+            # All Companies House resume links should be relative (i.e. not include the protocol or domain).
             
             $self->redirect_to($resume_link);
         },

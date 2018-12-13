@@ -80,7 +80,7 @@ sub _build_resume_link {
     my $transaction_id = $transaction->{id};
     my $encoded_resume_link = encode_base64url($resume_link);
     
-    $transaction->{resume_link} = "/user/transactions/" . $transaction_id . "/resume?id=" . $encoded_resume_link;
+    $transaction->{resume_link} = "/user/transactions/" . $transaction_id . "/resume?link=" . $encoded_resume_link;
     return;
 }
 
