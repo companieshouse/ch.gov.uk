@@ -24,7 +24,7 @@ sub resume {
             
             my $transaction = $tx->success->json;
             
-            my $resume_link = $transaction->{links}->{resume};
+            my $resume_link = $transaction->{resume_journey_uri};
             
             if (encode_base64url($resume_link) ne $encoded_resume_link) {
                 my $message = "The transaction resume link does not match the encoded link url";
