@@ -49,7 +49,7 @@
                 % if $transaction.status == "open" {
                     <div class="column-third column-status" id="status-<% $~transaction.count %>">
                         Status<strong> Incomplete </strong>
-                        % if $transaction.resume_link && !$c.can_do('/admin/transaction-lookup'){
+                        % if $transaction.resume_link && !$c.can_do('/admin/transaction-lookup') {
                             <a class="piwik-event" data-event-id="resume" id="transaction-<% $~transaction.count %>-resume-link" href="<% $transaction.resume_link %>">Resume</a>
                         % }
                     </div>
