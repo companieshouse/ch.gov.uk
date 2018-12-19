@@ -51,3 +51,4 @@ requires 'Readonly', '==2.00';
 
 test_requires 'CH::Test', '==0.32';
 test_requires 'Test::Differences', '==0.63';
+test_requires 'Test::Exception', '==0.43';
