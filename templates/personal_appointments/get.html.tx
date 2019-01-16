@@ -138,7 +138,7 @@
                         <h3 class="identification-type-<% $~appointment.count %>">
                             % if ($appointment.identification.identification_type == 'non-eea') {
                                 Registered in a
-                            % } else {
+                            % } else if ($appointment.identification.identification_type == 'eea'){
                                 Registered in an
                             % }
                             <% $c.cv_lookup( 'identification_type', $appointment.identification.identification_type ) %> <a href="/help/corporate-officer-identification-type">What's this?</a>
