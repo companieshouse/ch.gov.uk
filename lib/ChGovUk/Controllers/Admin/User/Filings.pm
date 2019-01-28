@@ -6,7 +6,6 @@ use CH::Perl;
 use CH::Util::Pager;
 use CH::Util::DateHelper;
 use POSIX qw(strftime);
-use Digest::SHA qw(sha1);
 use MIME::Base64 qw(encode_base64url);
 
 #-------------------------------------------------------------------------------
@@ -26,27 +25,22 @@ sub list {
         user_id        => $self->param('user_id')
     };
 
-
     $self->ch_api->user->user_transactions($query)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
             my $rf_results = $tx->success->json;
 
             for my $doc (@{$rf_results->{items}}) {
-		        if ( defined $doc->{closed_at} ) {
+                if ( defined $doc->{closed_at} ) {
                     $doc->{closed_at_date} = CH::Util::DateHelper->isodate_as_string($doc->{closed_at});
                     $doc->{closed_at_time} = CH::Util::DateHelper->isotime_as_string($doc->{closed_at})->strftime("%l:%M%P");
-		        }
-                if ( $doc->{status} eq "open" && $doc->{resources}){
-                    for my $resource (  keys %{$doc->{resources}}) {
-                        if ( $doc->{resources}->{$resource}->{kind} eq "accounts" ){
-                           $self->_build_resume_link($doc, $resource);
-                        }
-                    }
+                }
+                if ($doc->{status} eq "open" && $doc->{resume_journey_uri}) {
+                   $self->_build_resume_link($doc, $doc->{resume_journey_uri});
                 }
             }
 
-    # Work out the paging numbers
+            # Work out the paging numbers
             $pager->total_entries( $rf_results->{total_result} // 0 );
             warn "recent filings total_count %d entries per page %d",
             $pager->total_entries, $pager->entries_per_page() [RECENT_FILINGS];
@@ -81,12 +75,12 @@ sub list {
 #-------------------------------------------------------------------------------
 
 sub _build_resume_link {
-    my ($self, $transaction, $resource_key) = @_;
+    my ($self, $transaction, $resume_link) = @_;
     
     my $transaction_id = $transaction->{id};
-    my $encoded_resource_key = encode_base64url(sha1($resource_key));
-
-    $transaction->{resume_link} = "/user/transactions/" . $transaction_id . "/resume?id=" . $encoded_resource_key;
+    my $encoded_resume_link = encode_base64url($resume_link);
+    
+    $transaction->{resume_link} = "/user/transactions/" . $transaction_id . "/resume?link=" . $encoded_resume_link;
     return;
 }
 
