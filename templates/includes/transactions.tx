@@ -49,7 +49,7 @@
                 % if $transaction.status == "open" {
                     <div class="column-third column-status" id="status-<% $~transaction.count %>">
                         Status<strong> Incomplete </strong>
-                        % if $transaction.resume_link && !$c.can_do('/admin/transaction-lookup'){
+                        % if $transaction.resume_link && !$c.can_do('/admin/transaction-lookup') {
                             <a class="piwik-event" data-event-id="resume" id="transaction-<% $~transaction.count %>-resume-link" href="<% $transaction.resume_link %>">Resume</a>
                         % }
                     </div>
@@ -102,7 +102,7 @@
                                                   <div id="process-spinner" class="process-spinner"></div>
                                                   <span id="process-status" class="process-status">Status: in-progress</span>
                                                 </div>
-                                                <input type="hidden" id="document-data" data-resource-url="/private<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html"/>
+                                                <input type="hidden" id="document-data" data-resource-url="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html"/>
                                               </div>
                                           % }
                                           % }
@@ -127,7 +127,7 @@
                                                   <div id="process-spinner" class="process-spinner"></div>
                                                   <span id="process-status" class="process-status">Status: in-progress</span>
                                                 </div>
-                                                <input type="hidden" id="document-data" data-resource-url="/private<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html"/>
+                                                <input type="hidden" id="document-data" data-resource-url="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html"/>
                                               </div>
                                           % }
                                         % }
@@ -173,7 +173,7 @@
                                                   <div id="process-spinner" class="process-spinner"></div>
                                                   <span id="process-status" class="process-status">Status: in-progress</span>
                                                 </div>
-                                                <input type="hidden" id="document-data" data-resource-url="/private<% $transaction.links.self %>" data-resource-id="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html"/>
+                                                <input type="hidden" id="document-data" data-resource-url="<% $filing.value.links.resource %>" data-content-type="text/html" data-document-type="text/html"/>
                                               </div>
                                             % }
                                           % }
