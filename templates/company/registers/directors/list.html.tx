@@ -89,10 +89,10 @@
                     <h3 class=""><% l('Registered in a European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
                 % }
                 % else if $director.identification.identification_type == 'uk-limited-company' {
-                    <h3 class=""><% l('UK limited company') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                    <h3 class=""><% l('UK Limited Company') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
                 % }
                 % else if $director.identification.identification_type == 'other-corporate-body-or-firm' {
-                    <h3 class=""><% l('Other corporate body or firm') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                    <h3 class=""><% l('Other Corporate Body or Firm') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
                 % }
 
                 <div class="grid-row">
