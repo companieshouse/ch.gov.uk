@@ -1,7 +1,7 @@
 <div class="column-third">
     <h2 class="heading-medium">Current features include</h2>
     <ul class="list list-bullet">
-      <li><a href="/accounts/guidance">File abridged accounts</a><sup class="label phase-tag">New</sup></li>
+      <li><a href="/accounts/guidance">File abridged or full accounts</a><sup class="label phase-tag">New</sup></li>
       <li>Change a registered office address</a><sup class="label phase-tag">New</sup></li>
       <li>View company data and document images</li>
       <li>Search for disqualified directors</li>
