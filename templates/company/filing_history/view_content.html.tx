@@ -51,7 +51,7 @@
                     % if !$item.links.document_metadata {
                       % if ($item._missing_message == 'unavailable') {
                       <div class="form-hint">
-                        This document is currently unavailable, a copy can be ordered from the Contact Centre. Telephone +44 (0)303 1234 500. There is a £3.00 charge per document.
+			      This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.
                       </div>
                       % }
                       % if ($item._missing_message == 'available_in_5_days') {
