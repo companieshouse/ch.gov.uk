@@ -134,7 +134,7 @@
   <main id="page-container" class="search <% $classes %>" role="main">
 
         <div class="phase-banner">
-<div class="accuracy-banner small-text">Companies House does not verify the accuracy of the information displayed
+<div class="accuracy-banner small-text">Companies House does not verify the accuracy of the information filed
             </div>
             <p>
               <strong class="phase-tag">BETA</strong>
