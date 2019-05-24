@@ -134,12 +134,8 @@
   <main id="page-container" class="search <% $classes %>" role="main">
 
         <div class="phase-banner">
-            <div class="accuracy-banner small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information displayed<span class="visuallyhidden">(link opens a new window)</span></a></span>
+	    <div class="small-text">Companies House does not verify the accuracy of the information filed
             </div>
-            <p>
-              <strong class="phase-tag">BETA</strong>
-              <span>This is a trial service &mdash; your <a href="https://www.research.net/r/chbeta" target="_blank" <% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);"<% } %>>feedback<span class="visuallyhidden">(link opens a new window)</span></a> will help us to improve it.</span>
-            </p>
         </div>
 
     % if $user_bar != false {
