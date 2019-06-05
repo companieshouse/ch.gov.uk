@@ -1,3 +1,9 @@
+PERL_DEPS_SERVER_URL ?= s3://poc-projects
+PERL_DEPS_PATH       ?= chs-deps
+PERL_DEPS_VERSION    ?= 1
+PERL_DEPS_PACKAGE    ?= ch-gov-uk-deps-$(PERL_DEPS_VERSION).zip
+PERL_DEPS_URL        ?= $(PERL_DEPS_SERVER_URL)/$(PERL_DEPS_PATH)/$(PERL_DEPS_PACKAGE)
+
 LOCAL           ?= ./local
 
 SMARTPAN_URL    ?= http://darkpan.ch.gov.uk:7050
@@ -24,6 +30,10 @@ api-enumerations/.git:
 	git submodule init
 	git submodule update
 
+deps:
+	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_URL) .; unzip -q $(PERL_DEPS_PACKAGE) -d $(CURDIR)/local; }
+	test -f $(PERL_DEPS_PACKAGE) && rm -f $(PERL_DEPS_PACKAGE)
+
 getpan:
 	getpan $(GETPAN_ARGS)
 
@@ -39,7 +49,7 @@ test-int:
 
 test: test-unit test-int
 
-build: submodules getpan
+build: submodules deps
 
 package:
 	$(eval commit := $(shell git rev-parse --short HEAD))
@@ -63,4 +73,4 @@ package:
 
 dist: build package
 
-.PHONY: all build clean dist package getpan test test-unit test-int
+.PHONY: all build clean dist package getpan test test-unit test-int deps
