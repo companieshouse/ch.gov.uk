@@ -49,7 +49,7 @@ test-int:
 
 test: test-unit test-int
 
-build: submodules deps
+build: submodules getpan
 
 package:
 	$(eval commit := $(shell git rev-parse --short HEAD))
