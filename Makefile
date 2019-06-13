@@ -1,8 +1,7 @@
-PERL_DEPS_SERVER_URL ?= s3://poc-projects
-PERL_DEPS_PATH       ?= chs-deps
+PERL_DEPS_SERVER_URL ?= s3://release.ch.gov.uk
 PERL_DEPS_VERSION    ?= 1
 PERL_DEPS_PACKAGE    ?= ch-gov-uk-deps-$(PERL_DEPS_VERSION).zip
-PERL_DEPS_URL        ?= $(PERL_DEPS_SERVER_URL)/$(PERL_DEPS_PATH)/$(PERL_DEPS_PACKAGE)
+PERL_DEPS_URL        ?= $(PERL_DEPS_SERVER_URL)/$(PERL_DEPS_PACKAGE)
 
 LOCAL           ?= ./local
 
