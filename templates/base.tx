@@ -131,6 +131,12 @@
   </header>
   <!--end header-->
 
+  <div class="govuk-body" id="chs-customer-insights-top">
+   <div class="govuk-width-container">
+     <a href="http://resources.companieshouse.gov.uk/csat/index.shtml?Service=CHS">Tell us what you think of Companies House</a>
+   </div>
+ </div>
+
   <main id="page-container" class="search <% $classes %>" role="main">
 
         <div class="phase-banner">
