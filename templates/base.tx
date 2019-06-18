@@ -131,18 +131,22 @@
   </header>
   <!--end header-->
 
+% if $feedback_banner {
   <div class="govuk-body" id="chs-customer-insights-top">
    <div class="govuk-width-container">
      <a href="http://resources.companieshouse.gov.uk/csat/index.shtml?Service=CHS">Tell us what you think of Companies House</a>
    </div>
  </div>
+% }
 
   <main id="page-container" class="search <% $classes %>" role="main">
 
-        <div>
+% if !$feedback_banner {
+    <div class="phase-banner">
 	    <div class="small-text">Companies House does not verify the accuracy of the information filed
-            </div>
-        </div>
+      </div>
+    </div>
+% }
 
     % if $user_bar != false {
         <div class="js-toggle-nav" id="global-nav">
