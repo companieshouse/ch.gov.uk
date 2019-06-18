@@ -139,7 +139,7 @@
 
   <main id="page-container" class="search <% $classes %>" role="main">
 
-        <div class="phase-banner">
+        <div>
 	    <div class="small-text">Companies House does not verify the accuracy of the information filed
             </div>
         </div>
