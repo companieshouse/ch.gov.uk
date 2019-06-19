@@ -141,12 +141,16 @@
 
   <main id="page-container" class="search <% $classes %>" role="main">
 
-% if !$feedback_banner {
-    <div class="phase-banner">
-	    <div class="small-text">Companies House does not verify the accuracy of the information filed
-      </div>
+  % if $feedback_banner {
+    <div>
+      <div class="small-text">Companies House does not verify the accuracy of the information filed</div>
     </div>
-% }
+
+  % } % if !$feedback_banner {
+    <div class="phase-banner">
+      <div class="small-text">Companies House does not verify the accuracy of the information filed</div>
+    </div>
+  % }
 
     % if $user_bar != false {
         <div class="js-toggle-nav" id="global-nav">
