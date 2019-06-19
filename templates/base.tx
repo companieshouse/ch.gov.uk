@@ -145,8 +145,9 @@
     <div>
       <div class="small-text">Companies House does not verify the accuracy of the information filed</div>
     </div>
+  % }
 
-  % } % if !$feedback_banner {
+  % if !$feedback_banner {
     <div class="phase-banner">
       <div class="small-text">Companies House does not verify the accuracy of the information filed</div>
     </div>
