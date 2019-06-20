@@ -200,6 +200,11 @@
 	% block content -> { ; }
     </div>
 
+    <div id="chs-customer-insights">
+       <a href="" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="govuk-visually-hidden"></span></a>
+       <a href="is-there-anything-wrong-with-this-page" class="secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="govuk-visually-hidden"></span></a>
+    </div>
+
   </main>
 
   <!--end main-->
@@ -207,14 +212,6 @@
 
 
 </div> <!-- end of entire-wrapper -->
-
-% if ! $c.config.disable_feedback_form {
-    <!-- powered by feedback.js -->
-    <div class="feedback-wrapper">
-    	 % include "includes/feedback.tx" { header_or_body => 'header' }
-    </div>
-
-% }
 
     <footer class="group js-footer" id="footer" role="contentinfo">
         <nav>
