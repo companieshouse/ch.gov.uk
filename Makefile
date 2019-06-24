@@ -1,5 +1,5 @@
 PERL_DEPS_SERVER_URL ?= s3://release.ch.gov.uk/ch.gov.uk-deps
-PERL_DEPS_VERSION    ?= 1.0.0
+PERL_DEPS_VERSION    ?= 1.0.1
 PERL_DEPS_PACKAGE    ?= ch.gov.uk-deps-$(PERL_DEPS_VERSION).zip
 PERL_DEPS_URL        ?= $(PERL_DEPS_SERVER_URL)/$(PERL_DEPS_PACKAGE)
 
@@ -30,7 +30,7 @@ api-enumerations/.git:
 	git submodule update
 
 deps:
-	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_URL) .; unzip -q $(PERL_DEPS_PACKAGE) -d $(CURDIR)/local; }
+	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_URL) .; unzip $(PERL_DEPS_PACKAGE) -d $(CURDIR)/local; }
 	test -f $(PERL_DEPS_PACKAGE) && rm -f $(PERL_DEPS_PACKAGE)
 
 getpan:
