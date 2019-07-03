@@ -99,7 +99,7 @@
 
 </head>
 
-<body class="base-background">
+<body>
   <script>
     document.body.className += ' js-enabled';
   </script>
@@ -139,11 +139,6 @@
  </div>
 % }
 
-% if $feedback_banner {
-  <div class="content-wrapper-main">
-% } else {
-  <div class="content-wrapper-alt">
-% }
   <main id="page-container" class="search <% $classes %>" role="main">
 
   % if !$feedback_banner {
@@ -207,11 +202,9 @@
     </div>
 
   </main>
-</div>
 
   <!--end main-->
   <div class="push"></div>
-
 
 </div> <!-- end of entire-wrapper -->
 

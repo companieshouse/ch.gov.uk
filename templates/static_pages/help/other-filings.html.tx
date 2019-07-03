@@ -29,7 +29,6 @@
     <div class="form-group">
     <a href="https://ewf.companieshouse.gov.uk/" class="button">Go to WebFiling</a>
     </div><!--end form-group-->
-    <div class="bottom-spacer"></div>
 </div><!--end text-->
 
 % }
