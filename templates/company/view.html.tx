@@ -203,13 +203,20 @@
 
                     % if $company.company_number == $c.authorised_company && !$c.config.disable_filing {
                         % if $file_accounts {
-                            <p>
-                                  <a href="<% $c.external_url_for('file_accounts', company_number => $company.company_number)%>" id="file-accounts" data-event-id="file-accounts" class="button piwik-event"><% l('File accounts') %>
+                          % if $company.is_community_interest_company {
+                              <p>
+                              <a href="<% $c.external_url_for('file_cic_accounts', company_number => $company.company_number)%>" id="file-cic-accounts" data-event-id="file-cic-accounts" class="button piwik-event"><% l('File cic accounts') %>
                                 </a>
-                            </p>
+                              </p>
+                            % }
+                            % else {
+                              <p>
+                                <a href="<% $c.external_url_for('file_accounts', company_number => $company.company_number)%>" id="file-accounts" data-event-id="file-accounts" class="button piwik-event"><% l('File accounts') %>
+                                </a>
+                              </p>
+                           % }
                         % }
                     % }
-
                 % }
                 % if $company.latest_made_up_date {
                     <p>Last accounts made up to <strong><% $c.isodate_as_string($company.latest_made_up_date) %></strong></p>
