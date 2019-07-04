@@ -205,7 +205,7 @@
                         % if $file_accounts {
                           % if $company.is_community_interest_company {
                               <p>
-                              <a href="<% $c.external_url_for('file_cic_accounts', company_number => $company.company_number)%>" id="file-cic-accounts" data-event-id="file-cic-accounts" class="button piwik-event"><% l('File cic accounts') %>
+                              <a href="<% $c.external_url_for('file_cic_accounts', company_number => $company.company_number)%>" id="file-accounts" data-event-id="file-accounts" class="button piwik-event"><% l('File accounts') %>
                                 </a>
                               </p>
                             % }
