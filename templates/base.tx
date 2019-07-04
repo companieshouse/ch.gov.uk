@@ -196,10 +196,7 @@
 	% block content -> { ; }
     </div>
 
-    <div id="chs-customer-insights">
-       <a href="" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="hidden">(link opens a new window)</span></a>
-       <a href="is-there-anything-wrong-with-this-page" class="secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="hidden">(link opens a new window)</span></a>
-    </div>
+
 
   </main>
 
@@ -207,6 +204,11 @@
   <div class="push"></div>
 
 </div> <!-- end of entire-wrapper -->
+
+<div id="chs-customer-insights">
+   <a href="" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="hidden">(link opens a new window)</span></a>
+   <a href="is-there-anything-wrong-with-this-page" class="secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="hidden">(link opens a new window)</span></a>
+</div>
 
     <footer class="group js-footer" id="footer" role="contentinfo">
         <nav>
