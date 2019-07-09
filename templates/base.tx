@@ -99,7 +99,7 @@
 
 </head>
 
-<body class="base-background">
+<body>
   <script>
     document.body.className += ' js-enabled';
   </script>
@@ -139,11 +139,6 @@
  </div>
 % }
 
-% if $feedback_banner {
-  <div class="content-wrapper-main">
-% } else {
-  <div class="content-wrapper-alt">
-% }
   <main id="page-container" class="search <% $classes %>" role="main">
 
   % if !$feedback_banner {
@@ -200,20 +195,18 @@
     <div id="<% (! $disable_header_search) ? 'content-container' : 'search-container' %>">
 	% block content -> { ; }
     </div>
-
-    <div id="chs-customer-insights">
-       <a href="https://www.surveymonkey.co.uk/r/chsat-migrt" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="hidden">(link opens a new window)</span></a>
-       <a href="is-there-anything-wrong-with-this-page" class="secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="hidden">(link opens a new window)</span></a>
-    </div>
-
+    
   </main>
-</div>
 
   <!--end main-->
   <div class="push"></div>
 
-
 </div> <!-- end of entire-wrapper -->
+
+<div id="chs-customer-insights">
+   <a href="https://www.surveymonkey.co.uk/r/chsat-migrt" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="hidden">(link opens a new window)</span></a>
+   <a href="is-there-anything-wrong-with-this-page" class="secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="hidden">(link opens a new window)</span></a>
+</div>
 
     <footer class="group js-footer" id="footer" role="contentinfo">
         <nav>
