@@ -1,9 +1,44 @@
-<!DOCTYPE html>
-<html>
-<body>
+% cascade base { title => 'Feedback form - Companies House service', disable_header_search => 1, user_bar => false }
 
-<h1>Test Page</h1>
-<p>My first paragraph.</p>
+% around content -> {
 
-</body>
-</html>
+<div id="feedback-form-container">
+    <div class="panel">
+        <form action="/customer-feedback" class="form" enctype="" method="post" name="" id="feedback-form">
+        <input type="hidden" name="source_url" value="" id="source-url-field">
+        <h2 class="heading-medium">Help us improve the Companies House service</h2>
+        <div id="feedback-failed" style="display: none;">
+            <p>Your submission has not been successful, please try again</p>
+        </div>
+        <fieldset>
+            <legend class="visuallyhidden">Is there anything wrong with this page?</legend>
+            <p><a href="https://www.gov.uk/stop-companies-house-from-publishing-your-address" target="_blank">Stop Companies House from publishing your address</a></p>
+            <div class="form-group">
+                <label for="feedback-textarea" class="form-label"><strong>What is wrong with this page?</strong>
+                <span class="form-hint">For example, information is missing or incorrect.</span></label>
+                <textarea rows="5" maxlength="300" id="feedback-textarea" name="customer_feedback" cols="30" class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="feedback-name"><strong>What is your name?</strong> (optional) </label>
+                <input autocomplete="off"  id ="feedback-name" class="form-control" name="customer_name" type="text" value="">
+            </div>
+            <div class="form-group" style="display: none;">
+                <label class="form-label" for="feedback-check">confirmation</label>
+                <input autocomplete="off"  id ="feedback-check" name="customer_realcheck" type="text" value="">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="feedback-email"><strong>What is your email address?</strong> (optional) </label>
+                <input autocomplete="off" id="feedback-email" class="form-control" name="customer_email" type="email" value="">
+            </div>
+                <div class="form-group" id="auth-form-group">
+                    <label class="form-label" id="auth-code-label" for="feedback-auth"><strong>Enter these characters to prove you're not a robot </strong></label>
+                    <input autocomplete="off" id="feedback-auth" class="form-control form-control-1-8" required name="customer_auth" type="numbers" value="">
+                </div>
+            <input type="submit" class="button" id="submit-report" value="Submit report">
+        </fieldset>
+        </form>
+    </div><!--panel-->
+</div><!--toggle-->
+
+
+% }
