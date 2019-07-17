@@ -41,12 +41,9 @@ sub record_feedback {
         $feedback->{customer_name} = '(not provided)';
     }
     
-    my $test = $feedback->{source_url};
-    
-    my ( $substring ) = $test=~ /(\=.*)\s*$/;
-    
-    
-    debug '============THIS IS A TEST ============== ['. $substring. ']';
+    my $currentUrl = $feedback->{source_url};
+    my ( $previousUrl ) = $currentUrl=~ /(\=.*)\s*$/;
+
     debug 'Writing customer FEEDBACK to ['.$self->ch_api->admin->customer_feedback->path.']';
 
     $self->ch_api->admin->customer_feedback->create({
@@ -54,22 +51,17 @@ sub record_feedback {
         customer_name       => $feedback->{customer_name},
         customer_email      => $feedback->{customer_email},
         customer_feedback   => $feedback->{customer_feedback},
-        source_url          => $substring,
+        source_url          => $previousUrl,
     })->on(
         success => sub {
-              debug '*********************FEEDBACK SOURCE URL'.$feedback->{source_url};
-              debug '*********************************'.$substring;
-              debug '*********************************'.$substring;
             my ( $api, $tx ) = @_;
             return $self->render(json => { message => 'Feedback saved OK' });
         },
         error => sub {
-              debug '*********************************'.$feedback->{source_url};
             my ($api, $error) = @_;
             return $self->_render_json_error('Invalid API response: ' . $error, 0);
         },
         failure => sub {
-              debug '*********************************'.$feedback->{source_url};
             my ($api, $error) = @_;
             return $self->_render_json_error('Failed to create customer feedback: ' . $error, 0);
         }
