@@ -2,6 +2,10 @@
 
 % around content -> {
 
+<div id="feedback-received" style="display: none;">
+  <h2 class="heading-medium">Thank you, your submission has been accepted</h2>
+</div>
+
 <div id="feedback-form-container">
     <div class="panel">
         <form action="/customer-feedback" class="form" enctype="" method="post" name="" id="feedback-form">
