@@ -40,9 +40,9 @@ sub record_feedback {
     if (not $feedback->{customer_name}) {
         $feedback->{customer_name} = '(not provided)';
     }
-    
+
     my $currentUrl = $feedback->{source_url};
-    my ( $previousUrl ) = $currentUrl=~ /(\=.*)\s*$/;
+    my ( $previousUrl ) = $currentUrl=~ /sourceurl=([^&#]*)/;
 
     debug 'Writing customer FEEDBACK to ['.$self->ch_api->admin->customer_feedback->path.']';
 
