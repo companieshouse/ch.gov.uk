@@ -37,9 +37,6 @@ sub register {
     $root->route('/search')->get->name('search')->to('search#results');
     $root->route('/search/:search_type')->get->name('search_facet')->to('search#results');
 
-    # Feedback screen
-    $root->get('/survey/:filepath')->to('FeedbackPage#render_filepath');
-
     # Post user feedback
     $root->route('/customer-feedback')->to('CustomerFeedback#record_feedback');
 
