@@ -1,4 +1,4 @@
-% cascade base { title => 'Feedback form - Companies House service', disable_header_search => 1, user_bar => false }
+% cascade base { title => 'Feedback form - Companies House service', disable_header_search => 1, user_bar => false, insights_bar => false, }
 
 % around content -> {
 
@@ -43,6 +43,4 @@
         </form>
     </div><!--panel-->
 </div><!--toggle-->
-
-
 % }
