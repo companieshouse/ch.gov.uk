@@ -19,7 +19,7 @@ sub record_feedback {
         customer_name       => $self->_sanitize_param('customer_name'),
         customer_email      => $self->_sanitize_param('customer_email'),
         customer_feedback   => $self->_sanitize_param('customer_feedback'),
-        source_url          => $self->_sanitize_param('source_url'),
+        source_url          => $self->_sanitize_param('source_url') =~ /sourceurl=([^&#]*)/,
     };
 
     # check the feedback looks ok?
@@ -41,18 +41,9 @@ sub record_feedback {
         $feedback->{customer_name} = '(not provided)';
     }
 
-    my $currentUrl = $feedback->{source_url};
-    my ( $previousUrl ) = $currentUrl=~ /sourceurl=([^&#]*)/;
-
     debug 'Writing customer FEEDBACK to ['.$self->ch_api->admin->customer_feedback->path.']';
 
-    $self->ch_api->admin->customer_feedback->create({
-        kind                => $feedback->{kind},
-        customer_name       => $feedback->{customer_name},
-        customer_email      => $feedback->{customer_email},
-        customer_feedback   => $feedback->{customer_feedback},
-        source_url          => $previousUrl,
-    })->on(
+    $self->ch_api->admin->customer_feedback->create($feedback)->on(
         success => sub {
             my ( $api, $tx ) = @_;
             return $self->render(json => { message => 'Feedback saved OK' });
