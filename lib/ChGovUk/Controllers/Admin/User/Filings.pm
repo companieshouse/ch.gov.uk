@@ -35,8 +35,7 @@ sub list {
                     $doc->{closed_at_date} = CH::Util::DateHelper->isodate_as_string($doc->{closed_at});
                     $doc->{closed_at_time} = CH::Util::DateHelper->isotime_as_string($doc->{closed_at})->strftime("%l:%M%P");
                 }
-                if (($doc->{status} eq "open" && $doc->{resume_journey_uri})
-                   | ($doc->{status} eq "closed pending payment" && $doc->{resume_journey_uri})) {
+                if  (($doc->{status} eq "open" || $doc->{status} eq "closed pending payment") && $doc->{resume_journey_uri}) {
                       $self->_build_resume_link($doc, $doc->{resume_journey_uri});
                 }
             }

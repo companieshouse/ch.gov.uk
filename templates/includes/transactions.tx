@@ -61,7 +61,7 @@
                     <div class="column-third column-status" id="status-<% $~transaction.count %>">
                         Status<strong> Pending payment </strong>
                         % if $transaction.resume_link && !$c.can_do('/admin/transaction-lookup') {
-                            <a class="piwik-event" data-event-id="resume" id="transaction-<% $~transaction.count %>-resume-link" href="<% $transaction.resume_link %>">PAY NOW</a>
+                            <a class="piwik-event" data-event-id="pay-no-resume-link" id="transaction-<% $~transaction.count %>-resume-link" href="<% $transaction.resume_link %>">Pay now</a>
                         % }
                     </div>
                 % } else {
