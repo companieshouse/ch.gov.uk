@@ -134,7 +134,7 @@
   <main id="page-container" class="search <% $classes %>" role="main">
 
         <div class="phase-banner">
-	    <div class="small-text">Companies House does not verify the accuracy of the information filed
+            <div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information displayed<span class="visuallyhidden">(link opens a new window)</span></a></span>
             </div>
         </div>
 
