@@ -32,7 +32,7 @@
                     % if $c.can_do('/admin/transaction-lookup') {
                         <a class="admin-link" id="view-transaction-<% $~transaction %>" href="<% $c.url_for('admin_transaction_details', transaction_number => $transaction.id) %>"> View transaction</a>
                     % }
-                    
+
                     % if $c.can_do('/admin/transaction-reprocess') && $transaction.status == "closed" {
 
                         <form method="post" action="<% $c.url_for('admin_transaction_reprocess', transaction_number => $transaction.id) %>">
@@ -40,7 +40,7 @@
                                 <input type="submit" id="reprocess" name="reprocess" class="admin-link" value="Reprocess transaction">
                             </div>
                         </form>
-                        
+
                     % }
                 </div>
                 <div class="column-third column-reference" id="reference-number-<% $~transaction.count %>">
@@ -56,6 +56,13 @@
                 % } else if $transaction.status == "closed" && !$transaction.filings {
                     <div class="column-third column-status" id="status-<% $~transaction.count %>">
                         Status<strong> Processing </strong>
+                    </div>
+                % } else if $transaction.status == "closed pending payment" {
+                    <div class="column-third column-status" id="status-<% $~transaction.count %>">
+                        Status<strong> Pending payment </strong>
+                        % if $transaction.resume_link && !$c.can_do('/admin/transaction-lookup') {
+                            <a class="piwik-event" data-event-id="Pay now" id="transaction-<% $~transaction.count %>-resume-link" href="<% $transaction.resume_link %>">Pay now</a>
+                        % }
                     </div>
                 % } else {
                     <div class="column-third column-received_on" id="received-on-<% $~transaction.count %>">

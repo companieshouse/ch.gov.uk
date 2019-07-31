@@ -48,6 +48,7 @@ external_url_for:
   follow_company      : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-follow'
   unfollow_company    : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-unfollow'
   file_accounts       : '<EXTERNAL_FILE_ACCOUNTS_URL>'
+  file_cic_accounts   : '<EXTERNAL_FILE_CIC_ACCOUNTS_URL>'
 
 admin_url_for:
   roles                        : <ACCOUNT_URL>/admin/roles
