@@ -10,7 +10,7 @@
     <div class="panel">
         <form action="/customer-feedback" class="form" enctype="" method="post" name="" id="feedback-form">
         <input type="hidden" name="source_url" value="" id="source-url-field">
-        <h2 class="heading-medium">Help us improve the Companies House service</h2>
+        <h2 class="heading-large" style="width: 500px;">Help us improve the Companies House service</h2>
         <div id="feedback-failed" style="display: none;">
             <p>Your submission has not been successful, please try again</p>
         </div>
@@ -18,7 +18,7 @@
             <legend class="visuallyhidden">Is there anything wrong with this page?</legend>
             <p><a href="https://www.gov.uk/stop-companies-house-from-publishing-your-address" target="_blank">Stop Companies House from publishing your address</a></p>
             <div class="form-group">
-                <label for="feedback-textarea" class="form-label"><strong>What is wrong with this page?</strong>
+                <label for="feedback-textarea" class="form-label"><strong>What is wrong with the page?</strong>
                 <span class="form-hint">For example, information is missing or incorrect.</span></label>
                 <textarea rows="5" maxlength="300" id="feedback-textarea" name="customer_feedback" cols="30" class="form-control" required></textarea>
             </div>
