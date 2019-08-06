@@ -2,7 +2,7 @@
 
 % around content -> {
 
-<div id="feedback-received" style="display: none;">
+<div id="feedback-received" class="no-script">
   <h2 class="heading-medium">Thank you, your submission has been accepted</h2>
 </div>
 
@@ -10,9 +10,9 @@
         <form action="/customer-feedback" class="form" enctype="" method="post" name="" id="feedback-form">
         <input type="hidden" name="source_url" value="" id="source-url-field">
         <div class="text">
-          <h1 class="heading-large" id="main">Help us improve the Companies House service</h1>
+          <h1 class="heading" id="main">Help us improve the Companies House service</h1>
         </div>
-        <div id="feedback-failed" style="display: none;">
+        <div id="feedback-failed" class="no-script">
             <p>Your submission has not been successful, please try again</p>
         </div>
         <fieldset>
