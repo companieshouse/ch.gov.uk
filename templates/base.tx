@@ -146,7 +146,7 @@
       % } else {
     <div>
   % }
-      <div class="small-text">Companies House does not verify the accuracy of the information filed</div>
+<div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="visuallyhidden">(link opens a new window)</span></a></div>
     </div>
 
     % if $user_bar != false {
