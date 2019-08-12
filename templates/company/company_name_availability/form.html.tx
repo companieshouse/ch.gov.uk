@@ -1,8 +1,8 @@
 % cascade base { title=> "Company Name Availability Checker - Companies House", classes=>"profile", disable_header_search => 1 }
 % around content -> {
-        
+
         <div class="column-full-width">
-                <h1 class="main-title left" id="start-searching"">
+                <h1 class="main-title left" id="content"">
                     <label for="site-search-text" class="heading-xlarge">
                         Company name availability checker
                     </label>
@@ -44,7 +44,7 @@
                     </p>
 
                 % } elsif $total_results > 0 {
-                
+
                     <h2 class="heading-small">
                         The company name "<b><% $query | uc %></b>" is considered to be the 'same as' the existing names shown below:
                     </h2>
@@ -54,12 +54,12 @@
                 % if $show_error {
 
                     <h2 class="heading-small">
-                        Companies House are unable to check the availability of this name online, please telephone our Contact Centre on 
+                        Companies House are unable to check the availability of this name online, please telephone our Contact Centre on
                         +44 (0) 303 1234 500.
                     </h2>
-    
-                % } 
-                        
+
+                % }
+
                 <ul id="results" class="results-list">
                   % for $companies.items -> $item {
                     <li class="type-company">
@@ -70,7 +70,7 @@
                         <p><% $item.snippet | mark_raw %></p>
                         <p><% $c.cv_lookup('company_type', $item.company_type) %></p>
                     </li>
-                    %}                        
+                    %}
                 </ul>
         </div>
     </div>

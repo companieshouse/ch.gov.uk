@@ -195,7 +195,7 @@
     <div id="<% (! $disable_header_search) ? 'content-container' : 'search-container' %>">
 	% block content -> { ; }
     </div>
-    
+
   </main>
 
   <!--end main-->

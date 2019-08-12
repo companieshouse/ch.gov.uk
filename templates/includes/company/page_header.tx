@@ -1,5 +1,5 @@
 <div class="company-header">
-        <p id="company-name" class="heading-xlarge"><% $company.company_name %></p>
+        <p id="content" class="heading-xlarge"><% $company.company_name %></p>
         <p id="company-number">
         % if $company.type == 'uk-establishment' {
         <% l('UK establishment number') %>

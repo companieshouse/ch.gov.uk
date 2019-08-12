@@ -1,7 +1,7 @@
 % cascade base { title => 'Contact Us - Companies House service', searchpage => 1, disable_header_search => 1 }
 % around content -> {
     <article class="text">
-		<h1 class="heading-xlarge">Contact us</h1>
+		<h1 id="content" class="heading-xlarge">Contact us</h1>
         <p>You may find the answer to your enquiry on the <a href="https://www.gov.uk/government/organisations/companies-house">Companies House website</a> or you can <a href="mailto:enquiries@companieshouse.gov.uk">email us</a>.</p>
         <h2 class="heading-medium">Contact Centre</h2>
             <ul class="text-list">
