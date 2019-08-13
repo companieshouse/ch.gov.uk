@@ -15,12 +15,12 @@
     % include "search/form.tx" {SHOW_TABS => 0, RESULTS_CONTAINER => 0}
 
     <div class="grid-row">
-        <div class="column-two-thirds">
+        <div class="column-two-thirds" id="content">
 
             <article id="services-information-results">
 
             % if $results.total_results {
-        			<h1 class="visuallyhidden" id="content">Search the register – results</h1>
+        			<h1 class="visuallyhidden">Search the register – results</h1>
 				<h2 class="visuallyhidden">All results</h2>
 				<ul id='results' class="results-list">
 
