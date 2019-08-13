@@ -12,7 +12,7 @@
 	<div class="content">
 % } else {
 % if !$results {
-    <h1 id="start-searching" class="main-title center">
+    <h1 id="content" class="main-title center">
                 <label class="heading-xlarge">
                   Search the register
                 </label>
