@@ -3,8 +3,8 @@
 
 % around content -> {
 
-      
-               <header class="text">
+
+               <header class="text" id="content">
                   <h1 class="heading-xlarge">
                      Your filings
                   </h1>
@@ -14,9 +14,9 @@
                     %if ($no_filings){
                             <p class="text">You have not filed anything on Companies House beta service.</p>
                     %}else{
- 
+
                        <p class="text">This is a list of company information filed by <strong><% $user %></strong> within the last 30 days.</p>
-               
+
                        <table id=rf_table class="activity">
                            <tr>
                                <th>Date &amp; Time</th>
@@ -42,7 +42,7 @@
                                                 % for $transaction.filings -> $filing {
                                                     <li><% $c.cv_lookup('filing_type', $filing.filing_type) %></li>
                                                 % }
-                                            </ul> 
+                                            </ul>
                                        </td>
                                 %}else{
                                         <td><% $transaction.id %></td>
@@ -53,7 +53,7 @@
                                                      <li><a id="viewSubmission<% $~transaction %><% $~filing%>" href="<% $c.url_for('show_registered_office_resource', transaction_number => $transaction.id) %>"
                                                      >View submission</a></li>
                                                  % }
-                                             </ul> 
+                                             </ul>
                                         </td>
                                 %}
                                    <td>
@@ -66,13 +66,13 @@
                                                         <br>
                                                    % }
                                             % }
-                                        </ul> 
-                                        
+                                        </ul>
+
                                    </td>
                                </tr>
                            % }
                        </table>
-                        
+
                         % if $filings_count > $entries_per_page {
                             <ul class="pager">
                                 % if ($previous_page) {
@@ -106,5 +106,3 @@
                         %}
                     % }
 % }
-
-

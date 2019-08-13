@@ -7,7 +7,7 @@
 
 <div class="text">
     <header>
-        <h1 class="heading-xlarge">Other document filings</h1>
+        <h1 class="heading-xlarge" id="content">Other document filings</h1>
     </header>
 
     <p>During the beta service development you should continue to use <a href="https://www.gov.uk/government/organisations/companies-house/about/about-our-services#webfiling">WebFiling<span class="visuallyhidden"> Link opens in new tab/window</span></a> to file your company information online.</p>
@@ -30,5 +30,5 @@
     <a href="https://ewf.companieshouse.gov.uk/" class="button">Go to WebFiling</a>
     </div><!--end form-group-->
 </div><!--end text-->
-
+  <div class="push"></div>
 % }
