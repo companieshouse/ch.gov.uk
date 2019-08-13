@@ -35,8 +35,9 @@ sub list {
                     $doc->{closed_at_date} = CH::Util::DateHelper->isodate_as_string($doc->{closed_at});
                     $doc->{closed_at_time} = CH::Util::DateHelper->isotime_as_string($doc->{closed_at})->strftime("%l:%M%P");
                 }
-                if ($doc->{status} eq "open" && $doc->{resume_journey_uri}) {
-                   $self->_build_resume_link($doc, $doc->{resume_journey_uri});
+                if  (($doc->{status} eq "open" ||
+                      $doc->{status} eq "closed pending payment") && $doc->{resume_journey_uri}) {
+                        $self->_build_resume_link($doc, $doc->{resume_journey_uri});
                 }
             }
 
@@ -57,7 +58,7 @@ sub list {
 
             $self->render;
         },
-        
+
         failure => sub {
             my ($api, $tx) = @_;
             my $error_code = $tx->error->{code} // 0;
@@ -76,10 +77,10 @@ sub list {
 
 sub _build_resume_link {
     my ($self, $transaction, $resume_link) = @_;
-    
+
     my $transaction_id = $transaction->{id};
     my $encoded_resume_link = encode_base64url($resume_link);
-    
+
     $transaction->{resume_link} = "/user/transactions/" . $transaction_id . "/resume?link=" . $encoded_resume_link;
     return;
 }
