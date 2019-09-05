@@ -1,18 +1,18 @@
 % if $search_type == "officers" {
-    <form id="search" action="/search/officers" method="get" accept-charset="utf-8" role="search"  class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
+    <form id="content" action="/search/officers" method="get" accept-charset="utf-8" role="search"  class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
 % } elsif $search_type == 'disqualified-officers' {
-    <form id="search" action="/search/disqualified-officers" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
+    <form id="content" action="/search/disqualified-officers" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
 % } elsif $search_type == 'all' {
-    <form id="search" action="/search" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header' ? 'search-header' : 'search-header js-search-hash' %>">
+    <form id="content" action="/search" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header' ? 'search-header' : 'search-header js-search-hash' %>">
 % } else {
-    <form id="search" action="/search/companies" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
+    <form id="content" action="/search/companies" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
 % }
 
 % if ($header_or_body == 'header') {
 	<div class="content">
 % } else {
 % if !$results {
-    <h1 id="content" class="main-title center">
+    <h1 id="start-searching" class="main-title center">
                 <label class="heading-xlarge">
                   Search the register
                 </label>
