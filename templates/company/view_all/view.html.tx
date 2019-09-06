@@ -1,0 +1,9 @@
+% cascade base { title=> $company.company_name ~" - Overview (free company information from Companies House)", classes=>"profile" }
+
+% around content -> {
+% include '/includes/company/page_header.tx'
+
+% include '/includes/company/tabs.tx' { active => 'view-all-tab' };
+
+  % }
+% }
