@@ -92,6 +92,7 @@ elasticsearch:
 feature:
     mortgage: <MORTGAGE_FEATURE>
     psc: <PSC_FEATURE>
+    company_report: <COMPANY_REPORT_FEATURE>
 
 image_service_start_date: <IMAGE_SERVICE_START_DATE>
 
@@ -122,5 +123,3 @@ file_accounts_available_date: <FILE_ACCOUNTS_AVAILABLE_DATE>
 
 max_memory_usage: <MAX_MEMORY_USAGE>
 shared_memory_percentage: <SHARED_MEMORY_PERCENTAGE>
-
-disable_view_all_tab: <DISABLE_VIEW_ALL_TAB>
