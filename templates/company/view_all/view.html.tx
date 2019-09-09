@@ -5,5 +5,29 @@
 
 % include '/includes/company/tabs.tx' { active => 'view-all-tab' };
 
+<details class="govuk-details" role="group">
+        <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
+          <span class="govuk-details__summary-text">
+            What's included?
+          </span>
+        </summary>
+        <div class="govuk-details__text" id="details-content" aria-hidden="false">
+          <p>The latest 100 entries for:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>Filing history</li>
+            <li>Officers</li>
+            <li>Persons with significant control</li>
+            <li>Charges</li>
+            <li>Insolvency</li>
+            <li>Registers</li>
+          </ul>
+        </div>
+</details>
+
+<div>
+<a class="govuk-button secondary-button" href="example-company-report" target="_blank">View company information snapshot
+    <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
+</div>
+
   % }
 % }
