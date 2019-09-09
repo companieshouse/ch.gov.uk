@@ -8,7 +8,7 @@ use CH::Perl;
 # View All Tab
 sub view {
   my ($self) = @_;
-  
+
   return $self->render;
 }
 
