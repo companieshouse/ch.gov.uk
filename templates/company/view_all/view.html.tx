@@ -25,8 +25,20 @@
 </details>
 
 <div>
-<a class="govuk-button secondary-button" href="example-company-report" target="_blank">View company information snapshot
+<a class="render-company-report govuk-button secondary-button" href="#">View company information snapshot
     <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
+
+  <div id="status-widget" class="widget-footer hidden">
+    <div id="status">
+      <div id="process-spinner" class="process-spinner"></div>
+        <span id="process-status" class="process-status">Status: in-progress</span>
+      </div>
+      <input type="hidden" id="document-data"
+        data-resource-url="/company-number/<%$company.company_number%>"
+        data-content-type="text/html" data-document-type="text/html">
+      </input>
+    </div>
+  </div>
 </div>
 
   % }
