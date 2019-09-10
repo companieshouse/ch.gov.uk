@@ -24,10 +24,10 @@
         </div>
 </details>
 
-<div>
+<div class="govuk-inset-text onlyJS">
+<div id="widget">
 <a class="render-company-report govuk-button secondary-button" href="#">View company information snapshot
     <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
-
   <div id="status-widget" class="widget-footer hidden">
     <div id="status">
       <div id="process-spinner" class="process-spinner"></div>
@@ -40,6 +40,8 @@
     </div>
   </div>
 </div>
+</div>
+ <div id="download-button"></div>
 
   % }
 % }
