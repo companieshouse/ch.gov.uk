@@ -158,15 +158,23 @@ sub scud {
     my %headers = ('Content-Type', 'application/json');
     debug "headers = @{[%headers]}";
 
-    # TODO retrieve URL from config rather than hardwiring it.
-    my $response = $client->POST('http://localhost:10020/scudOrders', $body, \%headers);
+    my $response = $client->POST($self->get_scud_api_url(), $body, \%headers);
 
     debug "response code = %s", $response->responseCode();
     debug "response content = %s", $response->responseContent();
 
-
     return ;
 
+}
+
+#-------------------------------------------------------------------------------
+
+# Gets the configured SCUD API URL.
+sub get_scud_api_url {
+    my ($self) = @_;
+    my $scud_api = $self->config->{scud}->{api_url};
+    trace " Configured SCUD API URL = %s", $scud_api;
+    return $scud_api;
 }
 
 #-------------------------------------------------------------------------------
