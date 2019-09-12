@@ -173,7 +173,7 @@ sub scud {
 sub get_scud_api_url {
     my ($self) = @_;
     my $scud_api = $self->config->{scud}->{api_url};
-    trace " Configured SCUD API URL = %s", $scud_api;
+    trace "Configured SCUD API URL = %s", $scud_api;
     return $scud_api;
 }
 
