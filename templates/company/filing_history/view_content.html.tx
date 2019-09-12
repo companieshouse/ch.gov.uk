@@ -72,6 +72,17 @@
                         <div>
                             <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'xhtml', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download iXBRL</a></div>
                         % }
+                    % } else {
+                        % if !$item.links.document_metadata {
+                            % if ($item._missing_message == 'unavailable') {
+                                <a href="<% $c.url_for('company_scud', filing_history_id => $item.transaction_id).query(['return_to' => $c.url_for]) %>" id="scud-for-this-company" class="button"
+                                   % if $c.config.piwik.embed {
+                                   onclick="javascript:_paq.push(['trackEvent', 'ScudForCompany', 'FilingHistory']);"
+                                   % }
+                                ><% l('Order ') %><% l($item.transaction_id) %>
+                                </a>
+                            % }
+                        % }
                     % }
                     </td>
                 % }

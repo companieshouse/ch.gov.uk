@@ -3,6 +3,8 @@ package ChGovUk::Controllers::Company::Document;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Perl;
 use Net::CompaniesHouse::DocumentEndpoint;
+use REST::Client;
+use Mojo::JSON qw(decode_json encode_json);
 
 #-------------------------------------------------------------------------------
 
@@ -136,6 +138,35 @@ sub document {
         debug "Serving redirect to [%s]", $location [DOCUMENT];
         $self->redirect_to($location);
     });
+}
+
+#-------------------------------------------------------------------------------
+
+sub scud {
+    debug "scud called";
+
+    my $self = shift;
+
+    my $client = REST::Client->new();
+
+    my $psNumber = $self->stash->{filing_history_id};
+    my $scud_order = { psNumber => $psNumber };
+    my $body = encode_json($scud_order);
+
+    debug "body = %s", $body;
+
+    my %headers = ('Content-Type', 'application/json');
+    debug "headers = @{[%headers]}";
+
+    # TODO retrieve URL from config rather than hardwiring it.
+    my $response = $client->POST('http://localhost:10020/scudOrders', $body, \%headers);
+
+    debug "response code = %s", $response->responseCode();
+    debug "response content = %s", $response->responseContent();
+
+
+    return ;
+
 }
 
 #-------------------------------------------------------------------------------

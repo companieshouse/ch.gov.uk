@@ -87,6 +87,9 @@ sub register {
     # Transactions
     $transactions->get('confirmation')->to('company-transactions#confirmation');
 
+    # SCUD
+    $company_bridge->get('/filing-history/:filing_history_id/scud')->name('company_scud')->to('company-document#scud');
+
     # Charges
     #$company->get('/charges')->name('charges')->to('charges#list');
 
