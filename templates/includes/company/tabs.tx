@@ -22,10 +22,8 @@
         % }
 
         % if $c.config.feature.company_report {
-          % if $c.is_signed_in {
-            % if $company.type != "assurance-company" && $company.type != "industrial-and-provident-society" && $company.type != "royal-charter"  && $company.type != "investment-company-with-variable-capital" && $company.type != "charitable-incorporated-organisation" && $company.type != "scottish-charitable-incorporated-organisation" && $company.type != "uk-establishment" && $company.type != "registered-society-non-jurisdictional" && $company.type != "protected-cell-company" && $company.type != "eeig" && $company.type != "protected-cell-company" && $company.type != "further-education-or-sixth-form-college-corporation" {
+          % if $company.type != "assurance-company" && $company.type != "industrial-and-provident-society" && $company.type != "royal-charter"  && $company.type != "investment-company-with-variable-capital" && $company.type != "charitable-incorporated-organisation" && $company.type != "scottish-charitable-incorporated-organisation" && $company.type != "uk-establishment" && $company.type != "registered-society-non-jurisdictional" && $company.type != "protected-cell-company" && $company.type != "eeig" && $company.type != "protected-cell-company" && $company.type != "further-education-or-sixth-form-college-corporation" {
             %     include "/includes/company/tab.tx" { tabid => 'view-all-tab', page => '/view-all', title => 'View all'};
-            % }
           % }
        % }
     </ul>
