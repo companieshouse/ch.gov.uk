@@ -158,13 +158,23 @@ sub scud {
     my %headers = ('Content-Type', 'application/json');
     debug "headers = @{[%headers]}";
 
-    my $response = $client->POST($self->get_scud_api_url(), $body, \%headers);
+    my $response = $client->POST($self->get_scud_orders_url(), $body, \%headers);
 
     debug "response code = %s", $response->responseCode();
     debug "response content = %s", $response->responseContent();
 
     return ;
 
+}
+
+#-------------------------------------------------------------------------------
+
+# Gets the SCUD orders URL.
+sub get_scud_orders_url {
+    my ($self) = @_;
+    my $scud_orders_url = $self->get_scud_api_url()."/scudOrders";
+    trace "SCUD orders URL = %s", $scud_orders_url;
+    return $scud_orders_url;
 }
 
 #-------------------------------------------------------------------------------
