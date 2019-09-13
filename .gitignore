@@ -20,3 +20,10 @@ npm-debug.log
 *.tmp
 t/output.xml
 ch.gov.uk-*.zip
+
+### IntelliJ IDEA ###
+.idea/*
+!.idea/runConfigurations
+*.iws
+*.iml
+*.ipr
