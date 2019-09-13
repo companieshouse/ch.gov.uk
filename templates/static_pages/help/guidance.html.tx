@@ -7,7 +7,8 @@
 
 <div class="text">
     <header>
-        <h1 class="heading-xlarge" id="content">File abridged or full accounts</h1>
+        <div id="content" class="content-override"></div>
+        <h1 class="heading-xlarge">File abridged or full accounts</h1>
     </header>
 
     <p>You can now file abridged or full accounts here too. While we develop this new service, you should continue to use <a href="https://www.gov.uk/government/organisations/companies-house/about/about-our-services#webfiling">WebFiling<span class="visuallyhidden"> Link opens in new tab/window</span></a> for other types of accounts.</p>

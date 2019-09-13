@@ -4,7 +4,8 @@
 <script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes -->
 <script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script>  <!-- Needed for new GDS-style radio buttons and checkboxes -->
 
-    <header class="text" id="content">
+    <div id="content" class="content-override"></div>
+    <header class="text">
         <h1 class="heading-xlarge" id="officer-name"><% $officer.name %></h1>
     </header>
 

@@ -1,8 +1,8 @@
 % cascade base { title=> "Company Name Availability Checker - Companies House", classes=>"profile", disable_header_search => 1 }
 % around content -> {
 
-        <div class="column-full-width">
-                <h1 class="main-title left" id="content"">
+        <div class="column-full-width" id="content">
+                <h1 class="main-title left">
                     <label for="site-search-text" class="heading-xlarge">
                         Company name availability checker
                     </label>
