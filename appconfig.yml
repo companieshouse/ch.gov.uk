@@ -122,3 +122,6 @@ file_accounts_available_date: <FILE_ACCOUNTS_AVAILABLE_DATE>
 
 max_memory_usage: <MAX_MEMORY_USAGE>
 shared_memory_percentage: <SHARED_MEMORY_PERCENTAGE>
+
+scud:
+  api_url: <SCUD_API_URL>

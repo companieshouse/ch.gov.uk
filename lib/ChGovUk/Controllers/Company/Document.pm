@@ -3,6 +3,8 @@ package ChGovUk::Controllers::Company::Document;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Perl;
 use Net::CompaniesHouse::DocumentEndpoint;
+use REST::Client;
+use Mojo::JSON qw(decode_json encode_json);
 
 #-------------------------------------------------------------------------------
 
@@ -136,6 +138,62 @@ sub document {
         debug "Serving redirect to [%s]", $location [DOCUMENT];
         $self->redirect_to($location);
     });
+}
+
+#-------------------------------------------------------------------------------
+
+# Submits a request to the SCUD API to create a SCUD order resulting in the retrieval or scanning of
+# an image for a missing document.
+sub scud {
+    trace "API scud() method called.";
+    my ($self) = @_;
+
+    my $psNumber = $self->stash->{filing_history_id};
+    my $scud_order = { psNumber => $psNumber };
+    my $body = encode_json($scud_order);
+    trace "body = %s", $body;
+
+    my %headers = ('Content-Type', 'application/json');
+    trace "headers = @{[%headers]}";
+
+    my $client = REST::Client->new();
+    my $response = $client->POST($self->get_scud_orders_url(), $body, \%headers);
+    $self->publish_response($response);
+
+    return ;
+}
+
+#-------------------------------------------------------------------------------
+
+# Stashes the HTTP response code and content to make them available to web page.
+sub publish_response {
+    my ($self, $response) = @_;
+    my $responseCode = $response->responseCode();
+    my $responseContent = $response->responseContent();
+    trace "Response code for request to SCUD API = %s", $responseCode;
+    trace "Response content = %s", $responseContent;
+    $self->stash(response_code => $responseCode);
+    $self->stash(response_content => $responseContent);
+}
+
+#-------------------------------------------------------------------------------
+
+# Gets the SCUD orders URL.
+sub get_scud_orders_url {
+    my ($self) = @_;
+    my $scud_orders_url = $self->get_scud_api_url()."/scudOrders";
+    trace "SCUD orders URL = %s", $scud_orders_url;
+    return $scud_orders_url;
+}
+
+#-------------------------------------------------------------------------------
+
+# Gets the configured SCUD API URL.
+sub get_scud_api_url {
+    my ($self) = @_;
+    my $scud_api = $self->config->{scud}->{api_url};
+    trace "Configured SCUD API URL = %s", $scud_api;
+    return $scud_api;
 }
 
 #-------------------------------------------------------------------------------
