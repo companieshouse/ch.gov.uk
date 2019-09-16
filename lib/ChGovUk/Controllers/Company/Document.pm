@@ -146,26 +146,34 @@ sub document {
 # an image for a missing document.
 sub scud {
     trace "API scud() method called.";
-
-    my $self = shift;
-
-    my $client = REST::Client->new();
+    my ($self) = @_;
 
     my $psNumber = $self->stash->{filing_history_id};
     my $scud_order = { psNumber => $psNumber };
     my $body = encode_json($scud_order);
-
     trace "body = %s", $body;
 
     my %headers = ('Content-Type', 'application/json');
     trace "headers = @{[%headers]}";
 
+    my $client = REST::Client->new();
     my $response = $client->POST($self->get_scud_orders_url(), $body, \%headers);
-
-    trace "response code for request to SCUD API = %s", $response->responseCode();
-    trace "response content = %s", $response->responseContent();
+    $self->publish_response($response);
 
     return ;
+}
+
+#-------------------------------------------------------------------------------
+
+# Stashes the HTTP response code and content to make them available to web page.
+sub publish_response {
+    my ($self, $response) = @_;
+    my $responseCode = $response->responseCode();
+    my $responseContent = $response->responseContent();
+    trace "Response code for request to SCUD API = %s", $responseCode;
+    trace "Response content = %s", $responseContent;
+    $self->stash(response_code => $responseCode);
+    $self->stash(response_content => $responseContent);
 }
 
 #-------------------------------------------------------------------------------

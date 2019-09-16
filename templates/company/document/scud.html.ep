@@ -1,4 +1,11 @@
 <div>
-  <h1>Document ordered</h1>
-  <h2>Please return to the filing history for the document <%= $filing_history_id %> in 24 hours.</h2>
+  % if ($response_code == 201) {
+    <h1>Document ordered</h1>
+    <h2>Please return to the filing history for the document <%= $filing_history_id %> in 24 hours.</h2>
+  % } else {
+    <h1>Error occurred submitting order to SCUD API</h1>
+    <h2>HTTP status response code = <%= $response_code %></h2>
+    <h3><u>Response content</u></h3>
+    <h3><%= $response_content %></h3>
+  % }
 </div>
