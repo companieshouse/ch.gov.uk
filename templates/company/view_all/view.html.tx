@@ -1,6 +1,9 @@
 % cascade base { title=> $company.company_name ~" - Overview (free company information from Companies House)", classes=>"profile" }
 
 % around content -> {
+
+% if $company.type != "assurance-company" && $company.type != "industrial-and-provident-society" && $company.type != "royal-charter"  && $company.type != "investment-company-with-variable-capital" && $company.type != "charitable-incorporated-organisation" && $company.type != "scottish-charitable-incorporated-organisation" && $company.type != "uk-establishment" && $company.type != "registered-society-non-jurisdictional" && $company.type != "protected-cell-company" && $company.type != "eeig" && $company.type != "protected-cell-company" && $company.type != "further-education-or-sixth-form-college-corporation"  && $company.type != "icvc-securities" && $company.type != "icvc-warrant" && $company.type != "icvc-umbrella" {
+
   % include '/includes/company/page_header.tx'
 
   % include '/includes/company/tabs.tx' { active => 'view-all-tab' };
@@ -49,5 +52,16 @@
         <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
     % }
 
+  % } else {
+    <article class="text">
+      <header>
+        <h1 id="page-not-found-header" class="heading-xlarge">
+          This page cannot be found
+        </h1>
+      </header>
+    <p>Check that you have entered the correct web address or try using the search.</p>
+    <p>If you still can't find what you're looking for email <a href="mailto:enquiries@companieshouse.gov.uk">enquiries@companieshouse.gov.uk</a></p>
+  </article>
+  % }
   % }
 % }
