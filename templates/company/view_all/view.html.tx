@@ -1,0 +1,67 @@
+% cascade base { title=> $company.company_name ~" - Overview (free company information from Companies House)", classes=>"profile" }
+
+% around content -> {
+
+% if $company.type != "assurance-company" && $company.type != "industrial-and-provident-society" && $company.type != "royal-charter"  && $company.type != "investment-company-with-variable-capital" && $company.type != "charitable-incorporated-organisation" && $company.type != "scottish-charitable-incorporated-organisation" && $company.type != "uk-establishment" && $company.type != "registered-society-non-jurisdictional" && $company.type != "protected-cell-company" && $company.type != "eeig" && $company.type != "protected-cell-company" && $company.type != "further-education-or-sixth-form-college-corporation"  && $company.type != "icvc-securities" && $company.type != "icvc-warrant" && $company.type != "icvc-umbrella" {
+
+  % include '/includes/company/page_header.tx'
+
+  % include '/includes/company/tabs.tx' { active => 'view-all-tab' };
+
+    <details class="govuk-details" role="group">
+            <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
+              <span class="govuk-details__summary-text">
+                What's included?
+              </span>
+            </summary>
+            <div class="govuk-details__text" id="details-content" aria-hidden="false">
+              <p>The latest 100 entries for:</p>
+              <ul class="govuk-list govuk-list--bullet">
+                <li>Filing history</li>
+                <li>Officers</li>
+                <li>Persons with significant control</li>
+                <li>Charges</li>
+                <li>Insolvency</li>
+                <li>Registers</li>
+              </ul>
+            </div>
+    </details>
+
+
+    % if $c.is_signed_in {
+    <div class="govuk-inset-text onlyJS">
+    <div id="widget">
+    <a class="render-document govuk-button secondary-button" href="#">View company information snapshot
+        <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
+      <div id="status-widget" class="widget-footer hidden">
+        <div id="status">
+          <div id="process-spinner" class="process-spinner"></div>
+            <span id="process-status" class="process-status">Status: in-progress</span>
+          </div>
+          <input type="hidden" id="document-data"
+            data-resource-url="/company-number/<%$company.company_number%>"
+            data-content-type="text/html" data-document-type="text/html">
+          </input>
+        </div>
+      </div>
+    </div>
+    </div>
+     <div id="download-button"></div>
+    % } else {
+    <a class="govuk-button secondary-button" href="<% $c.url_for('user_sign_in') %>">View company information snapshot
+        <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
+    % }
+
+  % } else {
+    <article class="text">
+      <header>
+        <h1 id="page-not-found-header" class="heading-xlarge">
+          This page cannot be found
+        </h1>
+      </header>
+    <p>Check that you have entered the correct web address or try using the search.</p>
+    <p>If you still can't find what you're looking for email <a href="mailto:enquiries@companieshouse.gov.uk">enquiries@companieshouse.gov.uk</a></p>
+  </article>
+  % }
+  % }
+% }

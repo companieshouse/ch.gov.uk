@@ -78,6 +78,8 @@
   <script>var global = global || {}; global.CDN_ROOT = '//<% $cdn_url %>'</script>
   <script src='//<% $cdn_url %>/javascripts/vendor/require.js'></script>
   <script src='//<% $cdn_url %>/javascripts/app/accounts-pdf.js'></script>
+  <script src='//<% $cdn_url %>/javascripts/lib/details-polyfill.js'></script>
+  <script src='//<% $cdn_url %>/javascripts/app/generate-document.js'></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script>
   require(['//<% $cdn_url %>/javascripts/require-global-config.js'], function () {
