@@ -142,8 +142,10 @@ sub document {
 
 #-------------------------------------------------------------------------------
 
+# Submits a request to the SCUD API to create a SCUD order resulting in the retrieval or scanning of
+# an image for a missing document.
 sub scud {
-    debug "scud called";
+    trace "API scud() method called.";
 
     my $self = shift;
 
@@ -153,18 +155,17 @@ sub scud {
     my $scud_order = { psNumber => $psNumber };
     my $body = encode_json($scud_order);
 
-    debug "body = %s", $body;
+    trace "body = %s", $body;
 
     my %headers = ('Content-Type', 'application/json');
-    debug "headers = @{[%headers]}";
+    trace "headers = @{[%headers]}";
 
     my $response = $client->POST($self->get_scud_orders_url(), $body, \%headers);
 
-    debug "response code = %s", $response->responseCode();
-    debug "response content = %s", $response->responseContent();
+    trace "response code for request to SCUD API = %s", $response->responseCode();
+    trace "response content = %s", $response->responseContent();
 
     return ;
-
 }
 
 #-------------------------------------------------------------------------------
