@@ -1,5 +1,5 @@
 <div>
-  % if ($response_code == 201) {
+  % if ($is_success) {
     <h1>Document ordered</h1>
     <h2>Please return to the filing history for the document <%= $filing_history_id %> in 24 hours.</h2>
   % } else {
