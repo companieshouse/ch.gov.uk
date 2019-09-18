@@ -93,6 +93,7 @@
         });
   });
   </script>
+  <script src='//<% $cdn_url %>/javascripts/app/govuk-ganalytics.js'></script>
 
    <!-- End of Companies House Styles and Scripts -->
 
