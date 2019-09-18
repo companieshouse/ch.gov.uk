@@ -1,6 +1,7 @@
 % cascade base { title => 'Follow ' ~ $company.company_name , form_page => 1, classes => "transaction service" }
 % around content -> {
-	<div role="article" class="text follow-confirmation">
+  <div role="article" class="text follow-confirmation">
+        <div id="content" class="content-override"></div>
         <h1 class="heading-xlarge" id="follow-company-title"><% l('Follow a company') %></h1>
         <div class="text" id="follow-company-confirmation-prompt">
             <h2 class="heading-large"><% $company.company_name %> (<% $company.company_number %>)</h2>
@@ -24,7 +25,7 @@
                         % }
                     >Cancel</a>
                 </p>
-            </div>        
+            </div>
         </div>
     </div>
 % }
