@@ -170,10 +170,12 @@ sub publish_response {
     my ($self, $response) = @_;
     my $responseCode = $response->responseCode();
     my $responseContent = $response->responseContent();
+    my $isSuccess = $responseCode >= 200 && $responseCode < 300;
     trace "Response code for request to SCUD API = %s", $responseCode;
     trace "Response content = %s", $responseContent;
     $self->stash(response_code => $responseCode);
     $self->stash(response_content => $responseContent);
+    $self->stash(is_success => $isSuccess);
 }
 
 #-------------------------------------------------------------------------------
