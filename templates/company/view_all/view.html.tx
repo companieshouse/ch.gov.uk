@@ -1,4 +1,4 @@
-% cascade base { title=> $company.company_name ~" - Overview (free company information from Companies House)", classes=>"profile" }
+% cascade base { title=> $company.company_name ~" - View all (free company information from Companies House)", classes=>"profile" }
 
 % around content -> {
 
