@@ -11,9 +11,7 @@
                         % if ( $tabid == 'view-all-tab' ) {
                             % if ( $active == $tabid ) {
                                 <a id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="visuallyhidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
-                            % } else {
-                                <a class="more-tab" id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="visuallyhidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
-                            % }
+                            % } 
                         % } else {
                             <a id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="visuallyhidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
                         % }
