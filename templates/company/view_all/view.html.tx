@@ -1,4 +1,4 @@
-% cascade base { title=> $company.company_name ~" - Overview (free company information from Companies House)", classes=>"profile" }
+% cascade base { title=> $company.company_name ~" - View all (free company information from Companies House)", classes=>"profile" }
 
 % around content -> {
 
@@ -45,8 +45,7 @@
         </div>
       </div>
     </div>
-    </div>
-     <div id="download-button"></div>
+    <div id="download-button"></div>
     % } else {
     <a class="govuk-button secondary-button piwik-event" data-event-id="View company information snapshot" href="<% $c.url_for('user_sign_in') %>">View company information snapshot
         <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
