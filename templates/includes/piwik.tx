@@ -50,7 +50,7 @@
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {
-    var u=(("https:" == document.location.protocol) ? "https" : "http") + ":<% $c.config.piwik.url %>/";
+    var u="<% $c.config.piwik.url %>/";
     _paq.push(['setTrackerUrl', u+'piwik.php']);
     _paq.push(['setSiteId', <% $c.config.piwik.site_id %>]);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
@@ -58,7 +58,7 @@
   })();
 </script>
 
-<noscript><p><img src=("https:" == document.location.protocol) ? "https" : "http") + "<% $c.config.piwik.url %>/piwik.php?idsite=<% $c.config.piwik.site_id %>" style="border:0;" alt="" /></p></noscript>
+<noscript><p><img src="<% $c.config.piwik.url %>/piwik.php?idsite=<% $c.config.piwik.site_id %>" style="border:0;" alt="" /></p></noscript>
 
 <script>
   var _paq = _paq || [];
