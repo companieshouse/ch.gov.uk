@@ -43,8 +43,8 @@
   else if (docTitle.match(/Mortgages \(free information from Companies House\)$/)){
      _paq.push(['setDocumentTitle','Charges ']);
   }
-  else if (docTitle.match(/View all \(free information from Companies House\)$/)) {
-     _paq.push(['setDocumentTitle','View all ']);
+  else if (docTitle.match(/View all \(free company information from Companies House\)$/)) {
+     _paq.push(['setDocumentTitle','View all']);
   }
 
   _paq.push(['setCustomVariable', 1,'VisitorStatus',<% if $c.is_signed_in { %>'SignedIn'<% } else { %>'NotSignedIn'<% } %>,'visit']);
