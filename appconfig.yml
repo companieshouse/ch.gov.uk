@@ -92,6 +92,7 @@ elasticsearch:
 feature:
     mortgage: <MORTGAGE_FEATURE>
     psc: <PSC_FEATURE>
+    company_report: <COMPANY_REPORT_FEATURE>
 
 image_service_start_date: <IMAGE_SERVICE_START_DATE>
 

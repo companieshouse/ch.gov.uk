@@ -18,7 +18,13 @@
         %     include "/includes/company/tab.tx" { tabid => 'register-tab', page => '/registers', title => 'Registers' };
         % }
         % if $company.links.uk_establishments {
-        %     include "/includes/company/tab.tx" { tabid => 'ukestablishment-tab',   page => '/ukestablishments',     title => 'UK establishments' };
+        %     include "/includes/company/tab.tx" { tabid => 'ukestablishment-tab', page => '/ukestablishments', title => 'UK establishments' };
         % }
+
+        % if $c.config.feature.company_report {
+          % if $company.type != "assurance-company" && $company.type != "industrial-and-provident-society" && $company.type != "royal-charter"  && $company.type != "investment-company-with-variable-capital" && $company.type != "charitable-incorporated-organisation" && $company.type != "scottish-charitable-incorporated-organisation" && $company.type != "uk-establishment" && $company.type != "registered-society-non-jurisdictional" && $company.type != "protected-cell-company" && $company.type != "eeig" && $company.type != "protected-cell-company" && $company.type != "further-education-or-sixth-form-college-corporation"  && $company.type != "icvc-securities" && $company.type != "icvc-warrant" && $company.type != "icvc-umbrella" {
+            %     include "/includes/company/tab.tx" { tabid => 'view-all-tab', page => '/view-all', title => 'View all'};
+          % }
+       % }
     </ul>
 </div>

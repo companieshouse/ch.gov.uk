@@ -70,6 +70,7 @@ sub register {
     $company_bridge->get('/charges')->name('company_charges')->to('company-mortgages#view');
     $company_bridge->get('/charges/:charge_id')->name('company_charge_with_id')->to('company-mortgages#view_details');
     $company_bridge->get('/ukestablishments')->name('company_branches')->to('company-branches#view');
+    $company_bridge->get('/view-all')->name("company_view_all")->to('company-view_all#view');
 
     # PSCs route
     $company_bridge->get('/persons-with-significant-control')->name('list_pscs')->to('company-pscs#list');
