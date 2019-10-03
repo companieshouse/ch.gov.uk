@@ -29,23 +29,18 @@
 
 
     % if $c.is_signed_in {
-    <div class="govuk-inset-text onlyJS">
-    <div id="widget">
-    <a class="render-document govuk-button secondary-button piwik-event" data-event-id="View company information snapshot" href="#">View company information snapshot
-        <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
-      <div id="status-widget" class="widget-footer hidden">
+      <div id="widget">
+        <a class="render-accounts-document" href="#"> View </a>
+        <div id="status-widget" class="widget-footer hidden">
         <div id="status">
           <div id="process-spinner" class="process-spinner"></div>
-            <span id="process-status" class="process-status">Status: in-progress</span>
-          </div>
-          <input type="hidden" id="document-data"
-            data-resource-url="/company-number/<%$company.company_number%>"
-            data-content-type="text/html" data-document-type="text/html">
-          </input>
+          <span id="process-status" class="process-status">Status: in-progress</span>
         </div>
+        <input type="hidden" id="document-data"
+          data-resource-url="/company-number/<%$company.company_number%>"
+          data-content-type="text/html" data-document-type="text/html">
+        </input>
       </div>
-    </div>
-    <div id="download-button"></div>
     % } else {
     <a class="govuk-button secondary-button piwik-event" data-event-id="View company information snapshot" href="<% $c.url_for('user_sign_in') %>">View company information snapshot
         <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
@@ -64,3 +59,4 @@
   % }
   % }
 % }
+<div id="download-button"></div>
