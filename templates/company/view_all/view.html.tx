@@ -41,6 +41,7 @@
           data-content-type="text/html" data-document-type="text/html">
         </input>
       </div>
+    <div id="download-button"></div>
     % } else {
     <a class="govuk-button secondary-button piwik-event" data-event-id="View company information snapshot" href="<% $c.url_for('user_sign_in') %>">View company information snapshot
         <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
@@ -59,4 +60,3 @@
   % }
   % }
 % }
-<div id="download-button"></div>
