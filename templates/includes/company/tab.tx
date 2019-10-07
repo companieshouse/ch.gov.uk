@@ -1,22 +1,14 @@
-                %# This include takes:
-                %#   $active  - the ID of the tab to make active
-                %#   $tabid   - the ID of _this_ tab
-                %#   $page    - the URL relative to /company/{company_number} that this tab links to
-                %#   $title   - the title heading of the tab (may contain HTML)
-                %#   $company - the company details needed for display (uses company.company_number) 
+%# This include takes:
+ %#   $active  - the ID of the tab to make active
+ %#   $tabid   - the ID of _this_ tab
+ %#   $page    - the URL relative to /company/{company_number} that this tab links to
+ %#   $title   - the title heading of the tab (may contain HTML)
+ %#   $company - the company details needed for display (uses company.company_number) 
 
-                <li <% ($active == $tabid ? 'class="active"' : '') | raw %> >
+ <li <% ($active == $tabid ? 'class="active"' : '') | raw %> >
 
-                    % if ( $active == $tabid ) { "<h1>" | raw }
-                        % if ( $tabid == 'view-all-tab' ) {
-                            % if ( $active == $tabid ) {
-                                <a id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="visuallyhidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
-                            % } else {
-                                <a class="more-tab" id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="visuallyhidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
-                            % }
-                        % } else {
-                            <a id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="visuallyhidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
-                        % }
-                    % if ( $active == $tabid ) { "</h1>" | raw }
+     % if ( $active == $tabid ) { "<h1>" | raw }
+         <a id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="visuallyhidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
+     % if ( $active == $tabid ) { "</h1>" | raw }
 
-                </li>
+ </li>

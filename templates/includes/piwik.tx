@@ -43,6 +43,9 @@
   else if (docTitle.match(/Mortgages \(free information from Companies House\)$/)){
      _paq.push(['setDocumentTitle','Charges ']);
   }
+  else if (docTitle.match(/View all \(free company information from Companies House\)$/)) {
+     _paq.push(['setDocumentTitle','View all']);
+  }
 
   _paq.push(['setCustomVariable', 1,'VisitorStatus',<% if $c.is_signed_in { %>'SignedIn'<% } else { %>'NotSignedIn'<% } %>,'visit']);
   _paq.push(['setCustomVariable', 2,'CompanyStatus',<% if $company.company_number == $c.authorised_company {%>'Authorised'<% } else { %>'NotAuthorised'<% } %>,'visit']);
@@ -50,7 +53,7 @@
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {
-    var u=(("https:" == document.location.protocol) ? "https" : "http") + ":<% $c.config.piwik.url %>/";
+    var u="<% $c.config.piwik.url %>/";
     _paq.push(['setTrackerUrl', u+'piwik.php']);
     _paq.push(['setSiteId', <% $c.config.piwik.site_id %>]);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
@@ -58,7 +61,7 @@
   })();
 </script>
 
-<noscript><p><img src=("https:" == document.location.protocol) ? "https" : "http") + "<% $c.config.piwik.url %>/piwik.php?idsite=<% $c.config.piwik.site_id %>" style="border:0;" alt="" /></p></noscript>
+<noscript><p><img src="<% $c.config.piwik.url %>/piwik.php?idsite=<% $c.config.piwik.site_id %>" style="border:0;" alt="" /></p></noscript>
 
 <script>
   var _paq = _paq || [];
