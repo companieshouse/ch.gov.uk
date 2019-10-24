@@ -93,11 +93,11 @@
                         </dl>
                     % }
                 </div> <%# /grid-row %>
-            </div>
+            </div> 
         % }
         % else {
             <h2 class="heading-small">
-                There are no active secretaries
+                There are no active secretaries 
             </h2>
         % }
     </div>

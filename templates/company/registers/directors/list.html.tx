@@ -150,7 +150,7 @@
         % }
         % else {
             <h2 class="heading-small">
-                There are no active directors
+                There are no active directors 
             </h2>
         % }
     </div>
