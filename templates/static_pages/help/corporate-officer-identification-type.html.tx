@@ -2,7 +2,7 @@
 % around content -> {
     <article class="text">
         <h1 class="heading-xlarge">
-            EEA and Non-EEA companies
+            Corporate Details
         </h1>
 
         <h2 class="heading-medium">
@@ -16,5 +16,18 @@
         </h2>
 
         <p>A non-EEA company is one to which the First Company Law Directive does not apply. This company is a corporate body or firm that is a legal person under its governing law, e.g. a Limited Liability Partnership. A non-EEA company is not determined by its geographical location.</p>
+
+        <h2 class="heading-medium">
+            UK limited company
+        </h2>
+
+        <p>This is a private or public limited company that is registered in the UK.</p>
+
+        <h2 class="heading-medium">
+            Other corporate bodies or firms
+        </h2>
+
+        <p>This can be a UK corporate body or firm that isn't a limited company (for example, a UK limited liability partnership - LLP) or one that isn’t registered in the UK.</p>
+
     </article>
 % }
