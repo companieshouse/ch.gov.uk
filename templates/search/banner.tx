@@ -14,7 +14,7 @@
     <div class="search-bar-active">
         <div class="searchfield">
             <label class="hidden" for="site-search-text">Search for a company or officer</label>
-            <input type="search" class="js-search-focus" autofocus="autofocus" placeholder="Search for a company or officer" value="" title="Search for a company or officer" id="site-search-text" name="q" autocomplete="off">
+            <input type="search" placeholder="Search for a company or officer" value="" title="Search for a company or officer" id="site-search-text" name="q" autocomplete="off">
             <button class="search-submit" id="search-submit" type="submit">Search</button>
             <p style="display:none" class="slow-search-msg" id="slowsearch">Please press ENTER to search</p>
         </div>  <!--end searchfield-->
