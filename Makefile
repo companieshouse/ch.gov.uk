@@ -25,7 +25,7 @@ api-enumerations/.git:
 	git submodule update
 
 deps:
-	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_URL) .; unzip $(PERL_DEPS_PACKAGE) -d $(CURDIR)/local; }
+	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_URL) . && unzip $(PERL_DEPS_PACKAGE) -d $(CURDIR)/local; }
 	test -f $(PERL_DEPS_PACKAGE) && rm -f $(PERL_DEPS_PACKAGE)
 
 clean:
