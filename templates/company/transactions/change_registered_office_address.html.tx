@@ -8,7 +8,6 @@
     <legend class="heading-medium text">What is the new address of the company?</legend>
     % $c.include_later('includes/forms/errors', form => $form, form_title => 'Filing Error');
     % include 'includes/forms/address.tx' { form => $form, name => 'address', include_po_box => 1 }
-    % $form.hidden_field( name => 'reference_etag', value => $etag );
+    % $form.hidden_field( name => 'address[etag]', value => $etag );
 </fieldset>
 % }
-

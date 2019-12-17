@@ -65,7 +65,7 @@ sub as_api_hash {
 
     my $api_hash = {};
 
-    $api_hash->{etag}           = $self->etag     if $self->etag;
+    $api_hash->{reference_etag} = $self->etag     if $self->etag;
     $api_hash->{premises}       = $self->premises if $self->premises;
     $api_hash->{address_line_1} = $self->line_1   if $self->line_1;
     $api_hash->{address_line_2} = $self->line_2   if $self->line_2;
