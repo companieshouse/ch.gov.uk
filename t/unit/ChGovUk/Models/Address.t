@@ -41,6 +41,7 @@ done_testing();
 sub test_method_from_api_hash {
     subtest "Test method - from_api_hash" => sub {
         my $api_hash = {
+            etag             => 'cbff69a7a36ffd48acc4196b242d055ead5e2853',
             premises         => 'Civic Centre',
             address_line_1   => 'Oystermouth Road',
             address_line_2   => 'The Seafront',
@@ -60,6 +61,7 @@ sub test_method_from_api_hash {
 
         $address->from_api_hash( $api_hash );
 
+        is( $address->etag    , $api_hash->{etag}, 'cbff69a7a36ffd48acc4196b242d055ead5e2853' );
         is( $address->premises, $api_hash->{premises}, 'Premises' );
         is( $address->line_1  , $api_hash->{address_line_1}, 'Line 1' );
         is( $address->line_2  , $api_hash->{address_line_2}, 'Line 2' );
@@ -95,6 +97,7 @@ sub test_method_as_api_hash {
         };
 
         subtest "Populated" => sub {
+            $address->etag      ( 'cbff69a7a36ffd48acc4196b242d055ead5e2853'  );
             $address->premises  ( '21 The Cottage'  );
             $address->line_1    ( 'Fake Street'     );
             $address->line_2    ( 'The cul-de-sac'  );
@@ -108,7 +111,8 @@ sub test_method_as_api_hash {
             my $result = $address->as_api_hash;
             is_deeply(
                 $result,
-                {   premises         => '21 The Cottage',
+                {   reference_etag   => 'cbff69a7a36ffd48acc4196b242d055ead5e2853',
+                    premises         => '21 The Cottage',
                     address_line_1   => 'Fake Street',
                     address_line_2   => 'The cul-de-sac',
                     locality         => 'Cardiff',
