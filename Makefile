@@ -1,6 +1,8 @@
-PERL_DEPS_SERVER_URL ?= s3://release.ch.gov.uk/ch.gov.uk-deps
+SERVICE_NAME         ?= ch.gov.uk
+
+PERL_DEPS_SERVER_URL ?= s3://release.ch.gov.uk/$(SERVICE_NAME)-deps
 PERL_DEPS_VERSION    ?= 1.0.0
-PERL_DEPS_PACKAGE    ?= ch.gov.uk-deps-$(PERL_DEPS_VERSION).zip
+PERL_DEPS_PACKAGE    ?= $(SERVICE_NAME)-deps-$(PERL_DEPS_VERSION).zip
 PERL_DEPS_URL        ?= $(PERL_DEPS_SERVER_URL)/$(PERL_DEPS_PACKAGE)
 
 LOCAL           ?= ./local
@@ -13,7 +15,7 @@ GETPAN_CACHEDIR ?= ./.gopancache
 GETPAN_ARGS     ?= $(GETPAN_CPUS) -cachedir=$(GETPAN_CACHEDIR) -smart $(SMARTPAN_URL) -loglevel=$(GETPAN_LOGLEVEL) -nodepdump -nocpan -nobackpan -metacpan
 
 CHS_ENV_HOME?=$(HOME)/.chs_env
-CHS_ENVS=$(CHS_ENV_HOME)/global_env $(CHS_ENV_HOME)/ch.gov.uk/env
+CHS_ENVS=$(CHS_ENV_HOME)/global_env $(CHS_ENV_HOME)/$(SERVICE_NAME)/env
 SOURCE_ENV=for chs_env in $(CHS_ENVS); do test -f $$chs_env && . $$chs_env; done
 
 PROVE_CMD       ?= $(LOCAL)/bin/prove
@@ -30,7 +32,7 @@ api-enumerations/.git:
 	git submodule update
 
 deps:
-	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_URL) .; unzip -q $(PERL_DEPS_PACKAGE) -d $(CURDIR)/local; }
+	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_URL) .; unzip $(PERL_DEPS_PACKAGE) -d $(CURDIR)/local; }
 	test -f $(PERL_DEPS_PACKAGE) && rm -f $(PERL_DEPS_PACKAGE)
 
 getpan:
@@ -67,7 +69,7 @@ package:
 	cp ./log4perl.production.conf $(tmpdir)
 	cp ./cpanfile $(tmpdir)
 	cp ./start.sh $(tmpdir)
-	cd $(tmpdir); zip -r ../ch.gov.uk-$(VERSION).zip *
+	cd $(tmpdir); zip -r ../$(SERVICE_NAME)-$(VERSION).zip *
 	rm -rf $(tmpdir)
 
 dist: build package
