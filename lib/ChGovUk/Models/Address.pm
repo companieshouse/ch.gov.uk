@@ -35,6 +35,7 @@ my $country_codes = {
 
 #-------------------------------------------------------------------------------
 
+has 'etag'          => ( traits => ['Populate'],            is => 'rw' );
 has 'premises'      => ( traits => ['Populate','Validate'], is => 'rw' );
 has 'line_1'        => ( traits => ['Populate','Validate'], is => 'rw' );
 has 'line_2'        => ( traits => ['Populate','Validate'], is => 'rw' );
@@ -64,6 +65,7 @@ sub as_api_hash {
 
     my $api_hash = {};
 
+    $api_hash->{reference_etag} = $self->etag     if $self->etag;
     $api_hash->{premises}       = $self->premises if $self->premises;
     $api_hash->{address_line_1} = $self->line_1   if $self->line_1;
     $api_hash->{address_line_2} = $self->line_2   if $self->line_2;
@@ -83,6 +85,7 @@ sub from_api_hash {
     my ($self, $api_hash) = @_;
 
     $api_hash->{$_} ||= '' for qw(
+        etag
         premises
         address_line_1
         address_line_2
@@ -94,6 +97,7 @@ sub from_api_hash {
         care_of
     );
 
+    $self->etag    ( $api_hash->{etag} );
     $self->premises( $api_hash->{premises} );
     $self->line_1  ( $api_hash->{address_line_1} );
     $self->line_2  ( $api_hash->{address_line_2} );
