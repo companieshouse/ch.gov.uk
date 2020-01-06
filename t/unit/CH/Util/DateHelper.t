@@ -522,8 +522,14 @@ sub test_method_day_month_as_string {
 sub test_method_is_current_date_greater {
      subtest "Test method - is_current_date_greater" => sub {
          is $UTIL->is_current_date_greater('2017-01-01'), "1", "1 returned when todays date is after given date";
-         is $UTIL->is_current_date_greater(DateTime::Tiny->now), "1", "1 returned when todays date is the given date";
-         is $UTIL->is_current_date_greater('2020-01-01'), "0", "0 returned when todays date is before given date";
+         my $today = DateTime::Tiny->now;
+         is $UTIL->is_current_date_greater($today), "1", "1 returned when todays date is the given date";
+         my $future_date = DateTime::Tiny->new(
+             year   => $today->year + 1,
+             month  => $today->month,
+             day    => $today->day
+             );
+         is $UTIL->is_current_date_greater($future_date), "0", "0 returned when todays date is before given date";
      };
 
      return;
