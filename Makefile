@@ -57,7 +57,6 @@ endif
 	cp ./routes.yaml $(tmpdir)
 	cp ./errors.yml $(tmpdir)
 	cp ./log4perl.production.conf $(tmpdir)
-	cp ./cpanfile $(tmpdir)
 	cp ./start.sh $(tmpdir)
 	cd $(tmpdir); zip -r ../$(SERVICE_NAME)-$(version).zip *
 	rm -rf $(tmpdir)
