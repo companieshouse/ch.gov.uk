@@ -71,7 +71,11 @@
   function bindPiwikListener() {
     $('.piwik-event').each(function() {
       $(this).click(function(){
-        _paq.push(['trackEvent', $(document).find("title").data("id").toLowerCase(), $(this).data('event-id').toLowerCase()]);
+        if($(document).find("title").data("id").toLowerCase() === "root") {
+          _paq.push(['trackEvent', $(this).data('id').toLowerCase(), $(this).data('event-id').toLowerCase()]);
+        } else {
+          _paq.push(['trackEvent', $(document).find("title").data("id").toLowerCase(), $(this).data('event-id').toLowerCase()]);
+        }
       });
     });
   }
