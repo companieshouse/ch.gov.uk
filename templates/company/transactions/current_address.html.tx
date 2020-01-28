@@ -1,4 +1,5 @@
 <p class="text">
+    % $form.hidden_field( name => 'address[etag]', value => $etag );
 	Current address
 	<br />
     % if $care_of_name {
