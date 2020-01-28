@@ -33,6 +33,8 @@ use CH::Perl;
     "private-unlimited-nsc",
     "scottish-partnership");
 
+  my @active_company = "active";
+
 #-------------------------------------------------------------------------------
 
 # View All Tab
@@ -41,6 +43,7 @@ sub view {
 
   my $company = $self->stash->{company};
   my $company_type = $company->{type};
+  my $company_status = $company->{company_status};
   my $show_snapshot = 1;
   my $show_orders = 0;
 
@@ -50,12 +53,14 @@ sub view {
     }
   }
 
-  for (my $j=0; $j < @orders_company_types; $j++) {
-    if ($company_type eq $orders_company_types[$j]) {
-      warn $company_type;
-      warn $orders_company_types[$j];
-      $show_orders = 1;
-    }
+  if ($company_status eq 'active') {
+    for (my $j=0; $j < @orders_company_types; $j++) {
+      if ($company_type eq $orders_company_types[$j]) {
+        warn $company_type;
+        warn $orders_company_types[$j];
+        $show_orders = 1;
+      }
+    } 
   }
 
   $self->stash(show_snapshot => $show_snapshot);
