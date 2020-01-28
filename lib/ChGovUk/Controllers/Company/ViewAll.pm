@@ -56,8 +56,6 @@ sub view {
   if ($company_status eq 'active') {
     for (my $j=0; $j < @orders_company_types; $j++) {
       if ($company_type eq $orders_company_types[$j]) {
-        warn $company_type;
-        warn $orders_company_types[$j];
         $show_orders = 1;
       }
     } 
@@ -66,7 +64,11 @@ sub view {
   $self->stash(show_snapshot => $show_snapshot);
   $self->stash(show_orders => $show_orders);
 
-  return $self->render(template => 'company/view_all/view');
+  if ($show_snapshot || $show_orders) {
+    return $self->render(template => 'company/view_all/view');
+  } else {
+    return $self->render(template => 'not_found.production');
+  }
 }
 
 #-------------------------------------------------------------------------------
