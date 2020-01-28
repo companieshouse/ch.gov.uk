@@ -124,6 +124,11 @@ errors:
               minlength: "Secretary of State authorisation code has an invalid value - it must be 4 characters long"
               maxlength: "Secretary of State authorisation code has an invalid value - it must be 4 characters long"
 
+          change_registered_office_address:
+            address:
+              etag:
+                etag-mismatch: "This address has been recently updated. Check the current address to see if it's correct."
+
           register_charge:
             creation_date:
               before_incorporation_date: "The Date of Creation must be on or after the date of incorporation"
