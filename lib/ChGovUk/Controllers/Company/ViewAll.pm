@@ -33,8 +33,6 @@ use CH::Perl;
     "private-unlimited-nsc",
     "scottish-partnership");
 
-  my @active_company = "active";
-
 #-------------------------------------------------------------------------------
 
 # View All Tab
