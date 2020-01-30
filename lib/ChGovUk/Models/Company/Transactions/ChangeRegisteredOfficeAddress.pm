@@ -14,6 +14,7 @@ our %api_field_map = (
     'address[postcode]' => 'postal_code',
     'address[country]'  => 'country',
     'address[po_box]'   => 'po_box',
+    'address[etag]'     => 'reference_etag',
 );
 
 #-------------------------------------------------------------------------------
