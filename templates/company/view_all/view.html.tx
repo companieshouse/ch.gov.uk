@@ -1,4 +1,4 @@
-% cascade base { title=> $company.company_name ~" - View all (free company information from Companies House)", classes=>"profile" }
+% cascade base { title=> $company.company_name ~" - More (free company information from Companies House)", classes=>"profile" }
 
 % around content -> {
 
@@ -52,26 +52,28 @@
     % }
   % }
 
-  % if $show_orders {
-    <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
-      Order a certificate
-    </h2>
-    <details class="govuk-details" role="group">
-      <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
-        <span class="govuk-details__summary-text">
-          What you can order
-        </span>
-      </summary>
-      <div class="govuk-details__text" id="details-content" aria-hidden="false">
-        <p>You can:</p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>order a certificate of incorporation</li>
-          <li>include good standing information</li>
-          <li>pay by debit or credit card</li>
-        </ul>
-      </div>
-    </details>
-    <a class="govuk-button secondary-button piwik-event" data-event-id="Order a certificate" href="<% $c.url_for('/orderable/certificates') %>">Order certificate</a>
-  % }
+  % if $c.config.feature.order_certificate {
+    % if $show_orders {
+      <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
+        Order a certificate
+      </h2>
+      <details class="govuk-details" role="group">
+        <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
+          <span class="govuk-details__summary-text">
+            What you can order
+          </span>
+        </summary>
+        <div class="govuk-details__text" id="details-content" aria-hidden="false">
+          <p>You can:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>order a certificate of incorporation</li>
+            <li>include good standing information</li>
+            <li>pay by debit or credit card</li>
+          </ul>
+        </div>
+      </details>
+      <a class="govuk-button secondary-button piwik-event" data-event-id="Order a certificate" href="<% $c.url_for('/orderable/certificates') %>">Order certificate</a>
+    % }
+  %}
 % }
 % }
