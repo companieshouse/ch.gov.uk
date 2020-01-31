@@ -94,6 +94,7 @@ feature:
     psc: <PSC_FEATURE>
     company_report: <COMPANY_REPORT_FEATURE>
     alphabetical_search: <ALPHABETICAL_SEARCH_FEATURE>
+    order_certificate: <ORDER_CERTIFICATE_FEATURE>
 
 image_service_start_date: <IMAGE_SERVICE_START_DATE>
 
