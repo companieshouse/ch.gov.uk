@@ -5,7 +5,7 @@
   % if $show_snapshot {
     % include '/includes/company/page_header.tx'
 
-    % include '/includes/company/tabs.tx' { active => 'view-all-tab' };
+    % include '/includes/company/tabs.tx' { active => 'more-tab' };
         <h2 id="company-snapshot-header" class="heading-large">
           Company snapshot <%$company_type%>
         </h2>
@@ -51,7 +51,7 @@
           <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
     % }
   % }
-  
+
   % if $show_orders {
     <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
       Order a certificate
