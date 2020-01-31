@@ -31,7 +31,7 @@
     % if $c.is_signed_in {
       <div class="govuk-inset-text onlyJS">
       <div id="widget">
-      <a class="render-document govuk-button secondary-button" data-event-id="View company information snapshot" href="#">View company information snapshot
+      <a class="render-document govuk-button secondary-button piwik-event" data-event-id="View company information snapshot" href="#">View company information snapshot
           <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
         <div id="status-widget" class="widget-footer hidden">
           <div id="status">
@@ -47,11 +47,11 @@
       </div>
       <div id="download-button"></div>
       % } else {
-      <a class="govuk-button secondary-button" data-event-id="View company information snapshot" href="<% $c.url_for('user_sign_in') %>">View company information snapshot
+      <a class="govuk-button secondary-button piwik-event" data-event-id="View company information snapshot" href="<% $c.url_for('user_sign_in') %>">View company information snapshot
           <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
     % }
   % }
-
+  
   % if $show_orders {
     <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
       Order a certificate
@@ -71,7 +71,7 @@
         </ul>
       </div>
     </details>
-    <a class="govuk-button secondary-button" data-event-id="Order a certificate" href="<% $c.url_for('/orderable/certificates') %>">Order certificate</a>
+    <a class="govuk-button secondary-button piwik-event" data-event-id="Order a certificate" href="<% $c.url_for('/orderable/certificates') %>">Order certificate</a>
   % }
 % }
 % }
