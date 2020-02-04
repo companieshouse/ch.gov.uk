@@ -502,7 +502,7 @@ sub _get_errors_for_field {
             $error_hash{text} = $error;
 
             if ($self->_is_warning($rule)) {
-                push $self->warnings, \%error_hash;
+                push @{$self->warnings}, \%error_hash;
             } else {
                 my $error_id = $self->_field_name_to_id($field) . '-' . $rule . '-error';
                 push @errors, { text => $error, id => $error_id };
@@ -510,7 +510,7 @@ sub _get_errors_for_field {
                 # Does the controller have a corresponding field?
                 if (defined $self->labels->{$field} ) {
                     $error_hash{id}   = $error_id;
-                    push $self->errors, \%error_hash;
+                    push @{$self->errors}, \%error_hash;
                 }
             }
         }
