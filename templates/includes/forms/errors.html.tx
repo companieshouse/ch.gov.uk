@@ -1,15 +1,29 @@
-% if $form.model && $form.errors_count() > 0 {
-    <div class="error-summary" role="group" tabindex="-1">
-        <h2 class="heading-medium error-summary-heading">
-            <% $form_title %>
-        </h2>
-        <p>
-            This form has errors
-        </p>
-        <ul class="error-summary-list">
-        % for $form.errors -> $error {
-            <li><a href="#<% $error.id %>"><% $error.text %></a></li>
+% if $form.model {
+    % if $form.warnings_count() > 0 {
+        % for $form.warnings -> $warning {
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                <% $warning.text %>
+            </strong>
+        </div>
         % }
-        </ul>
-    </div>
+    % }
+
+    % if $form.errors_count() > 0 {
+        <div class="error-summary" role="group" tabindex="-1">
+            <h2 class="heading-medium error-summary-heading">
+                <% $form_title %>
+            </h2>
+            <p>
+                This form has errors
+            </p>
+            <ul class="error-summary-list">
+            % for $form.errors -> $error {
+                <li><a href="#<% $error.id %>"><% $error.text %></a></li>
+            % }
+            </ul>
+        </div>
+    % }
 % }
