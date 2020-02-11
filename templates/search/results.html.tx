@@ -23,7 +23,7 @@
         			<h1 class="visuallyhidden">Search the register – results</h1>
                     <h2 class="visuallyhidden">All results</h2>
                     % if $search_type == 'officers' {
-                        <details class="govuk-details" data-module="govuk-details" open="" role="group">
+                        <details class="govuk-details" data-module="govuk-details" role="group">
                             <summary class="govuk-details__summary" role="button" aria-controls="details-content-0" aria-expanded="false">
                                 <span class="govuk-details__summary-text">
                                     Did you know you can search for officers by location?
