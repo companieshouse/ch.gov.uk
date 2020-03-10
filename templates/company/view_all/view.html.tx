@@ -72,7 +72,7 @@
           </ul>
         </div>
       </details>
-      <a class="govuk-button secondary-button piwik-event" data-event-id="Order a certificate" href="<% $c.url_for('/orderable/certificates') %>">Order certificate</a>
+        <a class="govuk-button secondary-button piwik-event" data-event-id="Order a certificate" href="orderable/certificates">Order certificate</a>
     % }
   %}
 % }
