@@ -31,10 +31,10 @@ sub get_api_map {
 
 sub update_api {
     my ( $self, $transaction, ) = @_;
-    return $transaction->registered_office_address->update( $self->address->as_api_hash );
+    return $transaction->registered_office_address->create( $self->address->as_api_hash );
 }
 
-# ------------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------------
 
 __PACKAGE__->meta->make_immutable;
 
