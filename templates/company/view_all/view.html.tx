@@ -60,15 +60,15 @@
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
           <span class="govuk-details__summary-text">
-            What you can order
+            What you'll need
           </span>
         </summary>
         <div class="govuk-details__text" id="details-content" aria-hidden="false">
-          <p>You can:</p>
+          <p>To use the service, you'll need:</p>
           <ul class="govuk-list govuk-list--bullet">
-            <li>order a certificate of incorporation</li>
-            <li>include good standing information</li>
-            <li>pay by debit or credit card</li>
+            <li>to choose the company information you want to be included on the certificate</li>
+            <li>the address you want the certificate to be delivered to (UK or international)</li>
+            <li>a credit or debit card for payment</li>
           </ul>
         </div>
       </details>
