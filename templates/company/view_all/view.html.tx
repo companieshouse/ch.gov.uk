@@ -1,9 +1,14 @@
 % cascade base { title=> $company.company_name ~" - More (free company information from Companies House)", classes=>"profile" }
 
 % around content -> {
-
   % if $show_snapshot {
     % include '/includes/company/page_header.tx'
+
+    % if $show_snapshot && $show_orders {
+      <p class="hidden" id="described-by">Get company snapshot and ordering service</p>
+    % } else {
+      <p class="hidden" id="described-by">Get company snapshot</p>
+    % }
 
     % include '/includes/company/tabs.tx' { active => 'more-tab' };
         <h2 id="company-snapshot-header" class="heading-large">
