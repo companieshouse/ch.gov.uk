@@ -21,7 +21,7 @@
                 </span>
               </summary>
               <div class="govuk-details__text" id="details-content" aria-hidden="false">
-                <p>The latest 100 entries for:</p>
+                <p id="snapshot-list">The latest 100 entries for:</p>
                 <ul class="govuk-list govuk-list--bullet">
                   <li>Filing history</li>
                   <li>Officers</li>
@@ -69,7 +69,7 @@
           </span>
         </summary>
         <div class="govuk-details__text" id="details-content" aria-hidden="false">
-          <p>To use the service, you'll need:</p>
+          <p id="orders-list">To use the service, you'll need:</p>
           <ul class="govuk-list govuk-list--bullet">
             <li>to choose the company information you want to be included on the certificate</li>
             <li>the address you want the certificate to be delivered to (UK or international)</li>
