@@ -4,12 +4,11 @@
  %#   $page    - the URL relative to /company/{company_number} that this tab links to
  %#   $title   - the title heading of the tab (may contain HTML)
  %#   $company - the company details needed for display (uses company.company_number)
- %#   $describedBy - the descriptive text read to a screen reader user
 
  <li <% ($active == $tabid ? 'class="active"' : '') | raw %> >
 
      % if ( $active == $tabid ) { "<h1>" | raw }
-         <a id="<% $tabid %>" aria-describedby="<% $describedBy %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="visuallyhidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
+         <a id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="visuallyhidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
      % if ( $active == $tabid ) { "</h1>" | raw }
 
  </li>
