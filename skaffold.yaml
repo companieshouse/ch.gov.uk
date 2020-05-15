@@ -1,0 +1,13 @@
+apiVersion: skaffold/v2beta3
+kind: Config
+metadata:
+  name: ch.gov.uk
+build:
+  artifacts:
+  - image: ch.gov.uk
+deploy:
+  kubectl:
+    manifests:
+    - kubernetes/deployment.yaml
+    - kubernetes/service.yaml
+    - kubernetes/ingress.yaml

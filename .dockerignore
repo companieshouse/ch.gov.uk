@@ -1,0 +1,15 @@
+*
+
+!local
+!lib
+!script
+!templates
+!api-enumerations
+!t
+
+!appconfig.yml
+!errors.yml
+!log4perl.production.conf
+!routes.yaml
+
+!docker-entrypoint.sh

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ch-gov-uk
+spec:
+  selector:
+    matchLabels:
+      app: ch-gov-uk
+  template:
+    metadata:
+      labels:
+        app: ch-gov-uk
+    spec:
+      containers:
+        -   name: ch-gov-uk
+            image: ch.gov.uk:1.0.0
+            env:
+              - name: CHS_URL
+                value: 'http://chs-dev'
+              - name: COOKIE_SECRET
+                value: 'some-cookie-secret'
+              - name: COOKIE_DOMAIN
+                value: 'chs-dev'
+              - name: URL_SIGNING_SALT
+                value: 'some-url-signing-salt'
+              - name: CACHE_SERVER
+                value: 'redis:6379'
+              - name: CDN_HOST
+                value: 'cdn.chs-dev'
+              - name: CH_OAUTH2_REQUEST_KEY
+                value: 'some-oauth2-request-key'
+              - name: CHS_CH_CLIENT_ID
+                value: '1234567890.apps.ch.gov.uk'
+              - name: CHS_CH_CLIENT_SECRET
+                value: 'some-oauth2-client-secret'
+              - name: ACCOUNT_URL
+                value: 'http://account.chs-dev'
+              - name: ACCOUNT_LOCAL_URL
+                value: 'http://account-ch-gov-uk:4000'
+            ports:
+              - containerPort: 2000

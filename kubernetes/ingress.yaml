@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ch-gov-uk
+spec:
+  rules:
+    - host: chs-dev
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: ch-gov-uk
+              servicePort: 2000
