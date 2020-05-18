@@ -14,7 +14,7 @@
                   What's included in the company snapshot?
                 </span>
               </summary>
-              <div class="govuk-details__text" id="details-content" aria-hidden="false">
+              <div class="govuk-details__text" id="company-snapshot-details-content" aria-hidden="false">
                 <p id="snapshot-list">The latest 100 entries for:</p>
                 <ul class="govuk-list govuk-list--bullet">
                   <li>Filing history</li>
@@ -62,7 +62,7 @@
             What you'll need
           </span>
         </summary>
-        <div class="govuk-details__text" id="details-content" aria-hidden="false">
+        <div class="govuk-details__text" id="order-a-certificate-details-content" aria-hidden="false">
           <p id="orders-list">To use the service, you'll need:</p>
           <ul class="govuk-list govuk-list--bullet">
             <li>to choose the company information you want to be included on the certificate</li>
