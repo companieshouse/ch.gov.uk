@@ -33,6 +33,7 @@ sub view {
 
     # Process the incoming parameters
     my $company_number   = $self->param('company_number');          # Mandatory
+    my $cert             = abs(int($self->param('cert') || 0));
     my $page             = abs(int($self->param('page') || 1));     # Which page has been requested
     my $show_filing_type = $self->get_filter('fh_type');            # Show the filing-type column/containers
     my $category_filter  = $self->get_filter('fh');                 # List of categories to filter by (optional)
@@ -124,6 +125,8 @@ sub view {
                 # Format date fields in the form of '01 Jan 2004'
                 $self->format_filing_history_dates($doc);
             }
+
+            trace "THIS IS THE FLAG VALUE FOR CERT: %s", $cert;
 
             # Work out the paging numbers
             $pager->total_entries( $fh_results->{total_count} // 0 );
