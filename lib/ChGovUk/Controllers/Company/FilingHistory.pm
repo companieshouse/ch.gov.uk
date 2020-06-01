@@ -149,7 +149,11 @@ sub view {
                 $self->render(template => 'company/filing_history/view_content');
             }
             else {
-                $self->render;
+                if ($cert) {
+                    $self->render(template => 'company/filing_history/view_certified');
+                } else {
+                    $self->render;
+                }
             }
         },
         failure => sub {

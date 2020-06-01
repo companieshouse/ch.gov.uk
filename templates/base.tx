@@ -115,6 +115,8 @@
       </div>
    </div>
 
+% if ! $disable_default_header {
+
   <!-- // CH.GOV.UK HEADER -->
   <header role="banner" id="global-header">
     <div class="header-wrapper">
@@ -127,12 +129,17 @@
 			<!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
 % }
         </div>
-
+        <div>
+            <a href="/" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="service-logo" class="content">
+            Order a certified copy
+          </a>
+          </div>
 
       </div>
     </div>
   </header>
   <!--end header-->
+% }
 
 % if $feedback_banner {
   <div class="govuk-body" id="chs-customer-insights-top">
@@ -145,11 +152,18 @@
   <main id="page-container" class="search <% $classes %>" role="main">
 
   % if !$feedback_banner {
-    <div class="phase-banner">
-      % } else {
+    % if $certified_copies {
+      <div class="phase-banner-certified">
+    % } else {
+      <div class="phase-banner">
+    % }
+  % } else {
     <div>
   % }
-<div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="visuallyhidden">(link opens a new window)</span></a></div>
+
+% if ! $certified_copies {
+  <div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="visuallyhidden">(link opens a new window)</span></a></div>
+% }
     </div>
 
     % if $user_bar != false {
