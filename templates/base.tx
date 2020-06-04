@@ -129,12 +129,13 @@
 			<!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
 % }
         </div>
+        % if $certified_copies {
         <div>
-            <a href="/" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="service-logo" class="content">
+            <a href="/" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified copy', 'Certified copies']);"<% } %> id="service-logo" class="content">
             Order a certified copy
           </a>
-          </div>
-
+        </div>
+        % }
       </div>
     </div>
   </header>

@@ -1,0 +1,25 @@
+<div class="company-header">
+        <div id="content" class="content-override"></div>
+        <a href="/" class="govuk-back-link">Back</a>
+        <br>
+        <p class="heading-xlarge">Add documents to order</p>
+        <br>
+        <p class="heading-large"><% $company.company_name %></p>
+        <p id="company-number">
+        % if $company.type == 'uk-establishment' {
+        <% l('UK establishment number') %>
+        % }
+        % else {
+            <% l('Company number') %>
+          % }
+            <strong><% $company.company_number %></strong>
+        </p>
+
+        <a href="/" class="button" id="add-documents-to-order"
+          % if $c.config.piwik.embed {
+          onclick="javascript:_paq.push(['trackEvent', 'AddDocumentsToOrder']);"
+        % }
+        ><% l('Add documents to order') %>
+        </a>
+</div>
+<br>

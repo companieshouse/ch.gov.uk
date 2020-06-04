@@ -47,7 +47,7 @@
      <script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script>  <!-- Needed for new GDS-style radio buttons and checkboxes -->
 
 
-    % include '/includes/company/page_header.tx'
+    % include '/includes/company/certified_page_header.tx'
 
 % if $company.type == "uk-establishment" {
 <div class="grid-row">
@@ -138,7 +138,7 @@
 
         % } else {
                 <div id="filing-history-content">
-                    % include 'company/filing_history/view_content.html.tx'
+                    % include 'company/filing_history/view_content_certified.html.tx'
                 </div>
         % }
     %}
