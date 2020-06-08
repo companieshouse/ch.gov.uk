@@ -1,9 +1,7 @@
 <div class="company-header">
         <div id="content" class="content-override"></div>
         <a href="/" class="govuk-back-link">Back</a>
-        <br>
-        <p class="heading-xlarge">Add documents to order</p>
-        <br>
+        <p class="heading-xlarge" id="add-document-heading">Add documents to order</p>
         <p class="heading-large"><% $company.company_name %></p>
         <p id="company-number">
         % if $company.type == 'uk-establishment' {
@@ -14,6 +12,12 @@
           % }
             <strong><% $company.company_number %></strong>
         </p>
+
+        <div class="govuk-inset-text">
+            <h2 class="heading-m" id="documentsSelectedCountTop">No documents selected</h2>
+        <ul id="documentsSelectedList" class="govuk-list govuk-list--bullet">
+        </ul>
+        </div>
 
         <a href="/" class="button" id="add-documents-to-order"
           % if $c.config.piwik.embed {
