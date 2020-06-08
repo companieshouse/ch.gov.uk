@@ -32,11 +32,11 @@ sub view {
     my ($self) = @_;
 
     # Process the incoming parameters
-    my $company_number   = $self->param('company_number');          # Mandatory
-    my $cert             = abs(int($self->param('cert') || 0));
-    my $page             = abs(int($self->param('page') || 1));     # Which page has been requested
-    my $show_filing_type = $self->get_filter('fh_type');            # Show the filing-type column/containers
-    my $category_filter  = $self->get_filter('fh');                 # List of categories to filter by (optional)
+    my $company_number   = $self->param('company_number');                # Mandatory
+    my $certified_docs   = abs(int($self->param('certified_docs') || 0)); # Certified documents query parameter
+    my $page             = abs(int($self->param('page') || 1));           # Which page has been requested
+    my $show_filing_type = $self->get_filter('fh_type');                  # Show the filing-type column/containers
+    my $category_filter  = $self->get_filter('fh');                       # List of categories to filter by (optional)
     my @filter_categories = split ',', $category_filter;
 
     my $unavailable_date = $self->config->{unavailable_date} || '2003-01-01';
@@ -126,8 +126,6 @@ sub view {
                 $self->format_filing_history_dates($doc);
             }
 
-            trace "THIS IS THE FLAG VALUE FOR CERT: %s", $cert;
-
             # Work out the paging numbers
             $pager->total_entries( $fh_results->{total_count} // 0 );
             trace "filing history total_count %d entries per page %d",
@@ -149,7 +147,7 @@ sub view {
                 $self->render(template => 'company/filing_history/view_content');
             }
             else {
-                if ($cert) {
+                if ($certified_docs) {
                     $self->render(template => 'company/filing_history/view_certified');
                 } else {
                     $self->render;
