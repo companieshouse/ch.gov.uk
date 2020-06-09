@@ -27,7 +27,7 @@ use constant AVAILABLE_CATEGORIES => {
 
 #-------------------------------------------------------------------------------
 
-# Company filing history page
+# Certified documents filing history page
 sub view {
     my ($self) = @_;
 
