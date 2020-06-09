@@ -1,4 +1,4 @@
-package ChGovUk::Controllers::Company::FilingHistory;
+package ChGovUk::Controllers::Company::CertifiedDocuments;
 
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::IOLoop;
@@ -32,10 +32,10 @@ sub view {
     my ($self) = @_;
 
     # Process the incoming parameters
-    my $company_number   = $self->param('company_number');      # Mandatory
-    my $page             = abs(int($self->param('page') || 1)); # Which page has been requested
-    my $show_filing_type = $self->get_filter('fh_type');        # Show the filing-type column/containers
-    my $category_filter  = $self->get_filter('fh');             # List of categories to filter by (optional)
+    my $company_number   = $self->param('company_number');                # Mandatory
+    my $page             = abs(int($self->param('page') || 1));           # Which page has been requested
+    my $show_filing_type = $self->get_filter('fh_type');                  # Show the filing-type column/containers
+    my $category_filter  = $self->get_filter('fh');                       # List of categories to filter by (optional)
     my @filter_categories = split ',', $category_filter;
 
     my $unavailable_date = $self->config->{unavailable_date} || '2003-01-01';
@@ -43,11 +43,8 @@ sub view {
     my $recently_filed = $self->config->{recently_filed_days} || 5;
     my $items_per_page = $self->config->{filing_history}->{items_per_page} || 25;
 
-    # FIXME: vvv Remove this when Doc API goes live (and in template) vvv
     $self->stash->{image_service_active} = $self->can_view_images;
-    # FIXME: ^^^ Remove this when Doc API goes live (and in template) ^^^
 
-    # FIXME: remove this when confirmation-statement goes live - also in template
     my $confirmation_statement_available_date = $self->config->{confirmation_statement_available_date} || '2016-06-30';
 
     my $date_today = DateTime->now(time_zone => 'GMT');
@@ -55,7 +52,6 @@ sub view {
     if (date_convert($date_today) < date_convert($confirmation_statement_available_date)) {
         $self->stash(disable_confirmation_statement_filter => 1);
     }
-    # FIXME remove this when confirmation-statement goes live - also in template
 
     trace "Get company filing history for %s, page %s, filter=[%s]", $self->stash('company_number'), $page, $category_filter [FILING_HISTORY];
     my $pager = CH::Util::Pager->new(entries_per_page => $items_per_page, current_page => $page);
@@ -143,10 +139,10 @@ sub view {
             $self->stash(split_category_at       => ceil(@$categories / 2));
 
             if ($self->req->is_xhr) {
-                $self->render(template => 'company/filing_history/view_content');
+                $self->render(template => 'company/filing_history/view_content_certified');
             }
             else {
-                $self->render;
+                $self->render(template => 'company/filing_history/view_certified');
             }
         },
         failure => sub {
@@ -170,10 +166,6 @@ sub date_convert {
       );
 }
 
-#-------------------------------------------------------------------------------
-# FIXME THIS SHOULD ALL BE DONE INSIDE THE TEMPLATE             FIXME
-# FIXME IF WE CAN...........                                    FIXME
-# FIXME IF WE CANNOT - THEN WHAT ARE API USERS GOING TO DO????? FIXME
 sub _dates_to_strings {
     my ( $self, $description_values, ) = @_;
 
@@ -181,7 +173,5 @@ sub _dates_to_strings {
         $description_values->{$field} = CH::Util::DateHelper->isodate_as_string( $description_values->{$field}, "%d %b %Y" );
     }
 }
-
-#-------------------------------------------------------------------------------
 
 1;
