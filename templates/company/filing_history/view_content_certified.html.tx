@@ -81,7 +81,11 @@
                     % }
                 </td>
                 <td class="nowrap">
+                % if $item.type == "NEWINC" {
+                    £30
+                % } else {
                     £15
+                % }
                 </td>
                 % }
             </tr>
