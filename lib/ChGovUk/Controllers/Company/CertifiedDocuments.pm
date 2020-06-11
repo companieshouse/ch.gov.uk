@@ -53,6 +53,13 @@ sub view {
         $self->stash(disable_confirmation_statement_filter => 1);
     }
 
+    if( ! $self->is_signed_in ) {
+        my $return_to = $self->req->headers->referrer . ',' . scalar $self->req->url;
+        debug "Certified Documents - user not logged in, redirecting to login with return_to[%s]", $return_to [ROUTING];
+        $self->redirect_to( $self->url_for('user_sign_in')->query( return_to => $return_to) );
+        return 0;
+    }
+
     trace "Get company filing history for %s, page %s, filter=[%s]", $self->stash('company_number'), $page, $category_filter [FILING_HISTORY];
     my $pager = CH::Util::Pager->new(entries_per_page => $items_per_page, current_page => $page);
 
