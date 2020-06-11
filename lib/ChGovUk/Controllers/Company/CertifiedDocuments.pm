@@ -13,9 +13,6 @@ use ChGovUk::Plugins::FilterHelper;
 use DateTime;
 
 # all categories (that can be filtered by)
-# XXX temp: need decision on what categories we're going to display and where the
-# canonical list should be (e.g. in here, hardwired in the template, in a YAML file,
-# pulled from MongoDB &c.)
 use constant AVAILABLE_CATEGORIES => {
     'accounts'               => 'Accounts',
     'confirmation-statement' => 'Confirmation statements / Annual returns',
