@@ -32,10 +32,10 @@ sub view {
     my ($self) = @_;
 
     # Process the incoming parameters
-    my $company_number   = $self->param('company_number');      # Mandatory
-    my $page             = abs(int($self->param('page') || 1)); # Which page has been requested
-    my $show_filing_type = $self->get_filter('fh_type');        # Show the filing-type column/containers
-    my $category_filter  = $self->get_filter('fh');             # List of categories to filter by (optional)
+    my $company_number   = $self->param('company_number');          # Mandatory
+    my $page             = abs(int($self->param('page') || 1));     # Which page has been requested
+    my $show_filing_type = $self->get_filter('fh_type');            # Show the filing-type column/containers
+    my $category_filter  = $self->get_filter('fh');                 # List of categories to filter by (optional)
     my @filter_categories = split ',', $category_filter;
 
     my $unavailable_date = $self->config->{unavailable_date} || '2003-01-01';
