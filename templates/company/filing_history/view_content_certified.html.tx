@@ -1,0 +1,126 @@
+%# this mini-macro returns a (space-prefixed) class list which handles the boilerplate of associating
+%# an element's visibility with the "Show filing type" checkbox.
+%# TODO for sprintf (and other Perl builtins): add Text::Xslate::Bridge::Star to CH::MojoX::Plugin::Xslate
+% macro sft_toggled -> { ' sft-toggled' ~ ($show_filing_type ? '' : ' js-hidden') }
+
+% if $company_filing_history.total_count == 0 { # no results
+    <p class="text">
+        <% tl( $c.fhe_lookup($company_filing_history.filing_history_status) ) %>
+    </p>
+    <p class="text">
+        <%
+            ln(
+                'Sorry, no filings in the selected category are available for this company.',
+                'Sorry, no filings in the selected categories are available for this company.',
+                $selected_category_count
+            )
+        %>
+    </p>
+% } else { # results
+    <p class="text">
+        <% tl( $c.fhe_lookup($company_filing_history.filing_history_status) ) %>
+    </p>
+    <table id="fhTable" class="full-width-table">
+        <caption class="visuallyhidden">Company Results (links open in a new window)</caption>
+        <tr>
+            <th>
+                Select
+            </th>
+            <th class="nowrap">
+                Date filed<span class="visuallyhidden">(document was filed at Companies House)</span>
+            </th>
+            <th class="filing-type<% sft_toggled() %>">
+                Type
+            </th>
+            <th>
+                Description <span class="visuallyhidden">(of the document filed at Companies House)</span>
+            </th>
+            % if ( $image_service_active ) {
+                <th class="nowrap">
+                    Fee <span class="visuallyhidden">(PDF file, link opens in new window)</span>
+                </th>
+            % }
+        </tr>
+        % for $company_filing_history.items -> $item {
+            <tr>
+                <td>
+                <div class="block-label selection-button-checkbox">
+                    <label for="filter-category-<% $id %>">
+                        <input
+                        id="filter-category-<% $id %>"
+                        name="category"
+                        value="<% $id %>"
+                        type="checkbox"
+                        <% $selected_categories[$id] ? 'checked' : '' %> />
+                        <% l($name) %>
+                    </label>
+                </div>
+                <br>
+                <br>
+                </td>
+                <td class="nowrap">
+                    % $c.isodate_as_short_string($item.date)
+                </td>
+                <td class="filing-type<% sft_toggled() %>">
+                    % $item.type
+                </td>
+                <td>
+                    % include "company/filing_history/transaction_description.html.tx" { item => $item };
+                    % if !$item.links.document_metadata {
+                      % if ($item._missing_message == 'unavailable') {
+                      <div class="form-hint">
+			      <!--This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.-->
+                  Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.
+                      </div>
+                      % }
+                      % if ($item._missing_message == 'available_in_5_days') {
+                      <div class="form-hint">
+                        This document is being processed and will be available in 5 days.
+                      </div>
+                      % }
+                    % }
+                </td>
+                <td class="nowrap">
+                % if $item.type == "NEWINC" {
+                    £30
+                % } else {
+                    £15
+                % }
+                </td>
+                % }
+            </tr>
+        % }
+    </table>
+
+    % if $company_filing_history.total_count > $entries_per_page {
+            <ul class="pager">
+                % if ($previous_page) {
+                    <li>
+                        <a id="previousButton" class="page" href="<% $c.url_with.query([ page => $previous_page ]) %>" data-page="<% $previous_page %>">
+                            Previous
+                        </a>
+                    </li>
+                % }
+                % for $page_set -> $page {
+                    <li>
+                        <a id="pageNo<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>" data-page="<% $page %>">
+                            % if $current_page_number == $page {
+                                <strong>
+                                    <% $page %>
+                                </strong>
+                            % } else {
+                                <% $page %>
+                            % }
+                        </a>
+                    </li>
+                % }
+                % if ($next_page) {
+                    <li>
+                        <a id="nextButton" class="page" href="<% $c.url_with.query([ page => $next_page ]) %>" data-page="<% $next_page %>">
+                            Next
+                        </a>
+                    </li>
+                % }
+            </ul>
+    % }
+% }

@@ -64,6 +64,10 @@
 
    <!-- Companies House Styles and Scripts -->
 
+   % if $certified_copies {
+     <link href="//<% $cdn_url %>/stylesheets/gci/certified-copies.css" media="screen" rel="stylesheet" type="text/css">
+   % }
+
    <!--[if gt IE 8]><!--><link href="//<% $cdn_url %>/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css"><!--<![endif]-->
    <!--[if IE 6]><link href="//<% $cdn_url %>/stylesheets/application-ie6.css" media="screen" rel="stylesheet" type="text/css"><![endif]-->
    <!--[if IE 7]><link href="//<% $cdn_url %>/stylesheets/application-ie7.css" media="screen" rel="stylesheet" type="text/css"><![endif]-->
@@ -115,6 +119,8 @@
       </div>
    </div>
 
+% if ! $disable_default_header {
+
   <!-- // CH.GOV.UK HEADER -->
   <header role="banner" id="global-header">
     <div class="header-wrapper">
@@ -127,12 +133,18 @@
 			<!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
 % }
         </div>
-
-
+        % if $certified_copies {
+        <div>
+            <a href="/" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
+            Order a certified document
+          </a>
+        </div>
+        % }
       </div>
     </div>
   </header>
   <!--end header-->
+% }
 
 % if $feedback_banner {
   <div class="govuk-body" id="chs-customer-insights-top">
@@ -145,11 +157,18 @@
   <main id="page-container" class="search <% $classes %>" role="main">
 
   % if !$feedback_banner {
-    <div class="phase-banner">
-      % } else {
+    % if $certified_copies {
+      <div class="phase-banner-certified">
+    % } else {
+      <div class="phase-banner">
+    % }
+  % } else {
     <div>
   % }
-<div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="visuallyhidden">(link opens a new window)</span></a></div>
+
+% if ! $certified_copies {
+  <div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="visuallyhidden">(link opens a new window)</span></a></div>
+% }
     </div>
 
     % if $user_bar != false {
