@@ -33,6 +33,17 @@ use CH::Perl;
     "private-unlimited-nsc",
     "scottish-partnership");
 
+  my @certified_orders_company_types = (
+    "industrial-and-provident-society",
+    "registered-society-non-jurisdictional",
+    "industrial-and-provident-society",
+    "royal-charter",
+    "icvc-umbrella",
+    "uk-establishment",
+    "scottish-charitable-incorporated-organisation",
+    "protected-cell-company",
+    "charitable-incorporated-organisation");
+
 #-------------------------------------------------------------------------------
 
 # View All Tab
@@ -42,8 +53,11 @@ sub view {
   my $company = $self->stash->{company};
   my $company_type = $company->{type};
   my $company_status = $company->{company_status};
+  my $links = $company->{links};
+  my $filing_history = $links->{filing_history};
   my $show_snapshot = 1;
   my $show_orders = 0;
+  my $show_certified_document = 1;
 
   for (my $i=0; $i < @snapshot_company_types; $i++) {
     if ($company_type eq $snapshot_company_types[$i]) {
@@ -59,10 +73,17 @@ sub view {
     } 
   }
 
+  for (my $j=0; $j< @certified_orders_company_types; $j++) {
+    if ($company_type eq $certified_orders_company_types[$j] || $filing_history eq "") {
+        $show_certified_document = 0;
+    }
+  }
+
   $self->stash(show_snapshot => $show_snapshot);
   $self->stash(show_orders => $show_orders);
+  $self->stash(show_certified_document => $show_certified_document);
 
-  if ($show_snapshot || $show_orders) {
+  if ($show_snapshot || $show_orders || $show_certified_document) {
     return $self->render(template => 'company/view_all/view');
   } else {
     return $self->render(template => 'not_found.production');
