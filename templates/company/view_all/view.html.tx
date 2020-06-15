@@ -89,7 +89,7 @@
         <div class="govuk-details__text" id="order-certified-document-details-content" aria-hidden="false">
           <p id="order-certified-list">To use the service, you'll need:</p>
           <ul class="govuk-list govuk-list--bullet">
-            <li>to choose the documents you want certified</li>
+            <li>to choose the documents you want to be certified</li>
             <li>the address you want the documents to be delivered to (UK or international)</li>
             <li>a credit or debit card for payment</li>
           </ul>
