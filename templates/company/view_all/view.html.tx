@@ -74,5 +74,29 @@
         <a class="govuk-button secondary-button piwik-event" data-event-id="Order a certificate" href="orderable/certificates">Order certificate</a>
     % }
   %}
+
+  % if $c.config.feature.order_certified_document {
+    % if $show_certified_document {
+      <h2 id="order-a-certified-document-header" class="heading-large heading-with-border">
+        Order a certified document
+      </h2>
+      <details class="govuk-details" role="group">
+        <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
+          <span class="govuk-details__summary-text">
+            What you'll need
+          </span>
+        </summary>
+        <div class="govuk-details__text" id="order-certified-document-details-content" aria-hidden="false">
+          <p id="orders-list">To use the service, you'll need:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>to choose the documents you want certified</li>
+            <li>the address you want the documents to be delivered to (UK or international)</li>
+            <li>a credit or debit card for payment</li>
+          </ul>
+        </div>
+      </details>
+        <a class="govuk-button secondary-button piwik-event" data-event-id="Order certified document" href="orderable/certified-copies">Order certified document</a>
+    % }
+  %}
 % }
 % }
