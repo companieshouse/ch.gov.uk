@@ -127,14 +127,18 @@
       <div class="header-global">
         <div class="header-logo">
           <a href="/" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo" class="content">
+            % if !$certified_copies {
             Companies House
+            % } else {
+              <strong>Companies House</strong>
+            % }
           </a>
-% if ! $disable_header_search {
-			<!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
-% }
+        % if ! $disable_header_search {
+              <!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
+        % }
         </div>
         % if $certified_copies {
-        <div>
+        <div class="govuk-header__content">
             <a href="/" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
             Order a certified document
           </a>
