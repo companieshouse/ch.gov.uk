@@ -45,14 +45,13 @@
             <tr>
                 <td>
                 <div class="block-label selection-button-checkbox">
-                    <label for="filter-category-<% $id %>">
+               <label for="document-transaction-id-<% $item.transaction_id %>">
                         <input
-                        id="filter-category-<% $id %>"
+                        id="document-transaction-id-<% $item.transaction_id %>"
                         name="category"
-                        value="<% $id %>"
-                        type="checkbox"
-                        <% $selected_categories[$id] ? 'checked' : '' %> />
-                        <% l($name) %>
+                        value="<% $item.transaction_id %>"
+                        type="checkbox">
+                        <span class="visuallyhidden"> document-transaction-id-<% $item.description_values.description %> </span>
                     </label>
                 </div>
                 <br>

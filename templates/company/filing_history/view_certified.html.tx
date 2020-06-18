@@ -68,7 +68,7 @@
                     <h2 class="heading-medium">Filter by category</h2>
                     <label for="show-filing-type" class="block-label selection-button-checkbox">
                         <input id="show-filing-type" type="checkbox"<% $show_filing_type ? ' checked' : '' %> />
-                        <strong><% l('Show filing type') %></strong>
+                        <% l('Show filing type') %>
                     </label>
                 </div>
                 <br>
@@ -110,6 +110,8 @@
                                 % if $~category.count == $split_category_at {
                                     </div>
                                     <div class="column-half">
+                                    <fieldset>
+                                    <legend class="visuallyhidden">Confirmation statement filters</legend>
                                 % }
                             % }
                         </fieldset>
