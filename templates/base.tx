@@ -153,7 +153,7 @@
 % if $feedback_banner {
   <div class="govuk-body" id="chs-customer-insights-top">
    <div class="govuk-width-container">
-     <a href="http://resources.companieshouse.gov.uk/csat/index.shtml?Service=CHS">Tell us what you think of Companies House</a>
+     <a href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
    </div>
  </div>
 % }
