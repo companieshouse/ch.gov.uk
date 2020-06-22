@@ -33,17 +33,6 @@ use CH::Perl;
     "private-unlimited-nsc",
     "scottish-partnership");
 
-  my @certified_orders_company_types = (
-    "industrial-and-provident-society",
-    "registered-society-non-jurisdictional",
-    "industrial-and-provident-society",
-    "royal-charter",
-    "icvc-umbrella",
-    "uk-establishment",
-    "scottish-charitable-incorporated-organisation",
-    "protected-cell-company",
-    "charitable-incorporated-organisation");
-
 #-------------------------------------------------------------------------------
 
 # View All Tab
@@ -73,10 +62,8 @@ sub view {
     } 
   }
 
-  for (my $j=0; $j< @certified_orders_company_types; $j++) {
-    if ($company_type eq $certified_orders_company_types[$j] || $filing_history eq "") {
-        $show_certified_document = 0;
-    }
+  if ($filing_history eq "" || ($filing_history ne "" && $company_type eq "uk-establishment")) {
+      $show_certified_document = 0;
   }
 
   $self->stash(show_snapshot => $show_snapshot);
