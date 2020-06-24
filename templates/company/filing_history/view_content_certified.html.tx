@@ -20,7 +20,7 @@
     <p class="text">
         <% tl( $c.fhe_lookup($company_filing_history.filing_history_status) ) %>
     </p>
-    <table id="fhTable" class="full-width-table">
+    <table id="certified-documents-fh-table" class="full-width-table">
         <caption class="visuallyhidden">Company Results (links open in a new window)</caption>
         <tr>
             <th>
@@ -44,18 +44,19 @@
         % for $company_filing_history.items -> $item {
             <tr>
                 <td>
-                <div class="block-label selection-button-checkbox">
-               <label for="document-transaction-id-<% $item.transaction_id %>">
-                        <input
-                        id="document-transaction-id-<% $item.transaction_id %>"
-                        name="category"
-                        value="<% $item.transaction_id %>"
-                        type="checkbox">
-                        <span class="visuallyhidden"> document-transaction-id-<% $item.description_values.description %> </span>
-                    </label>
+                <div class="govuk-checkboxes__item">
+                <input
+                    class="govuk-checkboxes__input"
+                    id="document-transaction-id-<% $item.transaction_id %>"
+                    name="category"
+                    value="<% $item.transaction_id %>"
+                    type="checkbox">
+               <label
+               class="govuk-label govuk-checkboxes__label"
+               for="document-transaction-id-<% $item.transaction_id %>">
+                   <span class="visuallyhidden">document-transaction-id-<% $item.transaction_id %></span>
+                </label>
                 </div>
-                <br>
-                <br>
                 </td>
                 <td class="nowrap">
                     % $c.isodate_as_short_string($item.date)
