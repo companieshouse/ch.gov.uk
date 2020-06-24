@@ -20,7 +20,7 @@
     <p class="text">
         <% tl( $c.fhe_lookup($company_filing_history.filing_history_status) ) %>
     </p>
-    <table id="fhTable" class="full-width-table">
+    <table id="certified-documents-fh-table" class="full-width-table">
         <caption class="visuallyhidden">Company Results (links open in a new window)</caption>
         <tr>
             <th>
