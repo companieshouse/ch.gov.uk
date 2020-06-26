@@ -112,10 +112,14 @@
   </script>
 
   <div class="entire-wrapper">
-
    <div id="skiplink-container">
       <div>
+      <!--$alternative_skiplink provides a different ID as #content contains styling which can throw off certain screens-->
+      % if !$alternative_skiplink {
          <a href="#content" class="skiplink">Skip to main content</a>
+      % } else {
+         <a href="#page-content" class="skiplink">Skip to main content</a>
+      % }
       </div>
    </div>
 
@@ -243,6 +247,7 @@
 	   			<li><a href="http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml" target="_blank">Policies</a></li>
 	            <li><a href="/help/cookies">Cookies</a></li>
 	            <li><a href="/help/contact-us">Contact us</a></li>
+              <li><a href="/help/accessibility-statement">Accessibility statement</a></li>
              	<li><a href="https://developer.companieshouse.gov.uk/" target="_blank">Developers</a></li>
 	        </ul>
          </div>
