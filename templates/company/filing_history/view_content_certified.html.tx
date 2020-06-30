@@ -47,14 +47,14 @@
                 <div class="govuk-checkboxes__item">
                 <input
                     class="govuk-checkboxes__input"
-                    id="document-transaction-id-<% $item.transaction_id %>"
+                    id="checkbox-<% $~item.count %>"
                     name="category"
                     value="<% $item.transaction_id %>"
                     type="checkbox">
                <label
                class="govuk-label govuk-checkboxes__label"
-               for="document-transaction-id-<% $item.transaction_id %>">
-                   <span class="visuallyhidden">document-transaction-id-<% $item.transaction_id %></span>
+               for="checkbox-<% $~item.count %>">
+                   <span class="visuallyhidden">checkbox-<% $~item.count %></span>
                 </label>
                 </div>
                 </td>
