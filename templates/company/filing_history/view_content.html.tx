@@ -52,7 +52,8 @@
                       % if ($item._missing_message == 'unavailable') {
                       <div class="form-hint">
 			      <!--This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.-->
-                  Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.
+                  <!--Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service. -->
+                      Not currently available in the filing history. To request the document, add it to your order and we will try to include it.
                       </div>
                       % }
                       % if ($item._missing_message == 'available_in_5_days') {
