@@ -1,10 +1,10 @@
-% cascade base { title => $title, form_page => 1, }
+% cascade base { title => $title, form_page => 1, alternative_skiplink => true }
 % around content -> {
 
     % include "company/transactions/filing_for.html.tx"
 
 	<header class="text">
-		<h1 class="heading-xlarge"><% $title %></h1>
+		<h1 class="heading-xlarge" id="page-content"><% $title %></h1>
 		% block additional_header -> {}
 	</header>
 
