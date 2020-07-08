@@ -247,7 +247,9 @@
 	   			<li><a href="http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml" target="_blank">Policies</a></li>
 	            <li><a href="/help/cookies">Cookies</a></li>
 	            <li><a href="/help/contact-us">Contact us</a></li>
-              <li><a href="/help/accessibility-statement">Accessibility statement</a></li>
+              % if ! $accessibility_statement_off {
+                <li><a href="/help/accessibility-statement">Accessibility statement</a></li>
+              % }
              	<li><a href="https://developer.companieshouse.gov.uk/" target="_blank">Developers</a></li>
 	        </ul>
          </div>
