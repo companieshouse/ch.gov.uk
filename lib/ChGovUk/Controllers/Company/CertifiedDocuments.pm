@@ -11,6 +11,7 @@ use POSIX qw/ceil/;
 use JSON::XS;
 use ChGovUk::Plugins::FilterHelper;
 use DateTime;
+use Data::Dumper;
 
 # all categories (that can be filtered by)
 use constant AVAILABLE_CATEGORIES => {
@@ -159,6 +160,45 @@ sub view {
 
     $self->render_later;
 }
+
+#-------------------------------------------------------------------------------
+
+sub post {
+    my ($self) = @_;
+
+    foreach my $filing_history_id (@{$self->req->params->to_hash->{'transaction'}}) {
+        warn $filing_history_id;
+    };
+
+    my $body = {
+        company_number => $self->param('company_number'),
+        quantity => 1,
+        item_options => {
+            filing_history_documents => [
+            ],
+        },
+    };
+    foreach my $filing_history_id (@{$self->req->params->to_hash->{'transaction'}}) {
+        push($body->{item_options}->{filing_history_documents}, {filing_history_id => $filing_history_id});
+    };
+
+    $self->ch_api->orderable->certified_copies->create($body)->on(
+        success => sub {
+            my ( $api, $tx ) = @_;
+            return $self->render(json => { items => Dumper $tx->res->json });
+            # TODO
+        },
+        error => sub {
+            # TODO
+        },
+        failure => sub {
+            # TODO
+        }
+    )->execute;
+
+}
+
+#-------------------------------------------------------------------------------
 
 sub date_convert {
   my ($original_date) = @_;
