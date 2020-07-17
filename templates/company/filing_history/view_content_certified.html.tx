@@ -47,7 +47,7 @@
                 <div class="govuk-checkboxes__item">
                 <input
                     class="govuk-checkboxes__input"
-                    id="checkbox-<% $item._checkbox_id %>"
+                    id="checkbox-<% $item.transaction_id %>"
                     name="category"
                     value="<% $item.transaction_id %>"
                     type="checkbox">

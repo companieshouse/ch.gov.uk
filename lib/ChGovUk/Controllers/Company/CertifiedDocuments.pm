@@ -35,12 +35,6 @@ sub view {
     my $category_filter  = $self->get_filter('fh');                       # List of categories to filter by (optional)
     my @filter_categories = split ',', $category_filter;
 
-    if ($self->session->{item_counter} eq "") {
-        $self->session(item_counter => 0);
-    }
-
-    trace "THE SESSION COUNTER IS %s", $self->session->{item_counter};
-
     my $unavailable_date = $self->config->{unavailable_date} || '2003-01-01';
     $unavailable_date = date_convert($unavailable_date);
     my $recently_filed = $self->config->{recently_filed_days} || 5;
@@ -117,15 +111,6 @@ sub view {
                   $doc->{_xhtml_is_available} = 1 ;
                 }
 
-                my $item_count = $self->session->{item_counter};
-                $item_count++;
-
-                $self->session(item_counter => $item_count);
-                trace "THE SESSION COUNTER IS %s", $self->session->{item_counter};
-
-                $doc->{_checkbox_id} = $self->session->{item_counter};
-
-   
 		# Generate a missing message for documents before a defined unavailable date
                 if ($unavailable_date > $formatted_transaction_date) {
                   $doc->{_missing_message} = 'unavailable';
@@ -139,9 +124,6 @@ sub view {
                 # Format date fields in the form of '01 Jan 2004'
                 $self->format_filing_history_dates($doc);
             }
-
-            use Data::Dumper;
-            warn "DBG message added here".Dumper $fh_results;
 
             # Work out the paging numbers
             $pager->total_entries( $fh_results->{total_count} // 0 );
