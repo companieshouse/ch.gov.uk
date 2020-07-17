@@ -30,8 +30,7 @@ use CH::Perl;
     "private-limited-guarant-nsc-limited-exemption",
     "private-limited-shares-section-30-exemption",
     "private-unlimited",
-    "private-unlimited-nsc",
-    "scottish-partnership");
+    "private-unlimited-nsc");
 
 #-------------------------------------------------------------------------------
 
