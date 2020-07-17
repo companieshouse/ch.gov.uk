@@ -47,7 +47,7 @@
                 <div class="govuk-checkboxes__item">
                 <input
                     class="govuk-checkboxes__input"
-                    id="checkbox-<% $~item.count %>"
+                    id="checkbox-<% $item.transaction_id %>"
                     name="category"
                     value="<% $item.transaction_id %>"
                     type="checkbox">
@@ -64,7 +64,7 @@
                 <td class="filing-type<% sft_toggled() %>">
                     % $item.type
                 </td>
-                <td>
+                <td class="js-description">
                     % include "company/filing_history/transaction_description.html.tx" { item => $item };
                     % if !$item.links.document_metadata {
                       % if ($item._missing_message == 'unavailable') {

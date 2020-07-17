@@ -110,7 +110,7 @@ sub view {
                 if ( $formatted_transaction_date >= $formatted_xhtml_available_date) {
                   $doc->{_xhtml_is_available} = 1 ;
                 }
-   
+
 		# Generate a missing message for documents before a defined unavailable date
                 if ($unavailable_date > $formatted_transaction_date) {
                   $doc->{_missing_message} = 'unavailable';
