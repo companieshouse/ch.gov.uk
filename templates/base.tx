@@ -143,7 +143,7 @@
         </div>
         % if $certified_copies {
         <div class="govuk-header__content">
-            <a href="/" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
+            <a href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
             Order a certified document
           </a>
         </div>
