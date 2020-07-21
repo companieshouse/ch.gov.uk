@@ -45,6 +45,7 @@
             <tr>
                 <td>
                 <div class="govuk-checkboxes__item">
+                <label for="checkbox-<% $item.transaction_id %>">
                 <input
                     class="govuk-checkboxes__input"
                     id="checkbox-<% $item.transaction_id %>"
