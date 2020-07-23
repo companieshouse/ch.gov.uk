@@ -44,6 +44,7 @@
         % for $company_filing_history.items -> $item {
             <tr>
                 <td>
+                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') {
                 <div class="govuk-checkboxes__item">
                 <label for="checkbox-<% $item.transaction_id %>">
                 <input
@@ -58,6 +59,7 @@
                    <span class="visuallyhidden">checkbox-<% $~item.count %></span>
                 </label>
                 </div>
+                % }
                 </td>
                 <td class="nowrap">
                     % $c.isodate_as_short_string($item.date)
