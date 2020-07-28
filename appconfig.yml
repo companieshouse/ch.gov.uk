@@ -61,6 +61,7 @@ admin_url_for:
 
 filing_history:
   items_per_page: 25
+  show_covid19_message: <SHOW_COVID19_MESSAGE>
 
 officer_appointments:
   items_per_page: 35
