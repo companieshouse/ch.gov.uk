@@ -61,6 +61,7 @@ sub register {
     $company_bridge->get('/')->name('company_profile')->to('company#view');
     $company_bridge->get('/filing-history')->name('company_filing_history')->to('company-filing_history#view');
     $company_bridge->get('/certified-documents')->name('company_certified_documents')->to('company-certified_documents#view');
+    $company_bridge->post('/certified-documents')->name('company_certified_documents')->to('company-certified_documents#post');
     $company_bridge->get('/officers')->name('company_officers')->to('company-officers#list');
     $company_bridge->get('/registers')->name('company_registers')->to('company-registers#list');
     $company_bridge->get('/registers/directors')->name('company_registers_directors')->to('company-registers-directors#list');
