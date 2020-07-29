@@ -46,7 +46,7 @@
      <script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes -->
      <script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script>  <!-- Needed for new GDS-style radio buttons and checkboxes -->
 
-
+<form method="post">
     % include '/includes/company/certified_page_header.tx'
 
 % if $company.type == "uk-establishment" {
@@ -63,7 +63,7 @@
 % } else {
     % if $company_filing_history.total_count > 0 || $selected_category_count > 0 {
         <div class="js-only">
-            <form id="filing-history-filter" class="form grid-row font-xsmall">
+            <div id="filing-history-filter" class="form grid-row font-xsmall">
                 <div class="column-quarter">
                     <h2 class="heading-medium">Filter by category</h2>
                     <label for="show-filing-type" class="block-label selection-button-checkbox">
@@ -118,7 +118,7 @@
                         <input id="submit-filter-by-category" class="button js-hidden" type="submit" value="<% l('Apply filter') %>"/>
                     </div>
                 % }
-            </form>
+            </div>
         </div>
     % }
         % if $company_filing_history.total_count == 0 && $selected_category_count == 0 {
@@ -144,4 +144,5 @@
                 </div>
         % }
     %}
+    </form>
 % }

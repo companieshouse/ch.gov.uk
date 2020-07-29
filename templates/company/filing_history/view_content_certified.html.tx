@@ -20,9 +20,7 @@
     <p class="text">
         <% tl( $c.fhe_lookup($company_filing_history.filing_history_status) ) %>
     </p>
-    
-    <form method="post">
-        % include "includes/forms/submit_button.html.tx" { form => $form, submit_label => $submit_label };
+
     <table id="certified-documents-fh-table" class="full-width-table">
         <caption class="visuallyhidden">Company Results (links open in a new window)</caption>
         <tr>
@@ -95,7 +93,6 @@
             </tr>
         % }
     </table>
-    </form>
     % if $company_filing_history.total_count > $entries_per_page {
             <ul class="pager">
                 % if ($previous_page) {
