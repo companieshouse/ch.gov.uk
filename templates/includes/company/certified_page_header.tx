@@ -19,11 +19,14 @@
         </ul>
         </div>
 
-        <a href="/" class="govuk-button" id="add-documents-to-order"
+        
+        <input type="submit" class="govuk-button" id="add-documents-to-order"
+          value="<% l('Add documents to order') %>"
           % if $c.config.piwik.embed {
           onclick="javascript:_paq.push(['trackEvent', 'AddDocumentsToOrder']);"
         % }
-        ><% l('Add documents to order') %>
-        </a>
+        >
+        </input>
+        
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
