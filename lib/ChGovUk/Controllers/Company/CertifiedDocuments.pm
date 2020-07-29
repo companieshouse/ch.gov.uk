@@ -11,7 +11,6 @@ use POSIX qw/ceil/;
 use JSON::XS;
 use ChGovUk::Plugins::FilterHelper;
 use DateTime;
-use Data::Dumper;
 
 # all categories (that can be filtered by)
 use constant AVAILABLE_CATEGORIES => {
