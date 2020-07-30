@@ -165,10 +165,6 @@ sub view {
 sub post {
     my ($self) = @_;
 
-    foreach my $filing_history_id (@{$self->req->params->to_hash->{'transaction'}}) {
-        warn $filing_history_id;
-    };
-
     my $body = {
         company_number => $self->param('company_number'),
         quantity => 1,
@@ -177,9 +173,15 @@ sub post {
             ],
         },
     };
-    foreach my $filing_history_id (@{$self->req->params->to_hash->{'transaction'}}) {
-        push($body->{item_options}->{filing_history_documents}, {filing_history_id => $filing_history_id});
+
+    if (ref($self->req->params->to_hash->{'transaction'}) eq 'ARRAY') {
+        foreach my $filing_history_id (@{$self->req->params->to_hash->{'transaction'}}) {
+            push($body->{item_options}->{filing_history_documents}, {filing_history_id => $filing_history_id});
+        };
+    } else {
+        push($body->{item_options}->{filing_history_documents}, {filing_history_id => $self->req->params->to_hash->{'transaction'}});
     };
+    
 
     $self->ch_api->orderable->certified_copies->create($body)->on(
         success => sub {
