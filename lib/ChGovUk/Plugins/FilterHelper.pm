@@ -26,8 +26,8 @@ sub register {
         return ;
     });
     
-    $app->hook( around_action => sub {
-        my ($next, $c, $action, $last) = @_;
+    $app->hook( around_dispatch => sub {
+        my ($next, $c) = @_;
         my $done = $next->();
         
         my $params = _populate_stash($c);
