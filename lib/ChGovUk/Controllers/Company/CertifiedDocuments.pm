@@ -1,4 +1,3 @@
-
 package ChGovUk::Controllers::Company::CertifiedDocuments;
 
 use Mojo::Base 'Mojolicious::Controller';
@@ -183,13 +182,11 @@ sub post {
         push($body->{item_options}->{filing_history_documents}, {filing_history_id => $self->req->params->to_hash->{'transaction'}});
     };
 
-
-    if (! $self->req->params->to_hash->{'transaction'}){
+    if (! $self->req->params->to_hash->{'transaction'}) {
         $self->stash(show_error => 1);
         $self->view;
         return;
     } else {
-        $self->stash(show_error => 0);
         $self->ch_api->orderable->certified_copies->create($body)->on(
             success => sub {
                 my ($api, $tx) = @_;
