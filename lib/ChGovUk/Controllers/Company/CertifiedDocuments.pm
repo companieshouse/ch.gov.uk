@@ -68,10 +68,10 @@ sub view {
     # Generate an arrayref containing hashrefs of category id's/name's, sorted by name
     my $categories = [
         sort { $a->{name} cmp $b->{name} }
-        (map { {
-            id   => $_,
-            name => AVAILABLE_CATEGORIES->{$_},
-        } } keys(%{AVAILABLE_CATEGORIES()}))
+            (map { {
+                id   => $_,
+                name => AVAILABLE_CATEGORIES->{$_},
+            } } keys(%{AVAILABLE_CATEGORIES()}))
     ];
 
     my $selected_category_count = 0;
@@ -94,7 +94,7 @@ sub view {
     if ($selected_category_count) {
         $query->{category} = join(',', map { $_->{id} } grep($_->{checked}, @$categories));
     }
- 
+
     my $xhtml_available_date = $self->config->{xhtml_available_date} || '2015-06-01';
 
     # Get the filing history for the company from the API
@@ -108,17 +108,17 @@ sub view {
                 my $formatted_transaction_date = date_convert($transaction_date);
                 my $formatted_xhtml_available_date = date_convert($xhtml_available_date);
                 if ( $formatted_transaction_date >= $formatted_xhtml_available_date) {
-                  $doc->{_xhtml_is_available} = 1 ;
+                    $doc->{_xhtml_is_available} = 1 ;
                 }
 
-		# Generate a missing message for documents before a defined unavailable date
+                # Generate a missing message for documents before a defined unavailable date
                 if ($unavailable_date > $formatted_transaction_date) {
-                  $doc->{_missing_message} = 'unavailable';
+                    $doc->{_missing_message} = 'unavailable';
                 } else {
-                  $transaction_date =~ s/-//g;
+                    $transaction_date =~ s/-//g;
                     # Generate a missing message for recently filed unavailable documents
                     if (CH::Util::DateHelper->days_between(CH::Util::DateHelper->from_internal($transaction_date)) <= $recently_filed) {
-                      $doc->{_missing_message} = 'available_in_5_days';
+                        $doc->{_missing_message} = 'available_in_5_days';
                     }
                 }
                 # Format date fields in the form of '01 Jan 2004'
@@ -128,7 +128,7 @@ sub view {
             # Work out the paging numbers
             $pager->total_entries( $fh_results->{total_count} // 0 );
             trace "filing history total_count %d entries per page %d",
-            $pager->total_entries, $pager->entries_per_page() [FILING_HISTORY];
+                $pager->total_entries, $pager->entries_per_page() [FILING_HISTORY];
 
             $self->stash(current_page_number     => $pager->current_page);
             $self->stash(page_set                => $pager->pages_in_set());
@@ -152,10 +152,10 @@ sub view {
         failure => sub {
             my ( $api, $error ) = @_;
             error "Error retrieving company filing history for %s: %s",
-              $self->stash('company_number'), $error;
+                $self->stash('company_number'), $error;
             $self->render_exception("Error retrieving company: $error");
         }
-      )->execute;
+    )->execute;
 
     $self->render_later;
 }
@@ -181,39 +181,44 @@ sub post {
     } else {
         push($body->{item_options}->{filing_history_documents}, {filing_history_id => $self->req->params->to_hash->{'transaction'}});
     };
-    
 
-    $self->ch_api->orderable->certified_copies->create($body)->on(
-        success => sub {
-            my ( $api, $tx ) = @_;
-            my $certifiedCopy = $tx->success->json;
-            my $certifiedCopyId = $certifiedCopy->{'id'};
-            my $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-details";
-            $self->redirect_to($location);
-        },
-        error => sub {
-            my ($api, $error) = @_;
+    if (! $self->req->params->to_hash->{'transaction'}) {
+        $self->stash(show_error => 1);
+        $self->view;
+        return;
+    } else {
+        $self->ch_api->orderable->certified_copies->create($body)->on(
+            success => sub {
+                my ($api, $tx) = @_;
+                my $certifiedCopy = $tx->success->json;
+                my $certifiedCopyId = $certifiedCopy->{'id'};
+                my $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-details";
+                $self->redirect_to($location);
+            },
+            error   => sub {
+                my ($api, $error) = @_;
 
-            error 'Error creating certified copy';
-            $self->render_exception($error);
-        },
-        failure => sub {
-            my ( $api, $error ) = @_;
+                error 'Error creating certified copy';
+                $self->render_exception($error);
+            },
+            failure => sub {
+                my ($api, $error) = @_;
 
-            error 'Failure creating certified copy';
-            $self->render_exception($error);
-        }
-    )->execute;
+                error 'Failure creating certified copy';
+                $self->render_exception($error);
+            }
+        )->execute;
+    }
 }
 
 sub date_convert {
-  my ($original_date) = @_;
-  my ($year, $month, $day) = $original_date =~ m/^(\d{4})-(\d{2})-(\d{2})$/;
-  return DateTime->new(
-          year  => $year,
-          month => $month,
-          day   => $day,
-      );
+    my ($original_date) = @_;
+    my ($year, $month, $day) = $original_date =~ m/^(\d{4})-(\d{2})-(\d{2})$/;
+    return DateTime->new(
+        year  => $year,
+        month => $month,
+        day   => $day,
+    );
 }
 
 sub _dates_to_strings {
