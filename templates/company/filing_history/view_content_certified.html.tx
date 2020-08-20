@@ -53,7 +53,7 @@
                     id="checkbox-<% $item.transaction_id %>"
                     name="transaction"
                     value="<% $item.transaction_id %>"
-                    type="checkbox">
+                    type="submit">
                <label
                class="govuk-label govuk-checkboxes__label"
                for="checkbox-<% $~item.count %>">

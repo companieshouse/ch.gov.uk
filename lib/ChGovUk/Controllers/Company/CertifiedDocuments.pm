@@ -11,6 +11,7 @@ use POSIX qw/ceil/;
 use JSON::XS;
 use ChGovUk::Plugins::FilterHelper;
 use DateTime;
+use Data::Dumper;
 
 # all categories (that can be filtered by)
 use constant AVAILABLE_CATEGORIES => {
@@ -164,6 +165,14 @@ sub view {
 
 sub post {
     my ($self) = @_;
+
+    debug "add-documents-to-order = ".$self->req->params->to_hash->{'add-documents-to-order'};
+    if ($self->req->params->to_hash->{'add-documents-to-order'}) {
+        debug "This is Add documents to order";
+    } else {
+        debug "This is NOT Add documents to order";
+    }
+    warn "POST request: ".Dumper $self->tx->req;
 
     my $body = {
         company_number => $self->param('company_number'),

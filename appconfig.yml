@@ -59,8 +59,9 @@ admin_url_for:
   transaction_by_company_number: <CHS_URL>/admin/company/:company_number/transactions
   monitor                      : <CHS_MONITOR_GUI_URL>/admin/monitor
 
+# TODO GCI-1305 Set items_per_page back to 25.
 filing_history:
-  items_per_page: 25
+  items_per_page: 3
   show_covid19_message: <SHOW_COVID19_MESSAGE>
 
 officer_appointments:
