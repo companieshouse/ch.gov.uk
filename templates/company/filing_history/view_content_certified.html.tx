@@ -47,23 +47,24 @@
                 <td>
                 % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') {
                 <div class="govuk-checkboxes__item">
-                <label for="checkbox-<% $item.transaction_id %>">
-                <input
-                    class="govuk-checkboxes__input"
-                    id="checkbox-<% $item.transaction_id %>"
-                    name="transaction"
-                    value="<% $item.transaction_id %>"
-                    type="checkbox">
-                    <label
-               class="govuk-label govuk-checkboxes__label"
-               for="checkbox-<% $~item.count %>">
-                   <span class="visuallyhidden">checkbox-<% $~item.count %></span>
-                </label>
-                <input class="govuk-checkboxes__input"
-                       name="transaction"
-                       value="<% $item.transaction_id %>"
-                       type="submit"
-                       style="left: 0; height: 100%; opacity: 0; position: absolute; top: 0; width: 100%" >
+                    <label for="checkbox-<% $item.transaction_id %>">
+                        <input
+                            class="govuk-checkboxes__input"
+                            id="checkbox-<% $item.transaction_id %>"
+                            name="transaction"
+                            value="<% $item.transaction_id %>"
+                            type="checkbox">
+                        <label
+                           class="govuk-label govuk-checkboxes__label"
+                           for="checkbox-<% $~item.count %>">
+                           <span class="visuallyhidden">checkbox-<% $~item.count %></span>
+                        </label>
+                        <input class="govuk-checkboxes__input"
+                               name="transaction"
+                               value="<% $item.transaction_id %>"
+                               type="submit"
+                               style="left: 0; height: 100%; opacity: 0; position: absolute; top: 0; width: 100%" >
+                    </label>
                 </div>
                 % }
                 </td>
