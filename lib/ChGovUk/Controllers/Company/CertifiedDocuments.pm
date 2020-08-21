@@ -172,6 +172,7 @@ sub post {
         warn "This is Add documents to order";
     } else {
         warn "This is NOT Add documents to order";
+        $self->select_documents($self->req->params->to_hash->{'transaction'});
         $self->view;
         return;
     }
@@ -239,6 +240,16 @@ sub _dates_to_strings {
     for my $field ( grep { /date$/ } keys %{ $description_values // {} } ) {
         $description_values->{$field} = CH::Util::DateHelper->isodate_as_string( $description_values->{$field}, "%d %b %Y" );
     }
+}
+
+#-------------------------------------------------------------------------------
+
+sub select_documents {
+    my ($self, $documents) = @_;
+    warn $self;
+    warn "select_documents(".$documents.")";
+    $self->stash(selected_documents => $documents);
+    warn "$self->stash('selected_documents') = ".$self->stash('selected_documents');
 }
 
 1;
