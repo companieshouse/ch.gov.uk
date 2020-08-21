@@ -12,6 +12,8 @@ use JSON::XS;
 use ChGovUk::Plugins::FilterHelper;
 use DateTime;
 use Data::Dumper;
+use Set::Light;
+use Scalar::Util 'blessed';
 
 # all categories (that can be filtered by)
 use constant AVAILABLE_CATEGORIES => {
@@ -246,10 +248,52 @@ sub _dates_to_strings {
 
 sub select_documents {
     my ($self, $documents) = @_;
-    warn $self;
-    warn "select_documents(".$documents.")";
-    $self->stash(selected_documents => $documents);
-    warn "$self->stash('selected_documents') = ".$self->stash('selected_documents');
+
+    # TODO GCI-1305 Remove this
+    # delete $self->session->{selected_documents};
+
+    my $docs;
+    # initialise a document set in the session
+    if (!$self->session('selected_documents')) {
+        warn "Creating new selected_documents";
+        $docs = Set::Light->new();
+        warn "created $docs = ".$docs;
+        $self->session(selected_documents => $docs);
+    } else {
+        warn "Selected documents already in session of type ".blessed($self->session('selected_documents');
+        $docs = $self->session('selected_documents');
+    }
+
+    # insert however many selected docs into the set
+    if (ref($documents) eq 'ARRAY') {
+        warn "Array";
+        foreach my $filing_history_id (@{$documents}) {
+            $docs->insert($filing_history_id);
+        };
+    } else {
+        warn "Single document";
+        $docs->insert($documents);
+    };
+
+    # warn "$self->session = ".$self->session;
+    # warn "select_documents(".$documents.")";
+    # warn "1 $self->session('selected_documents') = ".$self->session('selected_documents');
+    # warn "$self->session('selected_documents') is a ".blessed($self->session('selected_documents'));
+    # if (!$self->session('selected_documents')) {
+    #     warn "Creating new selected_documents";
+    #     my $docs = Set::Light->new();
+    #     warn "created $docs = ".$docs;
+    #     $docs->insert($documents);
+    #     $self->session(selected_documents => $docs);
+    # } else {
+    #     warn "$self->req is a ".blessed($self->req);
+    #     warn "$self->session('selected_documents') is a ".blessed($self->session('selected_documents'));
+    #     warn "2 $self->session('selected_documents') = ".$self->session('selected_documents');
+    #     $self->session('selected_documents')->insert($documents)
+    # }
+    # # $self->stash(selected_documents => $documents);
+    $self->stash(selected_documents => $self->session('selected_documents'));
+    warn "3 $self->stash('selected_documents') = ".$self->stash('selected_documents');
 }
 
 1;
