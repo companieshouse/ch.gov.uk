@@ -166,11 +166,14 @@ sub view {
 sub post {
     my ($self) = @_;
 
-    debug "add-documents-to-order = ".$self->req->params->to_hash->{'add-documents-to-order'};
+    warn "request params = ".$self->req->params;
+    warn "add-documents-to-order = ".$self->req->params->to_hash->{'add-documents-to-order'};
     if ($self->req->params->to_hash->{'add-documents-to-order'}) {
-        debug "This is Add documents to order";
+        warn "This is Add documents to order";
     } else {
-        debug "This is NOT Add documents to order";
+        warn "This is NOT Add documents to order";
+        $self->view;
+        return;
     }
     warn "POST request: ".Dumper $self->tx->req;
 

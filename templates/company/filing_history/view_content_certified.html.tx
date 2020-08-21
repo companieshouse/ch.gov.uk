@@ -53,12 +53,17 @@
                     id="checkbox-<% $item.transaction_id %>"
                     name="transaction"
                     value="<% $item.transaction_id %>"
-                    type="submit">
-               <label
+                    type="checkbox">
+                    <label
                class="govuk-label govuk-checkboxes__label"
                for="checkbox-<% $~item.count %>">
                    <span class="visuallyhidden">checkbox-<% $~item.count %></span>
                 </label>
+                <input class="govuk-checkboxes__input"
+                       name="transaction"
+                       value="<% $item.transaction_id %>"
+                       type="submit"
+                       style="left: 0; height: 100%; opacity: 0; position: absolute; top: 0; width: 100%" >
                 </div>
                 % }
                 </td>
