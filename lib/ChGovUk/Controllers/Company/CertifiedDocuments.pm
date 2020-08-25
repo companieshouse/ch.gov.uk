@@ -166,13 +166,14 @@ sub view {
 sub post {
     my ($self) = @_;
 
+    # TODO GCI-1305 Remove/replace all warns.
     warn "request params = ".$self->req->params;
     warn "add-documents-to-order = ".$self->req->params->to_hash->{'add-documents-to-order'};
     if ($self->req->params->to_hash->{'add-documents-to-order'}) {
         warn "This is Add documents to order";
     } else {
         warn "This is NOT Add documents to order";
-        $self->select_documents($self->req->params->to_hash->{'transaction'});
+        $self->select_documents($self->convert_to_array($self->req->params->to_hash->{'transaction'}));
         $self->view;
         return;
     }
@@ -244,12 +245,31 @@ sub _dates_to_strings {
 
 #-------------------------------------------------------------------------------
 
+# TODO GCI-1305 Remove/replace all warns.
 sub select_documents {
-    my ($self, $documents) = @_;
-    warn $self;
-    warn "select_documents(".$documents.")";
-    $self->stash(selected_documents => $documents);
+    my ($self, @documents) = @_;
+    # warn $self;
+    warn "select_documents(".@documents.")";
+    $self->stash(selected_documents => @documents);
     warn "$self->stash('selected_documents') = ".$self->stash('selected_documents');
+}
+
+#-------------------------------------------------------------------------------
+
+# TODO GCI-1305 Remove/replace all warns.
+sub convert_to_array {
+    my($self, $documents) = @_;
+
+    if (ref($documents) eq 'ARRAY')
+    {
+        warn "Already an array, no conversion required.";
+        return $documents;
+    }
+    else
+    {
+        warn "Converting a scalar to an array";
+        return [$documents];
+    }
 }
 
 1;

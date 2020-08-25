@@ -23,6 +23,8 @@ sub register {
         return $url;
     });
 
+    $app->helper(is_selected   => \&_is_selected);
+
     return;
 }
 
@@ -75,6 +77,56 @@ sub _parent_url_for {
     $url_for->path(Mojo::Path->new($url_for->path . '/..')->canonicalize);
 
     return $url_for;
+}
+
+# -----------------------------------------------------------------------------
+
+# TODO GCI-1305 Is a helper function the best way to do this?
+# TODO GCI-1305 Remove/replace all warns.
+
+sub _is_selected {
+    my $app  = shift;
+    my $document_id = shift;
+    my $selected_documents = shift;
+
+    warn "_is_selected(".$document_id.", ".$selected_documents.")";
+
+    my $found = 0;
+    if (!defined $selected_documents) {
+        warn "_is_selected() returning 0 as \$selected_documents is not defined.";
+        return $found;
+    }
+
+    my @selected_documents;
+    if (ref($selected_documents) eq 'ARRAY')
+    {
+        warn "_is_selected(): Already an array, no conversion required.";
+        @selected_documents = @{$selected_documents};
+    }
+    else
+    {
+        warn "_is_selected(): Converting a scalar to an array";
+        @selected_documents = [$selected_documents];
+    }
+
+    warn "_is_selected(".$document_id.", ".@selected_documents.")";
+
+    if (ref(@selected_documents) eq 'ARRAY') {
+        warn "_is_selected(): ARRAY";
+    } else {
+        warn "_is_selected(): NOT AN ARRAY!";
+    }
+
+    foreach my $filing_history_id (@selected_documents) {
+        warn ">>> ".$filing_history_id;
+        if ($filing_history_id eq $document_id) {
+            $found = 1;
+            # TODO GCI-1305 Can we come out iteration?
+        }
+    };
+
+    warn "Returning ".$found;
+    return $found;
 }
 
 

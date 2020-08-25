@@ -30,7 +30,9 @@
         % }
         >
         </input>
+        <!-- TODO GCI-1305 Remove these. -->
         <strong><% $selected_documents %></strong>
+        <strong><% $c.is_selected %></strong>
         
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">

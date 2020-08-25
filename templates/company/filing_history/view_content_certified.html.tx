@@ -54,7 +54,7 @@
                             name="transaction"
                             value="<% $item.transaction_id %>"
                             type="checkbox"
-                            <% if ($selected_documents == $item.transaction_id){print 'checked'} %>>
+                            <% if ($c.is_selected($item.transaction_id, $selected_documents)) {print 'checked'} %>>
                         <label
                            class="govuk-label govuk-checkboxes__label"
                            for="checkbox-<% $~item.count %>">
