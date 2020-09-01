@@ -24,7 +24,6 @@
             <div class="column-two-thirds">
 
               <div class="js-tabs">
-                <h2 class="heading-small"><% $message | raw %></h2>
                 <!--<h2 class="heading-small">The following are considered to be the "same as" your chosen name so would prevent it being registered:</h2>-->
 
               </div>
