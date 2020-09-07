@@ -74,7 +74,9 @@
                             <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'xhtml', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download iXBRL</a></div>
                         % }
                     % } else if $item._missing_message != 'available_in_5_days' {
-                        <a href="orderable/scan-upon-demand/<% $item.transaction_id %>" class="normal piwik-event" data-event-id="Request Document">Request Document</a>
+                         % if $c.config.feature.scan_upon_demand {
+                            <a href="orderable/scan-upon-demand/<% $item.transaction_id %>" class="normal piwik-event" data-event-id="Request Document">Request Document</a>
+                         % }
                     % }
                     </td>
                 % }
