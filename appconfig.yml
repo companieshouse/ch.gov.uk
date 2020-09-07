@@ -96,6 +96,7 @@ feature:
     alphabetical_search: <ALPHABETICAL_SEARCH_FEATURE>
     order_certificate: <ORDER_CERTIFICATE_FEATURE>
     order_certified_document: <ORDER_CERTIFIED_DOCUMENT_FEATURE>
+    scan_upon_demand: <SCAN_UPON_DEMAND_FEATURE>
 
 image_service_start_date: <IMAGE_SERVICE_START_DATE>
 
