@@ -22,6 +22,9 @@ use constant AVAILABLE_CATEGORIES => {
     'officers'               => 'Officers',
 };
 
+# Implicit contract with filing_history_view.js filter checkbox event handler.
+use constant CERTIFIED_DOCS_CATEGORIES_FILTER_KEY => 'certified_docs_categories_key';
+
 #-------------------------------------------------------------------------------
 
 # Certified documents filing history page
@@ -32,7 +35,8 @@ sub view {
     my $company_number   = $self->param('company_number');                # Mandatory
     my $page             = abs(int($self->param('page') || 1));           # Which page has been requested
     my $show_filing_type = $self->get_filter('fh_type');                  # Show the filing-type column/containers
-    my $category_filter  = $self->get_filter('fh');                       # List of categories to filter by (optional)
+    my $category_filter  =
+        $self->get_filter(CERTIFIED_DOCS_CATEGORIES_FILTER_KEY);          # List of categories to filter by (optional)
     my @filter_categories = split ',', $category_filter;
 
     my $unavailable_date = $self->config->{unavailable_date} || '2003-01-01';
