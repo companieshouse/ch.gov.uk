@@ -51,8 +51,8 @@
                     % if !$item.links.document_metadata {
                       % if ($item._missing_message == 'unavailable') {
                       <div class="form-hint">
-			      <!--This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.-->
-                  Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.
+			      This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.
+                  <!--Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.-->
                       </div>
                       % }
                       % if ($item._missing_message == 'available_in_5_days') {
@@ -73,6 +73,10 @@
                         <div>
                             <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'xhtml', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download iXBRL</a></div>
                         % }
+                    % } else if $item._missing_message != 'available_in_5_days' {
+                         % if $c.config.feature.scan_upon_demand {
+                            <a href="orderable/scan-upon-demand/<% $item.transaction_id %>" class="normal piwik-event" data-event-id="Request Document">Request Document</a>
+                         % }
                     % }
                     </td>
                 % }

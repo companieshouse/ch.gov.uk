@@ -45,7 +45,7 @@
         % for $company_filing_history.items -> $item {
             <tr>
                 <td>
-                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') {
+                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
                 <div class="govuk-checkboxes__item">
                 <label for="checkbox-<% $item.transaction_id %>">
                 <input
@@ -73,7 +73,7 @@
                     % if !$item.links.document_metadata {
                       % if ($item._missing_message == 'unavailable') {
                       <div class="form-hint">
-                        % if $c.config.filing_history.show_covid19_message {
+                        % if $c.config.show_covid19_message {
                             Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.
                         % } else {
                             This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.
@@ -88,13 +88,14 @@
                     % }
                 </td>
                 <td class="nowrap">
-                % if $item.type == "NEWINC" {
-                    £30
-                % } else {
-                    £15
+                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
+                    % if $item.type == "NEWINC" {
+                        £30
+                    % } else {
+                        £15
+                    % }
                 % }
                 </td>
-                % }
             </tr>
         % }
     </table>

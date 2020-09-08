@@ -38,6 +38,7 @@
     <p>To get information on this service in a different format like accessible PDF, large print, easy read, audio recording or braille, contact us by:</p>
 
     <ul class="list-bullet">
+    % if $c.config.show_covid19_message {
         <li>email
             <a href="mailto:enquiries@companieshouse.gov.uk">enquiries@companieshouse.gov.uk</a>
         </li>
@@ -47,6 +48,16 @@
     <br>
 
     <p>Or write to us at:</p>
+    % } else {
+        <li>email at <a href="mailto:enquiries@companieshouse.gov.uk">enquiries@companieshouse.gov.uk</a></li>
+        <li>telephone: +44 (0)303 1234 500 <br>(Monday to Friday 8.30am to 6pm, <a href="https://www.gov.uk/call-charges">national call rate</a>)</li>
+        <li>telephone (Welsh language) 029 2038 0065</li>
+        <li>minicom: 02920 381245</li>
+        <li>writing to us at:</li>
+    </ul>
+
+    <br>
+    % }
 
     <p>Companies House<br>Crown Way<br>Cardiff<br>CF14 3UZ</p>
 
