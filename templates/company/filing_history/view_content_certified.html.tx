@@ -24,9 +24,6 @@
     <table id="certified-documents-fh-table" class="full-width-table">
         <caption class="visuallyhidden">Company Results (links open in a new window)</caption>
         <tr>
-            <th>
-                Select
-            </th>
             <th class="nowrap">
                 Date filed<span class="visuallyhidden">(document was filed at Companies House)</span>
             </th>
@@ -36,32 +33,15 @@
             <th>
                 Description <span class="visuallyhidden">(of the document filed at Companies House)</span>
             </th>
-            % if ( $image_service_active ) {
-                <th class="nowrap">
-                    Fee <span class="visuallyhidden">(PDF file, link opens in new window)</span>
-                </th>
-            % }
+            <th class="nowrap">
+                Fee <span class="visuallyhidden">(of the certified document)</span>
+            </th>
+            <th class="nowrap">
+                Order option <span class="visuallyhidden">(allows ordering of a certified document)</span>
+            </th>
         </tr>
         % for $company_filing_history.items -> $item {
             <tr>
-                <td>
-                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
-                <div class="govuk-checkboxes__item">
-                <label for="checkbox-<% $item.transaction_id %>">
-                <input
-                    class="govuk-checkboxes__input"
-                    id="checkbox-<% $item.transaction_id %>"
-                    name="transaction"
-                    value="<% $item.transaction_id %>"
-                    type="checkbox">
-               <label
-               class="govuk-label govuk-checkboxes__label"
-               for="checkbox-<% $~item.count %>">
-                   <span class="visuallyhidden">checkbox-<% $~item.count %></span>
-                </label>
-                </div>
-                % }
-                </td>
                 <td class="nowrap">
                     % $c.isodate_as_short_string($item.date)
                 </td>
@@ -95,6 +75,20 @@
                         £15
                     % }
                 % }
+                </td>
+                <td>
+                <form action="<%'/company/' ~ $company.company_number ~ '/certified-documents' %>" method="post">
+                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
+                    <input type="hidden" id="<% $item.transaction_id %>" name="transaction" value="<% $item.transaction_id %>">
+                    <input type="submit" class="button-link" id="add-document-to-order"
+                        value="<% l('Select document') %>"
+                % if $c.config.piwik.embed {
+                        onclick="javascript:_paq.push(['trackEvent', 'AddDocumentToOrder']);"
+                % }
+                >
+                    </input>
+                % }
+                </form>
                 </td>
             </tr>
         % }
