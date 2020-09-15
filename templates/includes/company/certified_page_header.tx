@@ -1,7 +1,7 @@
 <div class="company-header">
         <div id="content" class="content-override"></div>
         <a href="/company/<% $company.company_number %>/orderable/certified-copies" class="govuk-back-link">Back</a>
-        <h1 class="heading-xlarge" id="add-document-heading">Add documents to order</h1>
+        <h1 class="heading-xlarge" id="add-document-heading">Select document to order</h1>
 
         <p class="heading-large certified"><% $company.company_name %></p>
         <p id="company-number">
@@ -14,4 +14,5 @@
             <strong><% $company.company_number %></strong>
         </p>
 </div>
+<br>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
