@@ -77,18 +77,18 @@
                 % }
                 </td>
                 <td>
-                <form action="<%'/company/' ~ $company.company_number ~ '/certified-documents' %>" method="post">
                 % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
-                    <input type="hidden" id="<% $item.transaction_id %>" name="transaction" value="<% $item.transaction_id %>">
-                    <input type="submit" class="button-link" id="add-document-to-order-<% $item.transaction_id%>"
-                        value="<% l('Select document') %>"
-                % if $c.config.piwik.embed {
-                        onclick="javascript:_paq.push(['trackEvent', 'AddDocumentToOrder']);"
+                    <form action="<%'/company/' ~ $company.company_number ~ '/certified-documents' %>" method="post">
+                        <input type="hidden" id="<% $item.transaction_id %>" name="transaction" value="<% $item.transaction_id %>">
+                        <input type="submit" class="select-document-button-link" id="add-document-to-order-<% $item.transaction_id%>"
+                            value="<% l('Select document') %>"
+                            % if $c.config.piwik.embed {
+                                    onclick="javascript:_paq.push(['trackEvent', 'AddDocumentToOrder']);"
+                            % }
+                            >
+                        </input>
+                    </form>
                 % }
-                >
-                    </input>
-                % }
-                </form>
                 </td>
             </tr>
         % }
