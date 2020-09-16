@@ -186,33 +186,27 @@ sub post {
         push($body->{item_options}->{filing_history_documents}, {filing_history_id => $self->req->params->to_hash->{'transaction'}});
     };
 
-    if (! $self->req->params->to_hash->{'transaction'}) {
-        $self->stash(show_error => 1);
-        $self->view;
-        return;
-    } else {
-        $self->ch_api->orderable->certified_copies->create($body)->on(
-            success => sub {
-                my ($api, $tx) = @_;
-                my $certifiedCopy = $tx->success->json;
-                my $certifiedCopyId = $certifiedCopy->{'id'};
-                my $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-details";
-                $self->redirect_to($location);
-            },
-            error   => sub {
-                my ($api, $error) = @_;
+    $self->ch_api->orderable->certified_copies->create($body)->on(
+        success => sub {
+            my ($api, $tx) = @_;
+            my $certifiedCopy = $tx->success->json;
+            my $certifiedCopyId = $certifiedCopy->{'id'};
+            my $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-details";
+            $self->redirect_to($location);
+        },
+        error   => sub {
+            my ($api, $error) = @_;
 
-                error 'Error creating certified copy';
-                $self->render_exception($error);
-            },
-            failure => sub {
-                my ($api, $error) = @_;
+            error 'Error creating certified copy';
+            $self->render_exception($error);
+        },
+        failure => sub {
+            my ($api, $error) = @_;
 
-                error 'Failure creating certified copy';
-                $self->render_exception($error);
-            }
-        )->execute;
-    }
+            error 'Failure creating certified copy';
+            $self->render_exception($error);
+        }
+    )->execute;
 }
 
 sub date_convert {

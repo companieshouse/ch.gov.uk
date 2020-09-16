@@ -97,9 +97,6 @@
         });
   });
   </script>
-  % if $certified_copies {
-      <script src='//<% $cdn_url %>/javascripts/app/transactions/company/certified_documents_filing_history.js'></script>
-  % }
   <script src='//<% $cdn_url %>/javascripts/app/govuk-ganalytics.js'></script>
 
    <!-- End of Companies House Styles and Scripts -->
