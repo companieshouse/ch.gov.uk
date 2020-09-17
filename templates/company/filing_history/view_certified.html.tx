@@ -62,7 +62,7 @@
 % } else {
     % if $company_filing_history.total_count > 0 || $selected_category_count > 0 {
         <div class="js-only">
-            <div id="filing-history-filter" class="form grid-row font-xsmall">
+            <form id="filing-history-filter" class="form grid-row font-xsmall">
                 <div class="column-quarter">
                     <h2 class="heading-medium">Filter by category</h2>
                     <label for="show-filing-type" class="block-label selection-button-checkbox">
@@ -117,7 +117,7 @@
                         <input id="submit-filter-by-category" class="button js-hidden" type="submit" value="<% l('Apply filter') %>"/>
                     </div>
                 % }
-            </div>
+            </form>
         </div>
     % }
         % if $company_filing_history.total_count == 0 && $selected_category_count == 0 {
