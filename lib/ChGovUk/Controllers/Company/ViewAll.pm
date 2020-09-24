@@ -46,6 +46,7 @@ sub view {
   my $show_snapshot = 1;
   my $show_orders = 0;
   my $show_certified_document = 1;
+  my $show_dissolved_certificate = 0;
 
   for (my $i=0; $i < @snapshot_company_types; $i++) {
     if ($company_type eq $snapshot_company_types[$i]) {
@@ -58,18 +59,23 @@ sub view {
       if ($company_type eq $orders_company_types[$j]) {
         $show_orders = 1;
       }
-    } 
+    }
   }
 
   if ($filing_history eq "" || ($filing_history ne "" && $company_type eq "uk-establishment")) {
       $show_certified_document = 0;
   }
 
+  if ($company_status eq 'liquidation' || $company_status eq 'dissolved') {
+    $show_dissolved_certificate = 1;
+  }
+
   $self->stash(show_snapshot => $show_snapshot);
   $self->stash(show_orders => $show_orders);
   $self->stash(show_certified_document => $show_certified_document);
+  $self->stash(show_dissolved_certificate => $show_dissolved_certificate);
 
-  if ($show_snapshot || $show_orders || $show_certified_document) {
+  if ($show_snapshot || $show_orders || $show_certified_document || $show_dissolved_certificate) {
     return $self->render(template => 'company/view_all/view');
   } else {
     return $self->render(template => 'not_found.production');
