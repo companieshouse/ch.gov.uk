@@ -66,7 +66,7 @@ sub view {
       $show_certified_document = 0;
   }
 
-  if ($company_status eq 'liquidation' || $company_status eq 'dissolved') {
+  if ($company_status eq 'dissolved') {
     $show_dissolved_certificate = 1;
   }
 
