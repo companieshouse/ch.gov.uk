@@ -54,7 +54,7 @@
   % }
 
   % if $c.config.feature.order_certificate {
-    % if $show_orders {
+    % if $show_certificate {
       <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
         Order a certificate
       </h2>
@@ -93,7 +93,7 @@
           </ul>
         </div>
       </details>
-        <a class="govuk-button secondary-button piwik-event" data-event-id="Order a dissolved certificate" href="orderable/dissolved-certificates">Order certificate</a>
+        <a class="govuk-button secondary-button piwik-event" data-event-id="Order a dissolved certificate" href="orderable/certificates">Order certificate</a>
     % }
   %}
 
