@@ -20,7 +20,7 @@ use CH::Perl;
     "icvc-warrant",
     "icvc-umbrella");
 
-  my @orders_company_types = (
+  my @certificate_orders_company_types = (
     "limited-partnership",
     "llp",
     "ltd",
@@ -31,6 +31,17 @@ use CH::Perl;
     "private-limited-shares-section-30-exemption",
     "private-unlimited",
     "private-unlimited-nsc");
+
+  my @dissolved_certificate_orders_company_types = (
+      "llp",
+      "ltd",
+      "plc",
+      "old-public-company",
+      "private-limited-guarant-nsc",
+      "private-limited-guarant-nsc-limited-exemption",
+      "private-limited-shares-section-30-exemption",
+      "private-unlimited",
+      "private-unlimited-nsc");
 
 #-------------------------------------------------------------------------------
 
@@ -44,8 +55,9 @@ sub view {
   my $links = $company->{links};
   my $filing_history = $links->{filing_history};
   my $show_snapshot = 1;
-  my $show_orders = 0;
+  my $show_certificate = 0;
   my $show_certified_document = 1;
+  my $show_dissolved_certificate = 0;
 
   for (my $i=0; $i < @snapshot_company_types; $i++) {
     if ($company_type eq $snapshot_company_types[$i]) {
@@ -54,22 +66,31 @@ sub view {
   }
 
   if ($company_status eq 'active') {
-    for (my $j=0; $j < @orders_company_types; $j++) {
-      if ($company_type eq $orders_company_types[$j]) {
-        $show_orders = 1;
+    for (my $j=0; $j < @certificate_orders_company_types; $j++) {
+      if ($company_type eq $certificate_orders_company_types[$j]) {
+        $show_certificate = 1;
       }
-    } 
+    }
   }
 
   if ($filing_history eq "" || ($filing_history ne "" && $company_type eq "uk-establishment")) {
       $show_certified_document = 0;
   }
 
-  $self->stash(show_snapshot => $show_snapshot);
-  $self->stash(show_orders => $show_orders);
-  $self->stash(show_certified_document => $show_certified_document);
+  if ($company_status eq 'dissolved') {
+    for (my $j=0; $j < @dissolved_certificate_orders_company_types; $j++) {
+      if ($company_type eq $dissolved_certificate_orders_company_types[$j]) {
+        $show_dissolved_certificate = 1;
+      }
+    }
+  }
 
-  if ($show_snapshot || $show_orders || $show_certified_document) {
+  $self->stash(show_snapshot => $show_snapshot);
+  $self->stash(show_certificate => $show_certificate);
+  $self->stash(show_certified_document => $show_certified_document);
+  $self->stash(show_dissolved_certificate => $show_dissolved_certificate);
+
+  if ($show_snapshot || $show_certificate || $show_certified_document || $show_dissolved_certificate) {
     return $self->render(template => 'company/view_all/view');
   } else {
     return $self->render(template => 'not_found.production');
