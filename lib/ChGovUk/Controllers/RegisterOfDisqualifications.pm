@@ -31,6 +31,9 @@ sub list {
         success => sub {
             my ($api, $tx) = @_;
 
+            # do not index query results pages for disqualified director register
+            $self->stash(noindex => 1);
+
             my $json  = $tx->res->json;
             my $pager = CH::Util::Pager->new(
                 entries_per_page => $items_per_page,

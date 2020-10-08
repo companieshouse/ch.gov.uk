@@ -3,7 +3,7 @@
  %#   $tabid   - the ID of _this_ tab
  %#   $page    - the URL relative to /company/{company_number} that this tab links to
  %#   $title   - the title heading of the tab (may contain HTML)
- %#   $company - the company details needed for display (uses company.company_number) 
+ %#   $company - the company details needed for display (uses company.company_number)
 
  <li <% ($active == $tabid ? 'class="active"' : '') | raw %> >
 

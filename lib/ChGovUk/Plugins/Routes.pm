@@ -60,6 +60,8 @@ sub register {
     my $company_bridge = $root->find('company');
     $company_bridge->get('/')->name('company_profile')->to('company#view');
     $company_bridge->get('/filing-history')->name('company_filing_history')->to('company-filing_history#view');
+    $company_bridge->get('/certified-documents')->name('company_certified_documents')->to('company-certified_documents#view');
+    $company_bridge->post('/certified-documents')->name('company_certified_documents')->to('company-certified_documents#post');
     $company_bridge->get('/officers')->name('company_officers')->to('company-officers#list');
     $company_bridge->get('/registers')->name('company_registers')->to('company-registers#list');
     $company_bridge->get('/registers/directors')->name('company_registers_directors')->to('company-registers-directors#list');
@@ -70,7 +72,7 @@ sub register {
     $company_bridge->get('/charges')->name('company_charges')->to('company-mortgages#view');
     $company_bridge->get('/charges/:charge_id')->name('company_charge_with_id')->to('company-mortgages#view_details');
     $company_bridge->get('/ukestablishments')->name('company_branches')->to('company-branches#view');
-    $company_bridge->get('/view-all')->name("company_view_all")->to('company-view_all#view');
+    $company_bridge->get('/more')->name("company_view_all")->to('company-view_all#view');
 
     # PSCs route
     $company_bridge->get('/persons-with-significant-control')->name('list_pscs')->to('company-pscs#list');

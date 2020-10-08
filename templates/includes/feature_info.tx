@@ -18,5 +18,8 @@
     <h2 class="heading-medium">Other useful tools</h2>
     <ul class="list list-bullet">
       <li><a href="/company-name-availability" target="_blank">Company name availability checker<span class="visuallyhidden">Link opens in new window</span></a></li>
+       % if $c.config.feature.alphabetical_search {
+          <li><a class="piwik-event" data-id="other-useful-tools" data-event-id="Alphabetical company search" href="/alphabetical-search" target="_blank">Alphabetical company search<span class="visuallyhidden">Link opens in new window</span></a><sup class="label phase-tag">New</sup></li>
+       % }
     </ul>
 </div>

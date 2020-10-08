@@ -109,6 +109,9 @@ sub results {
         success => sub {
             my ($api, $tx) = @_;
 
+            # do not index search results pages
+            $self->stash(noindex => 1);
+
             my $json_results = $tx->res->json;
             trace "Response json is: %s", d:$json_results;
 

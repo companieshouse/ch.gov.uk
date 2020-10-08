@@ -42,7 +42,7 @@ sub get {
         success => sub {
             my ($api, $tx) = @_;
             my $addr = ChGovUk::Models::Address->new->from_api_hash($tx->success->json);
-            $self->stash(old_address => $addr->as_string, po_box => $addr->po_box, care_of => $addr->care_of, disable_header_search => 1);
+            $self->stash(old_address => $addr->as_string, po_box => $addr->po_box, care_of => $addr->care_of, disable_header_search => 1, etag => $addr->etag);
             $self->render(template => 'company/transactions/change_registered_office_address');
         }
     )->execute;

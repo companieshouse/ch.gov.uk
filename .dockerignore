@@ -1,0 +1,13 @@
+*
+
+!api-enumerations
+!lib
+!local
+!script
+!templates
+
+!appconfig.yml
+!errors.yml
+!log4perl.conf
+!log4perl.production.conf
+!routes.yaml

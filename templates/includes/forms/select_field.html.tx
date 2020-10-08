@@ -1,7 +1,7 @@
 % if !$no_errors {
     <div class="form-group <% if $has_errors { %>error <%} %>">
     <a name="<% $errors[0].id %>"></a>
-    <label class="form-label form-label-bold">
+    <label for="<% $id %>" class="form-label form-label-bold">
     <% $label %>
     % if $has_errors {
     %   for $errors->$error {

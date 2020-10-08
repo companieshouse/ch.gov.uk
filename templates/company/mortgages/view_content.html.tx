@@ -21,6 +21,12 @@
                 </h2>
             % }
 
+            % if ($charge.status == 'outstanding' || $charge.status == 'part-satisfied') {
+                <p>
+                    <a class="piwik-event" data-id="charges" data-event-id="Satisfy charge" href=<% $c.config.webfiling_login_url %>>Satisfy charge<span class="visually-hidden"> <% if defined $charge.charge_code {$charge.charge_code} else { $charge.classification.description } %> on the Companies House WebFiling service</span></a>
+                </p>
+            % }
+
             <div class="grid-row">
                 % if defined $charge.created_on {
                     <dl class="column-quarter">

@@ -20,11 +20,12 @@
     <p class="text">
         <% tl( $c.fhe_lookup($company_filing_history.filing_history_status) ) %>
     </p>
-    <table id="fhTable" class="full-width-table">
+
+    <table id="certified-documents-fh-table" class="full-width-table">
         <caption class="visuallyhidden">Company Results (links open in a new window)</caption>
         <tr>
             <th class="nowrap">
-                Date <span class="visuallyhidden">(document was filed at Companies House)</span>
+                Date filed<span class="visuallyhidden">(document was filed at Companies House)</span>
             </th>
             <th class="filing-type<% sft_toggled() %>">
                 Type
@@ -32,11 +33,12 @@
             <th>
                 Description <span class="visuallyhidden">(of the document filed at Companies House)</span>
             </th>
-            % if ( $image_service_active ) {
-                <th class="nowrap">
-                    View / Download <span class="visuallyhidden">(PDF file, link opens in new window)</span>
-                </th>
-            % }
+            <th class="nowrap">
+                Fee <span class="visuallyhidden">(of the certified document)</span>
+            </th>
+            <th class="nowrap">
+                Order option <span class="visuallyhidden">(allows ordering of a certified document)</span>
+            </th>
         </tr>
         % for $company_filing_history.items -> $item {
             <tr>
@@ -46,13 +48,16 @@
                 <td class="filing-type<% sft_toggled() %>">
                     % $item.type
                 </td>
-                <td>
+                <td class="js-description">
                     % include "company/filing_history/transaction_description.html.tx" { item => $item };
                     % if !$item.links.document_metadata {
                       % if ($item._missing_message == 'unavailable') {
                       <div class="form-hint">
-			      This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.
-                  <!--Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.-->
+                        % if $c.config.show_covid19_message {
+                            Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.
+                        % } else {
+                            This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.
+                        % }
                       </div>
                       % }
                       % if ($item._missing_message == 'available_in_5_days') {
@@ -62,28 +67,32 @@
                       % }
                     % }
                 </td>
-                % if $image_service_active {
-                    <td class="nowrap">
-                    % if $item.links.document_metadata {
-                    <div>
-                        <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %>>View PDF
-                        <span class="visuallyhidden"><% include "company/filing_history/transaction_description.html.tx" { item => $item } %> - link opens in a new window <% if ($item.pages) { %> - <% ln('%d page', '%d pages', $item.pages) } %></span></a>
-                        <% if ($item.pages) { %> (<% ln('%d page', '%d pages', $item.pages) %>)<% } %></div>
-                        % if !$item.paper_filed && $item.type == 'AA' && $item._xhtml_is_available {
-                        <div>
-                            <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'xhtml', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download iXBRL</a></div>
-                        % }
-                    % } else if $item._missing_message != 'available_in_5_days' {
-                         % if $c.config.feature.missing_image_delivery {
-                            <a href="orderable/missing-image-delivery/<% $item.transaction_id %>" class="normal piwik-event" data-event-id="Request Document">Request Document</a>
-                         % }
+                <td class="nowrap">
+                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
+                    % if $item.type == "NEWINC" {
+                        £30
+                    % } else {
+                        £15
                     % }
-                    </td>
                 % }
+                </td>
+                <td>
+                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
+                    <form action="<%'/company/' ~ $company.company_number ~ '/certified-documents' %>" method="post">
+                        <input type="hidden" id="<% $item.transaction_id %>" name="transaction" value="<% $item.transaction_id %>">
+                        <input type="submit" class="select-document-button-link" id="add-document-to-order-<% $item.transaction_id%>"
+                            value="<% l('Select document') %>"
+                            % if $c.config.piwik.embed {
+                                    onclick="javascript:_paq.push(['trackEvent', 'AddDocumentToOrder']);"
+                            % }
+                            >
+                        </input>
+                    </form>
+                % }
+                </td>
             </tr>
         % }
     </table>
-
     % if $company_filing_history.total_count > $entries_per_page {
             <ul class="pager">
                 % if ($previous_page) {

@@ -1,10 +1,10 @@
-% cascade base { title => 'Register Of Disqualifications - ' ~ $active_letter, disable_header_search => 1 }
+% cascade base { title => 'Register Of Disqualifications - ' ~ $active_letter, disable_header_search => 1, alternative_skiplink => true }
 
 % around content -> {
 
        <div class="active">
             <header>
-                <h1 class="heading-xlarge">Register of disqualifications</h1>
+                <h1 class="heading-xlarge" id="page-content">Register of disqualifications</h1>
             </header>
 
             <ul class="pager pager-a-z" id="alphabetical-pager">

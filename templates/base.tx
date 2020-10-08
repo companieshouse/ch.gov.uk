@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <!--[if lt IE 9]><html class="lte-ie8" lang="en"><![endif]-->
 <!--[if gt IE 8]><!--><html lang="en"><!--<![endif]--><head>
+
+  <% if $noindex { %>
+    <meta name="robots" content="noindex" />
+  <% } %>
+
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <!-- Company numbers are not taken as a phone number -->
    <meta name="format-detection" content="telephone=no">
@@ -64,6 +69,10 @@
 
    <!-- Companies House Styles and Scripts -->
 
+   % if $certified_copies {
+     <link href="//<% $cdn_url %>/stylesheets/gci/certified-copies.css" media="screen" rel="stylesheet" type="text/css">
+   % }
+
    <!--[if gt IE 8]><!--><link href="//<% $cdn_url %>/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css"><!--<![endif]-->
    <!--[if IE 6]><link href="//<% $cdn_url %>/stylesheets/application-ie6.css" media="screen" rel="stylesheet" type="text/css"><![endif]-->
    <!--[if IE 7]><link href="//<% $cdn_url %>/stylesheets/application-ie7.css" media="screen" rel="stylesheet" type="text/css"><![endif]-->
@@ -80,7 +89,7 @@
   <script src='//<% $cdn_url %>/javascripts/app/accounts-pdf.js'></script>
   <script src='//<% $cdn_url %>/javascripts/lib/details-polyfill.js'></script>
   <script src='//<% $cdn_url %>/javascripts/app/generate-document.js'></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src='//<% $cdn_url %>/javascripts/vendor/jquery-1.12.4.min.js'></script>
   <script>
   require(['//<% $cdn_url %>/javascripts/require-global-config.js'], function () {
     console.log('Loaded require-global-config.js');
@@ -108,12 +117,18 @@
   </script>
 
   <div class="entire-wrapper">
-
    <div id="skiplink-container">
       <div>
+      <!--$alternative_skiplink provides a different ID as #content contains styling which can throw off certain screens-->
+      % if !$alternative_skiplink {
          <a href="#content" class="skiplink">Skip to main content</a>
+      % } else {
+         <a href="#page-content" class="skiplink">Skip to main content</a>
+      % }
       </div>
    </div>
+
+% if ! $disable_default_header {
 
   <!-- // CH.GOV.UK HEADER -->
   <header role="banner" id="global-header">
@@ -121,23 +136,33 @@
       <div class="header-global">
         <div class="header-logo">
           <a href="/" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo" class="content">
+            % if !$certified_copies {
             Companies House
+            % } else {
+              <strong>Companies House</strong>
+            % }
           </a>
-% if ! $disable_header_search {
-			<!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
-% }
+        % if ! $disable_header_search {
+              <!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
+        % }
         </div>
-
-
+        % if $certified_copies {
+        <div class="govuk-header__content">
+            <a href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
+            Order a certified document
+          </a>
+        </div>
+        % }
       </div>
     </div>
   </header>
   <!--end header-->
+% }
 
 % if $feedback_banner {
   <div class="govuk-body" id="chs-customer-insights-top">
    <div class="govuk-width-container">
-     <a href="http://resources.companieshouse.gov.uk/csat/index.shtml?Service=CHS">Tell us what you think of Companies House</a>
+     <a href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
    </div>
  </div>
 % }
@@ -145,11 +170,18 @@
   <main id="page-container" class="search <% $classes %>" role="main">
 
   % if !$feedback_banner {
-    <div class="phase-banner">
-      % } else {
+    % if $certified_copies {
+      <div class="phase-banner-certified">
+    % } else {
+      <div class="phase-banner">
+    % }
+  % } else {
     <div>
   % }
-<div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="visuallyhidden">(link opens a new window)</span></a></div>
+
+% if ! $certified_copies {
+  <div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="visuallyhidden">(link opens a new window)</span></a></div>
+% }
     </div>
 
     % if $user_bar != false {
@@ -220,6 +252,9 @@
 	   			<li><a href="http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml" target="_blank">Policies</a></li>
 	            <li><a href="/help/cookies">Cookies</a></li>
 	            <li><a href="/help/contact-us">Contact us</a></li>
+              % if ! $accessibility_statement_off {
+                <li><a href="/help/accessibility-statement">Accessibility statement</a></li>
+              % }
              	<li><a href="https://developer.companieshouse.gov.uk/" target="_blank">Developers</a></li>
 	        </ul>
          </div>

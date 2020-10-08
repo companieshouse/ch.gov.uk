@@ -12,6 +12,7 @@ has 'controller';
 has 'model';
 has 'labels'         => sub { {} };
 has 'errors'         => sub { [] };
+has 'warnings'       => sub { [] };
 has 'blocks'         => sub { [] };
 
 # ========================================================| MOJO INTERFACE |====
@@ -40,6 +41,16 @@ sub errors_count {
 
     my $count = scalar @{ $self->errors };
     trace "There are %s errors", $count [VALIDATION];
+    return $count;
+}
+
+# -----------------------------------------------------------------------------
+
+sub warnings_count {
+    my ($self) = @_;
+
+    my $count = scalar @{ $self->warnings };
+    trace "There are %s warnings", $count [VALIDATION];
     return $count;
 }
 
@@ -484,18 +495,23 @@ sub _get_errors_for_field {
             }
 
             $error = Locale::Simple::l($error, { %error_args } );
-            my $error_id = $self->_field_name_to_id($field) . '-' . $rule . '-error';
-            push @errors, { text => $error, id => $error_id };
 
             # Add error to global error array
             my %error_hash;
             $error_hash{name} = $field;
             $error_hash{text} = $error;
 
-            # Does the controller have a corresponding field?
-            if ( defined $self->labels->{$field} ) {
-                $error_hash{id}   = $error_id;
-                push $self->errors, \%error_hash;
+            if ($self->_is_warning($rule)) {
+                push @{$self->warnings}, \%error_hash;
+            } else {
+                my $error_id = $self->_field_name_to_id($field) . '-' . $rule . '-error';
+                push @errors, { text => $error, id => $error_id };
+
+                # Does the controller have a corresponding field?
+                if (defined $self->labels->{$field} ) {
+                    $error_hash{id}   = $error_id;
+                    push @{$self->errors}, \%error_hash;
+                }
             }
         }
     }
@@ -652,6 +668,13 @@ sub _field_name_parts {
 sub _field_name_to_id  {
     my ($self, $field) = @_;
     return join( '-', $self->_field_name_parts($field) ) // undef;
+}
+
+# -----------------------------------------------------------------------------
+
+sub _is_warning  {
+    my ($self, $rule) = @_;
+    return $rule eq "etag-mismatch";
 }
 
 # -----------------------------------------------------------------------------
