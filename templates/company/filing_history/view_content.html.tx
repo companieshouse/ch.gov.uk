@@ -75,7 +75,7 @@
                         % }
                     % } else if $item._missing_message != 'available_in_5_days' {
                          % if $c.config.feature.missing_image_delivery {
-                            <a href="orderable/missing-image-delivery/<% $item.transaction_id %>" class="normal piwik-event" data-event-id="Request Document">Request Document</a>
+                            <a href="orderable/missing-image-deliveries/<% $item.transaction_id %>" class="normal piwik-event" data-event-id="Request Document">Request Document</a>
                          % }
                     % }
                     </td>
