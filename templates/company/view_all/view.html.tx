@@ -75,6 +75,9 @@
       </details>
         <a class="govuk-button secondary-button piwik-event" data-event-id="Order a certificate" href="orderable/certificates">Order certificate</a>
     % }
+  %}
+
+  % if $c.config.feature.order_dissolved_certificate {
     % if $show_dissolved_certificate {
       <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
         Order a certificate
@@ -95,7 +98,7 @@
       </details>
         <a class="govuk-button secondary-button piwik-event" data-event-id="Order a dissolved certificate" href="orderable/certificates">Order certificate</a>
     % }
-  %}
+  % }
 
   % if $c.config.feature.order_certified_document {
     % if $show_certified_document {
