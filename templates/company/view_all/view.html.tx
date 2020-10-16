@@ -96,7 +96,7 @@
           </ul>
         </div>
       </details>
-        <a class="govuk-button secondary-button piwik-event" data-event-id="Order a dissolved certificate" href="orderable/certificates">Order certificate</a>
+        <a class="govuk-button secondary-button piwik-event" data-event-id="Order a dissolved certificate" href="orderable/dissolved-certificates">Order certificate</a>
     % }
   % }
 
