@@ -199,6 +199,73 @@ sub results {
 }
 
 # ---------------------------------------------------------------------------------------------------
+# Take the matches array for a title, and insert strong tags into the right place (called from template).
+sub format_title {
+    my ($self, $result) = @_;
+
+    my $t       = $result->{title};
+    my $entries = exists $result->{matches} ? $result->{matches}->{title} : undef;
+    my $i;
+
+    while( $entries && @$entries ) {
+
+        $i = pop @$entries;
+        $t = substr( $t, 0, $i) . '</strong>' . substr( $t, $i);
+
+        $i = pop @$entries;
+        $t = substr( $t, 0, $i - 1) . '<strong>' . substr( $t, $i - 1);
+    }
+
+    return $t;
+}
+
+# ---------------------------------------------------------------------------------------------------
+# Embolden the description (used in templates)
+sub format_description {
+    my ($self, $result) = @_;
+
+    my $d = $result->{description};
+
+    # external_registration_number should currently be digits only so could be added to regex this way
+    # but this means it won't work if the format ever deviates in future, hence the explicit check here
+    if (defined $result->{external_registration_number}) {
+        $d =~ s/^(.+)($result->{external_registration_number})(.+)?$/$1<strong>$2<\/strong>$3/go;
+    }
+
+    $d =~ s/^(\w{8,8}\s+-\s+.+\s+-\s+)(.+)$/$1<strong>$2<\/strong>/go;
+    $d =~ s/^(\w{8,8})/<strong>$1<\/strong>/go;
+    return $d;
+}
+
+
+# ---------------------------------------------------------------------------------------------------
+# Take the matches array for a title, and insert strong tags into the right place.
+sub _create_highlighting {
+    my ($self, $result) = @_;
+
+
+    if ( $result->{matches} ) {
+
+        foreach my $field ( keys %{ $result->{matches} } ){
+
+            my $index;
+            my $entries = exists $result->{matches}->{$field} ? $result->{matches}->{$field} : undef;
+
+            while( $entries && @$entries ) {
+
+                $index = pop @$entries;
+                $result->{$field} = substr( $result->{$field}, 0, $index) . '</strong>' . substr( $result->{$field}, $index);
+
+                $index = pop @$entries;
+                $result->{$field} = substr( $result->{$field}, 0, $index - 1) . '<strong>' . substr( $result->{$field}, $index - 1);
+            }
+
+        }
+    }
+    #return $result;
+}
+
+# ---------------------------------------------------------------------------------------------------
 
 sub _calculate_number_of_pages {
     my ($self, $results) = @_;
@@ -214,7 +281,6 @@ sub _calculate_number_of_pages {
     return $pages;
 }
 
-# ---------------------------------------------------------------------------------------------------
 
 1;
 
