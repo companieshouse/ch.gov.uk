@@ -38,16 +38,14 @@
 				<ul id='results' class="results-list">
 
                     % for $results.items -> $item {
-                        % $c._create_highlighting($item);
-
                         % if $item.kind == "searchresults#officer" {
                             <li class="type-officer">
-                                <h3><a href="<% $item.links.self %>"><% $item.title | mark_raw %></a></h3>
+                                <h3><a href="<% $item.links.self %>"><% $item.title %></a></h3>
                                 <% if $item.snippet { %>
-                                    <p class="meta crumbtrail inset">Matching appointment names: <br/><span><% $item.snippet | mark_raw %></span></p>
+                                    <p class="meta crumbtrail inset">Matching appointment names: <br/><span><% $item.snippet %></span></p>
                                 <% } %>
                                 <p class="meta crumbtrail"><% $item.description %></p>
-                                <p><% $item.address_snippet | mark_raw %></p>
+                                <p><% $item.address_snippet %></p>
                             </li>
                         % } elsif $item.kind == "searchresults#company" {
                             <li class="type-company">
@@ -55,23 +53,23 @@
                                     <!-- $item._score -->
                                     <a href="<% $item.links.self %>"
                                         <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SearchSuggestions', 'SearchResult-<% $~item +1%>' ]);"<% } %>title="View company">
-                                        <% $c.format_title( $item ) | mark_raw %>
+                                        <% $item.title %>
                                     </a>
                                 </h3>
                                 <% if $item.snippet { %>
-                                    <p class="meta crumbtrail inset">Matching previous names: <br/><span><% $item.snippet | mark_raw %></span></p>
+                                    <p class="meta crumbtrail inset">Matching previous names: <br/><span><% $item.snippet %></span></p>
                                 <% } %>
-                                <p class="meta crumbtrail"> <% $c.format_description( $item) | mark_raw %> </p>
-                                <p><% $item.address_snippet | mark_raw %></p>
+                                <p class="meta crumbtrail"> <% $item.description %> </p>
+                                <p><% $item.address_snippet %></p>
                             </li>
                         % } elsif $item.kind == "searchresults#disqualified-officer" {
                             <li class="type-disqualification">
-                                <h3><a href="<% $item.links.self %>"><% $item.title | mark_raw %></a></h3>
+                                <h3><a href="<% $item.links.self %>"><% $item.title %></a></h3>
                                 <% if $item.snippet { %>
-                                    <p class="meta crumbtrail inset">Matching disqualification names: <br/><span><% $item.snippet | mark_raw %></span></p>
+                                    <p class="meta crumbtrail inset">Matching disqualification names: <br/><span><% $item.snippet %></span></p>
                                 <% } %>
                                 <p class="meta crumbtrail"><% $item.description %></p>
-                                <p><% $item.address_snippet | mark_raw %></p>
+                                <p><% $item.address_snippet %></p>
                             </li>
                         % } # End-if
                     % } # Next
