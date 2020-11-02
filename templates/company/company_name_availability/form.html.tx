@@ -63,10 +63,10 @@
                   % for $companies.items -> $item {
                     <li class="type-company">
                         <h3>
-                            <% $item.title | mark_raw %>
+                            <% $item.title %>
                         </h3>
-                        <p><% $item.description | mark_raw %></p>
-                        <p><% $item.snippet | mark_raw %></p>
+                        <p><% $item.description %></p>
+                        <p><% $item.snippet %></p>
                         <p><% $c.cv_lookup('company_type', $item.company_type) %></p>
                     </li>
                     %}
