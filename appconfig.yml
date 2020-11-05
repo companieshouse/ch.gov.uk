@@ -134,3 +134,5 @@ use_fine_grain_scopes_model: <USE_FINE_GRAIN_SCOPES_MODEL>
 webfiling_login_url: <WEBFILING_LOGIN_URL>
 
 show_covid19_message: <SHOW_COVID19_MESSAGE>
+
+show_feedback_page: <SHOW_FEEDBACK_PAGE>
