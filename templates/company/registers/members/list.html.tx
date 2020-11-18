@@ -88,7 +88,7 @@
                     % }
                     % if $member.identification.place_registered {
                         <dl class="column-quarter">
-                            <dt><% l('Placed registered') %></dt>
+                            <dt><% l('Place registered') %></dt>
                             <dd id="member-register-location-<% $~member.count %>" class="data">
                                 <% $member.identification.place_registered %>
                             </dd>
