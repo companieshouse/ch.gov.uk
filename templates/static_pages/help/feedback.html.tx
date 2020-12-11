@@ -2,6 +2,8 @@
 
 % around content -> {
 
+% if $c.config.show_feedback_page {
+
 <div id="feedback-received" class="no-script">
   <h2 class="heading-medium">Thank you, your submission has been accepted</h2>
 </div>
@@ -43,4 +45,16 @@
         </fieldset>
         </form>
 </div><!--toggle-->
+
+% } else {
+<article class="text">
+    <header>
+        <h1 id="page-not-found-header" class="heading-xlarge">
+            This page cannot be found
+        </h1>
+	</header>
+    <p>Check that you have entered the correct web address or try using the search.</p>
+    <p>If you still can't find what you're looking for email <a href="mailto:enquiries@companieshouse.gov.uk">enquiries@companieshouse.gov.uk</a></p>
+</article>
+% }
 % }

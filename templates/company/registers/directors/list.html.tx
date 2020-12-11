@@ -115,7 +115,7 @@
                     % }
                     % if $director.identification.place_registered {
                         <dl class="column-quarter">
-                            <dt><% l('Placed registered') %></dt>
+                            <dt><% l('Place registered') %></dt>
                             <dd id="director-register-location-<% $~director.count %>" class="data">
                                 <% $director.identification.place_registered %>
                             </dd>

@@ -97,6 +97,7 @@ feature:
     order_certificate: <ORDER_CERTIFICATE_FEATURE>
     order_certified_document: <ORDER_CERTIFIED_DOCUMENT_FEATURE>
     missing_image_delivery: <MISSING_IMAGE_DELIVERY_FEATURE>
+    order_dissolved_certificate: <ORDER_DISSOLVED_CERTIFICATE_FEATURE>
 
 image_service_start_date: <IMAGE_SERVICE_START_DATE>
 
@@ -133,3 +134,5 @@ use_fine_grain_scopes_model: <USE_FINE_GRAIN_SCOPES_MODEL>
 webfiling_login_url: <WEBFILING_LOGIN_URL>
 
 show_covid19_message: <SHOW_COVID19_MESSAGE>
+
+show_feedback_page: <SHOW_FEEDBACK_PAGE>

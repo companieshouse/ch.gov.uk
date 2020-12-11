@@ -54,7 +54,7 @@
   % }
 
   % if $c.config.feature.order_certificate {
-    % if $show_orders {
+    % if $show_certificate {
       <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
         Order a certificate
       </h2>
@@ -76,6 +76,29 @@
         <a class="govuk-button secondary-button piwik-event" data-event-id="Order a certificate" href="orderable/certificates">Order certificate</a>
     % }
   %}
+
+  % if $c.config.feature.order_dissolved_certificate {
+    % if $show_dissolved_certificate {
+      <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
+        Order a certificate
+      </h2>
+      <details class="govuk-details" role="group">
+        <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
+          <span class="govuk-details__summary-text">
+            What you'll need
+          </span>
+        </summary>
+        <div class="govuk-details__text" id="order-a-certificate-details-content" aria-hidden="false">
+          <p id="orders-list">To use the service, you'll need:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>the address you want the certificate to be delivered to (UK or international)</li>
+            <li>a credit or debit card for payment</li>
+          </ul>
+        </div>
+      </details>
+        <a class="govuk-button secondary-button piwik-event" data-event-id="Order a dissolved certificate" href="orderable/dissolved-certificates">Order certificate</a>
+    % }
+  % }
 
   % if $c.config.feature.order_certified_document {
     % if $show_certified_document {
