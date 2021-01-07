@@ -101,7 +101,7 @@ feature:
 
 image_service_start_date: <IMAGE_SERVICE_START_DATE>
 
-recently_filed_days: <RECENTLY_FILED_DAYS>
+recently_filed_days: 10
 
 unavailable_date: <UNAVAILABLE_DATE>
 

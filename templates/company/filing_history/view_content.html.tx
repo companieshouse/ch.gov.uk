@@ -55,9 +55,9 @@
                   <!--Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.-->
                       </div>
                       % }
-                      % if ($item._missing_message == 'available_in_10_days') {
+                      % if ($item._missing_message == 'available_in_5_days') {
                       <div class="form-hint">
-                        This document is being processed and will be available in ($RECENTLY_FILED_DAYS) days.
+                        This document is being processed and will be available in <% $recently_filed %> days.
                       </div>
                       % }
                     % }
@@ -73,7 +73,7 @@
                         <div>
                             <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'xhtml', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download iXBRL</a></div>
                         % }
-                    % } else if $item._missing_message != 'available_in_10_days' {
+                    % } else if $item._missing_message != 'available_in_5_days' {
                          % if $c.config.feature.missing_image_delivery {
                             <a href="orderable/missing-image-deliveries/<% $item.transaction_id %>" class="normal piwik-event" data-event-id="Request Document">Request Document</a>
                          % }
