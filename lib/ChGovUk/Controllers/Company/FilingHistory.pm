@@ -40,7 +40,7 @@ sub view {
 
     my $unavailable_date = $self->config->{unavailable_date} || '2003-01-01';
     $unavailable_date = date_convert($unavailable_date);
-    my $recently_filed = $self->config->{recently_filed_days} || 5;
+    my $recently_filed = $self->config->{recently_filed_days} || 10;
     my $items_per_page = $self->config->{filing_history}->{items_per_page} || 25;
 
     # FIXME: vvv Remove this when Doc API goes live (and in template) vvv
@@ -118,7 +118,7 @@ sub view {
                   $transaction_date =~ s/-//g;
                     # Generate a missing message for recently filed unavailable documents
                     if (CH::Util::DateHelper->days_between(CH::Util::DateHelper->from_internal($transaction_date)) <= $recently_filed) {
-                      $doc->{_missing_message} = 'available_in_5_days';
+                      $doc->{_missing_message} = 'available_in_10_days';
                     }
                 }
                 # Format date fields in the form of '01 Jan 2004'

@@ -56,19 +56,19 @@
                         % if $c.config.show_covid19_message {
                             Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.
                         % } else {
-                            This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.
+                            This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500. ($RECENTLY_FILED_DAYS)
                         % }
                       </div>
                       % }
-                      % if ($item._missing_message == 'available_in_5_days') {
+                      % if ($item._missing_message == 'available_in_10_days') {
                       <div class="form-hint">
-                        This document is being processed and will be available in 5 days.
+                        This document is being processed and will be available in ($RECENTLY_FILED_DAYS) days.
                       </div>
                       % }
                     % }
                 </td>
                 <td class="nowrap">
-                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
+                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_10_days') || $item.links.document_metadata  {
                     % if $item.type == "NEWINC" {
                         £30
                     % } else {
@@ -77,7 +77,7 @@
                 % }
                 </td>
                 <td>
-                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
+                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_10_days') || $item.links.document_metadata  {
                     <form action="<%'/company/' ~ $company.company_number ~ '/certified-documents' %>" method="post">
                         <input type="hidden" id="<% $item.transaction_id %>" name="transaction" value="<% $item.transaction_id %>">
                         <input type="submit" class="select-document-button-link" id="add-document-to-order-<% $item.transaction_id%>"
