@@ -62,7 +62,7 @@
                       % }
                       % if ($item._missing_message == 'available_in_5_days') {
                       <div class="form-hint">
-                        This document is being processed and will be available in 5 days.
+                        This document is being processed and will be available in <% $recently_filed %> days.
                       </div>
                       % }
                     % }

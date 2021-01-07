@@ -135,6 +135,7 @@ sub view {
             $self->stash(next_page               => $pager->next_page());
             $self->stash(previous_page           => $pager->previous_page());
             $self->stash(entries_per_page        => $pager->entries_per_page());
+            $self->stash(recently_filed          => $recently_filed);
 
             $self->stash(show_filing_type        => $show_filing_type);
             $self->stash(company_filing_history  => $fh_results);
