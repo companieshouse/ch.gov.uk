@@ -39,7 +39,7 @@ sub view {
     my @filter_categories = split ',', $category_filter;
 
     my $unavailable_date = $self->config->{unavailable_date} || '2003-03-01';
-    my $march_filing_date = '2003-03-01';
+    my $request_document_unavailable_date = '2003-03-01';
     $unavailable_date = date_convert($unavailable_date);
     my $recently_filed = $self->config->{recently_filed_days} || 5;
     my $items_per_page = $self->config->{filing_history}->{items_per_page} || 25;
@@ -123,7 +123,7 @@ sub view {
                     }
                 }
 
-                if ($transaction_date > $march_filing_date) {
+                if ($transaction_date > $request_document_unavailable_date) {
                     $doc->{_missing_doc} = 1;
                 }
                 # Format date fields in the form of '01 Jan 2004'
