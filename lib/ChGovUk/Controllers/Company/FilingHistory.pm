@@ -38,7 +38,8 @@ sub view {
     my $category_filter  = $self->get_filter('fh');                 # List of categories to filter by (optional)
     my @filter_categories = split ',', $category_filter;
 
-    my $unavailable_date = $self->config->{unavailable_date} || '2003-01-01';
+    my $unavailable_date = $self->config->{unavailable_date} || '2003-03-01';
+    my $request_document_unavailable_date = '2003-03-01';
     $unavailable_date = date_convert($unavailable_date);
     my $recently_filed = $self->config->{recently_filed_days} || 5;
     my $items_per_page = $self->config->{filing_history}->{items_per_page} || 25;
@@ -120,6 +121,10 @@ sub view {
                     if (CH::Util::DateHelper->days_between(CH::Util::DateHelper->from_internal($transaction_date)) <= $recently_filed) {
                       $doc->{_missing_message} = 'available_in_5_days';
                     }
+                }
+
+                if ($transaction_date > $request_document_unavailable_date) {
+                    $doc->{_missing_doc} = 1;
                 }
                 # Format date fields in the form of '01 Jan 2004'
                 $self->format_filing_history_dates($doc);

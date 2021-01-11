@@ -49,15 +49,15 @@
                 <td>
                     % include "company/filing_history/transaction_description.html.tx" { item => $item };
                     % if !$item.links.document_metadata {
-                      % if ($item._missing_message == 'unavailable' && $c.isodate_as_short_string($item.date) >= '01 Mar 2003') {
+                      % if ($item._missing_doc) {
                       <div class="form-hint">
-                    This document is not currently available online. You can request to add the document to the company's filing history, which costs £3.
+                    This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.
                   <!--Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.-->
                       </div>
                       % }
-                      % if ($item._missing_message == 'unavailable' && $c.isodate_as_short_string($item.date) < '01 Mar 2003') {
+                      % if ($item._missing_message == 'unavailable' && !$item._missing_doc) {
                       <div class="form-hint">
-                    This document is not available online but it may be possible to order a copy from the Contact Centre. Telephone +44(0)303 1234 500.
+                    This document is not currently available online. You can request to add the document to the company's filing history, which costs £3.
                   <!--Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.-->
                       </div>
                       % }
@@ -79,7 +79,7 @@
                         <div>
                             <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'xhtml', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download iXBRL</a></div>
                         % }
-                    % } else if ($item._missing_message != 'available_in_5_days' && $c.isodate_as_short_string($item.date) >= '01 Mar 2003') {
+                    % } else if ($item._missing_message != 'available_in_5_days' && !$item._missing_doc) {
                          % if $c.config.feature.missing_image_delivery {
                             <a href="orderable/missing-image-deliveries/<% $item.transaction_id %>" class="normal piwik-event" data-event-id="Request Document">Request Document</a>
                          % }
