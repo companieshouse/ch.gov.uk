@@ -124,7 +124,7 @@ sub view {
                 }
                 $transaction_date =~ s/-//g;
                 $request_document_unavailable_date =~ s/-//g;
-                if ( $transaction_date > $request_document_unavailable_date) {
+                if ( $transaction_date >= $request_document_unavailable_date) {
                     $doc->{_missing_doc} = 1;
                 }
 
