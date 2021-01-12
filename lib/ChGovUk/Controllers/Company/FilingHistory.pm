@@ -122,10 +122,12 @@ sub view {
                       $doc->{_missing_message} = 'available_in_5_days';
                     }
                 }
-
-                if ($transaction_date > $request_document_unavailable_date) {
+                $transaction_date =~ s/-//g;
+                $request_document_unavailable_date =~ s/-//g;
+                if ( $transaction_date > $request_document_unavailable_date) {
                     $doc->{_missing_doc} = 1;
                 }
+
                 # Format date fields in the form of '01 Jan 2004'
                 $self->format_filing_history_dates($doc);
             }
