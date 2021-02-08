@@ -1,0 +1,16 @@
+{
+  "type": "Service",
+  "name": "ch.gov.uk",
+  "description": "CHS Core Web service",
+  "owned_by": "TO BE ADDED",
+  "calls_via": "Eric",
+  "git_repo": "https://github.com/companieshouse/ch.gov.uk",
+  "specification": "",
+  "public": "true",
+  "users": "public - Web",
+  "language": "Perl",
+  "integration_outgoing": [
+    "cdn.ch.gov.uk,INTEGRATES_WITH",
+    "eric,INTEGRATES_WITH"
+  ]
+}
