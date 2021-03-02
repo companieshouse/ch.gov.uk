@@ -57,7 +57,7 @@
 
    for (var i = 0; i < cookieArray.length; i++) {
       if (cookieArray[i].indexOf('ch_cookie_consent') !== -1) {
-         var cookieTuple = cookie.split('=');
+         var cookieTuple = cookieArray[i].split('=');
          var cookieJson = JSON.parse(cookieTuple[1]);
          if (cookieJson.userHasAllowedCookies === 'no') {
             return;
