@@ -53,6 +53,17 @@
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {
+   var cookieArray = document.cookie.split(';');
+
+   for (var i = 0; i < cookieArray.length; i++) {
+      if (cookieArray[i].indexOf('ch_cookie_consent') !== -1) {
+         var cookieTuple = cookie.split('=');
+         var cookieJson = JSON.parse(cookieTuple[1]);
+         if (cookieJson.userHasAllowedCookies === 'no') {
+            return;
+         }
+      }
+   }
     var u="<% $c.config.piwik.url %>/";
     _paq.push(['setTrackerUrl', u+'piwik.php']);
     _paq.push(['setSiteId', <% $c.config.piwik.site_id %>]);
