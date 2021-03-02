@@ -1,5 +1,6 @@
 % if $c.config.piwik.embed {
 <!-- Piwik -->
+<script src="//<% $cdn_url %>/javascripts/app/cookie-consent/cookie-consent-1.0.0.js"></script>
 <script type="text/javascript">
   var _paq = _paq || [];
 
@@ -52,24 +53,33 @@
   _paq.push(['setDownloadClasses', "download"]);
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
-  (function() {
-   var cookieArray = document.cookie.split(';');
 
-   for (var i = 0; i < cookieArray.length; i++) {
-      if (cookieArray[i].indexOf('ch_cookie_consent') !== -1) {
-         var cookieTuple = cookieArray[i].split('=');
-         var cookieJson = JSON.parse(cookieTuple[1]);
-         if (cookieJson.userHasAllowedCookies === 'no') {
-            return;
-         }
-      }
-   }
+  function startPiwik() {
     var u="<% $c.config.piwik.url %>/";
     _paq.push(['setTrackerUrl', u+'piwik.php']);
     _paq.push(['setSiteId', <% $c.config.piwik.site_id %>]);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
     g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-  })();
+  };
+
+  function stopPiwik() {
+   var cookies = document.cookie.split(';');
+   for (var i = 0; i < cookies.length;i++) {
+      var cookieName = cookies[i].split('=');
+      if (cookieName[0].match(/_pk_.+/)) {
+         document.cookie = cookieName[0] + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      }
+   }
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('accept-cookies-button').addEventListener('click', function() {CookieConsent.acceptCookies(startPiwik)})
+    document.getElementById('reject-cookies-button').addEventListener('click', function() {CookieConsent.rejectCookies(stopPiwik)})
+    document.getElementById('hide-accepted-message-button').addEventListener('click', CookieConsent.hideCookieBanners)
+    document.getElementById('hide-rejected-message-button').addEventListener('click', CookieConsent.hideCookieBanners)
+  });
+  
+  CookieConsent.start(startPiwik)
 </script>
 
 <noscript><p><img src="<% $c.config.piwik.url %>/piwik.php?idsite=<% $c.config.piwik.site_id %>" style="border:0;" alt="" /></p></noscript>

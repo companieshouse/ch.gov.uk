@@ -1,0 +1,64 @@
+<div id="cookie-banner" class="ch-cookie-cookie-banner" role="region" aria-label="Cookies on Companies House services" hidden>
+  <div id="accept-or-reject-message" class="ch-cookie-cookie-banner__message ch-cookie-width-container" role="alert" hidden>
+    <div class="ch-cookie-grid-row">
+      <div class="ch-cookie-grid-column-two-thirds">
+        <h2 class="ch-cookie-cookie-banner__heading ch-cookie-heading-m">Cookies on Companies House services</h2>
+        <div class="ch-cookie-cookie-banner__content">
+          <p>We use some essential cookies to make our services work.</p>
+          <p>We'd also like to use analytics cookies so we can understand how you use our services and to make improvements.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ch-cookie-button-group">
+      <button id="accept-cookies-button" type="button" class="ch-cookie-button" data-module="ch-cookie-button">
+        Accept analytics cookies
+      </button>
+      <button id="reject-cookies-button" type="button" class="ch-cookie-button" data-module="ch-cookie-button">
+        Reject analytics cookies
+      </button>
+      <a class="ch-cookie-link" href="/help/cookies">View cookies</a>
+    </div>
+  </div>
+  <div id="accepted-cookies-message" class="ch-cookie-cookie-banner__message ch-cookie-width-container" role="alert" hidden>
+    <div class="ch-cookie-grid-row">
+      <div class="ch-cookie-grid-column-two-thirds">
+        <div class="ch-cookie-cookie-banner__content">
+          <p>You've accepted analytics cookies. You can <a class="ch-cookie-link" href="/help/cookies">change your cookie settings</a> at any time.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ch-cookie-button-group">
+      <button id="hide-accepted-message-button" class="ch-cookie-button" data-module="ch-cookie-button">
+        Hide this message
+      </button>
+    </div>
+  </div>
+  <div id="rejected-cookies-message" class="ch-cookie-cookie-banner__message ch-cookie-width-container" role="alert" hidden>
+    <div class="ch-cookie-grid-row">
+      <div class="ch-cookie-grid-column-two-thirds">
+        <div class="ch-cookie-cookie-banner__content">
+          <p>You've rejected analytics cookies. You can <a class="ch-cookie-link" href="/help/cookies">change your cookie settings</a> at any time.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ch-cookie-button-group">
+      <button id="hide-rejected-message-button" class="ch-cookie-button" data-module="ch-cookie-button">
+        Hide this message
+      </button>
+    </div>
+  </div>
+</div>
+<noscript>
+  <div class="ch-cookie-cookie-banner" role="region" aria-label="Cookies on Companies House services">
+    <div class="ch-cookie-cookie-banner__message ch-cookie-width-container">
+      <div class="ch-cookie-grid-row">
+        <div class="ch-cookie-grid-column-two-thirds">
+          <h2 class="ch-cookie-cookie-banner__heading ch-cookie-heading-m">Cookies on Companies House services</h2>
+          <div class="ch-cookie-cookie-banner__content">
+            <p class="ch-cookie-body">We use cookies to make our services work and collect analytics information. To accept or reject cookies, turn on JavaScript in your browser settings and reload this page.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</noscript>
