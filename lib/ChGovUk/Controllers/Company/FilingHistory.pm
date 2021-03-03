@@ -98,12 +98,6 @@ sub view {
  
     my $xhtml_available_date = $self->config->{xhtml_available_date} || '2015-06-01';
 
-    my $delay = Mojo::IOLoop->delay;
-
-    $delay->steps(
-        sub {
-            my ($delay) = @_;
-            my $next = $delay->begin(0);
     # Get the filing history for the company from the API
     $self->ch_api->company($self->stash('company_number'))->filing_history($query)->force_api_key(1)->get->on(
         success => sub {
@@ -112,7 +106,9 @@ sub view {
             trace "filing history for %s: %s", $self->stash('company_number'), d:$fh_results [FILING_HISTORY];
             for my $doc (@{$fh_results->{items}}) {
                 if (defined $doc->{links}->{document_metadata}) {
-                    $next->($doc->{links}->{document_metadata});
+                    # $next->($doc->{links}->{document_metadata});
+                    my $content_type = $self->_get_content_type($doc->{links}->{document_metadata});
+                    trace "--------------------- Content type: [%s]", $content_type;
                 }
                 my $transaction_date = $doc->{date};
                 my $formatted_transaction_date = date_convert($transaction_date);
@@ -173,53 +169,48 @@ sub view {
             $self->render_exception("Error retrieving company: $error");
         }
       )->execute;
-  },
-  sub {
-      my ($delay, $document_metadata_uri) = @_;
-            my $next = $delay->begin(0);
-
-            $self->ch_api->document($document_metadata_uri)->metadata->get->on(
-                failure => sub {
-                    my ($api, $tx) = @_;
-                    my $code = $tx->error->{code} // 0;
-
-                    if ($code == 404) {
-                        $delay->emit('not_found', $document_metadata_uri);
-                    }
-                    else {
-                        $delay->emit('error', sprintf(
-                            'Failure fetching document for company_number [%s] filing_history_id [%s]: %d [%s]',
-                            $self->stash->{company_number},
-                            $self->stash->{filing_history_id},
-                            $code,
-                            $tx->error->{message},
-                        ));
-                    }
-                },
-                error => sub {
-                    my ($api, $err) = @_;
-
-                    $delay->emit('error', sprintf(
-                        'Error fetching document for company_number [%s] filing_history_id [%s]: [%s]',
-                        $self->stash->{company_number},
-                        $self->stash->{filing_history_id},
-                        $err,
-                    ));
-                },
-                success => sub {
-                    my ($api, $tx) = @_;
-
-                    trace "TRANSACTION: %s", d:$tx [DOCUMENT];
-                    my $fileType = $tx->res->headers->type;
-                    trace "---------------- fileType:";
-                    trace $fileType;
-                }
-            )->execute;
-        },
-    );
 
     $self->render_later;
 }
+
+#-------------------------------------------------------------------------------
+
+sub _get_content_type {
+    my ( $self, $document_metadata_uri ) = @_;
+
+    warn $document_metadata_uri;
+    $self->ch_api->document($document_metadata_uri)->metadata->get->on(
+        failure => sub {
+            my ($api, $tx) = @_;
+            my $code = $tx->error->{code} // 0;
+
+            if ($code == 404) {
+                error "Content Type not found for %s: %s", $document_metadata_uri, $code;
+                return;
+            }
+            else {
+                error "Error fetching Content Type for %s: %s", $document_metadata_uri, $tx->error->{message};
+                return;
+            }
+        },
+        error => sub {
+            my ($api, $err) = @_;
+            error "Error fetching Content Type for %s: %s", $document_metadata_uri, $err;
+            return;
+        },
+        success => sub {
+            my ($api, $tx) = @_;
+
+            my $fileType = $tx->res->headers->type;
+            trace "---------------- fileType:";
+            trace $fileType;
+            return $tx->res->headers->type;
+        }
+
+      )->execute;
+    }
+
+#-------------------------------------------------------------------------------
 
 sub date_convert {
   my ($original_date) = @_;
