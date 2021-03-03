@@ -178,7 +178,6 @@ sub view {
 sub _get_content_type {
     my ( $self, $document_metadata_uri ) = @_;
 
-    warn $document_metadata_uri;
     $self->ch_api->document($document_metadata_uri)->metadata->get->on(
         failure => sub {
             my ($api, $tx) = @_;
@@ -201,10 +200,9 @@ sub _get_content_type {
         success => sub {
             my ($api, $tx) = @_;
 
-            my $fileType = $tx->res->headers->type;
-            trace "---------------- fileType:";
-            trace $fileType;
-            return $tx->res->headers->type;
+            my $resources = $tx->res->json->{resources};
+            warn (keys $resources)[0];
+            return (keys $resources)[0];
         }
 
       )->execute;
