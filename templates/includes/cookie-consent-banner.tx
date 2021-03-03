@@ -55,7 +55,7 @@
         <div class="ch-cookie-grid-column-two-thirds">
           <h2 class="ch-cookie-cookie-banner__heading ch-cookie-heading-m">Cookies on Companies House services</h2>
           <div class="ch-cookie-cookie-banner__content">
-            <p class="ch-cookie-body">We use cookies to make our services work and collect analytics information. To accept or reject cookies, turn on JavaScript in your browser settings and reload this page.</p>
+            <p class="ch-cookie-body">We use cookies to make our services work and collect analytics information. To accept or reject analytics cookies, turn on JavaScript in your browser settings and reload this page.</p>
           </div>
         </div>
       </div>
