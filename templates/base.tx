@@ -170,7 +170,7 @@
   % } else {
     <div>
   % }
-  <div style="color: red;">FOO</div>
+  
 % if ! $certified_copies {
   <div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="visuallyhidden">(link opens a new window)</span></a></div>
 % }
