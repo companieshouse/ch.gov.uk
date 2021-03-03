@@ -213,17 +213,6 @@ sub view {
                     my $fileType = $tx->res->headers->type;
                     trace "---------------- fileType:";
                     trace $fileType;
-                    my $location = $tx->res->headers->location;
-
-                    if ($location) {
-                        $next->($location);
-                    }
-                    else {
-                        $delay->emit('error', sprintf(
-                            'Failed to get redirect from Document API, document_metadata [%s]',
-                            $document_metadata_uri,
-                        ));
-                    }
                 }
             )->execute;
         },
