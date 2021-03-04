@@ -113,9 +113,9 @@
       <div>
       <!--$alternative_skiplink provides a different ID as #content contains styling which can throw off certain screens-->
       % if !$alternative_skiplink {
-         <a href="#content" class="skiplink">Skip to main content</a>
+         <a href="#content" class="govuk-skip-link">Skip to main content</a>
       % } else {
-         <a href="#page-content" class="skiplink">Skip to main content</a>
+         <a href="#page-content" class="govuk-skip-link">Skip to main content</a>
       % }
       </div>
    </div>
@@ -170,7 +170,7 @@
   % } else {
     <div>
   % }
-  <div style="color: red;">FOO</div>
+
 % if ! $certified_copies {
   <div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="visuallyhidden">(link opens a new window)</span></a></div>
 % }
