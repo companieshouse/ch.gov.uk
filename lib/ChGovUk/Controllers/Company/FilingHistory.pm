@@ -191,7 +191,7 @@ sub view {
 #-------------------------------------------------------------------------------
 
 sub _get_content_type {
-    my ( $self, $document_metadata_uri, $doc, $callback ) = @_; # based on mortage.pm
+    my ( $self, $document_metadata_uri, $doc, $callback ) = @_;
 
     $self->ch_api->document($document_metadata_uri)->metadata->get->on(
         failure => sub {
