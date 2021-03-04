@@ -193,8 +193,6 @@ sub view {
 sub _get_content_type {
     my ( $self, $document_metadata_uri, $doc, $callback ) = @_; # based on mortage.pm
 
-    $document_metadata_uri = "http://document-api.rebel1.aws.chdev.org/document/TryHzSUvNuHiCYUAtcBE4xCiuD3hZmgAJt3HGm2c0Q4";
-
     $self->ch_api->document($document_metadata_uri)->metadata->get->on(
         failure => sub {
             my ($api, $tx) = @_;
