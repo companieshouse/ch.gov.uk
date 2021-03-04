@@ -172,7 +172,7 @@
   % }
 
 % if ! $certified_copies {
-  <div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="visuallyhidden">(link opens a new window)</span></a></div>
+  <div class="small-text"><a href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="govuk-visually-hidden">(link opens a new window)</span></a></div>
 % }
     </div>
 
@@ -180,7 +180,7 @@
         <div class="js-toggle-nav" id="global-nav">
               % if $c.is_signed_in {
               <a href="#navigation" class="js-header-toggle"><% $c.user_email %>
-                <span class="visuallyhidden">Click to expand or collapse</span>
+                <span class="govuk-visually-hidden">Click to expand or collapse</span>
               </a>
               % } else {
               <a id="user-signin-mobile" href="<% $c.url_for('user_sign_in') %>" class="sign-in">Sign in / Register</a>
@@ -232,9 +232,9 @@
 
 % if $insights_bar != false {
 <div id="chs-customer-insights">
-   <a href="https://www.research.net/r/S78XJMV" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="hidden">(link opens a new window)</span></a>
+   <a href="https://www.research.net/r/S78XJMV" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="govuk-visually-hidden">(link opens a new window)</span></a>
    % if $c.config.show_feedback_page {
-       <a id="feedback-link" class="secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="hidden">(link opens a new window)</span></a>
+       <a id="feedback-link" class="secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="govuk-visually-hidden">(link opens a new window)</span></a>
    % }
 </div>
 % }
