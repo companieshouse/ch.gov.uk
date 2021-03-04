@@ -232,9 +232,9 @@
 
 % if $insights_bar != false {
 <div id="chs-customer-insights">
-   <a href="https://www.research.net/r/S78XJMV" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="govuk-visually-hidden">(link opens a new window)</span></a>
+   <a class="govuk-link" href="https://www.research.net/r/S78XJMV" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="govuk-visually-hidden">(link opens a new window)</span></a>
    % if $c.config.show_feedback_page {
-       <a id="feedback-link" class="secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="govuk-visually-hidden">(link opens a new window)</span></a>
+       <a id="feedback-link" class="govuk-link secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="govuk-visually-hidden">(link opens a new window)</span></a>
    % }
 </div>
 % }
@@ -242,14 +242,14 @@
     <footer class="group js-footer" id="footer" role="contentinfo">
         <nav>
           <div>
-            <ul>
-	   			<li><a href="http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml" target="_blank">Policies</a></li>
-	            <li><a href="/help/cookies">Cookies</a></li>
-	            <li><a href="/help/contact-us">Contact us</a></li>
+            <ul class="govuk-list">
+              <li><a class="govuk-footer__link" href="http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml" target="_blank">Policies</a></li>
+              <li><a class="govuk-footer__link" href="/help/cookies">Cookies</a></li>
+              <li><a class="govuk-footer__link" href="/help/contact-us">Contact us</a></li>
               % if ! $accessibility_statement_off {
-                <li><a href="/help/accessibility-statement">Accessibility statement</a></li>
+                <li><a class="govuk-footer__link" href="/help/accessibility-statement">Accessibility statement</a></li>
               % }
-             	<li><a href="https://developer.companieshouse.gov.uk/" target="_blank">Developers</a></li>
+              <li><a class="govuk-footer__link" href="https://developer.companieshouse.gov.uk/" target="_blank">Developers</a></li>
 	        </ul>
          </div>
         </nav>

@@ -1,19 +1,19 @@
 % my $search_context = $search_type ? $search_type : $c.session('pst');
 % if $search_context == "officers" {
-    <label class="hidden" for="site-search-text">Search for officers</label>
+    <label class="govuk-visually-hidden" for="site-search-text">Search for officers</label>
     <form id="search" action="/search/officers" method="get" accept-charset="utf-8" role="search"  class="<% $header_or_body=='header'? 'search-header' : 'search-header js-search-hash' %>">
 % } elsif $search_context == 'disqualified-officers' || $search_context == 'disqualified_officers' {
-    <label class="hidden" for="site-search-text">Search for disqualified officers</label>
+    <label class="govuk-visually-hidden" for="site-search-text">Search for disqualified officers</label>
     <form id="search" action="/search/disqualified-officers" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'search-header' : 'search-header js-search-hash' %>">
 % } elsif $search_context == 'companies' {
-    <label class="hidden" for="site-search-text">Search for companies</label>
+    <label class="govuk-visually-hidden" for="site-search-text">Search for companies</label>
     <form id="search" action="/search/companies" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header' ? 'search-header' : 'search-header js-search-hash' %>">
 % } else {
     <form id="search" action="/search" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header' ? 'search-header' : 'search-header js-search-hash' %>">
 % }
     <div class="search-bar-active">
         <div class="searchfield">
-            <label class="hidden" for="site-search-text">Search for a company or officer</label>
+            <label class="govuk-visually-hidden" for="site-search-text">Search for a company or officer</label>
             <input type="search" placeholder="Search for a company or officer" value="" title="Search for a company or officer" id="site-search-text" name="q" autocomplete="off">
             <button class="search-submit" id="search-submit" type="submit">Search</button>
             <p style="display:none" class="slow-search-msg" id="slowsearch">Please press ENTER to search</p>
