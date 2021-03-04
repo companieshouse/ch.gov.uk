@@ -70,6 +70,7 @@
                 </td>
                 % if $image_service_active {
                     <td class="nowrap">
+                        <p><% $item._content_type %></p>
                     % if $item.links.document_metadata {
                     <div>
                         <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %>>View PDF
