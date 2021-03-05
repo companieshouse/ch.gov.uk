@@ -111,7 +111,7 @@ sub view {
                 sub {
                     my ($delay) = @_;
                     for my $doc (@{$fh_results->{items}}) {
-                        if (defined $doc->{links}->{document_metadata}) {
+                        if (defined $doc->{links}->{document_metadata} && $doc->{type} eq 'AA' && $doc->{pages} > 0) {
 
                             my $delay_end = $delay->begin(0);
                             $self->_get_content_type( $doc->{links}->{document_metadata}, $doc, $delay_end);
