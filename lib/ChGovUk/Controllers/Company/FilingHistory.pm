@@ -216,7 +216,7 @@ sub _get_content_type {
             my ($api, $tx) = @_;
 
             my $resources = $tx->res->json->{resources};
-            $doc->{_content_type} = (keys $resources)[0];
+            $doc->{content_type} = (keys $resources)[0];
             return $callback->(0);
         }
 
