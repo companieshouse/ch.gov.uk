@@ -43,6 +43,11 @@
                             <a href="<% $c.url_for('document_download', id => $item._document_id, document_type => 'xhtml') %>">XHTML</a>
                         </li>
                     % }
+                    % if ($metadata.resources['application/zip']) {
+                        <li id="zip">
+                            <a href="<% $c.url_for('document_download', id => $item._document_id, document_type => 'zip') %>">ZIP</a>
+                        </li>
+                    % }
                 </ul>
             %}
 
