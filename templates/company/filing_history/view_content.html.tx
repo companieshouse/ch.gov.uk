@@ -71,7 +71,9 @@
                 % if $image_service_active {
                     <td class="nowrap">
                     % if $item.links.document_metadata {
-                     % if ($item.content_type == 'application/zip') {
+                     % if ($item.content_type == 'unknown') {
+                            <!--Skip any logic for unknown content_types, as we don't know what link they would need.-->
+                     % } else if ($item.content_type == 'application/zip') {
                         <div>
                             <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'zip', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download ZIP</a></div>
                      % } else {

@@ -197,7 +197,7 @@ sub _get_content_type {
         failure => sub {
             my ($api, $tx) = @_;
             my $code = $tx->error->{code} // 0;
-
+            $doc->{content_type} = 'unknown';
             if ($code == 404) {
                 error "Content Type not found for %s: %s", $document_metadata_uri, $code;
                 return $callback->(0);
@@ -209,6 +209,7 @@ sub _get_content_type {
         },
         error => sub {
             my ($api, $err) = @_;
+            $doc->{content_type} = 'unknown';
             error "Error fetching Content Type for %s: %s", $document_metadata_uri, $err;
             return $callback->(0);
         },
