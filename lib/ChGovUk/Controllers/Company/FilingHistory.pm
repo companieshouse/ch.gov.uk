@@ -200,24 +200,24 @@ sub _get_content_type {
 
             if ($code == 404) {
                 error "Content Type not found for %s: %s", $document_metadata_uri, $code;
-                return;
+                return $callback->(0);
             }
             else {
                 error "Error fetching Content Type for %s: %s", $document_metadata_uri, $tx->error->{message};
-                return;
+                return $callback->(0);
             }
         },
         error => sub {
             my ($api, $err) = @_;
             error "Error fetching Content Type for %s: %s", $document_metadata_uri, $err;
-            return;
+            return $callback->(0);
         },
         success => sub {
             my ($api, $tx) = @_;
 
             my $resources = $tx->res->json->{resources};
             $doc->{_content_type} = (keys $resources)[0];
-            $callback->(0);
+            return $callback->(0);
         }
 
     )->execute;
