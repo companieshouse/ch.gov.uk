@@ -97,6 +97,10 @@ sub view {
     }
  
     my $xhtml_available_date = $self->config->{xhtml_available_date} || '2015-06-01';
+    my $formatted_xhtml_available_date = date_convert($xhtml_available_date);
+
+    my $zip_available_date = $self->config->{zip_available_date} || '2021-03-01';
+    my $formatted_zip_available_date = date_convert($zip_available_date);
 
     my $delay = Mojo::IOLoop->delay;
 
@@ -111,14 +115,20 @@ sub view {
                 sub {
                     my ($delay) = @_;
                     for my $doc (@{$fh_results->{items}}) {
-                        if (defined $doc->{links}->{document_metadata} && $doc->{type} eq 'AA' && $doc->{pages} > 0) {
 
-                            my $delay_end = $delay->begin(0);
-                            $self->_get_content_type( $doc->{links}->{document_metadata}, $doc, $delay_end);
-                        }
                         my $transaction_date = $doc->{date};
                         my $formatted_transaction_date = date_convert($transaction_date);
-                        my $formatted_xhtml_available_date = date_convert($xhtml_available_date);
+
+                        # Get content_type for filing that could be a zip. Zip filings will always have 1 page and be type 'AA',
+                        # and will also only be available if they are filed after the zip_available_date (2021-03-01 by default).
+                        if (defined $doc->{links}->{document_metadata} && $doc->{type} eq 'AA' && $doc->{pages} == 1 &&
+                            $formatted_transaction_date > $formatted_zip_available_date) {
+
+                            my $delay_end = $delay->begin(0);
+                            trace "Calling document API to retrieve content_type for possible zip filing [%s]", $doc->{links}->{document_metadata};
+                            $self->_get_content_type( $doc->{links}->{document_metadata}, $doc, $delay_end);
+                        }
+
                         if ( $formatted_transaction_date >= $formatted_xhtml_available_date) {
                             $doc->{_xhtml_is_available} = 1 ;
                         }
@@ -190,6 +200,7 @@ sub view {
 
 #-------------------------------------------------------------------------------
 
+# _get_content_type calls the document API and retrieves a content_type for the provided filing.
 sub _get_content_type {
     my ( $self, $document_metadata_uri, $doc, $callback ) = @_;
 
@@ -199,25 +210,30 @@ sub _get_content_type {
             my $code = $tx->error->{code} // 0;
             $doc->{content_type} = 'unknown';
             if ($code == 404) {
-                error "Content Type not found for %s: %s", $document_metadata_uri, $code;
+                error "Content Type not found for %s: %s. Setting content_type to unknown", $document_metadata_uri, $code;
                 return $callback->(0);
             }
             else {
-                error "Error fetching Content Type for %s: %s", $document_metadata_uri, $tx->error->{message};
+                error "Error fetching Content Type for %s: %s. Setting content_type to unknown", $document_metadata_uri, $tx->error->{message};
                 return $callback->(0);
             }
         },
         error => sub {
             my ($api, $err) = @_;
             $doc->{content_type} = 'unknown';
-            error "Error fetching Content Type for %s: %s", $document_metadata_uri, $err;
+            error "Error fetching Content Type for %s: %s. Setting content_type to unknown", $document_metadata_uri, $err;
             return $callback->(0);
         },
         success => sub {
             my ($api, $tx) = @_;
-
             my $resources = $tx->res->json->{resources};
-            $doc->{content_type} = (keys $resources)[0];
+            if ($resources) {
+                $doc->{content_type} = (keys $resources)[0];
+                trace "Successfully retrieved content_type %s for %s", $doc->{content_type}, $document_metadata_uri;
+            } else {
+                trace "No content_type found for %s. Setting content_type to unknown", $document_metadata_uri;
+                $doc->{content_type} = 'unknown';
+            }
             return $callback->(0);
         }
 
