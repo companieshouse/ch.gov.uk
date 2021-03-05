@@ -1,0 +1,19 @@
+custom_build(
+  ref = '169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/ch.gov.uk:latest',
+  command = 'DOCKER_BUILDKIT=0 docker build --tag $EXPECTED_REF .',
+  live_update = [
+    sync('./api-enumerations', '/app/api-enumerations'),
+    sync('./lib', '/app/lib'),
+    sync('./local', '/app/local'),
+    sync('./script', '/app/script'),
+    sync('./templates', '/app/templates'),
+    sync('./appconfig.yml', '/app/appconfig.yml'),
+    sync('./errors.yml', '/app/errors.yml'),
+    sync('./log4perl.conf', '/app/log4perl.conf'),
+    sync('./log4perl.production.conf', '/app/log4perl.production.conf'),
+    sync('./routes.yaml', '/app/routes.yaml'),
+  ],
+  deps = [
+    './'
+  ]
+)

@@ -54,6 +54,7 @@
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
 
+
   function startPiwik() {
     var u="<% $c.config.piwik.url %>/";
     _paq.push(['setTrackerUrl', u+'piwik.php']);
