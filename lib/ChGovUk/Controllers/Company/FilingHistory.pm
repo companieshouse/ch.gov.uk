@@ -206,6 +206,7 @@ sub view {
 # Please note - this function grabs the first variable returned from the resources array and only uses it
 # in the template if it is application/zip (zip filing). Changes would be required if you wanted to use
 # other resource types returned in the template. If you want to return multiple changes would also be required to cater for this.
+# This future work has been documented in a ticket on JIRA: https://companieshouse.atlassian.net/browse/UK-155.
 sub _get_content_type {
     my ( $self, $document_metadata_uri, $doc, $callback ) = @_;
 
