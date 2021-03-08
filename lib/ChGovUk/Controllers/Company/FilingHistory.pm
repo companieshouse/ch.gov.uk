@@ -162,6 +162,8 @@ sub view {
             $pager->total_entries, $pager->entries_per_page() [FILING_HISTORY];
 
             $delay->on(
+                # Must wait for delay to finish before stashing data,
+                # as all calls to the Document API must be complete.
                 finish => sub {
                     $self->stash(current_page_number     => $pager->current_page);
                     $self->stash(page_set                => $pager->pages_in_set());
