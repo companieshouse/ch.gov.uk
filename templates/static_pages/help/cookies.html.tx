@@ -2,7 +2,7 @@
 % around content -> {
 
    <article class="text" id="content">
-    <div id="cookie-settings-success-message" class="ch-cookie-notification-banner ch-cookie-notification-banner--success" role="alert" aria-labelledby="ch-cookie-notification-banner-title" data-module="ch-cookie-notification-banner" hidden>
+    <div id="cookie-settings-success-message" class="ch-cookie-notification-banner ch-cookie-notification-banner--success" role="alert" aria-labelledby="ch-cookie-notification-banner-title" data-module="ch-cookie-notification-banner" style="margin-top: 10px;" hidden>
       <div class="ch-cookie-notification-banner__header">
         <h2 class="ch-cookie-notification-banner__title" id="ch-cookie-notification-banner-title">
           Success
@@ -164,17 +164,17 @@
         <tr>
           <td>_pk_id.*</td>
           <td>Used to improve our understanding of how people use our website and services, through web analytics.</td>
-          <td>2 years</td>
+          <td>25 months</td>
         </tr>
         <tr>
           <td>_pk_ref.*</td>
           <td>Used to improve our understanding of how people use our website and services, through web analytics.</td>
-          <td>2 years</td>
+          <td>Up to 2 years</td>
         </tr>
         <tr>
           <td>_pk_ses.*</td>
           <td>Used to improve our understanding of how people use our website and services, through web analytics.</td>
-          <td>2 years</td>
+          <td>30 minutes</td>
         </tr>
         <tr>
           <td>_pk_cvar.*</td>
