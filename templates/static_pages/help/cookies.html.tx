@@ -143,37 +143,37 @@
       <tbody>
         <tr>
           <td>PIWIK_SESSID</td>
-          <td>Used to store a unique session ID</td>
+          <td>Used to store a unique session ID.</td>
           <td>24 minutes</td>
         </tr>
         <tr>
           <td>_pk_id.*</td>
-          <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
+          <td>Used to improve our understanding of how people use our website and services, through web analytics.</td>
           <td>2 years</td>
         </tr>
         <tr>
           <td>_pk_ref.*</td>
-          <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
+          <td>Used to improve our understanding of how people use our website and services, through web analytics.</td>
           <td>2 years</td>
         </tr>
         <tr>
           <td>_pk_ses.*</td>
-          <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
+          <td>Used to improve our understanding of how people use our website and services, through web analytics.</td>
           <td>2 years</td>
         </tr>
         <tr>
           <td>_pk_cvar.*</td>
-          <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
+          <td>Used to improve our understanding of how people use our website and services, through web analytics.</td>
           <td>30 minutes</td>
         </tr>
         <tr>
           <td>_ga</td>
-          <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
+          <td>Used to improve our understanding of how people use our website and services, through web analytics.</td>
           <td>2 years</td>
         </tr>
         <tr>
           <td>_gid</td>
-          <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
+          <td>Used to improve our understanding of how people use our website and services, through web analytics.</td>
           <td>24 hours</td>
         </tr>
       </tbody>
