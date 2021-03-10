@@ -167,7 +167,7 @@
                                         </td>
                                         <td>
                                             <div class="notice" id="transaction-<% $~transaction.count %>-submission-status-<% $~filing.count %>">
-                                                <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
+                                                <i class="icon icon-important"><span class="govuk-visually-hidden">Warning</span></i>
                                                 <strong class="bold-small">Rejected</strong>
                                             </div>
                                         </td>

@@ -12,7 +12,7 @@
             <p>Your submission has not been successful, please try again</p>
         </div>
         <fieldset>
-            <legend class="visuallyhidden">Is there anything wrong with this page?</legend>
+            <legend class="govuk-visually-hidden">Is there anything wrong with this page?</legend>
             <p><a href="https://www.gov.uk/stop-companies-house-from-publishing-your-address" target="_blank">Stop Companies House from publishing your address</a></p>
             <div class="form-group">
                 <label for="feedback-textarea" class="form-label"><strong>What is wrong with the page?</strong>

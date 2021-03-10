@@ -356,7 +356,7 @@
     %    if ($company.previous_company_names) {
             <h2 class="heading-medium" id="header">  Previous company names </h2>
             <table id="previousNameTable" class="full-width-table">
-            <caption class="visuallyhidden">Previous company names</caption>
+            <caption class="govuk-visually-hidden">Previous company names</caption>
             <tr>
                 <th><% l('Name') %></th>
                 <th><% l('Period') %></th>

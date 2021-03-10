@@ -16,7 +16,7 @@
                         Filter by category
                     </h2>
                     <fieldset>
-                        <legend class="visuallyhidden">Filter by category</legend>
+                        <legend class="govuk-visually-hidden">Filter by category</legend>
                         % for $available_categories.kv() -> $category { # sorted by key
                             % my $id   = $category.key;
                             % my $name = $category.value;
@@ -76,7 +76,7 @@
                 % if $disable_confirmation_statement_filter {
                     <div class="column-third">
                         <fieldset>
-                            <legend class="visuallyhidden">Confirmation statement filters</legend>
+                            <legend class="govuk-visually-hidden">Confirmation statement filters</legend>
                             % for $categories -> $category {
                                 % if $category.id == "confirmation-statement" {
                                     <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small">
@@ -101,7 +101,7 @@
                 % } else {
                     <div class="column-quarter">
                         <fieldset>
-                            <legend class="visuallyhidden">Confirmation statement filters</legend>
+                            <legend class="govuk-visually-hidden">Confirmation statement filters</legend>
                             % for $categories -> $category {
                                 <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small">
                                     <input id="filter-category-<% $category.id %>" name="category" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />

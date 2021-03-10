@@ -1,6 +1,6 @@
 <div class="section-tabs js-tabs">
     <ul>
-        % include "/includes/company/tab.tx" { tabid => 'company-overview-tab', page => '', title => '<span class="visuallyhidden">Company </span>Overview' }
+        % include "/includes/company/tab.tx" { tabid => 'company-overview-tab', page => '', title => '<span class="govuk-visually-hidden">Company </span>Overview' }
 
         % if $company.links.filing_history {
         %     include "/includes/company/tab.tx" { tabid => 'filing-history-tab',   page => '/filing-history', title => 'Filing history' }

@@ -28,7 +28,7 @@
             <a class="button" href="/company/<% $c.stash('company_number') %>" role="button">Return to company overview</a>
         </div>
         
-        <p><span>This is a new service. Help us improve it by <a href="https://www.research.net/r/chbeta" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">completing our quick survey<span class="visuallyhidden">(link opens a new window)</span></a>.</span></p>
+        <p><span>This is a new service. Help us improve it by <a href="https://www.research.net/r/chbeta" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">completing our quick survey<span class="govuk-visually-hidden">(link opens a new window)</span></a>.</span></p>
 
     </div>
 

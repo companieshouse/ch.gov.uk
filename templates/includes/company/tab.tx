@@ -8,7 +8,7 @@
  <li <% ($active == $tabid ? 'class="active"' : '') | raw %> >
 
      % if ( $active == $tabid ) { "<h1>" | raw }
-         <a id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="visuallyhidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
+         <a id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="govuk-visually-hidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
      % if ( $active == $tabid ) { "</h1>" | raw }
 
  </li>

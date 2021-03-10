@@ -18,8 +18,8 @@
             <p>Your submission has not been successful, please try again</p>
         </div>
         <fieldset>
-            <legend class="visuallyhidden">Is there anything wrong with this page?</legend>
-            <p><a href="https://www.gov.uk/stop-companies-house-from-publishing-your-address" target="_blank">Stop Companies House from publishing your address<span class="visuallyhidden">(link opens a new window)</span></a></p>
+            <legend class="govuk-visually-hidden">Is there anything wrong with this page?</legend>
+            <p><a href="https://www.gov.uk/stop-companies-house-from-publishing-your-address" target="_blank">Stop Companies House from publishing your address<span class="govuk-visually-hidden">(link opens a new window)</span></a></p>
             <div class="form-group">
                 <label for="feedback-textarea" class="form-label"><strong>What is wrong with the page?</strong>
                 <span class="form-hint">For example, information is missing or incorrect.</span></label>

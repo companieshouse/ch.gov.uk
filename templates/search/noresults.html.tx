@@ -22,8 +22,8 @@
                 <div class="column-third" id="disqualification-column">
                     <div class="quick-look font-xsmall" id="disqualification-info">
                         <ul class="list-bullet">
-                            <li><a href="/register-of-disqualifications/A" rel="external" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %> target="_blank">Register of disqualifications<span class="visuallyhidden">(link opens in a new window)</span></a></li>
-                            <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="visuallyhidden">(link opens in a new window)</span></a></li>
+                            <li><a href="/register-of-disqualifications/A" rel="external" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %> target="_blank">Register of disqualifications<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                            <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
                         </ul>
                     </div>
                 </div>

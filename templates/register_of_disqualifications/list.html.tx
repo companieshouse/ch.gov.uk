@@ -11,11 +11,11 @@
                 % for $alphabet -> $letter {
                     % if $active_letter == $letter {
                         <li class="active">
-                            <a href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="visuallyhidden">Only show surnames beginning with</span><%= $letter %></a>
+                            <a href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
                         </li>
                     % } else {
                         <li class="inactive">
-                            <a href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="visuallyhidden">Only show surnames beginning with</span><%= $letter %></a>
+                            <a href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
                         </li>
                     % }
                 % }
@@ -23,16 +23,16 @@
 
             % if $disqualifications.total_results > 0 {
                 <table class="full-width-table">
-                    <caption class="visuallyhidden">Register of disqualifications</caption>
+                    <caption class="govuk-visually-hidden">Register of disqualifications</caption>
                     <tr>
                         <th scope="col">
-                            Name <span class="visuallyhidden">(of disqualified director</span>
+                            Name <span class="govuk-visually-hidden">(of disqualified director</span>
                         </th>
                         <th scope="col">
-                            Date of birth <span class="visuallyhidden">(of disqualified director)</span>
+                            Date of birth <span class="govuk-visually-hidden">(of disqualified director)</span>
                         </th>
                         <th scope="col">
-                            Post Town <span class="visuallyhidden">(where disqualified director lives)</span>
+                            Post Town <span class="govuk-visually-hidden">(where disqualified director lives)</span>
                         </th>
                     </tr>
                     % for $disqualifications.items -> $item {

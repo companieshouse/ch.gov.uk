@@ -30,7 +30,7 @@
 
               <article id="services-information-results" class="text">
 
-                <h2 class="visuallyhidden">All results</h2>
+                <h2 class="govuk-visually-hidden">All results</h2>
                 % if $total_results == 0 {
                     <h2 class="heading-small">
                         No exact company name matches found for "<% $query | uc %>"
@@ -38,7 +38,7 @@
                     <p>
                         <a target="_blank" href="https://www.gov.uk/register-a-company-online">
                             Register a private limited company online
-                            <span class="visuallyhidden">Link opens in a new window</span>
+                            <span class="govuk-visually-hidden">Link opens in a new window</span>
                         </a>
                     </p>
 

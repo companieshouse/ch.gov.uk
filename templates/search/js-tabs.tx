@@ -1,18 +1,18 @@
 <ul class="search-tabs">
     <li id='all-tab'>
-        <label class="visuallyhidden" for="search_all">Search for companies or officers</label>
-        <a id='search_all' href="<% $c.url_for("search") %>?#q={{term}}" >All</a><span name="is_selected" id=search_all_is_selected class="visuallyhidden"></span>
+        <label class="govuk-visually-hidden" for="search_all">Search for companies or officers</label>
+        <a id='search_all' href="<% $c.url_for("search") %>?#q={{term}}" >All</a><span name="is_selected" id=search_all_is_selected class="govuk-visually-hidden"></span>
     </li>
     <li id='companies-tab'>
-        <label class="visuallyhidden" for="search_companies">Search for companies</label>
-        <a id='search_companies' href="<% $c.url_for("search") %>/companies?#q={{term}}" >Companies</a><span name="is_selected" id=search_companies_is_selected class="visuallyhidden"></span>
+        <label class="govuk-visually-hidden" for="search_companies">Search for companies</label>
+        <a id='search_companies' href="<% $c.url_for("search") %>/companies?#q={{term}}" >Companies</a><span name="is_selected" id=search_companies_is_selected class="govuk-visually-hidden"></span>
     </li>
     <li id='officers-tab'>
-        <label class="visuallyhidden" for="search_officers">Search for officers</label>
-        <a id='search_officers' href="<% $c.url_for("search") %>/officers?#q={{term}}" >Officers</a><span name="is_selected" id=search_officers_is_selected class="visuallyhidden"></span>
+        <label class="govuk-visually-hidden" for="search_officers">Search for officers</label>
+        <a id='search_officers' href="<% $c.url_for("search") %>/officers?#q={{term}}" >Officers</a><span name="is_selected" id=search_officers_is_selected class="govuk-visually-hidden"></span>
 		</li>
     <li id="disqualifications-tab">
-        <label class="visuallyhidden" for="search_disqualifications">Search for disqualfied officers</label>
-        <a id="search_disqualifications" href="<% $c.url_for("search") %>/disqualified-officers?#q={{term}}" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'SearchTabs']);"<% } %>>Disqualifications</a><span name="is_selected" id=search_disqualifications_is_selected class="visuallyhidden"></span>
+        <label class="govuk-visually-hidden" for="search_disqualifications">Search for disqualfied officers</label>
+        <a id="search_disqualifications" href="<% $c.url_for("search") %>/disqualified-officers?#q={{term}}" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'SearchTabs']);"<% } %>>Disqualifications</a><span name="is_selected" id=search_disqualifications_is_selected class="govuk-visually-hidden"></span>
     </li>
 </ul>

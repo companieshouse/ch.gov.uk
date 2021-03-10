@@ -21,20 +21,20 @@
         <% tl( $c.fhe_lookup($company_filing_history.filing_history_status) ) %>
     </p>
     <table id="fhTable" class="full-width-table">
-        <caption class="visuallyhidden">Company Results (links open in a new window)</caption>
+        <caption class="govuk-visually-hidden">Company Results (links open in a new window)</caption>
         <tr>
             <th class="nowrap">
-                Date <span class="visuallyhidden">(document was filed at Companies House)</span>
+                Date <span class="govuk-visually-hidden">(document was filed at Companies House)</span>
             </th>
             <th class="filing-type<% sft_toggled() %>">
                 Type
             </th>
             <th>
-                Description <span class="visuallyhidden">(of the document filed at Companies House)</span>
+                Description <span class="govuk-visually-hidden">(of the document filed at Companies House)</span>
             </th>
             % if ( $image_service_active ) {
                 <th class="nowrap">
-                    View / Download <span class="visuallyhidden">(PDF file, link opens in new window)</span>
+                    View / Download <span class="govuk-visually-hidden">(PDF file, link opens in new window)</span>
                 </th>
             % }
         </tr>
@@ -79,7 +79,7 @@
                      % } else {
                     <div>
                         <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %>>View PDF
-                        <span class="visuallyhidden"><% include "company/filing_history/transaction_description.html.tx" { item => $item } %> - link opens in a new window <% if ($item.pages) { %> - <% ln('%d page', '%d pages', $item.pages) } %></span></a>
+                        <span class="govuk-visually-hidden"><% include "company/filing_history/transaction_description.html.tx" { item => $item } %> - link opens in a new window <% if ($item.pages) { %> - <% ln('%d page', '%d pages', $item.pages) } %></span></a>
                         <% if ($item.pages) { %> (<% ln('%d page', '%d pages', $item.pages) %>)<% } %></div>
                         % if !$item.paper_filed && $item.type == 'AA' && $item._xhtml_is_available {
                         <div>

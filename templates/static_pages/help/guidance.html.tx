@@ -11,13 +11,13 @@
         <h1 class="heading-xlarge">File abridged or full accounts</h1>
     </header>
 
-    <p>You can now file abridged or full accounts here too. While we develop this new service, you should continue to use <a href="https://www.gov.uk/government/organisations/companies-house/about/about-our-services#webfiling">WebFiling<span class="visuallyhidden"> Link opens in new tab/window</span></a> for other types of accounts.</p>
+    <p>You can now file abridged or full accounts here too. While we develop this new service, you should continue to use <a href="https://www.gov.uk/government/organisations/companies-house/about/about-our-services#webfiling">WebFiling<span class="govuk-visually-hidden"> Link opens in new tab/window</span></a> for other types of accounts.</p>
 
     <h2 class="heading-medium">How to use the service</h2>
     <p>You'll need to:</p>
 
     <ul class="list list-bullet">
-        <li>enter your company name or number in <a href="/">‘Search the register’<span class="visuallyhidden"> Link opens in new tab/window</span></a></li>
+        <li>enter your company name or number in <a href="/">‘Search the register’<span class="govuk-visually-hidden"> Link opens in new tab/window</span></a></li>
         <li>select ‘File for this company’ on the company overview page</li>
         <li>sign in or register to Companies House</li>
         <li>enter your company authentication code</li>
@@ -31,7 +31,7 @@
     <p>Your company authentication code won’t change.</p>
 
     <h3 class="heading-small">Get help</h3>
-    <p>If you need any help with the service, please <a href="/help/contact-us">contact us<span class="visuallyhidden"> Link opens in new tab/window</span></a>.</p>
+    <p>If you need any help with the service, please <a href="/help/contact-us">contact us<span class="govuk-visually-hidden"> Link opens in new tab/window</span></a>.</p>
 </div><!--end text-->
 
 % }
