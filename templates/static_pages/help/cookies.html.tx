@@ -126,6 +126,21 @@
           <td>This is a load balancer cookie for sticky sessions on Cloudflare's load balancers.</td>
           <td>24 hours</td>
         </tr>
+        <tr>
+          <td>ep201</td>
+          <td>Set by Survey Monkey's load balancer. User tracking for abuse and troubleshooting problems.</td>
+          <td>1 hour</td>
+        </tr>
+        <tr>
+          <td>ep202</td>
+          <td>Used as a unique user identifier by Survey Monkey to AB test new functions.</td>
+          <td>90 days (resets from time of last access)</td>
+        </tr>
+        <tr>
+          <td>ep203</td>
+          <td>Enables the Survey Monkey system to uniquely identify browsers/devices for the purpose of mitigating account sharing. Identifies devices that could be account sharing which is not allowed under our terms of use. </td>
+          <td>90 days</td>
+        </tr>
       </tbody>
     </table>
     <h3 class="heading-medium">Analytics cookies</h3>
@@ -232,7 +247,7 @@
         if (document.getElementById('analytics-cookies-yes').checked) {
           CookieConsent.acceptCookies(startPiwik, 'accept-only');
         } else if (document.getElementById('analytics-cookies-no').checked) {
-          CookieConsent.rejectCookies(stopPiwik, 'reject-only');
+          CookieConsent.rejectCookies(stopAnalytics, 'reject-only');
         }
         if (getParameterByName('return_to')) {
           var returnLink = document.getElementById('cookie-success-link');
