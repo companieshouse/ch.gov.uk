@@ -18,9 +18,19 @@
       </thead>
       <tbody>
         <tr>
-          <td>_SID</td>
+          <td>__prefs</td>
+          <td>Used to remember when you have seen important notices, so you do not see them again.</td>
+          <td>5 years</td>
+        </tr>
+        <tr>
+          <td>__SID</td>
           <td>A session identifier. A unique random value that allows the site to recognise your movement around the site as being from one computer. Contains no personal information and cannot be used to identify a user.</td>
           <td>When you close your browser</td>
+        </tr>
+        <tr>
+          <td>_CAS</td>
+          <td></td>
+          <td></td>
         </tr>
         <tr>
           <td>_FLP</td>
@@ -38,14 +48,39 @@
           <td>When you close your browser</td>
         </tr>
         <tr>
-          <td>sft</td>
-          <td>Used to manage the users preferences during their Companies House service journey.</td>
-          <td>10 years</td>
+          <td>ch_cookie_consent</td>
+          <td>Used to remember your analytics cookie choice.</td>
+          <td>1 year</td>
         </tr>
         <tr>
-          <td>__prefs</td>
-          <td>Used to remember when you have seen important notices, so you do not see them again.</td>
-          <td>5 years</td>
+          <td>ch_session</td>
+          <td>Session identifier for Electonic Web Filing (EWF) services. A unique random value that allows the site to identify the user’s session. Also contains a randomly generated token that changes on every page. Contains no personal information and cannot be used to identify a user.</td>
+          <td>When you close your browser</td>
+        </tr>
+        <tr>
+          <td>chcookie</td>
+          <td>In built Apache tracking cookie, present on Electronic Web Filing (EWF) services.</td>
+          <td>25 months</td>
+        </tr>
+        <tr>
+          <td>search.web.user</td>
+          <td>Used to remember user preferences when performing searches.</td>
+          <td>1 year</td>
+        </tr>
+        <tr>
+          <td>sft</td>
+          <td>Used to manage the users preferences during their Companies House service journey.</td>
+          <td>From 2 years to 10 years</td>
+        </tr>
+        <tr>
+          <td>transaction</td>
+          <td>Used by Electronic Web Filing (EWF) to store the url the user will be redirected to if any session errors occur.</td>
+          <td>1 day</td>
+        </tr>
+        <tr>
+          <td>JSESSIONID</td>
+          <td></td>
+          <td></td>
         </tr>
       </tbody>
     </table>
@@ -59,6 +94,26 @@
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <td>frontend_state_2</td>
+          <td>GOV.UK pay use this to secure your payment session</td>
+          <td>3 hours</td>
+        </tr>
+        <tr>
+          <td>seen_cookie_message</td>
+          <td>GOV.UK pay use this to let them know that you have seen their cookie message</td>
+          <td>1 month</td>
+        </tr>
+        <tr>
+          <td>__cfduid</td>
+          <td>The _cfduid cookie helps Cloudflare detect malicious visitors to our Customers’ websites and minimizes blocking legitimate users. It may be placed on the devices of our customers’ End Users to identify individual clients behind a shared IP address and apply security settings on a per-client basis. It is necessary for supporting Cloudflare’s security features.</td>
+          <td>30 days</td>
+        </tr>
+        <tr>
+          <td>__cflb</td>
+          <td>This is a load balancer cookie for sticky sessions on Cloudflare's load balancers.</td>
+          <td>24 hours</td>
+        </tr>
       </tbody>
     </table>
     <h3 class="heading-medium">Analytics cookies</h3>
@@ -75,19 +130,39 @@
       </thead>
       <tbody>
         <tr>
+          <td>PIWIK_SESSID</td>
+          <td>Used to store a unique session ID</td>
+          <td>24 minutes</td>
+        </tr>
+        <tr>
           <td>_pk_id.*</td>
           <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
-          <td>2 Years</td>
+          <td>2 years</td>
         </tr>
         <tr>
           <td>_pk_ref.*</td>
           <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
-          <td>2 Years</td>
+          <td>2 years</td>
         </tr>
         <tr>
           <td>_pk_ses.*</td>
           <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
-          <td></td>
+          <td>2 years</td>
+        </tr>
+        <tr>
+          <td>_pk_cvar.*</td>
+          <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
+          <td>30 minutes</td>
+        </tr>
+        <tr>
+          <td>_ga</td>
+          <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
+          <td>2 years</td>
+        </tr>
+        <tr>
+          <td>_gid</td>
+          <td>Used to improve our understanding of how people use our website and services, through web analytics</td>
+          <td>24 hours</td>
         </tr>
       </tbody>
     </table>
