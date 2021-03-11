@@ -204,13 +204,13 @@
               <div class="ch-cookie-radios">
                 <div class="ch-cookie-radios__item">
                   <input class="ch-cookie-radios__input" id="analytics-cookies-yes" name="analytics-cookies" type="radio" value="yes">
-                  <label class="ch-cookie-label ch-cookie-radios__label" for="analytics-cookies">
+                  <label for="analytics-cookies-yes" class="ch-cookie-label ch-cookie-radios__label">
                     Yes
                   </label>
                 </div>
                 <div class="ch-cookie-radios__item">
                   <input class="ch-cookie-radios__input" id="analytics-cookies-no" name="analytics-cookies" type="radio" value="no" checked>
-                  <label class="ch-cookie-label ch-cookie-radios__label" for="analytics-cookies-2">
+                  <label class="ch-cookie-label ch-cookie-radios__label" for="analytics-cookies-no">
                     No
                   </label>
                 </div>
