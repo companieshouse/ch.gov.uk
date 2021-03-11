@@ -204,7 +204,7 @@
               <div class="ch-cookie-radios">
                 <div class="ch-cookie-radios__item">
                   <input class="ch-cookie-radios__input" id="analytics-cookies-yes" name="analytics-cookies" type="radio" value="yes">
-                  <label for="analytics-cookies-yes" class="ch-cookie-label ch-cookie-radios__label">
+                  <label class="ch-cookie-label ch-cookie-radios__label" for="analytics-cookies-yes">
                     Yes
                   </label>
                 </div>
