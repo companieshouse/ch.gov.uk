@@ -71,12 +71,6 @@
                 % if $image_service_active {
                     <td class="nowrap">
                     % if $item.links.document_metadata {
-                     % if ($item.content_type == 'unknown') {
-                            <!--Skip any logic for unknown content_types, as we don't know what link they would need.-->
-                     % } else if ($item.content_type == 'application/zip') {
-                        <div>
-                            <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'zip', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download ZIP</a></div>
-                     % } else {
                     <div>
                         <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %>>View PDF
                         <span class="visuallyhidden"><% include "company/filing_history/transaction_description.html.tx" { item => $item } %> - link opens in a new window <% if ($item.pages) { %> - <% ln('%d page', '%d pages', $item.pages) } %></span></a>
@@ -85,7 +79,6 @@
                         <div>
                             <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'xhtml', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download iXBRL</a></div>
                         % }
-                    % }
                     % } else if ($item._missing_message != 'available_in_5_days' && !$item._missing_doc) {
                          % if $c.config.feature.missing_image_delivery {
                             <a href="orderable/missing-image-deliveries/<% $item.transaction_id %>" class="normal piwik-event" data-event-id="Request Document">Request Document</a>
