@@ -97,12 +97,6 @@ sub view {
     }
  
     my $xhtml_available_date = $self->config->{xhtml_available_date} || '2015-06-01';
-    my $formatted_xhtml_available_date = date_convert($xhtml_available_date);
-
-    my $zip_available_date = $self->config->{zip_available_date} || '2021-03-01';
-    my $formatted_zip_available_date = date_convert($zip_available_date);
-
-    my $delay = Mojo::IOLoop->delay;
 
     # Get the filing history for the company from the API
     $self->ch_api->company($self->stash('company_number'))->filing_history($query)->force_api_key(1)->get->on(
@@ -110,143 +104,69 @@ sub view {
             my ( $api, $tx ) = @_;
             my $fh_results = $tx->success->json;
             trace "filing history for %s: %s", $self->stash('company_number'), d:$fh_results [FILING_HISTORY];
-
-            $delay->steps(
-                sub {
-                    my ($delay) = @_;
-                    for my $doc (@{$fh_results->{items}}) {
-
-                        my $transaction_date = $doc->{date};
-                        my $formatted_transaction_date = date_convert($transaction_date);
-
-                        # Get content_type for filing that could be a zip. Zip filings will always have 1 page and be type 'AA',
-                        # and will also only be available if they are filed after the zip_available_date (2021-03-01 by default).
-                        if (defined $doc->{links}->{document_metadata} && $doc->{type} eq 'AA' && $doc->{pages} == 1 &&
-                            $formatted_transaction_date > $formatted_zip_available_date) {
-
-                            my $delay_end = $delay->begin(0);
-                            trace "Calling document API to retrieve content_type for possible zip filing [%s]", $doc->{links}->{document_metadata};
-                            $self->_get_content_type( $doc->{links}->{document_metadata}, $doc, $delay_end);
-                        }
-
-                        if ( $formatted_transaction_date >= $formatted_xhtml_available_date) {
-                            $doc->{_xhtml_is_available} = 1;
-                        }
-
-                        # Generate a missing message for documents before a defined unavailable date
-                        if ($unavailable_date > $formatted_transaction_date) {
-                            $doc->{_missing_message} = 'unavailable';
-                        } else {
-                            $transaction_date =~ s/-//g;
-                            # Generate a missing message for recently filed unavailable documents
-                            if (CH::Util::DateHelper->days_between(CH::Util::DateHelper->from_internal($transaction_date)) <= $recently_filed) {
-                                $doc->{_missing_message} = 'available_in_5_days';
-                            }
-                        }
-                        $transaction_date =~ s/-//g;
-                        $request_document_unavailable_date =~ s/-//g;
-                        if ( $transaction_date >= $request_document_unavailable_date) {
-                            $doc->{_missing_doc} = 1;
-                        }
-
-                        # Format date fields in the form of '01 Jan 2004'
-                        $self->format_filing_history_dates($doc);
+            for my $doc (@{$fh_results->{items}}) {
+                my $transaction_date = $doc->{date};
+                my $formatted_transaction_date = date_convert($transaction_date);
+                my $formatted_xhtml_available_date = date_convert($xhtml_available_date);
+                if ( $formatted_transaction_date >= $formatted_xhtml_available_date) {
+                  $doc->{_xhtml_is_available} = 1 ;
+                }
+   
+		# Generate a missing message for documents before a defined unavailable date
+                if ($unavailable_date > $formatted_transaction_date) {
+                  $doc->{_missing_message} = 'unavailable';
+                } else {
+                  $transaction_date =~ s/-//g;
+                    # Generate a missing message for recently filed unavailable documents
+                    if (CH::Util::DateHelper->days_between(CH::Util::DateHelper->from_internal($transaction_date)) <= $recently_filed) {
+                      $doc->{_missing_message} = 'available_in_5_days';
                     }
                 }
-            );
-            $delay->wait;
+                $transaction_date =~ s/-//g;
+                $request_document_unavailable_date =~ s/-//g;
+                if ( $transaction_date >= $request_document_unavailable_date) {
+                    $doc->{_missing_doc} = 1;
+                }
+
+                # Format date fields in the form of '01 Jan 2004'
+                $self->format_filing_history_dates($doc);
+            }
 
             # Work out the paging numbers
             $pager->total_entries( $fh_results->{total_count} // 0 );
             trace "filing history total_count %d entries per page %d",
             $pager->total_entries, $pager->entries_per_page() [FILING_HISTORY];
 
-            $delay->on(
-                # Must wait for delay to finish before stashing data,
-                # as all calls to the Document API must be complete.
-                finish => sub {
-                    $self->stash(current_page_number     => $pager->current_page);
-                    $self->stash(page_set                => $pager->pages_in_set());
-                    $self->stash(next_page               => $pager->next_page());
-                    $self->stash(previous_page           => $pager->previous_page());
-                    $self->stash(entries_per_page        => $pager->entries_per_page());
-                    $self->stash(recently_filed          => $recently_filed);
+            $self->stash(current_page_number     => $pager->current_page);
+            $self->stash(page_set                => $pager->pages_in_set());
+            $self->stash(next_page               => $pager->next_page());
+            $self->stash(previous_page           => $pager->previous_page());
+            $self->stash(entries_per_page        => $pager->entries_per_page());
+            $self->stash(recently_filed          => $recently_filed);
 
-                    $self->stash(show_filing_type        => $show_filing_type);
+            $self->stash(show_filing_type        => $show_filing_type);
+            $self->stash(company_filing_history  => $fh_results);
+            $self->stash(categories              => $categories);
+            $self->stash(selected_category_count => $selected_category_count);
+            $self->stash(split_category_at       => ceil(@$categories / 2));
 
-
-                    $self->stash(company_filing_history  => $fh_results);
-                    $self->stash(categories              => $categories);
-                    $self->stash(selected_category_count => $selected_category_count);
-                    $self->stash(split_category_at       => ceil(@$categories / 2));
-
-                    if ($self->req->is_xhr) {
-                        $self->render(template => 'company/filing_history/view_content');
-                    }
-                    else {
-                        $self->render;
-                    }
-                }
-            );
+            if ($self->req->is_xhr) {
+                $self->render(template => 'company/filing_history/view_content');
+            }
+            else {
+                $self->render;
+            }
         },
         failure => sub {
             my ( $api, $error ) = @_;
             error "Error retrieving company filing history for %s: %s",
-            $self->stash('company_number'), $error;
+              $self->stash('company_number'), $error;
             $self->render_exception("Error retrieving company: $error");
         }
-    )->execute;
+      )->execute;
 
     $self->render_later;
 }
-
-#-------------------------------------------------------------------------------
-
-# _get_content_type calls the document API and retrieves a content_type for the provided filing.
-# Please note - this function grabs the first variable returned from the resources array and only uses it
-# in the template if it is application/zip (zip filing). Changes would be required if you wanted to use
-# other resource types returned in the template. If you want to return multiple changes would also be required to cater for this.
-# This future work has been documented in a ticket on JIRA: https://companieshouse.atlassian.net/browse/UK-155.
-sub _get_content_type {
-    my ( $self, $document_metadata_uri, $doc, $callback ) = @_;
-
-    $self->ch_api->document($document_metadata_uri)->metadata->get->on(
-        failure => sub {
-            my ($api, $tx) = @_;
-            my $code = $tx->error->{code} // 0;
-            $doc->{content_type} = 'unknown';
-            if ($code == 404) {
-                error "Content Type not found for %s: %s. Setting content_type to unknown", $document_metadata_uri, $code;
-                return $callback->(0);
-            }
-            else {
-                error "Error fetching Content Type for %s: %s. Setting content_type to unknown", $document_metadata_uri, $tx->error->{message};
-                return $callback->(0);
-            }
-        },
-        error => sub {
-            my ($api, $err) = @_;
-            $doc->{content_type} = 'unknown';
-            error "Error fetching Content Type for %s: %s. Setting content_type to unknown", $document_metadata_uri, $err;
-            return $callback->(0);
-        },
-        success => sub {
-            my ($api, $tx) = @_;
-            my $resources = $tx->res->json->{resources};
-            if ($resources) {
-                $doc->{content_type} = (keys $resources)[0];
-                trace "Successfully retrieved content_type %s for %s", $doc->{content_type}, $document_metadata_uri;
-            } else {
-                trace "No content_type found for %s. Setting content_type to unknown", $document_metadata_uri;
-                $doc->{content_type} = 'unknown';
-            }
-            return $callback->(0);
-        }
-
-    )->execute;
-}
-
-#-------------------------------------------------------------------------------
 
 sub date_convert {
   my ($original_date) = @_;
