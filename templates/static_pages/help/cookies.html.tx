@@ -66,7 +66,7 @@
         </tr>
         <tr>
           <td>ch_session</td>
-          <td>Session identifier for Electonic Web Filing (EWF) services. A unique random value that allows the site to identify the user’s session. Also contains a randomly generated token that changes on every page. Contains no personal information and cannot be used to identify a user.</td>
+          <td>Session identifier for Electronic Web Filing (EWF) services. A unique random value that allows the site to identify the user’s session. Also contains a randomly generated token that changes on every page. Contains no personal information and cannot be used to identify a user.</td>
           <td>When you close your browser</td>
         </tr>
         <tr>
