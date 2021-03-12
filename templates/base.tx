@@ -108,6 +108,13 @@
 
 <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml">
 
+<!--[if !IE 8]><!-->
+<link href="//<% $cdn_url %>/stylesheets/cookie-consent/cookie-banner-3.11.0.min.css" rel="stylesheet" />
+<!--<![endif]-->
+<!--[if IE 8]>
+<link href="//<% $cdn_url %>/stylesheets/cookie-consent/cookie-banner-ie8-3.11.0.min.css" rel="stylesheet" />
+<![endif]-->
+
 </head>
 
 <body>
@@ -116,6 +123,7 @@
   </script>
 
   <div class="entire-wrapper">
+   <% include 'includes/cookie-consent-banner.tx' %>
    <div id="skiplink-container">
       <div>
       <!--$alternative_skiplink provides a different ID as #content contains styling which can throw off certain screens-->

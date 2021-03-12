@@ -1,99 +1,115 @@
 % if $c.config.piwik.embed {
-<!-- Piwik -->
-<script type="text/javascript">
-  var _paq = _paq || [];
-
-  var path = document.location.pathname;
-
-  if ( path.match(/company\/[A-Z0-9]{8}/) || path.match(/transactions\/\d{6}-\d{6}-\d{6}/) || path.match(/charges\/.+$/) || path.match(/officers\/.+\/appointments$/) ){
-    path = path.replace(/company\/[A-Z0-9]{8}/,"company/_number");
-    path = path.replace(/transactions\/\d{6}-\d{6}-\d{6}/,"transactions/_id");
-    path = path.replace(/charges\/.+$/,"charges/_id");
-    path = path.replace(/officers\/.+\/appointments$/,"officers/_id/appointments")
-
-    if ( !document.location.origin ) {
-      document.location.origin = document.location.protocol + '//' + document.location.hostname + ( document.location.port ? ':' + document.location.port : '' );
-    }
-
-    var newUrl = document.location.origin + path;
-
-    _paq.push(['setCustomUrl', newUrl]);
-  }
-
-  var docTitle = document.title;
-
-  if (docTitle.match(/Overview \(free company information from Companies House\)$/)){
-     _paq.push(['setDocumentTitle','Overview']);
-  }
-  else if (docTitle.match(/Filing history \(free information from Companies House\)$/)){
-     _paq.push(['setDocumentTitle','Filing history']);
-  }
-  else if (docTitle.match(/Officers \(free information from Companies House\)$/)){
-     _paq.push(['setDocumentTitle','Officers']);
-  }
-  else if (docTitle.match(/Personal Appointments \(free information from Companies House\)$/)){
-     _paq.push(['setDocumentTitle','Personal Appointments']);
-  }
-  else if (docTitle.match(/Charges \(free information from Companies House\)$/)){
-     _paq.push(['setDocumentTitle','Charges']);
-  }
-  else if (docTitle.match(/Insolvency \(free information from Companies House\)$/)){
-     _paq.push(['setDocumentTitle','Insolvency']);
-  }
-  else if (docTitle.match(/Mortgages \(free information from Companies House\)$/)){
-     _paq.push(['setDocumentTitle','Charges ']);
-  }
-  else if (docTitle.match(/More \(free company information from Companies House\)$/)) {
-     _paq.push(['setDocumentTitle','More']);
-  }
-
-  _paq.push(['setCustomVariable', 1,'VisitorStatus',<% if $c.is_signed_in { %>'SignedIn'<% } else { %>'NotSignedIn'<% } %>,'visit']);
-  _paq.push(['setCustomVariable', 2,'CompanyStatus',<% if $company.company_number == $c.authorised_company {%>'Authorised'<% } else { %>'NotAuthorised'<% } %>,'visit']);
-  _paq.push(['setDownloadClasses', "download"]);
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-   var cookieArray = document.cookie.split(';');
-
-   for (var i = 0; i < cookieArray.length; i++) {
-      if (cookieArray[i].indexOf('ch_cookie_consent') !== -1) {
-         var cookieTuple = cookieArray[i].split('=');
-         var cookieJson = JSON.parse(cookieTuple[1]);
-         if (cookieJson.userHasAllowedCookies === 'no') {
-            return;
-         }
+  <!-- Piwik -->
+  <script src="//<% $cdn_url %>/javascripts/app/cookie-consent/cookie-consent-1.0.0.js"></script>
+  <script type="text/javascript">
+    var _paq = _paq || [];
+  
+    var path = document.location.pathname;
+  
+    if ( path.match(/company\/[A-Z0-9]{8}/) || path.match(/transactions\/\d{6}-\d{6}-\d{6}/) || path.match(/charges\/.+$/) || path.match(/officers\/.+\/appointments$/) ){
+      path = path.replace(/company\/[A-Z0-9]{8}/,"company/_number");
+      path = path.replace(/transactions\/\d{6}-\d{6}-\d{6}/,"transactions/_id");
+      path = path.replace(/charges\/.+$/,"charges/_id");
+      path = path.replace(/officers\/.+\/appointments$/,"officers/_id/appointments")
+  
+      if ( !document.location.origin ) {
+        document.location.origin = document.location.protocol + '//' + document.location.hostname + ( document.location.port ? ':' + document.location.port : '' );
       }
-   }
-    var u="<% $c.config.piwik.url %>/";
-    _paq.push(['setTrackerUrl', u+'piwik.php']);
-    _paq.push(['setSiteId', <% $c.config.piwik.site_id %>]);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
-    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-  })();
-</script>
-
-<noscript><p><img src="<% $c.config.piwik.url %>/piwik.php?idsite=<% $c.config.piwik.site_id %>" style="border:0;" alt="" /></p></noscript>
-
-<script>
-  var _paq = _paq || [];
-
-  // Bind piwik event listener to element(s) with an 'id' attribute
-  // matching each object provided in the 'identifiers' array.
-  function bindPiwikListener() {
-    $('.piwik-event').each(function() {
-      $(this).click(function(){
-        if($(document).find("title").data("id").toLowerCase() === "root") {
-          _paq.push(['trackEvent', $(this).data('id').toLowerCase(), $(this).data('event-id').toLowerCase()]);
-        } else {
-          _paq.push(['trackEvent', $(document).find("title").data("id").toLowerCase(), $(this).data('event-id').toLowerCase()]);
-        }
-      });
+  
+      var newUrl = document.location.origin + path;
+  
+      _paq.push(['setCustomUrl', newUrl]);
+    }
+  
+    var docTitle = document.title;
+  
+    if (docTitle.match(/Overview \(free company information from Companies House\)$/)){
+       _paq.push(['setDocumentTitle','Overview']);
+    }
+    else if (docTitle.match(/Filing history \(free information from Companies House\)$/)){
+       _paq.push(['setDocumentTitle','Filing history']);
+    }
+    else if (docTitle.match(/Officers \(free information from Companies House\)$/)){
+       _paq.push(['setDocumentTitle','Officers']);
+    }
+    else if (docTitle.match(/Personal Appointments \(free information from Companies House\)$/)){
+       _paq.push(['setDocumentTitle','Personal Appointments']);
+    }
+    else if (docTitle.match(/Charges \(free information from Companies House\)$/)){
+       _paq.push(['setDocumentTitle','Charges']);
+    }
+    else if (docTitle.match(/Insolvency \(free information from Companies House\)$/)){
+       _paq.push(['setDocumentTitle','Insolvency']);
+    }
+    else if (docTitle.match(/Mortgages \(free information from Companies House\)$/)){
+       _paq.push(['setDocumentTitle','Charges ']);
+    }
+    else if (docTitle.match(/More \(free company information from Companies House\)$/)) {
+       _paq.push(['setDocumentTitle','More']);
+    }
+  
+    _paq.push(['setCustomVariable', 1,'VisitorStatus',<% if $c.is_signed_in { %>'SignedIn'<% } else { %>'NotSignedIn'<% } %>,'visit']);
+    _paq.push(['setCustomVariable', 2,'CompanyStatus',<% if $company.company_number == $c.authorised_company {%>'Authorised'<% } else { %>'NotAuthorised'<% } %>,'visit']);
+    _paq.push(['setDownloadClasses', "download"]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+  
+    function startPiwik() {
+      var u="<% $c.config.piwik.url %>/";
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
+      _paq.push(['setSiteId', <% $c.config.piwik.site_id %>]);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+      g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    };
+  
+    function stopAnalytics() {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+       var tempCookie = cookies[i].split('=')[0];
+       var cookieName = tempCookie.replace(/^\s+|\s+$/g, '');
+       var domainArray = document.domain.split('.');
+       if (cookieName.match(/_pk_.+/) || cookieName.match(/_ga/) || cookieName.match(/_gid/)) {
+          document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          for (var j = 0; j < domainArray.length; j++) {
+             var tempDomain = '.' + domainArray.slice(j, domainArray.length).join('.');
+             document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + tempDomain + ';';
+         }
+       }
+      }
+    };
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('accept-cookies-button').addEventListener('click', function() {CookieConsent.acceptCookies(startPiwik)})
+      document.getElementById('reject-cookies-button').addEventListener('click', function() {CookieConsent.rejectCookies(stopAnalytics)})
+      document.getElementById('hide-accepted-message-button').addEventListener('click', CookieConsent.hideCookieBanners)
+      document.getElementById('hide-rejected-message-button').addEventListener('click', CookieConsent.hideCookieBanners)
     });
-  }
-
-  $(document).ready(function () {
-    bindPiwikListener();
-  });
-</script>
-<!-- End Piwik Code -->
-% }
+    
+    CookieConsent.start(startPiwik, stopAnalytics)
+  </script>
+  
+  <noscript><p><img src="<% $c.config.piwik.url %>/piwik.php?idsite=<% $c.config.piwik.site_id %>" style="border:0;" alt="" /></p></noscript>
+  
+  <script>
+    var _paq = _paq || [];
+  
+    // Bind piwik event listener to element(s) with an 'id' attribute
+    // matching each object provided in the 'identifiers' array.
+    function bindPiwikListener() {
+      $('.piwik-event').each(function() {
+        $(this).click(function(){
+          if($(document).find("title").data("id").toLowerCase() === "root") {
+            _paq.push(['trackEvent', $(this).data('id').toLowerCase(), $(this).data('event-id').toLowerCase()]);
+          } else {
+            _paq.push(['trackEvent', $(document).find("title").data("id").toLowerCase(), $(this).data('event-id').toLowerCase()]);
+          }
+        });
+      });
+    }
+  
+    $(document).ready(function () {
+      bindPiwikListener();
+    });
+  </script>
+  <!-- End Piwik Code -->
+  % }
