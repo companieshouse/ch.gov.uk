@@ -234,7 +234,7 @@ sub _get_content_type_application_zip {
             if ($resources) {
                 foreach my $content_type (keys $resources) {
                     if ($content_type eq 'application/zip') {
-                        debug "ZIP filing found. Setting content_type on doc to application/zip [%s]", $document_metadata_uri;
+                        trace "ZIP filing found. Setting content_type on doc to application/zip [%s]", $document_metadata_uri;
                         $doc->{content_type} = $content_type;
                         last;
                     }
