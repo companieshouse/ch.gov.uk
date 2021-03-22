@@ -203,10 +203,8 @@ sub view {
 #-------------------------------------------------------------------------------
 
 # _get_content_type calls the document API and retrieves a content_type for the provided filing.
-# Please note - this function grabs the first variable returned from the resources array and only uses it
-# in the template if it is application/zip (zip filing). Changes would be required if you wanted to use
-# other resource types returned in the template. If you want to return multiple changes would also be required to cater for this.
-# This future work has been documented in a ticket on JIRA: https://companieshouse.atlassian.net/browse/UK-155.
+# Currently the only content_type captured from this method if successful, is 'application/zip'. If you wish to
+# capture more types, you will need to add to the foreach loop in the success sub to match your content_type.
 sub _get_content_type {
     my ( $self, $document_metadata_uri, $doc, $callback ) = @_;
 
@@ -234,8 +232,12 @@ sub _get_content_type {
             my ($api, $tx) = @_;
             my $resources = $tx->res->json->{resources};
             if ($resources) {
-                $doc->{content_type} = (keys $resources)[0];
-                trace "Successfully retrieved content_type %s for %s", $doc->{content_type}, $document_metadata_uri;
+                foreach my $key (keys $resources) {
+                    if ($key eq 'application/zip') {
+                        debug "ZIP filing found. Setting content_type on doc to application/zip [%s]", $document_metadata_uri;
+                        $doc->{content_type} = $key;
+                    }
+                }
             } else {
                 trace "No content_type found for %s. Setting content_type to unknown", $document_metadata_uri;
                 $doc->{content_type} = 'unknown';
