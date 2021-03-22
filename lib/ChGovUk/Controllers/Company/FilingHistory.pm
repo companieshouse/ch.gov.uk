@@ -126,7 +126,7 @@ sub view {
 
                             my $delay_end = $delay->begin(0);
                             trace "Calling document API to retrieve content_type for possible zip filing [%s]", $doc->{links}->{document_metadata};
-                            $self->_get_content_type( $doc->{links}->{document_metadata}, $doc, $delay_end);
+                            $self->_get_content_type_application_zip( $doc->{links}->{document_metadata}, $doc, $delay_end);
                         }
 
                         if ( $formatted_transaction_date >= $formatted_xhtml_available_date) {
@@ -202,10 +202,10 @@ sub view {
 
 #-------------------------------------------------------------------------------
 
-# _get_content_type calls the document API and retrieves a content_type for the provided filing.
-# Currently the only content_type captured from this method if successful, is 'application/zip'. If you wish to
-# capture more types, you will need to add to the foreach loop in the success sub to match your content_type.
-sub _get_content_type {
+# _get_content_type_application_zip calls the document API and retrieves a resources array of content_types for the provided filing.
+# If a resources array is found, we will search the resources array for an 'application/zip' content_type and if found,
+# set it on the '$doc' element for use in the frontend template.
+sub _get_content_type_application_zip {
     my ( $self, $document_metadata_uri, $doc, $callback ) = @_;
 
     $self->ch_api->document($document_metadata_uri)->metadata->get->on(
@@ -236,6 +236,7 @@ sub _get_content_type {
                     if ($content_type eq 'application/zip') {
                         debug "ZIP filing found. Setting content_type on doc to application/zip [%s]", $document_metadata_uri;
                         $doc->{content_type} = $content_type;
+                        last;
                     }
                 }
             } else {
