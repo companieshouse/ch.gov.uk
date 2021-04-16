@@ -58,6 +58,7 @@
       <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
         Order a certificate
       </h2>
+      <p class="govuk-body">Use this service to order a signed certificate of incorporation, which can include key details about the company and a statement of good standing. </p>
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
           <span class="govuk-details__summary-text">
@@ -105,6 +106,7 @@
       <h2 id="order-a-certified-document-header" class="heading-large heading-with-border">
         Order a certified document
       </h2>
+      <p class='govuk-body'>Use this service to order a certified copy of a document from a company's filing history. </p>
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
           <span class="govuk-details__summary-text">
