@@ -130,8 +130,6 @@ file_accounts_available_date: <FILE_ACCOUNTS_AVAILABLE_DATE>
 max_memory_usage: <MAX_MEMORY_USAGE>
 shared_memory_percentage: <SHARED_MEMORY_PERCENTAGE>
 
-use_fine_grain_scopes_model: <USE_FINE_GRAIN_SCOPES_MODEL>
-
 webfiling_login_url: <WEBFILING_LOGIN_URL>
 
 show_covid19_message: <SHOW_COVID19_MESSAGE>
