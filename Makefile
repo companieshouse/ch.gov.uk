@@ -1,7 +1,7 @@
 SERVICE_NAME         ?= ch.gov.uk
 
 PERL_DEPS_SERVER_URL ?= s3://release.ch.gov.uk/$(SERVICE_NAME)-deps
-PERL_DEPS_VERSION    ?= 1.0.7
+PERL_DEPS_VERSION    ?= 1.1.1
 PERL_DEPS_PACKAGE    ?= $(SERVICE_NAME)-deps-$(PERL_DEPS_VERSION).zip
 PERL_DEPS_URL        ?= $(PERL_DEPS_SERVER_URL)/$(PERL_DEPS_PACKAGE)
 
@@ -64,4 +64,3 @@ endif
 dist: build package
 
 .PHONY: all build clean dist package test test-unit test-integration deps
-
