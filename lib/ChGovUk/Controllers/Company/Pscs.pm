@@ -244,8 +244,7 @@ sub get_exemptions_resource {
                 if ( ( $key ne "psc_exempt_as_trading_on_regulated_market" &&
                        $key ne "psc_exempt_as_shares_admitted_on_market" &&
                        $key ne "psc_exempt_as_trading_on_uk_regulated_market" &&
-                       $key ne "psc_exempt_as_trading_on_eu_regulated_market" &&
-                       $key ne "disclosure_transparency_rules_chapter_five_applies"
+                       $key ne "psc_exempt_as_trading_on_eu_regulated_market" 
                     ) || $exemptions->{$key}->{items}->[0]->{exempt_to} ) {
                     delete $exemptions->{$key};
                 }
