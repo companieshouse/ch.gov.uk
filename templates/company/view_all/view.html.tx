@@ -56,7 +56,7 @@
   % if $c.config.feature.order_certificate {
     % if $show_certificate {
       <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
-        Order a certificate
+        Order a certified certificate
       </h2>
       <p class="govuk-body">Use this service to order a signed certificate of incorporation, which can include key details about the company and a statement of good standing. </p>
       <details class="govuk-details" role="group">
@@ -81,7 +81,7 @@
   % if $c.config.feature.order_dissolved_certificate {
     % if $show_dissolved_certificate {
       <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
-        Order a certificate
+        Order a certified certificate
       </h2>
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
