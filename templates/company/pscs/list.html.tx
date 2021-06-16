@@ -328,4 +328,37 @@
         % }
     </div>
 
+    % if $pscs.total_results > $entries_per_page {
+        <ul class="pager">
+            % if ($previous_page) {
+                <li>
+                    <a id="previousButton" class="page" href="<% $c.url_with.query([ page => $previous_page ]) %>" data-page="<% $previous_page %>">
+                        Previous
+                    </a>
+                </li>
+            % }
+
+            % for $page_set -> $page {
+                <li>
+                    <a id="pageNo<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>" data-page="<% $page %>">
+                        % if $current_page_number == $page {
+                            <strong>
+                                <% $page %>
+                            </strong>
+                        % } else {
+                            <% $page %>
+                        % }
+                    </a>
+                </li>
+            % }
+
+            % if ($next_page) {
+                <li>
+                    <a id="nextButton" class="page" href="<% $c.url_with.query([ page => $next_page ]) %>" data-page="<% $next_page %>">
+                        Next
+                    </a>
+                </li>
+            % }
+        </ul>
+    % }
 % }
