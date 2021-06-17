@@ -152,7 +152,18 @@ sub list {
                          
                      my $total_results_combined = $psc_statements->{total_results} + $pscs->{total_results};
 
-                     $pager->total_entries( $total_results_combined // 0 );
+                     my $psc_results = $pscs->{total_results};
+                     my $psc_statement_results = $psc_statements->{total_results};
+
+                     my $total_entries = 0;
+
+                     if ($psc_results > $psc_statement_results) {
+                         $total_entries = $psc_results;
+                     } else {
+                         $total_entries= $psc_statement_results;
+                     }
+
+                     $pager->total_entries( $total_entries // 0 );
 
                      $self->stash(current_page_number     => $pager->current_page);
                      $self->stash(page_set                => $pager->pages_in_set());
