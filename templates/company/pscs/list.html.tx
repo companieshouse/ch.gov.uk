@@ -340,15 +340,15 @@
 
             % for $page_set -> $page {
                 <li>
-                    <a id="pageNo<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>" data-page="<% $page %>">
-                        % if $current_page_number == $page {
-                            <strong>
-                                <% $page %>
-                            </strong>
-                        % } else {
+                    % if $current_page_number == $page {
+                        <strong>
                             <% $page %>
-                        % }
-                    </a>
+                        </strong>
+                    % } else {
+                        <a id="pageNo<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>" data-page="<% $page %>">
+                            <% $page %>
+                        </a>
+                    % }
                 </li>
             % }
 
