@@ -328,7 +328,7 @@
         % }
     </div>
 
-    % if $pscs.total_results > $entries_per_page {
+    % if $pscs.statement_count > $entries_per_page || $pscs.psc_count > $entries_per_page {
         <ul class="pager">
             % if ($previous_page) {
                 <li>
