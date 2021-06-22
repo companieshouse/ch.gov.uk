@@ -24,6 +24,7 @@
          </div>
     % }
 
+        % if $current_page_number == 1 {
         % if $pscs.total_results == 0 && $exemptions { 
         % } else if $pscs.total_results == 0 {
             <p class="text" id="no-pscs">
@@ -69,6 +70,7 @@
             % }
         % }
     </p>
+    % }
 
 
     <div class="appointments-list">
