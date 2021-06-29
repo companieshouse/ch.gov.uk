@@ -8,7 +8,7 @@
 %    "members-voluntary-liquidation"              => [ "wound-up-on", "due-to-be-dissolved-on", "dissolved-on", "declaration-solvent-on" ],
 %    "in-administration"                          => [ "administration-started-on", "administration-ended-on", "dissolved-on" ],
 %    "corporate-voluntary-arrangement"            => [ "voluntary-arrangement-started-on", "voluntary-arrangement-ended-on" ],
-%    "corporate-voluntary-arrangement-moratorium" => [ "moratorium-started-on" ],
+%    "corporate-voluntary-arrangement-moratorium" => [ "moratorium-started-on", "moratorium-ended-on" ],
 %    "administration-order"                       => [ "administration-started-on", "administration-discharged-on" ],
 %    "receiver-manager"                           => [ "instrumented-on" ],
 %    "administrative-receiver"                    => [ "instrumented-on" ],
