@@ -43,12 +43,15 @@ identity_providers:
         home_url      : '<CHS_URL>'
 
 external_url_for:
-  manage_user_details : '<ACCOUNT_URL>/user/account'
-  make_authcode_change: '<ACCOUNT_URL>/company/:company_number/authcode/change'
-  follow_company      : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-follow'
-  unfollow_company    : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-unfollow'
-  file_accounts       : '<EXTERNAL_FILE_ACCOUNTS_URL>'
-  file_cic_accounts   : '<EXTERNAL_FILE_CIC_ACCOUNTS_URL>'
+  manage_user_details        : '<ACCOUNT_URL>/user/account'
+  make_authcode_change       : '<ACCOUNT_URL>/company/:company_number/authcode/change'
+  follow_company             : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-follow'
+  unfollow_company           : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-unfollow'
+  file_accounts              : '<EXTERNAL_FILE_ACCOUNTS_URL>'
+  file_cic_accounts          : '<EXTERNAL_FILE_CIC_ACCOUNTS_URL>'
+  certificates_url           : '<CHS_URL>/company/:company_number/orderable/certificates'
+  dissolved_certificates_url : '<CHS_URL>/company/:company_number/orderable/dissolved-certificates'
+  certified_copies_url       : '<CHS_URL>/company/:company_number/orderable/certified-copies'
 
 admin_url_for:
   roles                        : <ACCOUNT_URL>/admin/roles
