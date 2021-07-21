@@ -138,3 +138,5 @@ webfiling_login_url: <WEBFILING_LOGIN_URL>
 show_covid19_message: <SHOW_COVID19_MESSAGE>
 
 show_feedback_page: <SHOW_FEEDBACK_PAGE>
+
+allowed_return_to_hosts: <ALLOWED_RETURN_TO_HOSTS>
