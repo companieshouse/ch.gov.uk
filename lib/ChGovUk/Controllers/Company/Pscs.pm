@@ -31,8 +31,9 @@ sub list {
     trace "Get company psc list for %s, page %s", $company_number, $page [PSC LIST];
     my $pager = CH::Util::Pager->new(entries_per_page => $items_per_page, current_page => $page);
 
+    my $first_psc_number = $pager->first;
+
     trace "Call psc list api for company %s, items_per_page %s", $company_number, $items_per_page [PSC LIST];
-    my $first_psc_number = $page eq 1 ? 0 : ($page - 1) * $items_per_page;
 
 
     # As we are making 2 API calls - 1 for pscs 1 for statements, a delay is needed to make sure both of them have time to come back with API response
@@ -147,10 +148,29 @@ sub list {
                  finish => sub {
                      my ($delay, $pscs, $psc_statements) = @_;
 
-
                      my $psc_list = $self->merge_pscs_and_statements($pscs->{items}, $psc_statements->{items});
                          
                      my $total_results_combined = $psc_statements->{total_results} + $pscs->{total_results};
+
+                     my $psc_results = $pscs->{total_results};
+                     my $psc_statement_results = $psc_statements->{total_results};
+
+                     my $total_entries = 0;
+
+                     if ($psc_results > $psc_statement_results) {
+                         $total_entries = $psc_results;
+                     } else {
+                         $total_entries= $psc_statement_results;
+                     }
+
+                     $pager->total_entries( $total_entries // 0 );
+
+                     $self->stash(current_page_number     => $pager->current_page);
+                     $self->stash(page_set                => $pager->pages_in_set());
+                     $self->stash(next_page               => $pager->next_page());
+                     $self->stash(previous_page           => $pager->previous_page());
+                     $self->stash(entries_per_page        => $pager->entries_per_page());
+
                      # PSC listing
                      $self->stash(pscs => {
                        items                    => $psc_list,
@@ -244,7 +264,7 @@ sub get_exemptions_resource {
                 if ( ( $key ne "psc_exempt_as_trading_on_regulated_market" &&
                        $key ne "psc_exempt_as_shares_admitted_on_market" &&
                        $key ne "psc_exempt_as_trading_on_uk_regulated_market" &&
-                       $key ne "disclosure_transparency_rules_chapter_five_applies"
+                       $key ne "psc_exempt_as_trading_on_eu_regulated_market" 
                     ) || $exemptions->{$key}->{items}->[0]->{exempt_to} ) {
                     delete $exemptions->{$key};
                 }

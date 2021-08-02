@@ -56,8 +56,9 @@
   % if $c.config.feature.order_certificate {
     % if $show_certificate {
       <h2 id="order-a-certificate-header" class="govuk-heading-l heading-with-border">
-        Order a certificate
+        Order a certified certificate
       </h2>
+      <p class="govuk-body">Use this service to order a signed certificate of incorporation, which can include key details about the company and a statement of good standing. </p>
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
           <span class="govuk-details__summary-text">
@@ -73,14 +74,14 @@
           </ul>
         </div>
       </details>
-        <a class="govuk-button govuk-button--secondary piwik-event" data-event-id="Order a certificate" href="orderable/certificates">Order certificate</a>
+        <a class="govuk-button secondary-button piwik-event" data-event-id="Order a certificate" href="<% $c.external_url_for('certificates_url', company_number => $company.company_number) %>">Order certificate</a>
     % }
   %}
 
   % if $c.config.feature.order_dissolved_certificate {
     % if $show_dissolved_certificate {
       <h2 id="order-a-certificate-header" class="govuk-heading-l heading-with-border">
-        Order a certificate
+        Order a certified certificate
       </h2>
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
@@ -96,7 +97,7 @@
           </ul>
         </div>
       </details>
-        <a class="govuk-button govuk-button--secondary piwik-event" data-event-id="Order a dissolved certificate" href="orderable/dissolved-certificates">Order certificate</a>
+        <a class="govuk-button secondary-button piwik-event" data-event-id="Order a dissolved certificate" href="<% $c.external_url_for('dissolved_certificates_url', company_number => $company.company_number) %>">Order certificate</a>
     % }
   % }
 
@@ -105,6 +106,7 @@
       <h2 id="order-a-certified-document-header" class="govuk-heading-l heading-with-border">
         Order a certified document
       </h2>
+      <p class='govuk-body'>Use this service to order a certified copy of a document from a company's filing history. </p>
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
           <span class="govuk-details__summary-text">
@@ -120,7 +122,7 @@
           </ul>
         </div>
       </details>
-        <a class="govuk-button govuk-button--secondary piwik-event" data-event-id="Order certified document" href="orderable/certified-copies">Order certified document</a>
+        <a class="govuk-button secondary-button piwik-event" data-event-id="Order certified document" href="<% $c.external_url_for('certified_copies_url', company_number => $company.company_number) %>">Order certified document</a>
     % }
   %}
 % }

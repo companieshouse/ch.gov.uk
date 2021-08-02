@@ -85,7 +85,7 @@
     document.getElementById('hide-rejected-message-button').addEventListener('click', CookieConsent.hideCookieBanners)
   });
   
-  CookieConsent.start(startPiwik)
+  CookieConsent.start(startPiwik, stopAnalytics)
 </script>
 
 <noscript><p><img src="<% $c.config.piwik.url %>/piwik.php?idsite=<% $c.config.piwik.site_id %>" style="border:0;" alt="" /></p></noscript>

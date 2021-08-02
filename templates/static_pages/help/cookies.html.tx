@@ -66,7 +66,7 @@
         </tr>
         <tr>
           <td>ch_session</td>
-          <td>Session identifier for Electonic Web Filing (EWF) services. A unique random value that allows the site to identify the user’s session. Also contains a randomly generated token that changes on every page. Contains no personal information and cannot be used to identify a user.</td>
+          <td>Session identifier for Electronic Web Filing (EWF) services. A unique random value that allows the site to identify the user’s session. Also contains a randomly generated token that changes on every page. Contains no personal information and cannot be used to identify a user.</td>
           <td>When you close your browser</td>
         </tr>
         <tr>
@@ -204,13 +204,13 @@
               <div class="ch-cookie-radios">
                 <div class="ch-cookie-radios__item">
                   <input class="ch-cookie-radios__input" id="analytics-cookies-yes" name="analytics-cookies" type="radio" value="yes">
-                  <label class="ch-cookie-label ch-cookie-radios__label" for="analytics-cookies">
+                  <label class="ch-cookie-label ch-cookie-radios__label" for="analytics-cookies-yes">
                     Yes
                   </label>
                 </div>
                 <div class="ch-cookie-radios__item">
                   <input class="ch-cookie-radios__input" id="analytics-cookies-no" name="analytics-cookies" type="radio" value="no" checked>
-                  <label class="ch-cookie-label ch-cookie-radios__label" for="analytics-cookies-2">
+                  <label class="ch-cookie-label ch-cookie-radios__label" for="analytics-cookies-no">
                     No
                   </label>
                 </div>
@@ -236,31 +236,56 @@
       </div>
     </noscript>
     <script>
-      document.getElementById('ch-cookie-controls').removeAttribute('hidden')
-
-      function getParameterByName(name) {
-        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-        return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-      };
-
-      function analyticsChoice() {
-        if (document.getElementById('analytics-cookies-yes').checked) {
-          CookieConsent.acceptCookies(startPiwik, 'accept-only');
-        } else if (document.getElementById('analytics-cookies-no').checked) {
-          CookieConsent.rejectCookies(stopAnalytics, 'reject-only');
+      (function() {
+        function getCookie(cname) {
+          var name = cname + '=';
+          var decodedCookie = decodeURIComponent(document.cookie);
+          var ca = decodedCookie.split(';');
+          for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+            }
+          }
+          return '';
         }
-        if (getParameterByName('return_to')) {
-          var returnLink = document.getElementById('cookie-success-link');
-          returnLink.href = getParameterByName('return_to');
-          returnLink.removeAttribute('hidden')
-        }
-        document.getElementById('cookie-settings-success-message').removeAttribute('hidden');
-        window.scrollTo(0,0);
-      };
 
-      document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('analytics-choice-button').addEventListener('click', analyticsChoice);
-      });
+        if (getCookie('ch_cookie_consent') !== '') {
+          var chCookie = JSON.parse(atob(getCookie('ch_cookie_consent')));
+          if (chCookie.userHasAllowedCookies === 'yes') {
+            document.getElementById('analytics-cookies-yes').setAttribute('checked', true);
+          }
+        }
+
+        document.getElementById('ch-cookie-controls').removeAttribute('hidden')
+
+        function getParameterByName(name) {
+          var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+          return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+        };
+
+        function analyticsChoice() {
+          if (document.getElementById('analytics-cookies-yes').checked) {
+            CookieConsent.acceptCookies(startPiwik, 'accept-only');
+          } else if (document.getElementById('analytics-cookies-no').checked) {
+            CookieConsent.rejectCookies(stopAnalytics, 'reject-only');
+          }
+          if (getParameterByName('return_to')) {
+            var returnLink = document.getElementById('cookie-success-link');
+            returnLink.href = getParameterByName('return_to');
+            returnLink.removeAttribute('hidden')
+          }
+          document.getElementById('cookie-settings-success-message').removeAttribute('hidden');
+          window.scrollTo(0,0);
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+          document.getElementById('analytics-choice-button').addEventListener('click', analyticsChoice);
+        });
+      })();
     </script>
   </article>
     <!--end content-->

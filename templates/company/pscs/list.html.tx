@@ -24,6 +24,7 @@
          </div>
     % }
 
+        % if $current_page_number == 1 {
         % if $pscs.total_results == 0 && $exemptions { 
         % } else if $pscs.total_results == 0 {
             <p class="text" id="no-pscs">
@@ -69,6 +70,7 @@
             % }
         % }
     </p>
+    % }
 
 
     <div class="appointments-list">
@@ -328,4 +330,37 @@
         % }
     </div>
 
+    % if $pscs.statement_count > $entries_per_page || $pscs.psc_count > $entries_per_page {
+        <ul class="pager">
+            % if ($previous_page) {
+                <li>
+                    <a id="previousButton" class="page" href="<% $c.url_with.query([ page => $previous_page ]) %>" data-page="<% $previous_page %>">
+                        Previous
+                    </a>
+                </li>
+            % }
+
+            % for $page_set -> $page {
+                <li>
+                    <a id="pageNo<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>" data-page="<% $page %>">
+                        % if $current_page_number == $page {
+                            <strong>
+                                <% $page %>
+                            </strong>
+                        % } else {
+                            <% $page %>
+                        % }
+                    </a>
+                </li>
+            % }
+
+            % if ($next_page) {
+                <li>
+                    <a id="nextButton" class="page" href="<% $c.url_with.query([ page => $next_page ]) %>" data-page="<% $next_page %>">
+                        Next
+                    </a>
+                </li>
+            % }
+        </ul>
+    % }
 % }
