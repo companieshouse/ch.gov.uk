@@ -14,7 +14,7 @@
 % if !$results {
     <h1 id="start-searching" class="main-title center">
                 <label class="heading-xlarge">
-                  Search the companies house register
+                  Search the register
                 </label>
     </h1>
     <p id="search-cta-label">Enter company name, number or officer name</p>

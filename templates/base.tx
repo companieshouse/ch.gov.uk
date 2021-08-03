@@ -35,7 +35,7 @@
 
 
 
-   <link rel="shortcut icon" href="//<% $cdn_url %>/images/favicon.ico" type="image/x-icon">
+   <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v3.5.0/images/favicon.ico" type="image/x-icon">
 
    <!-- For third-generation iPad with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="144x144" href="//<% $cdn_url %>/images/apple-touch-icon-144x144.png">
    <!-- For iPhone with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="114x114" href="//<% $cdn_url %>/images/apple-touch-icon-114x114.png">
