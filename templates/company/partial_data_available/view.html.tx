@@ -39,7 +39,7 @@
                         % if $company.partial_data_available == "full-data-available-from-financial-conduct-authority-mutuals-public-register" {
                             <br>
                             <span class="normal">Refer to the Financial Conduct Authority</span>
-                            <a href="https://mutuals.fsa.gov.uk" rel="external" target="_blank">Mutuals Public Register<span class="visuallyhidden">Links opens in a new tab/window</span></a>
+                            <a href="https://mutuals.fsa.gov.uk" rel="external" target="_blank">Mutuals Public Register<span class="govuk-visually-hidden">Links opens in a new tab/window</span></a>
                             for further information about this company
                         % } else if $company.partial_data_available == "full-data-available-from-the-company" {
                             <br>

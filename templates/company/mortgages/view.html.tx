@@ -13,7 +13,7 @@
                 <h2 class="heading-medium"><% l('Filter charges') %></h2>
 
                 <fieldset>
-                    <legend class="visuallyhidden">Filter charges</legend>
+                    <legend class="govuk-visually-hidden">Filter charges</legend>
                     % for $filters -> $filter {
                         <label id="filter-<% $filter.id %>_label" for="filter-<% $filter.id %>" class="block-label selection-button-checkbox">
                             <input id="filter-<% $filter.id %>" name="filter" value="<% $filter.id %>" type="checkbox" <% $filter.checked ? 'checked' : '' %> />

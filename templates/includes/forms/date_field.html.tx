@@ -1,11 +1,11 @@
 <fieldset class="<% if $has_errors { %>validation <%} %> group date">
-   	<legend class="visuallyhidden"><% $label %></legend>
+   	<legend class="govuk-visually-hidden"><% $label %></legend>
     % if $has_errors {
     %   for $errors->$error {
           <span class="error-message" id="<% $error.id %>"><% $error.text %></span>
     %   }
     % }
-    <label><span class="visuallyhidden">Day</span>
+    <label><span class="govuk-visually-hidden">Day</span>
         <% $form.select_field( no_errors => 1, label => 'Day', name => $name ~ '[day]', please_select => 'Day', list => [
             { 1  => "1" },  { 2  => "2" },  { 3  => "3" },  { 4  => "4" },  { 5  => "5" },
             { 6  => "6" },  { 7  => "7" },  { 8  => "8" },  { 9  => "9" },  { 10 => "10" },
@@ -16,14 +16,14 @@
             { 31 => "31" }
         ]) %>
 	</label>
-    <label><span class="visuallyhidden">Month</span>
+    <label><span class="govuk-visually-hidden">Month</span>
         <% $form.select_field( no_errors => 1, label => 'Month', name => $name ~ '[month]', please_select => 'Month', list => [
             { 1  => "January" },   { 2  => "February" }, { 3  => "March" },    { 4  => "April"    },
             { 5  => "May" },       { 6  => "June" },     { 7  => "July" },     { 8  => "August"   },
             { 9  => "September" }, { 10 => "October" },  { 11 => "November" }, { 12 => "December" },
         ]) %>
 	</label>
-    <label><span class="visuallyhidden">Year</span>
+    <label><span class="govuk-visually-hidden">Year</span>
         <% $form.select_field( no_errors => 1, label => 'Year', name => $name ~ '[year]', please_select => 'Year', list => $years ) %>
 	</label>
 </fieldset>

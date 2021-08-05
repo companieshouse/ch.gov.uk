@@ -22,7 +22,7 @@
     <div class="search-bar-active">
 	    <div class="searchfield">
 % }
-        <label class="visuallyhidden" for="site-search-text">Enter company name, number or officer name</label>
+        <label class="govuk-visually-hidden" for="site-search-text">Enter company name, number or officer name</label>
 		    <input type="search" autocomplete="off" name="q" id="site-search-text" title="Search" value="<% $results.searchTerm %>" <% if ($header_or_body == 'header') { %> placeholder="Search"  class="header-search"<% } else { %> placeholder="Start here..."<% } %> />
 % if ($header_or_body == 'header') {
         <input class="submit" type="submit" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SiteSearch', 'Header']);"<% } %> id="search-btn" value="Search" />
@@ -65,8 +65,8 @@
             <div class="column-third" id="disqualification-column">
                 <div class="quick-look font-xsmall" id="disqualification-info">
                     <ul class="list list-bullet">
-                        <li><a href="/register-of-disqualifications/A" rel="external" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Register of disqualifications<span class="visuallyhidden">(link opens in a new window)</span></a></li>
-                        <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="visuallyhidden">(link opens in a new window)</span></a></li>
+                        <li><a href="/register-of-disqualifications/A" rel="external" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Register of disqualifications<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                        <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
                     </ul>
                 </div>
             </div>

@@ -330,7 +330,7 @@
             % include 'includes/officer_listing.tx' { officers => $company.officer_summary.officers, link => "officers/" };
 
             <ul class="navigation-list">
-                <li><a id="view-officers" href="<% $c.url_for %>/officers" id="">View all officer information</a></li>
+                <li><a class="govuk-link" id="view-officers" href="<% $c.url_for %>/officers" id="">View all officer information</a></li>
             </ul>
         % }
     % }
@@ -356,7 +356,7 @@
     %    if ($company.previous_company_names) {
             <h2 class="heading-medium" id="header">  Previous company names </h2>
             <table id="previousNameTable" class="full-width-table">
-            <caption class="visuallyhidden">Previous company names</caption>
+            <caption class="govuk-visually-hidden">Previous company names</caption>
             <tr>
                 <th><% l('Name') %></th>
                 <th><% l('Period') %></th>

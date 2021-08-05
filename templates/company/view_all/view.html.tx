@@ -7,7 +7,7 @@
   % }
 
   % if $show_snapshot {
-        <h2 id="company-snapshot-header" class="heading-large">
+        <h2 id="company-snapshot-header" class="govuk-heading-l">
           Company snapshot <%$company_type%>
         </h2>
       <details class="govuk-details" role="group">
@@ -32,7 +32,7 @@
     % if $c.is_signed_in {
       <div class="govuk-inset-text onlyJS">
       <div id="widget">
-      <a class="render-document govuk-button secondary-button piwik-event" data-event-id="View company information snapshot" href="#">View company information snapshot
+      <a class="render-document govuk-button govuk-button--secondary piwik-event" data-event-id="View company information snapshot" href="#">View company information snapshot
           <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
         <div id="status-widget" class="widget-footer hidden">
           <div id="status">
@@ -48,14 +48,14 @@
       </div>
       <div id="download-button"></div>
       % } else {
-      <a class="govuk-button secondary-button piwik-event" data-event-id="View company information snapshot" href="<% $c.url_for('user_sign_in') %>">View company information snapshot
+      <a class="govuk-button govuk-button--secondary piwik-event" data-event-id="View company information snapshot" href="<% $c.url_for('user_sign_in') %>">View company information snapshot
           <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
     % }
   % }
 
   % if $c.config.feature.order_certificate {
     % if $show_certificate {
-      <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
+      <h2 id="order-a-certificate-header" class="govuk-heading-l heading-with-border">
         Order a certified certificate
       </h2>
       <p class="govuk-body">Use this service to order a signed certificate of incorporation, which can include key details about the company and a statement of good standing. </p>
@@ -80,7 +80,7 @@
 
   % if $c.config.feature.order_dissolved_certificate {
     % if $show_dissolved_certificate {
-      <h2 id="order-a-certificate-header" class="heading-large heading-with-border">
+      <h2 id="order-a-certificate-header" class="govuk-heading-l heading-with-border">
         Order a certified certificate
       </h2>
       <details class="govuk-details" role="group">
@@ -103,7 +103,7 @@
 
   % if $c.config.feature.order_certified_document {
     % if $show_certified_document {
-      <h2 id="order-a-certified-document-header" class="heading-large heading-with-border">
+      <h2 id="order-a-certified-document-header" class="govuk-heading-l heading-with-border">
         Order a certified document
       </h2>
       <p class='govuk-body'>Use this service to order a certified copy of a document from a company's filing history. </p>

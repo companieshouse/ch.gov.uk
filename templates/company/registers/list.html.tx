@@ -63,7 +63,7 @@
         % if $register_type_var.register_link {
                 <h2 class="heading-medium"><a href="/company/<%$company.company_number%>/registers/<%$register_type_var.register_type%>">Register of <%lcfirst($c.cv_lookup('register_types', $register_type_var.register_type))%></a></h2>
         % } else if $register_type_var.members_pdf {
-                <h2 class="heading-medium"><a href="<% $c.url_for('filing_history_document', filing_history_id => $register_type_var.members_pdf.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="<%$register_type_var.register_type%>-created-link">Register of members<span class="visuallyhidden"> for <% l($c.md_lookup('filing_type', $register_type_var.members_pdf.filing_type)) %></span></a><% if ($register_type_var.members_pdf.pages) { %> <span class="font-xsmall">(PDF, <% ln('%d page', '%d pages', $register_type_var.members_pdf.pages) %>)</span> <% } %></h2>
+                <h2 class="heading-medium"><a href="<% $c.url_for('filing_history_document', filing_history_id => $register_type_var.members_pdf.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="<%$register_type_var.register_type%>-created-link">Register of members<span class="govuk-visually-hidden"> for <% l($c.md_lookup('filing_type', $register_type_var.members_pdf.filing_type)) %></span></a><% if ($register_type_var.members_pdf.pages) { %> <span class="font-xsmall">(PDF, <% ln('%d page', '%d pages', $register_type_var.members_pdf.pages) %>)</span> <% } %></h2>
         % } else {
                 <h2 class="heading-medium">Register of <%lcfirst($c.cv_lookup('register_types',$register_type_var.register_type))%></h2>
         % }
@@ -75,7 +75,7 @@
     % }
     <a id="register-of-<%$register_type_var.register_type%>" class="toggle-link pseudoLink" href="javascript:void(0);" onclick="toggleLink('<%$register_type_var.register_type%>');">
          <span id="view-<%$register_type_var.register_type%>">View history</span>
-         <span class="visuallyhidden"> of <%$register_type_var.register_type%> </span>
+         <span class="govuk-visually-hidden"> of <%$register_type_var.register_type%> </span>
          <span id="hide-<%$register_type_var.register_type%>" class="js-hidden">Hide history</span>
          <span class="toggle-arrows" id="<%$register_type_var.register_type%>-hidden">&#9658;</span> <span class="js-hidden" id="<%$register_type_var.register_type%>-show">&#9660;</span>
     </a>
@@ -99,7 +99,7 @@
                         % }
                         <td><% $c.cv_lookup('register_locations', $item.register_moved_to) %></td>
                         % if defined $item.resource_url {
-                            <td><a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="<%$register_type_var.register_type%>-created-link">View PDF<span class="visuallyhidden"> for Register of <%$register_type_var.register_type%> as of <% $c.isodate_as_string($register_type_var.last_move) %> Link opens in new window </span></a><% if ($item.pages) { %> (<% ln('%d page', '%d pages', $item.pages) %>)<% } %></td>
+                            <td><a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="<%$register_type_var.register_type%>-created-link">View PDF<span class="govuk-visually-hidden"> for Register of <%$register_type_var.register_type%> as of <% $c.isodate_as_string($register_type_var.last_move) %> Link opens in new window </span></a><% if ($item.pages) { %> (<% ln('%d page', '%d pages', $item.pages) %>)<% } %></td>
                         % } else {
                             <td><span id="no-image-link">-</span></td>
                         % }

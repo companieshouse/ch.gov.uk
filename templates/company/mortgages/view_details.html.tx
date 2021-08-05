@@ -66,7 +66,7 @@
             </dd>
             <ul>
                 % if defined $charge.creation_transaction.resource_url {
-                    <a href="<% $c.url_for('filing_history_document', filing_history_id => $charge.creation_transaction.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="mortgage-created-link">View PDF<span class="visuallyhidden"> for <% l($c.md_lookup('filing_type', $charge.creation_transaction.filing_type)) %></span></a><% if ($charge.creation_transaction.pages) { %> (<% ln('%d page', '%d pages', $charge.creation_transaction.pages) %>)<% } %>
+                    <a href="<% $c.url_for('filing_history_document', filing_history_id => $charge.creation_transaction.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="mortgage-created-link">View PDF<span class="govuk-visually-hidden"> for <% l($c.md_lookup('filing_type', $charge.creation_transaction.filing_type)) %></span></a><% if ($charge.creation_transaction.pages) { %> (<% ln('%d page', '%d pages', $charge.creation_transaction.pages) %>)<% } %>
                 % } else {
                     <span id="no-image-link">Image unavailable</span>
                 % }
@@ -153,14 +153,14 @@
 % if $charge.transactions.size() > 0 {
     <h3 class="heading-medium" id="additional-filings-label"><% l('Additional transactions filed against this charge') %></h3>
     <table>
-        <caption class="visuallyhidden">Additional transactions filed against this charge (PDF links open in a new window)</caption>
+        <caption class="govuk-visually-hidden">Additional transactions filed against this charge (PDF links open in a new window)</caption>
         <tbody>
             <tr>
-                <th><% l('Type') %><span class="visuallyhidden">(of transaction)</span></th>
-                <th><% l('Delivered') %><span class="visuallyhidden">(to Companies House on this date)</span></th>
-                <th><% l('View / Download') %><span class="visuallyhidden">(PDF file, link opens in new window)</span></th>
+                <th><% l('Type') %><span class="govuk-visually-hidden">(of transaction)</span></th>
+                <th><% l('Delivered') %><span class="govuk-visually-hidden">(to Companies House on this date)</span></th>
+                <th><% l('View / Download') %><span class="govuk-visually-hidden">(PDF file, link opens in new window)</span></th>
                 % if $charge.show_insolvency_column {
-                    <th><% l('Insolvency case') %><span class="visuallyhidden">(link opens in same window)</span></th>
+                    <th><% l('Insolvency case') %><span class="govuk-visually-hidden">(link opens in same window)</span></th>
                 % }
             </tr>
             % for $charge.transactions->$filing {
@@ -175,7 +175,7 @@
                     </td>
                     <td>
                         % if defined $filing.resource_url {
-                            <a href="<% $c.url_for('filing_history_document', filing_history_id => $filing.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="mortgage-created-link">View PDF<span class="visuallyhidden"> for <% l($c.md_lookup('filing_type', $filing.filing_type)) %></span></a><% if ($filing.pages) { %> (<% ln('%d page', '%d pages', $filing.pages) %>)<% } %>
+                            <a href="<% $c.url_for('filing_history_document', filing_history_id => $filing.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="mortgage-created-link">View PDF<span class="govuk-visually-hidden"> for <% l($c.md_lookup('filing_type', $filing.filing_type)) %></span></a><% if ($filing.pages) { %> (<% ln('%d page', '%d pages', $filing.pages) %>)<% } %>
                         % } else {
                             <span id="no-image-link">Image unavailable</span>
                         % }

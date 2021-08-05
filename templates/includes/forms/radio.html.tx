@@ -1,5 +1,5 @@
 <fieldset class="<% if $has_errors { %>validation <%} %> group">
-   	<legend class="visuallyhidden"><% $label %></legend>
+   	<legend class="govuk-visually-hidden"><% $label %></legend>
     % if $has_errors {
     %   for $errors->$error {
           <span class="error-message" id="<% $error.id %>"><% $error.text %></span>
