@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!--[if lt IE 9]><html class="lte-ie8" lang="en"><![endif]-->
-<!--[if gt IE 8]><!--><html lang="en"><!--<![endif]--><head>
+<!--[if lt IE 9]><html class="lte-ie8 govuk-template" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--><html lang="en" class="govuk-template"><!--<![endif]--><head>
 
   <% if $noindex { %>
     <meta name="robots" content="noindex" />
@@ -57,10 +57,7 @@
      <link href="//<% $cdn_url %>/stylesheets/gci/certified-copies.css" media="screen" rel="stylesheet" type="text/css">
    % }
 
-   <!--[if gt IE 8]><!--><link href="//<% $cdn_url %>/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css"><!--<![endif]-->
-   <!--[if IE 6]><link href="//<% $cdn_url %>/stylesheets/application-ie6.css" media="screen" rel="stylesheet" type="text/css"><![endif]-->
-   <!--[if IE 7]><link href="//<% $cdn_url %>/stylesheets/application-ie7.css" media="screen" rel="stylesheet" type="text/css"><![endif]-->
-   <!--[if IE 8]><link href="//<% $cdn_url %>/stylesheets/application-ie8.css" media="screen" rel="stylesheet" type="text/css"><![endif]-->
+  <link href="//<% $cdn_url %>/stylesheets/ch.gov.uk.css" media="screen" rel="stylesheet" type="text/css">
 
 
    <link href="//<% $cdn_url %>/stylesheets/print.css" media="print" rel="stylesheet" type="text/css">
@@ -100,10 +97,9 @@
 <link href="//<% $cdn_url %>/stylesheets/cookie-consent/cookie-banner-ie8-3.11.0.min.css" rel="stylesheet" />
 <![endif]-->
 
-<link href="//<% $cdn_url %>/stylesheets/services/ch-gov-uk/override.css" rel="stylesheet" />
 </head>
 
-<body>
+<body class="govuk-template__body">
   <script>
     document.body.className += ' js-enabled';
   </script>
@@ -193,7 +189,7 @@
 % if $feedback_banner {
   <div class="govuk-body" id="chs-customer-insights-top">
    <div class="govuk-width-container">
-     <a class="govuk-link override-link" href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
+     <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
    </div>
  </div>
 % }
