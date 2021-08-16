@@ -1,4 +1,4 @@
-% cascade base { title => 'Error page' }
+% cascade base { title => $description ~" - Find and update company information - GOV.UK" }
 
 % around content -> {
     <article class="text">
