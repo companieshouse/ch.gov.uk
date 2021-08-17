@@ -196,11 +196,15 @@
 
   <main id="page-container" class="search <% $classes %> govuk-width-container" role="main">
 
-  % if !$feedback_banner {
-    % if !$certified_copies {
-      <div class="govuk-phase-banner"></div>
+    % if !$feedback_banner {
+      % if $certified_copies {
+        <div>
+      % } else {
+        <div class="govuk-phase-banner">
+      % }
+    % } else {
+      <div>
     % }
-  % }
 
 % if ! $certified_copies {
   <div class="small-text"><a class="govuk-link" href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="govuk-visually-hidden">(link opens a new window)</span></a></div>
