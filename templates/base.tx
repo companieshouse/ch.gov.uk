@@ -197,13 +197,9 @@
   <main id="page-container" class="search <% $classes %> govuk-width-container" role="main">
 
   % if !$feedback_banner {
-    % if $certified_copies {
-      <div class="phase-banner-certified">
-    % } else {
-      <div class="govuk-phase-banner">
+    % if !$certified_copies {
+      <div class="govuk-phase-banner"></div>
     % }
-  % } else {
-    <div>
   % }
 
 % if ! $certified_copies {
