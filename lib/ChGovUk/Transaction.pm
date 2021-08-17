@@ -281,7 +281,7 @@ sub submit {
                     }
 
                     warn "Failed to update transaction %s: %s", $transaction->transaction_number, $tx->error->{message} [ROUTING];
-                    return $self->controller->render('error', status => $code, error => 'transaction_not_open', check_your_filings => 'true');
+                    return $self->controller->render('error', status => $code, error => 'transaction_not_open', description => "This transaction is no longer open", check_your_filings => 'true');
                 },
             )->execute;
         },
@@ -315,7 +315,7 @@ sub submit {
             }
 
             warn "Failed to update transaction %s: %s", $transaction->transaction_number, $tx->error->{message} [ROUTING];
-            return $self->controller->render('error', status => $code, error => 'transaction_not_open', check_your_filings => 'true');
+            return $self->controller->render('error', status => $code, error => 'transaction_not_open', description => "This transaction is no longer open", check_your_filings => 'true');
         },
     )->execute;
 }
