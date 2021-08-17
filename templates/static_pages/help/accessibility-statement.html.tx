@@ -1,4 +1,4 @@
-% cascade base { title => 'Accessibility statement', disable_header_search => 1, alternative_skiplink => true }
+% cascade base { title => 'Accessibility statement - Find and update company information - GOV.UK', disable_header_search => 1, alternative_skiplink => true }
 % around content -> {
     <article class="text" id="page-content">
       <h1 class="heading-xlarge">

@@ -1,4 +1,4 @@
-% cascade base { title=> "Persons with significant control" }
+% cascade base { title=> $company.company_name ~ " persons with significant control - Find and update company information - GOV.UK" }
 % around content -> {
 
     % include '/includes/company/page_header.tx'

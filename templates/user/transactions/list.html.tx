@@ -1,4 +1,4 @@
-% cascade base { title => 'Your filings ' ~ $form_header.get_submissionNumber, disable_header_search => 1 }
+% cascade base { title => 'Your filings - Find and update company information - GOV.UK ' ~ $form_header.get_submissionNumber, disable_header_search => 1 }
 
 
 % around content -> {

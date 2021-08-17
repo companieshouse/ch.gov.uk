@@ -1,4 +1,4 @@
-% cascade base { title=> $company.company_name ~" - Charges (free information from Companies House)", require_js => 'transactions/charges-listing' }
+% cascade base { title=> $company.company_name ~" charges - Find and update company information - GOV.UK", require_js => 'transactions/charges-listing' }
 
 % around content -> {
     <p class="company-nav"><a href="/company/<% $stash.company.company_number %>"><% $stash.company.company_name %> (<% $stash.company.company_number %>)</a></p>

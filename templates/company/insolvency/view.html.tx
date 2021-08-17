@@ -1,4 +1,4 @@
-% cascade base { title=> $company.company_name ~" - Insolvency (free information from Companies House)" }
+% cascade base { title=> $company.company_name ~" insolvency - Find and update company information - GOV.UK" }
 % around content -> {
 % include '/includes/company/page_header.tx'
 

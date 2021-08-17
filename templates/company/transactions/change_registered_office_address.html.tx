@@ -1,4 +1,4 @@
-% cascade company::transactions::transaction { title => 'Change of registered office address', form => $c.form( model => $transaction.model ), require_js => 'transactions/change-registered-office-address', submit_label => "Submit changes" }
+% cascade company::transactions::transaction { title => $company.company_name ~' change of registered office address - Find and update company information - GOV.UK', form => $c.form( model => $transaction.model ), require_js => 'transactions/change-registered-office-address', submit_label => "Submit changes" }
 % before form_content -> {
     %  include 'company/transactions/current_address.html.tx' { form => $form }
 % }

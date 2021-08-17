@@ -1,4 +1,4 @@
-% cascade base { title => 'Other document filings - Companies House service', disable_header_search => 1, user_bar => false }
+% cascade base { title => 'Other document filings - Find and update company information - GOV.UK', disable_header_search => 1, user_bar => false }
 % around content -> {
 
 <ul>

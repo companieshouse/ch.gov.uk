@@ -1,4 +1,4 @@
-% cascade base { title => 'Server error' }
+% cascade base { title => 'Server error - Find and update company information - GOV.UK' }
 
 % around content -> {
     <header class="text">

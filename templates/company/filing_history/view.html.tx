@@ -1,4 +1,4 @@
-% cascade base { title => $company.company_name ~" - Filing history (free information from Companies House)", classes => "filing-history", require_js => "transactions/company/filing_history_view" }
+% cascade base { title => $company.company_name ~" filing history - Find and update company information - GOV.UK", classes => "filing-history", require_js => "transactions/company/filing_history_view" }
 %# a widget/block that allows a) "Show form type" to be toggled on/off b) results to be filtered by category
 % block category_console -> {
         <form class="form">

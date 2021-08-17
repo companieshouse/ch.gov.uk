@@ -1,4 +1,4 @@
-% cascade base { title=> $company.company_name ~" - More (free company information from Companies House)", classes=>"profile" }
+% cascade base { title=> $company.company_name ~" more information - Find and update company information - GOV.UK" }
 
 % around content -> {
   % if $show_snapshot || $show_orders || $show_certified_document {

@@ -1,4 +1,4 @@
-% cascade base { title => 'Page not found' }
+% cascade base { title => 'Page not found - Find and update company information - GOV.UK' }
 
 % around content -> {
 <article class="text">
