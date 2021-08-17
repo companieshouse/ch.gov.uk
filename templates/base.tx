@@ -196,15 +196,15 @@
 
   <main id="page-container" class="search <% $classes %> govuk-width-container" role="main">
 
-  % if !$feedback_banner {
-    % if $certified_copies {
-      <div class="phase-banner-certified">
+    % if !$feedback_banner {
+      % if $certified_copies {
+        <div>
+      % } else {
+        <div class="govuk-phase-banner">
+      % }
     % } else {
-      <div class="govuk-phase-banner">
+      <div>
     % }
-  % } else {
-    <div>
-  % }
 
 % if ! $certified_copies {
   <div class="small-text"><a class="govuk-link" href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="govuk-visually-hidden">(link opens a new window)</span></a></div>
@@ -274,7 +274,7 @@
 </div>
 % }
 
- <footer class="govuk-footer " role="contentinfo">
+ <footer id="footer" class="govuk-footer " role="contentinfo">
       <div class="govuk-width-container ">
         <div class="govuk-footer__meta">
           <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
