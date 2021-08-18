@@ -295,13 +295,11 @@
                   Contact us
                 </a>
               </li>
-              % if ! $accessibility_statement_off {
-                <li class="govuk-footer__inline-list-item">
-                  <a class="govuk-footer__link" href="/help/accessibility-statement">
-                    Accessibility statement
-                  </a>
-                </li>
-              % }
+              <li class="govuk-footer__inline-list-item">
+                <a class="govuk-footer__link" href="/help/accessibility-statement">
+                  Accessibility statement
+                </a>
+              </li>
               <li class="govuk-footer__inline-list-item">
                 <a class="govuk-footer__link" href="https://developer.companieshouse.gov.uk/" target="_blank">
                   Developers
