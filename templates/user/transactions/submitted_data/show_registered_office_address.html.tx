@@ -1,4 +1,4 @@
-% cascade base { title => 'Change registered office address' }
+% cascade base { title => 'Change registered office address - Find and update company information - GOV.UK' }
 
 % around content -> {
 <div class="text">
