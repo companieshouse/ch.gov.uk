@@ -2,9 +2,7 @@
 
 <header class="text">
     <div id="content" class="content-override"></div>
-    <h1 id="page-header"class="heading-xlarge">
-        <% $title %>
-    </h1>
+    <h1 id="page-header"class="heading-xlarge">Your filings</h1>
 </header>
 
 % for $transactions -> $transaction {
