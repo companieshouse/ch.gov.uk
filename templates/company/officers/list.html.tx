@@ -1,4 +1,4 @@
-% cascade base { title=> $company.company_name ~" - Officers (free information from Companies House)", require_js => "transactions/company/officer_listing_view" }
+% cascade base { title=> $company.company_name ~" people - Find and update company information - GOV.UK", require_js => "transactions/company/officer_listing_view" }
 % around content -> {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes-->

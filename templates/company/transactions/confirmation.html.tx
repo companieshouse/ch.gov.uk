@@ -1,4 +1,4 @@
-% cascade base { title => 'Confirmation of submission for ' ~ $transaction.transaction_number , form_page=>1, classes=>"transaction service" }
+% cascade base { title => 'Confirmation of submission - Find and update company information - GOV.UK', form_page=>1, classes=>"transaction service" }
 % around content -> {
 
     <div class="text">

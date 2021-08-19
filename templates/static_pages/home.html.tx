@@ -1,4 +1,4 @@
-% cascade base { title => 'Companies House service', require_js=>'search', classes=>"search", disable_header_search => 1, searchpage => 1, feedback_banner => 1 }
+% cascade base { title => 'Find and update company information - GOV.UK', require_js=>'search', classes=>"search", disable_header_search => 1, searchpage => 1, feedback_banner => 1 }
 % around content -> {
 
   % if $c.config.display_image_disabled_message {

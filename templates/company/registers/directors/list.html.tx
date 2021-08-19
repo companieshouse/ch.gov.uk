@@ -1,4 +1,4 @@
-% cascade base { title=> $company.company_name ~" - Registered Directors (free information from Companies House)"}
+% cascade base { title=> $company.company_name ~" registers of directors - Find and update company information - GOV.UK"}
 % around content -> {
     % include '/includes/company/page_header.tx'
     % include '/includes/company/tabs.tx' { active => 'register-tab' };

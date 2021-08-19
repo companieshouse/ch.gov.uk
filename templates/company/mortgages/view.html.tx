@@ -1,4 +1,4 @@
-% cascade base { title=> $company.company_name ~" - Charges (free information from Companies House)", require_js => "transactions/company/mortgage_index_view" }
+% cascade base { title=> $company.company_name ~" charges - Find and update company information - GOV.UK", require_js => "transactions/company/mortgage_index_view" }
 % around content -> {
 % include '/includes/company/page_header.tx'
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>

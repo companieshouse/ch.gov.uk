@@ -1,4 +1,4 @@
-% cascade base { title => 'Register Of Disqualifications - ' ~ $active_letter, disable_header_search => 1, alternative_skiplink => true }
+% cascade base { title => 'Register of disqualifications ' ~ $active_letter ~' - Find and update company information - GOV.UK', disable_header_search => 1, alternative_skiplink => true }
 
 % around content -> {
 

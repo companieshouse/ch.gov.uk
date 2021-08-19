@@ -1,5 +1,5 @@
 % cascade base {
-%	title => 'Search Companies House',
+%	title => 'No search results - Find and update company information - GOV.UK',
 %	require_js => 'search',
 %	classes => "search",
 %	disable_header_search => 1

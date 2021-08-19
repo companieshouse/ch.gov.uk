@@ -1,4 +1,4 @@
-% cascade base { title => 'Contact Us - Companies House service', searchpage => 1, disable_header_search => 1 }
+% cascade base { title => 'Contact us - Find and update company information - GOV.UK', searchpage => 1, disable_header_search => 1 }
 % around content -> {
     <article class="text">
     <div id="content" class="content-override"></div>

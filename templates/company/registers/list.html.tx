@@ -1,4 +1,4 @@
-% cascade base { title => $company.company_name ~" - Registers (free information from Companies House)", require_js => "toggle_links"}
+% cascade base { title => $company.company_name ~" registers - Find and update company information - GOV.UK", require_js => "toggle_links"}
 
 % around content -> {
     % include '/includes/company/page_header.tx'

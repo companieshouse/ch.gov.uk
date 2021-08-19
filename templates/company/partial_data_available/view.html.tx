@@ -1,4 +1,4 @@
-% cascade base { title=> $company.company_name ~" - Overview (free company information from Companies House)", classes=>"profile" }
+% cascade base { title=> $company.company_name ~" overview - Find and update company information - GOV.UK", classes=>"profile" }
 
 % around content -> {
     % include '/includes/company/page_header.tx'
