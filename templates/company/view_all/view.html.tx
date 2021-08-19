@@ -30,11 +30,11 @@
       </details>
 
     % if $c.is_signed_in {
-      <div class="govuk-inset-text onlyJS">
+      <div class="onlyJS">
       <div id="widget">
       <a class="render-document govuk-button govuk-button--secondary piwik-event" data-event-id="View company information snapshot" href="#">View company information snapshot
           <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
-        <div id="status-widget" class="widget-footer hidden">
+        <div id="status-widget" class="widget-footer visually-hidden">
           <div id="status">
             <div id="process-spinner" class="process-spinner"></div>
               <span id="process-status" class="process-status">Status: in-progress</span>
