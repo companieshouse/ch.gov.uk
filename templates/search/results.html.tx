@@ -1,5 +1,5 @@
 % cascade base {
-% 	title => $query ~' - Find and update company information - GOV.UK',
+% 	title => $title ~' - Find and update company information - GOV.UK',
 % 	searchpage => 1,
 % 	classes=>"search",
 % 	disable_header_search => 1

@@ -4,7 +4,7 @@
     % include "company/transactions/filing_for.html.tx"
 
 	<header class="text">
-		<h1 class="heading-xlarge" id="page-content"><% $title %></h1>
+		<h1 class="heading-xlarge" id="page-content">Change of registered office address %></h1>
 		% block additional_header -> {}
 	</header>
 
