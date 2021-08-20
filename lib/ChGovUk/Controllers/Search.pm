@@ -50,8 +50,8 @@ sub results {
     $self->stash(
         'search_type'   => $search_type,
         'title'         => ($query) 
-                        ? $query . ' - Search Companies House' 
-                        : 'Search Companies House' 
+                        ? $query . ' - Find and update company information - GOV.UK' 
+                        : 'Find and update company information - GOV.UK' 
     );
 
     my $page_limit    = $self->config->{elasticsearch}->{max_pages}   || 2500;
