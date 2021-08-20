@@ -1,9 +1,9 @@
 % cascade base { title=> 
     % if !$query {
-        "Company name availability checker - Find and update company information - GOV.UK" 
+        "Company name availability checker - Find and update company information - GOV.UK", 
     % } else {
-        $query ~" - Company name availability checker - Find and update company information - GOV.UK" 
-    % },
+        $query ~" - Company name availability checker - Find and update company information - GOV.UK", 
+    % }
     classes=>"profile", disable_header_search => 1 }
 
 % around content -> {
