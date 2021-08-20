@@ -100,9 +100,9 @@ sub results {
             my $message = 'Error '.(defined $error_code ? "[$error_code] " : '').'retrieving search results: '.$error_message;
             error "Failure: $message" [Search];
             if ( $error_code eq '416' ){
-                $self->render('error', error => "invalid_request", description => "You have requested a page outside of the available result set", status => 416  ) if $self->accepts('html');
+                $self->render('error', error => "outside_result_set", description => "You have requested a page outside of the available result set", status => 416  ) if $self->accepts('html');
             } else {
-                $self->render('error', error => "internal_error", description => "The search service is currently unavailable", status => 500 ) if $self->accepts('html');
+                $self->render('error', error => "search_service_unavailable", description => "The search service is currently unavailable", status => 500 ) if $self->accepts('html');
             }
         },
 

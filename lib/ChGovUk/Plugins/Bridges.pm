@@ -247,7 +247,7 @@ sub _transaction_bridge{
 
                 if ($code == 404) {
                     error "Transaction [%s] does not exist. Continuing.", $self->stash('transaction_number');
-                    return $self->render('error', error => "does_not_exist", description => "This transaction does not exist for this company", status => 404 );
+                    return $self->render('error', error => "transaction_not_exist", description => "This transaction does not exist for this company", status => 404 );
                 }
 
                 error "Failure fetching transaction: [%s] . Error: [%s].", $self->stash('transaction_number'), $tx->error->{message};

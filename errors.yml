@@ -45,6 +45,9 @@ errors:
     company_not_found: "Company not found"
     transaction_not_exist: "This transaction does not exist for this company"
     transaction_not_open: "This transaction is no longer open"
+    outside_result_set: "You have requested a page outside of the available result set"
+    search_service_unavailable: "The search service is currently unavailable"
+    page_unavailable: "You have requested a page that is currently unavailable."
 
   ch_gov_uk:
     models:

@@ -1,4 +1,4 @@
-% cascade base { title => $description ~" - Find and update company information - GOV.UK" }
+% cascade base { title => $c.config.errors.default[$error] ~" - Find and update company information - GOV.UK" }
 
 % around content -> {
     <article class="text">

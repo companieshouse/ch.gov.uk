@@ -15,7 +15,7 @@ sub list {
 
     if ($self->config->{feature}->{psc} != 1) {
         warn "PSCs feature flat not set" [PSCs];
-        $self->render('error', error => "invalid_request", description => "You have requested a page that is currently unavailable.", status => 500 );
+        $self->render('error', error => "page_unavailable", description => "You have requested a page that is currently unavailable.", status => 500 );
 
         return;
     }

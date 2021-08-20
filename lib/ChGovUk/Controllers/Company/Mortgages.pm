@@ -32,7 +32,7 @@ sub view {
 
     if (!$self->config->{feature}->{mortgage} && !$self->can_do('/admin/mortgages')) {
         warn "mortgage index feature is not available to non admin users" [MORTGAGES];
-        $self->render('error', error => "invalid_request", description => "You have requested a page that is currently unavailable.", status => 500 );
+        $self->render('error', error => "page_unavailable", description => "You have requested a page that is currently unavailable.", status => 500 );
 
         return ;
     }
@@ -184,7 +184,7 @@ sub view_details {
 
     if (!$self->config->{feature}->{mortgage} && !$self->can_do('/admin/mortgages')) {
         warn "mortgage details feature is not available to non admin users" [MORTGAGE_DETAILS];
-        $self->render('error', error => "invalid_request", description => "You have requested a page that is currently unavailable.", status => 500 );
+        $self->render('error', error => "page_unavailable", description => "You have requested a page that is currently unavailable.", status => 500 );
         return ;
     }
 
