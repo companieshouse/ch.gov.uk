@@ -70,8 +70,8 @@ sub list {
             error 'Failed to retrieve search results: [%s] [%s]', $error_code, $error_message;
 
             return $error_code == 416
-                ? $self->render('error', error => 'invalid_request', description => 'You have requested a page outside of the available result set', status => 416)
-                : $self->render('error', error => 'internal_error', description => 'The search service is currently unavailable', status => 500);
+                ? $self->render('error', error => 'outside_result_set', description => 'You have requested a page outside of the available result set', status => 416)
+                : $self->render('error', error => 'search_service_unavailable', description => 'The search service is currently unavailable', status => 500);
         },
         error => sub {
             my ($api, $error) = @_;

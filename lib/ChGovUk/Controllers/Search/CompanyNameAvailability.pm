@@ -51,7 +51,7 @@ sub company_name_availability {
 
             error 'Failed to retrieve search results: [%s] [%s]', $error_code, $error_message;
 
-            return $self->render('error', error => 'invalid_request', description => 'You have requested a page outside of the available result set', status => 416)
+            return $self->render('error', error => 'outside_result_set', description => 'You have requested a page outside of the available result set', status => 416)
                 if $error_code == 416;
               
             # don't throw to the error page show a message inline 
