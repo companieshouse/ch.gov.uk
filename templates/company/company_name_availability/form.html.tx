@@ -1,4 +1,12 @@
-% cascade base { title=> $query ~" - Company name availability checker - Find and update company information - GOV.UK", classes=>"profile", disable_header_search => 1 }
+% cascade base { title=> 
+    if !$query {
+        "Company name availability checker - Find and update company information - GOV.UK" 
+    } else {
+        $query ~" - Company name availability checker - Find and update company information - GOV.UK" 
+    },
+    classes=>"profile", disable_header_search => 1 
+}
+
 % around content -> {
 
         <div class="column-full-width" id="content">
