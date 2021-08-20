@@ -14,6 +14,12 @@ sub company_name_availability {
 
     my $company_name = $self->req->param('q');
 
+    $self->stash(
+        'title'           => ($company_name)
+                          ?  $company_name . ' - Company name availability checker - Find and update company information - GOV.UK'
+                          : 'Company name availability checker - Find and update company information - GOV.UK'
+    );
+
     return $self->render(template => 'company/company_name_availability/form')
         unless $company_name;
     
@@ -38,8 +44,8 @@ sub company_name_availability {
                 total_results     => $json->{total_results},
                 current_page      => 1,
                 show_pager        => 0,
-                'title'      => ($company_name)
-                                  ?  $company_name. ' - Company name availability checker - Find and update company information - GOV.UK'
+                'title'           => ($company_name)
+                                  ?  $company_name . ' - Company name availability checker - Find and update company information - GOV.UK'
                                   : 'Company name availability checker - Find and update company information - GOV.UK'
             );
 

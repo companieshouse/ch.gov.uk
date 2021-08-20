@@ -1,4 +1,4 @@
-% cascade base { title=> "Charge", , require_js => "transactions/company/mortgage_details_view" }
+% cascade base { title=> "Charge - Find and update company information - GOV.UK", , require_js => "transactions/company/mortgage_details_view" }
 % around content -> {
 % include '/includes/company/page_header.tx'
 
