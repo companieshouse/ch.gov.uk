@@ -1,330 +1,294 @@
 <!DOCTYPE html>
-<!--[if lt IE 9]><html class="lte-ie8 govuk-template" lang="en"><![endif]-->
-<!--[if gt IE 8]><!--><html lang="en" class="govuk-template"><!--<![endif]--><head>
+<html lang="en" class="govuk-template">
+  <head>
 
-  <% if $noindex { %>
-    <meta name="robots" content="noindex" />
-  <% } %>
+    <% if $noindex { %>
+      <meta name="robots" content="noindex" />
+    <% } %>
 
-   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<!-- Company numbers are not taken as a phone number -->
-   <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <!-- Company numbers are not taken as a phone number -->
+    <meta name="format-detection" content="telephone=no">
+    <title data-id="<% $route_name %>"><% $title %></title>
 
-   <title data-id="<% $route_name %>"><% $title %></title>
-
-	<meta name="description" content="<% if $company.company_name { %><% $company.company_name %> - <% } %>Free company information from Companies House including registered office address, filing history, accounts, annual return, officers, charges, business activity">
-
-   <script>
-      (function(){if(navigator.userAgent.match(/IEMobile\/10\.0/)){var d=document,c="appendChild",a=d.createElement("style");a[c](d.createTextNode("@-ms-viewport{width:auto!important}"));d.getElementsByTagName("head")[0][c](a);}})();
-   </script>
-  <link href="//<% $cdn_url %>/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css" rel="stylesheet" />
-
-
-   <!--[if IE 8]>
-      <script type="text/javascript">
-         (function(){if(window.opera){return;}
-         setTimeout(function(){var a=document,g,b={families:(g=
-         ["nta"]),urls:["https://assets.digital.cabinet-office.gov.uk/static/fonts-ie8-a7369d48db4c172b4371ab9def59c5c9.css"]},
-         c="https://assets.digital.cabinet-office.gov.uk/static/vendor/goog/webfont-debug-96870cf9f159ed811fd43c39bdf4656b.js",d="script",
-         e=a.createElement(d),f=a.getElementsByTagName(d)[0],h=g.length;WebFontConfig
-         ={custom:b},e.src=c,f.parentNode.insertBefore(e,f);for(;h=h-1;a.documentElement
-         .className+=' wf-'+g[h].replace(/\s/g,'').toLowerCase()+'-n4-loading');},0)
-      })()
-  </script>
-  <![endif]-->
-
-
-
-   <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v3.5.0/images/favicon.ico" type="image/x-icon">
-
-   <!-- For third-generation iPad with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="144x144" href="//<% $cdn_url %>/images/apple-touch-icon-144x144.png">
-   <!-- For iPhone with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="114x114" href="//<% $cdn_url %>/images/apple-touch-icon-114x114.png">
-   <!-- For first- and second-generation iPad: --><link rel="apple-touch-icon-precomposed" sizes="72x72" href="//<% $cdn_url %>/images/apple-touch-icon-72x72.png">
-   <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: --><link rel="apple-touch-icon-precomposed" href="//<% $cdn_url %>/images/apple-touch-icon-57x57.png">
-
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <meta property="og:image" content="//<% $cdn_url %>/images/opengraph-image.jpg">
-  <!--[if gt IE 8]><!--><!--<link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/application.css" media="screen" rel="stylesheet" type="text/css">--><!--<![endif]-->
-   <!--[if IE 6]><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/application-ie6.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
-   <!--[if IE 7]><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/application-ie7.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
-   <!--[if IE 8]><link href="//<% $cdn_url %>/stylesheets/assets-digital-cabinet-office-gov-uk-static/application-ie8.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->
-
-
-
-   <!-- Companies House Styles and Scripts -->
-
-   % if $certified_copies {
-     <link href="//<% $cdn_url %>/stylesheets/gci/certified-copies.css" media="screen" rel="stylesheet" type="text/css">
-   % }
-
-  <link href="//<% $cdn_url %>/stylesheets/ch.gov.uk.css" media="screen" rel="stylesheet" type="text/css">
-
-
-   <link href="//<% $cdn_url %>/stylesheets/print.css" media="print" rel="stylesheet" type="text/css">
-
-  <link href="//<% $cdn_url %>/stylesheets/jquery-ui.css" rel="stylesheet" />
-
-  <!-- Global config of Require.js -->
-  % macro app_js -> { $require_js? $require_js : 'ch_default' }
-  <script>var global = global || {}; global.CDN_ROOT = '//<% $cdn_url %>'</script>
-  <script src='//<% $cdn_url %>/javascripts/vendor/require.js'></script>
-  <script src='//<% $cdn_url %>/javascripts/app/accounts-pdf.js'></script>
-  <script src='//<% $cdn_url %>/javascripts/lib/details-polyfill.js'></script>
-  <script src='//<% $cdn_url %>/javascripts/app/generate-document.js'></script>
-  <script src='//<% $cdn_url %>/javascripts/vendor/jquery-1.12.4.min.js'></script>
-  <script>
-  require(['//<% $cdn_url %>/javascripts/require-global-config.js'], function () {
-    console.log('Loaded require-global-config.js');
-    // Specific to this 'action'
-        require(['//<% $cdn_url %>/javascripts/app/feedback.js'], function () {
-            console.log('Required feedback.js.');
-        });
-        require(['//<% $cdn_url %>/javascripts/app/<% app_js() %>.js'], function () {
-            console.log('Required <% app_js() %>.js.');
-        });
-  });
-  </script>
-
-   <!-- End of Companies House Styles and Scripts -->
-
-
-<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml">
-
-<!--[if !IE 8]><!-->
-<link href="//<% $cdn_url %>/stylesheets/cookie-consent/cookie-banner-3.11.0.min.css" rel="stylesheet" />
-<!--<![endif]-->
-<!--[if IE 8]>
-<link href="//<% $cdn_url %>/stylesheets/cookie-consent/cookie-banner-ie8-3.11.0.min.css" rel="stylesheet" />
-<![endif]-->
-
-</head>
-
-<body class="govuk-template__body">
-  <script>
-    document.body.className += ' js-enabled';
-  </script>
-
-  <div class="entire-wrapper">
-   <% include 'includes/cookie-consent-banner.tx' %>
-   <div id="skiplink-container">
-      <div>
-      <!--$alternative_skiplink provides a different ID as #content contains styling which can throw off certain screens-->
-      % if !$alternative_skiplink {
-         <a href="#content" class="govuk-skip-link">Skip to main content</a>
-      % } else {
-         <a href="#page-content" class="govuk-skip-link">Skip to main content</a>
-      % }
-      </div>
-   </div>
-
-% if ! $disable_default_header {
-
-  % if $feedback_banner {
-    <header class="govuk-header" role="banner" data-module="govuk-header">
-      <div class="govuk-header__container govuk-width-container">
-        <div class="govuk-header__logo">
-          <a href="https://www.gov.uk/" class="govuk-header__link govuk-header__link--homepage">
-            <span class="govuk-header__logotype">
-              <svg aria-hidden="true" focusable="false" class="govuk-header__logotype-crown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 97" height="30" width="36">
-                <path fill="currentColor" fill-rule="evenodd" d="M25 30.2c3.5 1.5 7.7-.2 9.1-3.7 1.5-3.6-.2-7.8-3.9-9.2-3.6-1.4-7.6.3-9.1 3.9-1.4 3.5.3 7.5 3.9 9zM9 39.5c3.6 1.5 7.8-.2 9.2-3.7 1.5-3.6-.2-7.8-3.9-9.1-3.6-1.5-7.6.2-9.1 3.8-1.4 3.5.3 7.5 3.8 9zM4.4 57.2c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.5-1.5-7.6.3-9.1 3.8-1.4 3.5.3 7.6 3.9 9.1zm38.3-21.4c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.6-1.5-7.6.3-9.1 3.8-1.3 3.6.4 7.7 3.9 9.1zm64.4-5.6c-3.6 1.5-7.8-.2-9.1-3.7-1.5-3.6.2-7.8 3.8-9.2 3.6-1.4 7.7.3 9.2 3.9 1.3 3.5-.4 7.5-3.9 9zm15.9 9.3c-3.6 1.5-7.7-.2-9.1-3.7-1.5-3.6.2-7.8 3.7-9.1 3.6-1.5 7.7.2 9.2 3.8 1.5 3.5-.3 7.5-3.8 9zm4.7 17.7c-3.6 1.5-7.8-.2-9.2-3.8-1.5-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.3 3.5-.4 7.6-3.9 9.1zM89.3 35.8c-3.6 1.5-7.8-.2-9.2-3.8-1.4-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.4 3.6-.3 7.7-3.9 9.1zM69.7 17.7l8.9 4.7V9.3l-8.9 2.8c-.2-.3-.5-.6-.9-.9L72.4 0H59.6l3.5 11.2c-.3.3-.6.5-.9.9l-8.8-2.8v13.1l8.8-4.7c.3.3.6.7.9.9l-5 15.4v.1c-.2.8-.4 1.6-.4 2.4 0 4.1 3.1 7.5 7 8.1h.2c.3 0 .7.1 1 .1.4 0 .7 0 1-.1h.2c4-.6 7.1-4.1 7.1-8.1 0-.8-.1-1.7-.4-2.4V34l-5.1-15.4c.4-.2.7-.6 1-.9zM66 92.8c16.9 0 32.8 1.1 47.1 3.2 4-16.9 8.9-26.7 14-33.5l-9.6-3.4c1 4.9 1.1 7.2 0 10.2-1.5-1.4-3-4.3-4.2-8.7L108.6 76c2.8-2 5-3.2 7.5-3.3-4.4 9.4-10 11.9-13.6 11.2-4.3-.8-6.3-4.6-5.6-7.9 1-4.7 5.7-5.9 8-.5 4.3-8.7-3-11.4-7.6-8.8 7.1-7.2 7.9-13.5 2.1-21.1-8 6.1-8.1 12.3-4.5 20.8-4.7-5.4-12.1-2.5-9.5 6.2 3.4-5.2 7.9-2 7.2 3.1-.6 4.3-6.4 7.8-13.5 7.2-10.3-.9-10.9-8-11.2-13.8 2.5-.5 7.1 1.8 11 7.3L80.2 60c-4.1 4.4-8 5.3-12.3 5.4 1.4-4.4 8-11.6 8-11.6H55.5s6.4 7.2 7.9 11.6c-4.2-.1-8-1-12.3-5.4l1.4 16.4c3.9-5.5 8.5-7.7 10.9-7.3-.3 5.8-.9 12.8-11.1 13.8-7.2.6-12.9-2.9-13.5-7.2-.7-5 3.8-8.3 7.1-3.1 2.7-8.7-4.6-11.6-9.4-6.2 3.7-8.5 3.6-14.7-4.6-20.8-5.8 7.6-5 13.9 2.2 21.1-4.7-2.6-11.9.1-7.7 8.8 2.3-5.5 7.1-4.2 8.1.5.7 3.3-1.3 7.1-5.7 7.9-3.5.7-9-1.8-13.5-11.2 2.5.1 4.7 1.3 7.5 3.3l-4.7-15.4c-1.2 4.4-2.7 7.2-4.3 8.7-1.1-3-.9-5.3 0-10.2l-9.5 3.4c5 6.9 9.9 16.7 14 33.5 14.8-2.1 30.8-3.2 47.7-3.2z"></path>
-                <image src="/assets/images/govuk-logotype-crown.png" xlink:href="data:," display="none" class="govuk-header__logotype-crown-fallback-image" width="36" height="32"></image>
-              </svg>
-              <span class="govuk-header__logotype-text">
-                GOV.UK
-              </span>
-            </span>
-          </a>
-        </div>
-        % if !$certified_copies {
-        <div class="govuk-header__content">
-          <a href="/" class="govuk-header__link govuk-header__link--service-name" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
-            Find and update company information
-          </a>
-          % if ! $disable_header_search {
-              <!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
-          % }
-        </div>
-        % } else {
-            <a href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
-                Order a certified document
-            </a>
-        % }
-      </div>
-    </header>
-  % } else {
-    <header class="govuk-header" role="banner" data-module="govuk-header">
-      <div class="govuk-header__container govuk-width-container">
-        <div class="govuk-header__logo">
-          <a href="https://www.gov.uk/" class="govuk-header__link govuk-header__link--homepage">
-            <span class="govuk-header__logotype">
-              <svg aria-hidden="true" focusable="false" class="govuk-header__logotype-crown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 97" height="30" width="36">
-                <path fill="currentColor" fill-rule="evenodd" d="M25 30.2c3.5 1.5 7.7-.2 9.1-3.7 1.5-3.6-.2-7.8-3.9-9.2-3.6-1.4-7.6.3-9.1 3.9-1.4 3.5.3 7.5 3.9 9zM9 39.5c3.6 1.5 7.8-.2 9.2-3.7 1.5-3.6-.2-7.8-3.9-9.1-3.6-1.5-7.6.2-9.1 3.8-1.4 3.5.3 7.5 3.8 9zM4.4 57.2c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.5-1.5-7.6.3-9.1 3.8-1.4 3.5.3 7.6 3.9 9.1zm38.3-21.4c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.6-1.5-7.6.3-9.1 3.8-1.3 3.6.4 7.7 3.9 9.1zm64.4-5.6c-3.6 1.5-7.8-.2-9.1-3.7-1.5-3.6.2-7.8 3.8-9.2 3.6-1.4 7.7.3 9.2 3.9 1.3 3.5-.4 7.5-3.9 9zm15.9 9.3c-3.6 1.5-7.7-.2-9.1-3.7-1.5-3.6.2-7.8 3.7-9.1 3.6-1.5 7.7.2 9.2 3.8 1.5 3.5-.3 7.5-3.8 9zm4.7 17.7c-3.6 1.5-7.8-.2-9.2-3.8-1.5-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.3 3.5-.4 7.6-3.9 9.1zM89.3 35.8c-3.6 1.5-7.8-.2-9.2-3.8-1.4-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.4 3.6-.3 7.7-3.9 9.1zM69.7 17.7l8.9 4.7V9.3l-8.9 2.8c-.2-.3-.5-.6-.9-.9L72.4 0H59.6l3.5 11.2c-.3.3-.6.5-.9.9l-8.8-2.8v13.1l8.8-4.7c.3.3.6.7.9.9l-5 15.4v.1c-.2.8-.4 1.6-.4 2.4 0 4.1 3.1 7.5 7 8.1h.2c.3 0 .7.1 1 .1.4 0 .7 0 1-.1h.2c4-.6 7.1-4.1 7.1-8.1 0-.8-.1-1.7-.4-2.4V34l-5.1-15.4c.4-.2.7-.6 1-.9zM66 92.8c16.9 0 32.8 1.1 47.1 3.2 4-16.9 8.9-26.7 14-33.5l-9.6-3.4c1 4.9 1.1 7.2 0 10.2-1.5-1.4-3-4.3-4.2-8.7L108.6 76c2.8-2 5-3.2 7.5-3.3-4.4 9.4-10 11.9-13.6 11.2-4.3-.8-6.3-4.6-5.6-7.9 1-4.7 5.7-5.9 8-.5 4.3-8.7-3-11.4-7.6-8.8 7.1-7.2 7.9-13.5 2.1-21.1-8 6.1-8.1 12.3-4.5 20.8-4.7-5.4-12.1-2.5-9.5 6.2 3.4-5.2 7.9-2 7.2 3.1-.6 4.3-6.4 7.8-13.5 7.2-10.3-.9-10.9-8-11.2-13.8 2.5-.5 7.1 1.8 11 7.3L80.2 60c-4.1 4.4-8 5.3-12.3 5.4 1.4-4.4 8-11.6 8-11.6H55.5s6.4 7.2 7.9 11.6c-4.2-.1-8-1-12.3-5.4l1.4 16.4c3.9-5.5 8.5-7.7 10.9-7.3-.3 5.8-.9 12.8-11.1 13.8-7.2.6-12.9-2.9-13.5-7.2-.7-5 3.8-8.3 7.1-3.1 2.7-8.7-4.6-11.6-9.4-6.2 3.7-8.5 3.6-14.7-4.6-20.8-5.8 7.6-5 13.9 2.2 21.1-4.7-2.6-11.9.1-7.7 8.8 2.3-5.5 7.1-4.2 8.1.5.7 3.3-1.3 7.1-5.7 7.9-3.5.7-9-1.8-13.5-11.2 2.5.1 4.7 1.3 7.5 3.3l-4.7-15.4c-1.2 4.4-2.7 7.2-4.3 8.7-1.1-3-.9-5.3 0-10.2l-9.5 3.4c5 6.9 9.9 16.7 14 33.5 14.8-2.1 30.8-3.2 47.7-3.2z"></path>
-                <image src="/assets/images/govuk-logotype-crown.png" xlink:href="data:," display="none" class="govuk-header__logotype-crown-fallback-image" width="36" height="32"></image>
-              </svg>
-              <span class="govuk-header__logotype-text">
-                GOV.UK
-              </span>
-            </span>
-          </a>
-        </div>
-        % if !$certified_copies {
-        <div class="govuk-header__content">
-          <a href="/" class="govuk-header__link govuk-header__link--service-name" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
-            Find and update company information
-          </a>
-          % if ! $disable_header_search {
-              <!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
-          % }
-        </div>
-        % } else {
-            <a href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
-                Order a certified document
-            </a>
-        % }
-      </div>
-    </header>
-  %}
-% }
-
-% if $feedback_banner {
-  <div class="govuk-body" id="chs-customer-insights-top">
-   <div class="govuk-width-container">
-     <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
-   </div>
- </div>
-% }
-
-  <main id="page-container" class="search <% $classes %> govuk-width-container" role="main">
-
-    % if !$feedback_banner {
-      % if $certified_copies {
-        <div>
-      % } else {
-        <div class="govuk-phase-banner">
-      % }
-    % } else {
-      <div>
-    % }
-
-% if ! $certified_copies {
-  <div class="small-text"><a class="govuk-link" href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="govuk-visually-hidden">(link opens a new window)</span></a></div>
-% }
-    </div>
-
-    % if $user_bar != false {
-        <div class="js-toggle-nav" id="global-nav">
-              % if $c.is_signed_in {
-              <a href="#navigation" class="js-header-toggle"><% $c.user_email %>
-                <span class="govuk-visually-hidden">Click to expand or collapse</span>
-              </a>
-              % } else {
-              <a id="user-signin-mobile" href="<% $c.url_for('user_sign_in') %>" class="sign-in govuk-link">Sign in / Register</a>
-              % }
-              <nav role="navigation" class="content<% if !$c.is_signed_in { %> mobile-hidden<% } %>">
-                  <ul id="navigation">
-                  % if $c.is_signed_in {
-
-                        <li id="signed-in-user" class="user"><% $c.user_email %>: </li>
-
-                        <li><a href="<% $c.external_url_for('manage_user_details') %>">Your details</a></li>
-
-                        <li><a id="recent_filings" href="<% $c.config.url_for.companies_house_search_page %><%"/user/transactions"%>">Your filings</a></li>
-
-                        % if !$c.config.disable_follow {
-                            <li><a id="following" href="<% $c.config.monitor.gui_url %>">Companies you follow</a></li>
-                        % }
-
-                        <li><a id="user-signout" href="<% $c.url_for('user_sign_out') %>">Sign out</a></li>
-
-                  % } else {
-
-                        <li class="unauthenticated"><a class="govuk-link" id="user-signin" href="<% $c.url_for('user_sign_in') %>">Sign in / Register</a></li>
-
-                  % }
-                    </ul>
-		            <% $c.adminNavigation %>
-              </nav>
-        </div>
-    % }
-
-% if ! $disable_header_search {
-
-  <div class="column-full-width">
-	  % include "search/banner.tx" { header_or_body => 'header' }
-  </div><!-- column-end -->
-
-% }
-    <div id="<% (! $disable_header_search) ? 'content-container' : 'search-container' %>">
-	% block content -> { ; }
-    </div>
-
-  </main>
-
-  <!--end main-->
-  <div class="push"></div>
-
-</div> <!-- end of entire-wrapper -->
-
-% if $insights_bar != false {
-<div id="chs-customer-insights">
-   <a class="govuk-link" href="https://www.research.net/r/S78XJMV" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="govuk-visually-hidden">(link opens a new window)</span></a>
-   % if $c.config.show_feedback_page {
-       <a id="feedback-link" class="govuk-link secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="govuk-visually-hidden">(link opens a new window)</span></a>
-   % }
-</div>
-% }
-
- <footer id="footer" class="govuk-footer " role="contentinfo">
-      <div class="govuk-width-container ">
-        <div class="govuk-footer__meta">
-          <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
-            <h2 class="govuk-visually-hidden">Support links</h2>
-            <ul class="govuk-footer__inline-list">
-              <li class="govuk-footer__inline-list-item">
-                <a class="govuk-footer__link" href="http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml" target="_blank">
-                  Policies
-                </a>
-              </li>
-              <li class="govuk-footer__inline-list-item">
-                <a class="govuk-footer__link" href="/help/cookies">
-                  Cookies
-                </a>
-              </li>
-              <li class="govuk-footer__inline-list-item">
-                <a class="govuk-footer__link" href="/help/contact-us">
-                  Contact us
-                </a>
-              </li>
-              <li class="govuk-footer__inline-list-item">
-                <a class="govuk-footer__link" href="/help/accessibility-statement">
-                  Accessibility statement
-                </a>
-              </li>
-              <li class="govuk-footer__inline-list-item">
-                <a class="govuk-footer__link" href="https://developer.companieshouse.gov.uk/" target="_blank">
-                  Developers
-                </a>
-              </li>
-            </ul>
-            <span class="govuk-footer__inline-list-item">
-                Built by <a class="govuk-footer__link" href="https://www.gov.uk/government/organisations/companies-house" rel="license">Companies House</a>
-            </span>
-          </div>
-          <div class="govuk-footer__meta-item">
-            <a class="govuk-footer__link govuk-footer__copyright-logo" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">© Crown copyright</a>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <div id="global-app-error" class="app-error hidden"></div>
-
-   <!-- BEGIN Companies House Scripts -->
-    <% include 'includes/piwik.tx' %>
+    <meta name="description" content="<% if $company.company_name { %><% $company.company_name %> - <% } %>Free company information from Companies House including registered office address, filing history, accounts, annual return, officers, charges, business activity">
 
     <script>
-      document.getElementById("feedback-link").setAttribute("href", "/help/feedback?sourceurl=" +  window.location.href);
+      (function(){if(navigator.userAgent.match(/IEMobile\/10\.0/)){var d=document,c="appendChild",a=d.createElement("style");a[c](d.createTextNode("@-ms-viewport{width:auto!important}"));d.getElementsByTagName("head")[0][c](a);}})();
     </script>
-   <!-- End of Companies House Scripts -->
-</body>
+    <link href="//<% $cdn_url %>/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v3.5.0/images/favicon.ico" type="image/x-icon">
+
+    <!-- For third-generation iPad with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="144x144" href="//<% $cdn_url %>/images/apple-touch-icon-144x144.png">
+    <!-- For iPhone with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="114x114" href="//<% $cdn_url %>/images/apple-touch-icon-114x114.png">
+    <!-- For first- and second-generation iPad: --><link rel="apple-touch-icon-precomposed" sizes="72x72" href="//<% $cdn_url %>/images/apple-touch-icon-72x72.png">
+    <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: --><link rel="apple-touch-icon-precomposed" href="//<% $cdn_url %>/images/apple-touch-icon-57x57.png">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:image" content="//<% $cdn_url %>/images/opengraph-image.jpg">
+
+    <!-- Companies House Styles and Scripts -->
+
+    % if $certified_copies {
+      <link href="//<% $cdn_url %>/stylesheets/gci/certified-copies.css" media="screen" rel="stylesheet" type="text/css">
+    % }
+
+    <link href="//<% $cdn_url %>/stylesheets/ch.gov.uk.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="//<% $cdn_url %>/stylesheets/print.css" media="print" rel="stylesheet" type="text/css">
+    <link href="//<% $cdn_url %>/stylesheets/jquery-ui.css" rel="stylesheet" />
+
+    <!-- Global config of Require.js -->
+    % macro app_js -> { $require_js? $require_js : 'ch_default' }
+    <script>var global = global || {}; global.CDN_ROOT = '//<% $cdn_url %>'</script>
+    <script src='//<% $cdn_url %>/javascripts/vendor/require.js'></script>
+    <script src='//<% $cdn_url %>/javascripts/app/accounts-pdf.js'></script>
+    <script src='//<% $cdn_url %>/javascripts/lib/details-polyfill.js'></script>
+    <script src='//<% $cdn_url %>/javascripts/app/generate-document.js'></script>
+    <script src='//<% $cdn_url %>/javascripts/vendor/jquery-1.12.4.min.js'></script>
+    <script>
+    require(['//<% $cdn_url %>/javascripts/require-global-config.js'], function () {
+      console.log('Loaded require-global-config.js');
+      // Specific to this 'action'
+          require(['//<% $cdn_url %>/javascripts/app/feedback.js'], function () {
+              console.log('Required feedback.js.');
+          });
+          require(['//<% $cdn_url %>/javascripts/app/<% app_js() %>.js'], function () {
+              console.log('Required <% app_js() %>.js.');
+          });
+    });
+    </script>
+
+    <!-- End of Companies House Styles and Scripts -->
+
+    <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml">
+  </head>
+
+  <body class="govuk-template__body">
+    <script>
+      document.body.className += ' js-enabled';
+    </script>
+
+    <div class="entire-wrapper">
+    <% include 'includes/cookie-consent-banner.tx' %>
+    <div id="skiplink-container">
+        <div>
+        <!--$alternative_skiplink provides a different ID as #content contains styling which can throw off certain screens-->
+        % if !$alternative_skiplink {
+          <a href="#content" class="govuk-skip-link">Skip to main content</a>
+        % } else {
+          <a href="#page-content" class="govuk-skip-link">Skip to main content</a>
+        % }
+        </div>
+    </div>
+
+  % if ! $disable_default_header {
+
+    % if $feedback_banner {
+      <header class="govuk-header" role="banner" data-module="govuk-header">
+        <div class="govuk-header__container govuk-width-container">
+          <div class="govuk-header__logo">
+            <a href="https://www.gov.uk/" class="govuk-header__link govuk-header__link--homepage">
+              <span class="govuk-header__logotype">
+                <svg aria-hidden="true" focusable="false" class="govuk-header__logotype-crown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 97" height="30" width="36">
+                  <path fill="currentColor" fill-rule="evenodd" d="M25 30.2c3.5 1.5 7.7-.2 9.1-3.7 1.5-3.6-.2-7.8-3.9-9.2-3.6-1.4-7.6.3-9.1 3.9-1.4 3.5.3 7.5 3.9 9zM9 39.5c3.6 1.5 7.8-.2 9.2-3.7 1.5-3.6-.2-7.8-3.9-9.1-3.6-1.5-7.6.2-9.1 3.8-1.4 3.5.3 7.5 3.8 9zM4.4 57.2c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.5-1.5-7.6.3-9.1 3.8-1.4 3.5.3 7.6 3.9 9.1zm38.3-21.4c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.6-1.5-7.6.3-9.1 3.8-1.3 3.6.4 7.7 3.9 9.1zm64.4-5.6c-3.6 1.5-7.8-.2-9.1-3.7-1.5-3.6.2-7.8 3.8-9.2 3.6-1.4 7.7.3 9.2 3.9 1.3 3.5-.4 7.5-3.9 9zm15.9 9.3c-3.6 1.5-7.7-.2-9.1-3.7-1.5-3.6.2-7.8 3.7-9.1 3.6-1.5 7.7.2 9.2 3.8 1.5 3.5-.3 7.5-3.8 9zm4.7 17.7c-3.6 1.5-7.8-.2-9.2-3.8-1.5-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.3 3.5-.4 7.6-3.9 9.1zM89.3 35.8c-3.6 1.5-7.8-.2-9.2-3.8-1.4-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.4 3.6-.3 7.7-3.9 9.1zM69.7 17.7l8.9 4.7V9.3l-8.9 2.8c-.2-.3-.5-.6-.9-.9L72.4 0H59.6l3.5 11.2c-.3.3-.6.5-.9.9l-8.8-2.8v13.1l8.8-4.7c.3.3.6.7.9.9l-5 15.4v.1c-.2.8-.4 1.6-.4 2.4 0 4.1 3.1 7.5 7 8.1h.2c.3 0 .7.1 1 .1.4 0 .7 0 1-.1h.2c4-.6 7.1-4.1 7.1-8.1 0-.8-.1-1.7-.4-2.4V34l-5.1-15.4c.4-.2.7-.6 1-.9zM66 92.8c16.9 0 32.8 1.1 47.1 3.2 4-16.9 8.9-26.7 14-33.5l-9.6-3.4c1 4.9 1.1 7.2 0 10.2-1.5-1.4-3-4.3-4.2-8.7L108.6 76c2.8-2 5-3.2 7.5-3.3-4.4 9.4-10 11.9-13.6 11.2-4.3-.8-6.3-4.6-5.6-7.9 1-4.7 5.7-5.9 8-.5 4.3-8.7-3-11.4-7.6-8.8 7.1-7.2 7.9-13.5 2.1-21.1-8 6.1-8.1 12.3-4.5 20.8-4.7-5.4-12.1-2.5-9.5 6.2 3.4-5.2 7.9-2 7.2 3.1-.6 4.3-6.4 7.8-13.5 7.2-10.3-.9-10.9-8-11.2-13.8 2.5-.5 7.1 1.8 11 7.3L80.2 60c-4.1 4.4-8 5.3-12.3 5.4 1.4-4.4 8-11.6 8-11.6H55.5s6.4 7.2 7.9 11.6c-4.2-.1-8-1-12.3-5.4l1.4 16.4c3.9-5.5 8.5-7.7 10.9-7.3-.3 5.8-.9 12.8-11.1 13.8-7.2.6-12.9-2.9-13.5-7.2-.7-5 3.8-8.3 7.1-3.1 2.7-8.7-4.6-11.6-9.4-6.2 3.7-8.5 3.6-14.7-4.6-20.8-5.8 7.6-5 13.9 2.2 21.1-4.7-2.6-11.9.1-7.7 8.8 2.3-5.5 7.1-4.2 8.1.5.7 3.3-1.3 7.1-5.7 7.9-3.5.7-9-1.8-13.5-11.2 2.5.1 4.7 1.3 7.5 3.3l-4.7-15.4c-1.2 4.4-2.7 7.2-4.3 8.7-1.1-3-.9-5.3 0-10.2l-9.5 3.4c5 6.9 9.9 16.7 14 33.5 14.8-2.1 30.8-3.2 47.7-3.2z"></path>
+                  <image src="/assets/images/govuk-logotype-crown.png" xlink:href="data:," display="none" class="govuk-header__logotype-crown-fallback-image" width="36" height="32"></image>
+                </svg>
+                <span class="govuk-header__logotype-text">
+                  GOV.UK
+                </span>
+              </span>
+            </a>
+          </div>
+          % if !$certified_copies {
+          <div class="govuk-header__content">
+            <a href="/" class="govuk-header__link govuk-header__link--service-name" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
+              Find and update company information
+            </a>
+            % if ! $disable_header_search {
+                <!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
+            % }
+          </div>
+          % } else {
+              <a href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
+                  Order a certified document
+              </a>
+          % }
+        </div>
+      </header>
+    % } else {
+      <header class="govuk-header" role="banner" data-module="govuk-header">
+        <div class="govuk-header__container govuk-width-container">
+          <div class="govuk-header__logo">
+            <a href="https://www.gov.uk/" class="govuk-header__link govuk-header__link--homepage">
+              <span class="govuk-header__logotype">
+                <svg aria-hidden="true" focusable="false" class="govuk-header__logotype-crown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 97" height="30" width="36">
+                  <path fill="currentColor" fill-rule="evenodd" d="M25 30.2c3.5 1.5 7.7-.2 9.1-3.7 1.5-3.6-.2-7.8-3.9-9.2-3.6-1.4-7.6.3-9.1 3.9-1.4 3.5.3 7.5 3.9 9zM9 39.5c3.6 1.5 7.8-.2 9.2-3.7 1.5-3.6-.2-7.8-3.9-9.1-3.6-1.5-7.6.2-9.1 3.8-1.4 3.5.3 7.5 3.8 9zM4.4 57.2c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.5-1.5-7.6.3-9.1 3.8-1.4 3.5.3 7.6 3.9 9.1zm38.3-21.4c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.6-1.5-7.6.3-9.1 3.8-1.3 3.6.4 7.7 3.9 9.1zm64.4-5.6c-3.6 1.5-7.8-.2-9.1-3.7-1.5-3.6.2-7.8 3.8-9.2 3.6-1.4 7.7.3 9.2 3.9 1.3 3.5-.4 7.5-3.9 9zm15.9 9.3c-3.6 1.5-7.7-.2-9.1-3.7-1.5-3.6.2-7.8 3.7-9.1 3.6-1.5 7.7.2 9.2 3.8 1.5 3.5-.3 7.5-3.8 9zm4.7 17.7c-3.6 1.5-7.8-.2-9.2-3.8-1.5-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.3 3.5-.4 7.6-3.9 9.1zM89.3 35.8c-3.6 1.5-7.8-.2-9.2-3.8-1.4-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.4 3.6-.3 7.7-3.9 9.1zM69.7 17.7l8.9 4.7V9.3l-8.9 2.8c-.2-.3-.5-.6-.9-.9L72.4 0H59.6l3.5 11.2c-.3.3-.6.5-.9.9l-8.8-2.8v13.1l8.8-4.7c.3.3.6.7.9.9l-5 15.4v.1c-.2.8-.4 1.6-.4 2.4 0 4.1 3.1 7.5 7 8.1h.2c.3 0 .7.1 1 .1.4 0 .7 0 1-.1h.2c4-.6 7.1-4.1 7.1-8.1 0-.8-.1-1.7-.4-2.4V34l-5.1-15.4c.4-.2.7-.6 1-.9zM66 92.8c16.9 0 32.8 1.1 47.1 3.2 4-16.9 8.9-26.7 14-33.5l-9.6-3.4c1 4.9 1.1 7.2 0 10.2-1.5-1.4-3-4.3-4.2-8.7L108.6 76c2.8-2 5-3.2 7.5-3.3-4.4 9.4-10 11.9-13.6 11.2-4.3-.8-6.3-4.6-5.6-7.9 1-4.7 5.7-5.9 8-.5 4.3-8.7-3-11.4-7.6-8.8 7.1-7.2 7.9-13.5 2.1-21.1-8 6.1-8.1 12.3-4.5 20.8-4.7-5.4-12.1-2.5-9.5 6.2 3.4-5.2 7.9-2 7.2 3.1-.6 4.3-6.4 7.8-13.5 7.2-10.3-.9-10.9-8-11.2-13.8 2.5-.5 7.1 1.8 11 7.3L80.2 60c-4.1 4.4-8 5.3-12.3 5.4 1.4-4.4 8-11.6 8-11.6H55.5s6.4 7.2 7.9 11.6c-4.2-.1-8-1-12.3-5.4l1.4 16.4c3.9-5.5 8.5-7.7 10.9-7.3-.3 5.8-.9 12.8-11.1 13.8-7.2.6-12.9-2.9-13.5-7.2-.7-5 3.8-8.3 7.1-3.1 2.7-8.7-4.6-11.6-9.4-6.2 3.7-8.5 3.6-14.7-4.6-20.8-5.8 7.6-5 13.9 2.2 21.1-4.7-2.6-11.9.1-7.7 8.8 2.3-5.5 7.1-4.2 8.1.5.7 3.3-1.3 7.1-5.7 7.9-3.5.7-9-1.8-13.5-11.2 2.5.1 4.7 1.3 7.5 3.3l-4.7-15.4c-1.2 4.4-2.7 7.2-4.3 8.7-1.1-3-.9-5.3 0-10.2l-9.5 3.4c5 6.9 9.9 16.7 14 33.5 14.8-2.1 30.8-3.2 47.7-3.2z"></path>
+                  <image src="/assets/images/govuk-logotype-crown.png" xlink:href="data:," display="none" class="govuk-header__logotype-crown-fallback-image" width="36" height="32"></image>
+                </svg>
+                <span class="govuk-header__logotype-text">
+                  GOV.UK
+                </span>
+              </span>
+            </a>
+          </div>
+          % if !$certified_copies {
+          <div class="govuk-header__content">
+            <a href="/" class="govuk-header__link govuk-header__link--service-name" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
+              Find and update company information
+            </a>
+            % if ! $disable_header_search {
+                <!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
+            % }
+          </div>
+          % } else {
+              <a href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
+                  Order a certified document
+              </a>
+          % }
+        </div>
+      </header>
+    %}
+  % }
+
+  % if $feedback_banner {
+    <div class="govuk-body" id="chs-customer-insights-top">
+    <div class="govuk-width-container">
+      <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
+    </div>
+  </div>
+  % }
+
+    <main id="page-container" class="search <% $classes %> govuk-width-container" role="main">
+
+      % if !$feedback_banner {
+        % if $certified_copies {
+          <div>
+        % } else {
+          <div class="govuk-phase-banner">
+        % }
+      % } else {
+        <div>
+      % }
+
+  % if ! $certified_copies {
+    <div class="small-text"><a class="govuk-link" href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="govuk-visually-hidden">(link opens a new window)</span></a></div>
+  % }
+      </div>
+
+      % if $user_bar != false {
+          <div class="js-toggle-nav" id="global-nav">
+                % if $c.is_signed_in {
+                <a href="#navigation" class="js-header-toggle"><% $c.user_email %>
+                  <span class="govuk-visually-hidden">Click to expand or collapse</span>
+                </a>
+                % } else {
+                <a id="user-signin-mobile" href="<% $c.url_for('user_sign_in') %>" class="sign-in govuk-link">Sign in / Register</a>
+                % }
+                <nav role="navigation" class="content<% if !$c.is_signed_in { %> mobile-hidden<% } %>">
+                    <ul id="navigation">
+                    % if $c.is_signed_in {
+
+                          <li id="signed-in-user" class="user"><% $c.user_email %>: </li>
+
+                          <li><a href="<% $c.external_url_for('manage_user_details') %>">Your details</a></li>
+
+                          <li><a id="recent_filings" href="<% $c.config.url_for.companies_house_search_page %><%"/user/transactions"%>">Your filings</a></li>
+
+                          % if !$c.config.disable_follow {
+                              <li><a id="following" href="<% $c.config.monitor.gui_url %>">Companies you follow</a></li>
+                          % }
+
+                          <li><a id="user-signout" href="<% $c.url_for('user_sign_out') %>">Sign out</a></li>
+
+                    % } else {
+
+                          <li class="unauthenticated"><a class="govuk-link" id="user-signin" href="<% $c.url_for('user_sign_in') %>">Sign in / Register</a></li>
+
+                    % }
+                      </ul>
+                  <% $c.adminNavigation %>
+                </nav>
+          </div>
+      % }
+
+  % if ! $disable_header_search {
+
+    <div class="column-full-width">
+      % include "search/banner.tx" { header_or_body => 'header' }
+    </div><!-- column-end -->
+
+  % }
+      <div id="<% (! $disable_header_search) ? 'content-container' : 'search-container' %>">
+    % block content -> { ; }
+      </div>
+
+    </main>
+
+    <!--end main-->
+    <div class="push"></div>
+
+  </div> <!-- end of entire-wrapper -->
+
+  % if $insights_bar != false {
+  <div id="chs-customer-insights">
+    <a class="govuk-link" href="https://www.research.net/r/S78XJMV" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="govuk-visually-hidden">(link opens a new window)</span></a>
+    % if $c.config.show_feedback_page {
+        <a id="feedback-link" class="govuk-link secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="govuk-visually-hidden">(link opens a new window)</span></a>
+    % }
+  </div>
+  % }
+
+  <footer id="footer" class="govuk-footer " role="contentinfo">
+        <div class="govuk-width-container ">
+          <div class="govuk-footer__meta">
+            <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+              <h2 class="govuk-visually-hidden">Support links</h2>
+              <ul class="govuk-footer__inline-list">
+                <li class="govuk-footer__inline-list-item">
+                  <a class="govuk-footer__link" href="http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml" target="_blank">
+                    Policies
+                  </a>
+                </li>
+                <li class="govuk-footer__inline-list-item">
+                  <a class="govuk-footer__link" href="/help/cookies">
+                    Cookies
+                  </a>
+                </li>
+                <li class="govuk-footer__inline-list-item">
+                  <a class="govuk-footer__link" href="/help/contact-us">
+                    Contact us
+                  </a>
+                </li>
+                <li class="govuk-footer__inline-list-item">
+                  <a class="govuk-footer__link" href="/help/accessibility-statement">
+                    Accessibility statement
+                  </a>
+                </li>
+                <li class="govuk-footer__inline-list-item">
+                  <a class="govuk-footer__link" href="https://developer.companieshouse.gov.uk/" target="_blank">
+                    Developers
+                  </a>
+                </li>
+              </ul>
+              <span class="govuk-footer__inline-list-item">
+                  Built by <a class="govuk-footer__link" href="https://www.gov.uk/government/organisations/companies-house" rel="license">Companies House</a>
+              </span>
+            </div>
+            <div class="govuk-footer__meta-item">
+              <a class="govuk-footer__link govuk-footer__copyright-logo" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">© Crown copyright</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      <div id="global-app-error" class="app-error hidden"></div>
+
+    <!-- BEGIN Companies House Scripts -->
+      <% include 'includes/piwik.tx' %>
+
+      <script>
+        document.getElementById("feedback-link").setAttribute("href", "/help/feedback?sourceurl=" +  window.location.href);
+      </script>
+    <!-- End of Companies House Scripts -->
+  </body>
 </html>

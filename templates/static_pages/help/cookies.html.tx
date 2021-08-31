@@ -2,15 +2,15 @@
 % around content -> {
 
    <article class="text" id="content">
-    <div id="cookie-settings-success-message" class="ch-cookie-notification-banner ch-cookie-notification-banner--success" role="alert" aria-labelledby="ch-cookie-notification-banner-title" data-module="ch-cookie-notification-banner" style="margin-top: 10px;" hidden>
-      <div class="ch-cookie-notification-banner__header">
-        <h2 class="ch-cookie-notification-banner__title" id="ch-cookie-notification-banner-title">
+    <div id="cookie-settings-success-message" class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner" style="margin-top: 10px;" hidden>
+      <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
           Success
         </h2>
       </div>
-      <div class="ch-cookie-notification-banner__content">
-        <p class="ch-cookie-notification-banner__heading">
-          You’ve set your cookie preferences. <a id="cookie-success-link" class="ch-cookie-notification-banner__link" href="#" hidden>Go back to the page you were looking at.</a>
+      <div class="govuk-notification-banner__content">
+        <p class="govuk-notification-banner__heading">
+          You’ve set your cookie preferences. <a id="cookie-success-link" class="govuk-notification-banner__link" href="#" hidden>Go back to the page you were looking at.</a>
         </p>
       </div>
     </div>
@@ -193,24 +193,24 @@
         </tr>
       </tbody>
     </table>
-    <div id="ch-cookie-controls" class="ch-cookie-grid-row" hidden>
-      <div class="ch-cookie-grid-column-two-thirds">
-        <h2 class="ch-cookie-heading-l">Change your cookie settings</h2>
-          <div class="ch-cookie-form-group">
-            <fieldset class="ch-cookie-fieldset">
-              <legend class="ch-cookie-fieldset__legend ch-cookie-fieldset__legend--s">
+    <div id="govuk-controls" class="govuk-grid-row" hidden>
+      <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-l">Change your cookie settings</h2>
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                 Do you want to accept analytics cookies?
               </legend>
-              <div class="ch-cookie-radios">
-                <div class="ch-cookie-radios__item">
-                  <input class="ch-cookie-radios__input" id="analytics-cookies-yes" name="analytics-cookies" type="radio" value="yes">
-                  <label class="ch-cookie-label ch-cookie-radios__label" for="analytics-cookies-yes">
+              <div class="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="analytics-cookies-yes" name="analytics-cookies" type="radio" value="yes">
+                  <label class="govuk-label govuk-radios__label" for="analytics-cookies-yes">
                     Yes
                   </label>
                 </div>
-                <div class="ch-cookie-radios__item">
-                  <input class="ch-cookie-radios__input" id="analytics-cookies-no" name="analytics-cookies" type="radio" value="no" checked>
-                  <label class="ch-cookie-label ch-cookie-radios__label" for="analytics-cookies-no">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="analytics-cookies-no" name="analytics-cookies" type="radio" value="no" checked>
+                  <label class="govuk-label govuk-radios__label" for="analytics-cookies-no">
                     No
                   </label>
                 </div>
@@ -218,17 +218,17 @@
     
             </fieldset>
           </div>
-          <button id="analytics-choice-button" type="button" class="ch-cookie-button" data-module="ch-cookie-button">
+          <button id="analytics-choice-button" type="button" class="govuk-button" data-module="govuk-button">
             Save cookie settings
           </button>
       </div>
     </div>
     <noscript>
-      <div class="ch-cookie-grid-row">
-        <div class="ch-cookie-grid-column-two-thirds">
-          <h2 class="ch-cookie-heading-l">Change your cookie settings</h2>
-          <p class="ch-cookie-body">We cannot change your cookie settings at the moment because JavaScript is not running in your browser. To fix this, try:</p>
-          <ul class="ch-cookie-list ch-cookie-list--bullet">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h2 class="govuk-heading-l">Change your cookie settings</h2>
+          <p class="govuk-body">We cannot change your cookie settings at the moment because JavaScript is not running in your browser. To fix this, try:</p>
+          <ul class="govuk-list govuk-list--bullet">
             <li>turning on JavaScript in your browser settings</li>
             <li>reloading this page</li>
           </ul>
@@ -260,7 +260,7 @@
           }
         }
 
-        document.getElementById('ch-cookie-controls').removeAttribute('hidden')
+        document.getElementById('govuk-controls').removeAttribute('hidden')
 
         function getParameterByName(name) {
           var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
