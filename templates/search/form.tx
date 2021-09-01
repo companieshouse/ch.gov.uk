@@ -35,6 +35,10 @@
 
 </form>
 
+% if $c.config.feature.advanced_search {
+    <a class="govuk-link piwik-event" data-id="advanced-company-search" data-event-id="Advanced company search" href="/advanced-search" target="_blank">Advanced company search<span class="govuk-visually-hidden">Link opens in new window</span></a>
+% }
+
 % if ($header_or_body != 'header') {
     % if !$results {
     <div id="feature-info" class="grid-row">
