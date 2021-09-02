@@ -61,6 +61,14 @@
     <!-- End of Companies House Styles and Scripts -->
 
     <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml">
+
+    <!-- IE specific CSS rule to add support for main elements -->
+    <style>
+      @media all and (-ms-high-contrast:none)
+       {
+       main { display: block }
+       }
+    </style>
   </head>
 
   <body class="govuk-template__body">
