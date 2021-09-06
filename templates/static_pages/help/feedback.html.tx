@@ -1,4 +1,4 @@
-% cascade base { title => 'Feedback - Find and update company information - GOV.UK', disable_header_search => 1, user_bar => false, insights_bar => false, }
+% cascade base { title => 'Feedback - Find and update company information - GOV.UK', disable_header_search => 1, user_bar => false, insights_bar => false, alternative_skiplink => true }
 
 % around content -> {
 
@@ -8,7 +8,7 @@
   <h2 class="heading-medium">Thank you, your submission has been accepted</h2>
 </div>
 
-<div id="feedback-form-container">
+<div id="page-content">
         <form action="/customer-feedback" class="form" enctype="" method="post" name="" id="feedback-form">
         <input type="hidden" name="source_url" value="" id="source-url-field">
         <div class="text">

@@ -57,7 +57,7 @@
         <table id="rf_table">
             <thead>
                 <tr>
-                    <th class="description"></th>
+                    <th class="description"><span class="govuk-visually-hidden">Description</span></th>
                     <th class="status">Status</th>
                     <th class="status">Actions</th>
                 </tr>
