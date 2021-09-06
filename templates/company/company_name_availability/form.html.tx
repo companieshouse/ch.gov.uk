@@ -11,7 +11,7 @@
 
                 <p>Enter proposed company name</p>
 
-            <form id="name-availability-search" action="/company-name-availability" method="get" accept-charset="utf-8" role="name-availability-search" class="search-header js-search-hash">
+            <form id="name-availability-search" action="/company-name-availability" method="get" accept-charset="utf-8" role="search" class="search-header js-search-hash">
 
                 <div class="searchfield">
                     <input type="search" autocomplete="off" name="q" id="company-name-availability-search-text" title="Search" value="<% $query %>" placeholder="Search"/>
