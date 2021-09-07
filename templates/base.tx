@@ -246,6 +246,8 @@
   </div>
   % }
 
+  <div class="blue-footer-border"></div>
+
   <footer id="footer" class="govuk-footer " role="contentinfo">
         <div class="govuk-width-container ">
           <div class="govuk-footer__meta">
