@@ -227,7 +227,7 @@
                         <dl class="column-two-thirds">
                             <dt><% l('Nature of control') %></dt>
                             % for $psc.natures_of_control -> $noc {
-                            <dd id="psc-noc-<% $~psc.count %>" class="data">
+                            <dd id="psc-noc-<% $~psc.count %>-<% $noc %>" class="data">
                                 <% $c.psc_lookup($noc, 'short_description') %>
                             </dd>
                             % }
