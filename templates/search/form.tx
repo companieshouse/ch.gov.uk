@@ -79,7 +79,7 @@
 </script>
 
 <script id="tabs-template" type="text/html">
-    <div id="search-results-tabs" class="filter-bar js-tabs">
+    <div id="search-results-tabs-js" class="filter-bar js-tabs">
         % include "search/js-tabs.tx";
     </div>
 </script>

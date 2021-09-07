@@ -15,7 +15,7 @@
     % include "search/form.tx" {SHOW_TABS => 0, RESULTS_CONTAINER => 0}
 
     <div class="grid-row">
-        <div class="column-two-thirds" id="content">
+        <div class="column-two-thirds">
 
             <article id="services-information-results">
 
