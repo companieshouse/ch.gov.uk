@@ -68,7 +68,7 @@
                 % if defined $charge.creation_transaction.resource_url {
                     <a href="<% $c.url_for('filing_history_document', filing_history_id => $charge.creation_transaction.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="mortgage-created-link">View PDF<span class="govuk-visually-hidden"> for <% l($c.md_lookup('filing_type', $charge.creation_transaction.filing_type)) %></span></a><% if ($charge.creation_transaction.pages) { %> (<% ln('%d page', '%d pages', $charge.creation_transaction.pages) %>)<% } %>
                 % } else {
-                    <span id="no-image-link">Image unavailable</span>
+                    <span>Image unavailable</span>
                 % }
             </ul>
         </dl>
@@ -177,7 +177,7 @@
                         % if defined $filing.resource_url {
                             <a href="<% $c.url_for('filing_history_document', filing_history_id => $filing.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="mortgage-created-link">View PDF<span class="govuk-visually-hidden"> for <% l($c.md_lookup('filing_type', $filing.filing_type)) %></span></a><% if ($filing.pages) { %> (<% ln('%d page', '%d pages', $filing.pages) %>)<% } %>
                         % } else {
-                            <span id="no-image-link">Image unavailable</span>
+                            <span>Image unavailable</span>
                         % }
                     </td>
                     % if $charge.show_insolvency_column {
