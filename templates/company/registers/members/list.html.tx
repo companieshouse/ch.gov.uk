@@ -3,7 +3,7 @@
     % include '/includes/company/page_header.tx'
     % include '/includes/company/tabs.tx' { active => 'register-tab' };
 
-    <ol role="breadcrumb" class="breadcrumb">
+    <ol role="list" class="breadcrumb">
         <li><a id="charges-index" href="/company/<% $company_number %>/registers"><% l('Registers') %></a></li>
         <li><% l('Register of members') %></li>
     </ol>

@@ -101,7 +101,7 @@
                         % if defined $item.resource_url {
                             <td><a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %> id="<%$register_type_var.register_type%>-created-link">View PDF<span class="govuk-visually-hidden"> for Register of <%$register_type_var.register_type%> as of <% $c.isodate_as_string($register_type_var.last_move) %> Link opens in new window </span></a><% if ($item.pages) { %> (<% ln('%d page', '%d pages', $item.pages) %>)<% } %></td>
                         % } else {
-                            <td><span id="no-image-link">-</span></td>
+                            <td><span>-</span></td>
                         % }
                     </tr>
                 % }
