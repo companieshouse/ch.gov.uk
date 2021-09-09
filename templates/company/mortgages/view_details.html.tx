@@ -4,7 +4,7 @@
 
 % include '/includes/company/tabs.tx' { active => 'charges-tab' };
 
-<ol role="breadcrumb" class="breadcrumb">
+<ol role="list" class="breadcrumb">
     <li><a id="charges-index" href="/company/<% $company_number %>/charges"><% l('Charges') %></a></li>
     <li>
         % if defined $charge.charge_code {
