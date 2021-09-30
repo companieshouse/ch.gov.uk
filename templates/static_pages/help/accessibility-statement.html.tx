@@ -104,7 +104,7 @@
       Users of screen reading technology
     </h2>
 
-    <p>In some circumstances, users of screen reader technology may get presented with incorrect information when using our accounts filing service. This doesn’t meet WCAG 2.1 Success Criterion 3.3.2 (labels or Instructions). This is a known bug in the Chrome web browser - these types of bugs are usually fixed by future updates to the browser.</p>
+    <p>In some circumstances, users of screen reader technology may get presented with incorrect information when using our accounts filing service. This doesn’t meet WCAG 2.1 Success Criterion 3.3.2 (Labels or Instructions). This is a known bug in the Chrome web browser - these types of bugs are usually fixed by future updates to the browser.</p>
 
     <h2 class="heading-medium">
         PDFs and other documents
