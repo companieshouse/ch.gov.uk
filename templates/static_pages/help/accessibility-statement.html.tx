@@ -31,6 +31,10 @@
         <li>most PDF documents are not accessible in a number of ways including missing text alternatives and missing document structure.</li>
     </ul>
 
+    <ul class="list-bullet">
+        <li>Due to a known bug in the Chrome web browser, in some circumstances users of screen reader technology may get presented with incorrect information when using our accounts filing service</li>
+    </ul>
+
     <h2 class="heading-medium">
         What to do if you can’t access parts of this service
     </h2>
@@ -90,11 +94,17 @@
     </h2>
 
     <p>Companies House is committed to making its website accessible in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.</p>
- 
+
     <p>This service is partially compliant with the
         <a class="govuk-link" href="https://www.w3.org/TR/WCAG21/">Web Content Accessibility Guidelines version 2.1</a>
         AA standard, due to the non-compliances listed below.
     </p>
+
+    <h2 class="heading-medium">
+      Users of screen reading technology
+    </h2>
+
+    <p>In some circumstances, users of screen reader technology may get presented with incorrect information when using our accounts filing service. This doesn’t meet WCAG 2.1 Success Criterion 3.3.2 (Labels or Instructions). This is a known bug in the Chrome web browser - these types of bugs are usually fixed by future updates to the browser.</p>
 
     <h2 class="heading-medium">
         PDFs and other documents
@@ -147,7 +157,7 @@
     <br>
     <p><a class="govuk-link" href="https://companieshouse.blog.gov.uk/category/user-research/">Read our blogs about usability</a>
           to find out more about our user research work.</p>
-    <p>This statement was prepared on 7 May 2020. It was last updated on 18 June 2020.</p>
+    <p>This statement was prepared on 7 May 2020. It was last updated on 29 September 2021.</p>
 
     </article>
 % }
