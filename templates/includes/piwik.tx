@@ -23,28 +23,25 @@
 
   var docTitle = document.title;
 
-  if (docTitle.match(/Overview \(free company information from Companies House\)$/)){
+  if (docTitle.includes("overview - Find and update company information - GOV.UK"){
      _paq.push(['setDocumentTitle','Overview']);
   }
-  else if (docTitle.match(/Filing history \(free information from Companies House\)$/)){
+  else if (docTitle.includes("filing history - Find and update company information - GOV.UK"){
      _paq.push(['setDocumentTitle','Filing history']);
   }
-  else if (docTitle.match(/Officers \(free information from Companies House\)$/)){
+  else if (docTitle.includes("people - Find and update company information - GOV.UK"){
      _paq.push(['setDocumentTitle','Officers']);
   }
-  else if (docTitle.match(/Personal Appointments \(free information from Companies House\)$/)){
+  else if (docTitle.includes("personal appointments - Find and update company information - GOV.UK"){
      _paq.push(['setDocumentTitle','Personal Appointments']);
   }
-  else if (docTitle.match(/Charges \(free information from Companies House\)$/)){
+  else if (docTitle.includes("charges - Find and update company information - GOV.UK"){
      _paq.push(['setDocumentTitle','Charges']);
   }
-  else if (docTitle.match(/Insolvency \(free information from Companies House\)$/)){
+  else if (docTitle.includes("insolvency - Find and update company information - GOV.UK"){
      _paq.push(['setDocumentTitle','Insolvency']);
   }
-  else if (docTitle.match(/Mortgages \(free information from Companies House\)$/)){
-     _paq.push(['setDocumentTitle','Charges ']);
-  }
-  else if (docTitle.match(/More \(free company information from Companies House\)$/)) {
+  else if (docTitle.includes("more information - Find and update company information - GOV.UK") {
      _paq.push(['setDocumentTitle','More']);
   }
 
