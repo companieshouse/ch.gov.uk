@@ -32,6 +32,9 @@
   else if (docTitle.includes("people - Find and update company information - GOV.UK")) {
      _paq.push(['setDocumentTitle','Officers']);
   }
+  else if (docTitle.includes("persons with significant control - Find and update company information - GOV.UK")) {
+     _paq.push(['setDocumentTitle','PSCs']);
+  }
   else if (docTitle.includes("personal appointments - Find and update company information - GOV.UK")) {
      _paq.push(['setDocumentTitle','Personal Appointments']);
   }
