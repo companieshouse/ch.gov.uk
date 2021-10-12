@@ -47,6 +47,18 @@
   else if (docTitle.includes("more information - Find and update company information - GOV.UK")) {
      _paq.push(['setDocumentTitle','More']);
   }
+  else if (docTitle.includes("registers - Find and update company information - GOV.UK")) {
+     _paq.push(['setDocumentTitle','Registers']);
+  }
+  else if (docTitle.includes("registers of directors - Find and update company information - GOV.UK")) {
+     _paq.push(['setDocumentTitle','Registers of Directors']);
+  }
+  else if (docTitle.includes("Registered Secretaries - Find and update company information - GOV.UK")) {
+     _paq.push(['setDocumentTitle','Registered Secretaries']);
+  }
+  else if (docTitle.includes("UK Establishments - Find and update company information - GOV.UK")) {
+     _paq.push(['setDocumentTitle','UK Establishments']);
+  }
 
   _paq.push(['setCustomVariable', 1,'VisitorStatus',<% if $c.is_signed_in { %>'SignedIn'<% } else { %>'NotSignedIn'<% } %>,'visit']);
   _paq.push(['setCustomVariable', 2,'CompanyStatus',<% if $company.company_number == $c.authorised_company {%>'Authorised'<% } else { %>'NotAuthorised'<% } %>,'visit']);
