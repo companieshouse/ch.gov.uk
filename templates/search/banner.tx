@@ -22,9 +22,7 @@
 </div>  <!--end search-bar-active-->
 
 % if $c.config.feature.advanced_search {
-    <a class="govuk-link piwik-event" data-id="advanced-company-search" data-event-id="Advanced company search" href="/advanced-search" target="_blank">Advanced company search<span class="govuk-visually-hidden">Link opens in new window</span></a>
-    <br>
-    <br>
+    <a class="govuk-link piwik-event" data-id="advanced-company-search" data-event-id="Advanced company search" href="/advanced-search" target="_blank">Advanced company search<span class="govuk-visually-hidden">Link opens in new window</span></a><br><br>
 % }
 
 % if $results {
