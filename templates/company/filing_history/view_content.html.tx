@@ -49,6 +49,11 @@
                 <td>
                     % include "company/filing_history/transaction_description.html.tx" { item => $item };
                     % if !$item.links.document_metadata {
+                      % if ($item._missing_doc && $item._missing_message != 'available_in_5_days') {
+                      <div class="form-hint">
+                        <!--Due to the impact of Covid 19 we are currently unable to offer the document ordering service for older documents not shown on the filing history of Companies House Service.-->
+                      </div>
+                      % }
                       % if ($item._missing_message == 'unavailable' && !$item._missing_doc) {
                         <div class="form-hint">
                                 This document is not currently available online. You can request to add the document to the company's filing history, which costs £3.
