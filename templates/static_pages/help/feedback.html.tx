@@ -8,7 +8,8 @@
   <h2 class="heading-medium">Thank you, your submission has been accepted</h2>
 </div>
 
-<div id="page-content">
+<div id="page-content"></div>
+<div id="feedback-form-container">
         <form action="/customer-feedback" class="form" enctype="" method="post" name="" id="feedback-form">
         <input type="hidden" name="source_url" value="" id="source-url-field">
         <div class="text">
