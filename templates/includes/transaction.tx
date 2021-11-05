@@ -76,7 +76,7 @@
                             <td id = "view-submission-<% $~filing.count %>">
 
                             % if $c.can_do('/admin/transaction-lookup') {
-                                % if $filing.value.type != 'registered-office-address' {
+                                % if $filing.value.type == 'accounts' || $filing.value.type == 'abridged' || $filing.value.type == 'smallfull' {
                                   <div id="widget">
                                       <a class="render-accounts-document" href="#"> View </a>
                                       <div id="status-widget" class="widget-footer hidden">
@@ -101,7 +101,7 @@
                             <td id = "submission-status-<% $~filing.count %>"><strong class="status">Processing</strong></td>
                             <td id = "view-submission-<% $~filing.count %>">
                             % if $c.can_do('/admin/transaction-lookup') {
-                              % if $filing.value.type != 'registered-office-address' {
+                              % if $filing.value.type == 'accounts' || $filing.value.type == 'abridged' || $filing.value.type == 'smallfull' {
                                   <div id="widget">
                                     <a class="render-accounts-document" href="#"> View </a>
                                     <div id="status-widget" class="widget-footer hidden">
@@ -147,7 +147,7 @@
                             </td>
                             <td>
                             % if $c.can_do('/admin/transaction-lookup') {
-                              % if $filing.value.type != 'registered-office-address' {
+                              % if $filing.value.type == 'accounts' || $filing.value.type == 'abridged' || $filing.value.type == 'smallfull' {
                                   <div id="widget">
                                     <a class="render-accounts-document" href="#"> View </a>
                                     <div id="status-widget" class="widget-footer hidden">
