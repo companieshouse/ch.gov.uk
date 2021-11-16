@@ -23,10 +23,10 @@ subtest "Render view if company is active and company type is valid" => sub {
         is $args{template}, 'company/view_all/view', "Expected template is rendered";
     });
     $view_all_ctrl->view();
-    is $view_all_ctrl->stash->{show_snapshot}, 1;
-    is $view_all_ctrl->stash->{show_certificate}, 1;
-    is $view_all_ctrl->stash->{show_certified_document}, 1;
-    is $view_all_ctrl->stash->{show_dissolved_certificate}, 0;
+    is $view_all_ctrl->stash->{show_snapshot}, 1, "Link to download company snapshot should be displayed";
+    is $view_all_ctrl->stash->{show_certificate}, 1, "Link to order certificate should be displayed";
+    is $view_all_ctrl->stash->{show_certified_document}, 1, "Link to order certified document should be displayed";
+    is $view_all_ctrl->stash->{show_dissolved_certificate}, 0, "Link to order certificate for dissolved company should be hidden";
 };
 
 done_testing();
