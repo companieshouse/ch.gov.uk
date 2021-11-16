@@ -12,9 +12,11 @@ CHS_ENVS=$(CHS_ENV_HOME)/global_env $(CHS_ENV_HOME)/$(SERVICE_NAME)/env
 SOURCE_ENV=for chs_env in $(CHS_ENVS); do test -f $$chs_env && . $$chs_env; done
 
 PROVE_CMD       ?= $(LOCAL)/bin/prove
-PROVE_ARGS      ?= -It/lib -Ilib -I$(LOCAL)/lib/perl5 -lr
+PROVE_ARGS      ?= -It/lib -Ilib -I$(LOCAL)/lib/perl5 -lrv
 
 TEST_UNIT_ENV   ?= COOKIE_SECRET=abcdef123456 URL_SIGNING_SALT=abcdef123456
+
+DOCKER_IMAGE_TAG   ?= 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/ch.gov.uk:latest
 
 all: dist
 
@@ -26,7 +28,7 @@ api-enumerations/.git:
 
 deps:
 	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_URL) . && unzip $(PERL_DEPS_PACKAGE) -d $(CURDIR)/local; }
-	test -f $(PERL_DEPS_PACKAGE) && rm -f $(PERL_DEPS_PACKAGE)
+	rm -f $(PERL_DEPS_PACKAGE)
 
 clean:
 	rm -rf $(LOCAL)
@@ -63,4 +65,10 @@ endif
 
 dist: build package
 
-.PHONY: all build clean dist package test test-unit test-integration deps
+docker-build: deps
+	DOCKER_BUILDKIT=0 docker build -t $(DOCKER_IMAGE_TAG) .
+
+docker-test: docker-build
+	docker run --env-file test.env $(DOCKER_IMAGE_TAG) plenv exec perl $(PROVE_CMD) $(PROVE_ARGS) t/unit/ChGovUk/Controllers/Company/ViewAll.t
+
+.PHONY: all build clean dist package test test-unit test-integration deps docker-build docker-test
