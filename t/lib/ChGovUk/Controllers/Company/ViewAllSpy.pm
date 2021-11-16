@@ -1,5 +1,8 @@
 package ChGovUk::Controllers::Company::ViewAllSpy;
 
+use strict;
+use warnings;
+
 use parent qw(ChGovUk::Controllers::Company::ViewAll);
 use CH::Perl;
 
