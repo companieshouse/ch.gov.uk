@@ -70,7 +70,7 @@ sub view {
 
   $show_snapshot = 0 if exists $snapshot_not_orderable{$company_type};
   $show_certificate = 1 if exists $company_status_certificate_orders{$company_status} and exists $certificate_orderable{$company_type};
-  $show_certified_document = 0 if $filing_history eq "" || ($filing_history ne "" && $company_type eq "uk-establishment");
+  $show_certified_document = 0 if $filing_history eq "" or ($filing_history ne "" and $company_type eq "uk-establishment");
   $show_dissolved_certificate = 1 if $company_status eq 'dissolved' and exists $dissolved_certificate_orderable{$company_type};
 
   $self->stash(show_snapshot => $show_snapshot);
