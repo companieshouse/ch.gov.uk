@@ -143,7 +143,7 @@ subtest "Hide dissolved certified certificate link if not orderable for company 
 
 #-------------------------------------------------------------------------------
 
-subtest "Render view if company is in liquidation and company type is valid" => sub {
+subtest "Render view if company is in liquidation and company type is valid and feature enabled" => sub {
     plan tests => 5;
     $view_all_ctrl->stash(company => {
         type           => "ltd",
@@ -156,11 +156,60 @@ subtest "Render view if company is in liquidation and company type is valid" => 
         my %args = @_;
         is $args{template}, 'company/view_all/view', "Expected template is rendered";
     });
+    $view_all_ctrl->config->{feature}{order_liquidation_certificate} = 1;
     $view_all_ctrl->view();
     is $view_all_ctrl->stash->{show_snapshot}, 1, "Snapshots should be orderable";
     is $view_all_ctrl->stash->{show_certificate}, 1, "Certificates should be orderable";
     is $view_all_ctrl->stash->{show_certified_document}, 1, "Certified documents should be orderable";
     is $view_all_ctrl->stash->{show_dissolved_certificate}, 0, "Dissolved certificates should not be orderable";
 };
+
+#-------------------------------------------------------------------------------
+
+subtest "Certificate not orderable for liquidated companies if feature disabled" => sub {
+    plan tests => 5;
+    $view_all_ctrl->stash(company => {
+        type           => "ltd",
+        company_status => "liquidation",
+        links          => {
+            filing_history => '/company/T1234567/filing-history'
+        }
+    });
+    $view_all_ctrl->expect(sub {
+        my %args = @_;
+        is $args{template}, 'company/view_all/view', "Expected template is rendered";
+    });
+    $view_all_ctrl->config->{feature}{order_liquidation_certificate} = 0;
+    $view_all_ctrl->view();
+    is $view_all_ctrl->stash->{show_snapshot}, 1, "Snapshots should be orderable";
+    is $view_all_ctrl->stash->{show_certificate}, 0, "Certificates should not be orderable";
+    is $view_all_ctrl->stash->{show_certified_document}, 1, "Certified documents should be orderable";
+    is $view_all_ctrl->stash->{show_dissolved_certificate}, 0, "Dissolved certificates should not be orderable";
+};
+
+#-------------------------------------------------------------------------------
+
+subtest "Certificate not orderable for liquidated limited partnership" => sub {
+    plan tests => 5;
+    $view_all_ctrl->stash(company => {
+        type           => "limited-partnership",
+        company_status => "liquidation",
+        links          => {
+            filing_history => '/company/T1234567/filing-history'
+        }
+    });
+    $view_all_ctrl->expect(sub {
+        my %args = @_;
+        is $args{template}, 'company/view_all/view', "Expected template is rendered";
+    });
+    $view_all_ctrl->config->{feature}{order_liquidation_certificate} = 1;
+    $view_all_ctrl->view();
+    is $view_all_ctrl->stash->{show_snapshot}, 1, "Snapshots should be orderable";
+    is $view_all_ctrl->stash->{show_certificate}, 0, "Certificates should not be orderable";
+    is $view_all_ctrl->stash->{show_certified_document}, 1, "Certified documents should be orderable";
+    is $view_all_ctrl->stash->{show_dissolved_certificate}, 0, "Dissolved certificates should not be orderable";
+};
+
+#-------------------------------------------------------------------------------
 
 done_testing();

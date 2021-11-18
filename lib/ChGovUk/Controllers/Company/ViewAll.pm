@@ -43,11 +43,6 @@ use CH::Perl;
       "private-unlimited",
       "private-unlimited-nsc");
 
-  my %company_status_certificate_orders = (
-      active      => 1,
-      liquidation => 1
-  );
-
 #-------------------------------------------------------------------------------
 
 # View All Tab
@@ -69,9 +64,10 @@ sub view {
   my %dissolved_certificate_orderable = map {$_ => 1 } @dissolved_certificate_orders_company_types;
 
   $show_snapshot = 0 if exists $snapshot_not_orderable{$company_type};
-  $show_certificate = 1 if exists $company_status_certificate_orders{$company_status} and exists $certificate_orderable{$company_type};
+  $show_certificate = 1 if ($self->company_is_active($company_status) or $self->company_is_in_liquidation($company_type, $company_status))
+      and exists $certificate_orderable{$company_type};
   $show_certified_document = 0 if $filing_history eq "" or ($filing_history ne "" and $company_type eq "uk-establishment");
-  $show_dissolved_certificate = 1 if $company_status eq 'dissolved' and exists $dissolved_certificate_orderable{$company_type};
+  $show_dissolved_certificate = 1 if $self->company_is_dissolved($company_status) and exists $dissolved_certificate_orderable{$company_type};
 
   $self->stash(show_snapshot => $show_snapshot);
   $self->stash(show_certificate => $show_certificate);
@@ -96,6 +92,32 @@ sub should_render_more_tab_view {
     return 1 if $flag;
   }
   return 0;
+}
+
+#-------------------------------------------------------------------------------
+
+sub company_is_active {
+  my ($self, $company_status) = @_;
+
+  return $company_status eq 'active';
+}
+
+#-------------------------------------------------------------------------------
+
+sub company_is_in_liquidation {
+  my ($self, $company_type, $company_status) = @_;
+
+  return ($self->config->{feature}{order_liquidation_certificate}
+      and $company_type ne 'limited-partnership'
+      and $company_status eq 'liquidation');
+}
+
+#-------------------------------------------------------------------------------
+
+sub company_is_dissolved {
+  my ($self, $company_status) = @_;
+
+  return $company_status eq 'dissolved';
 }
 
 #-------------------------------------------------------------------------------
