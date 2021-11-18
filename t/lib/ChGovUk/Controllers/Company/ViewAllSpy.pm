@@ -11,7 +11,12 @@ my @verifications;
 sub render {
     my ($self, %args) = @_;
 
-    $_->(%args) for @verifications;
+    my $verification;
+
+    while(@verifications) {
+        $verification = pop @verifications;
+        $verification->(%args);
+    }
 }
 
 #-------------------------------------------------------------------------------
