@@ -103,6 +103,7 @@ feature:
     order_certified_document: <ORDER_CERTIFIED_DOCUMENT_FEATURE>
     missing_image_delivery: <MISSING_IMAGE_DELIVERY_FEATURE>
     order_dissolved_certificate: <ORDER_DISSOLVED_CERTIFICATE_FEATURE>
+    order_liquidation_certificate: <ORDER_LIQUIDATION_CERTIFICATE>
 
 image_service_start_date: <IMAGE_SERVICE_START_DATE>
 

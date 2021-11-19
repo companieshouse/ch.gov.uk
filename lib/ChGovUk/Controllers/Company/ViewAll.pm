@@ -59,42 +59,65 @@ sub view {
   my $show_certified_document = 1;
   my $show_dissolved_certificate = 0;
 
-  for (my $i=0; $i < @snapshot_company_types; $i++) {
-    if ($company_type eq $snapshot_company_types[$i]) {
-      $show_snapshot = 0;
-    }
-  }
+  my %snapshot_not_orderable = map { $_ => 1 } @snapshot_company_types;
+  my %certificate_orderable = map { $_ => 1 } @certificate_orders_company_types;
+  my %dissolved_certificate_orderable = map {$_ => 1 } @dissolved_certificate_orders_company_types;
 
-  if ($company_status eq 'active') {
-    for (my $j=0; $j < @certificate_orders_company_types; $j++) {
-      if ($company_type eq $certificate_orders_company_types[$j]) {
-        $show_certificate = 1;
-      }
-    }
-  }
-
-  if ($filing_history eq "" || ($filing_history ne "" && $company_type eq "uk-establishment")) {
-      $show_certified_document = 0;
-  }
-
-  if ($company_status eq 'dissolved') {
-    for (my $j=0; $j < @dissolved_certificate_orders_company_types; $j++) {
-      if ($company_type eq $dissolved_certificate_orders_company_types[$j]) {
-        $show_dissolved_certificate = 1;
-      }
-    }
-  }
+  $show_snapshot = 0 if exists $snapshot_not_orderable{$company_type};
+  $show_certificate = 1 if ($self->company_is_active($company_status) or $self->company_is_in_liquidation($company_type, $company_status))
+      and exists $certificate_orderable{$company_type};
+  $show_certified_document = 0 if $filing_history eq "" or ($filing_history ne "" and $company_type eq "uk-establishment");
+  $show_dissolved_certificate = 1 if $self->company_is_dissolved($company_status) and exists $dissolved_certificate_orderable{$company_type};
 
   $self->stash(show_snapshot => $show_snapshot);
   $self->stash(show_certificate => $show_certificate);
   $self->stash(show_certified_document => $show_certified_document);
   $self->stash(show_dissolved_certificate => $show_dissolved_certificate);
 
-  if ($show_snapshot || $show_certificate || $show_certified_document || $show_dissolved_certificate) {
+  my @flags = ($show_snapshot, $show_certificate, $show_certified_document, $show_dissolved_certificate);
+
+  if ($self->should_render_more_tab_view(@flags)) {
     return $self->render(template => 'company/view_all/view');
   } else {
     return $self->render(template => 'not_found.production');
   }
+}
+
+#-------------------------------------------------------------------------------
+
+sub should_render_more_tab_view {
+  my ($self, @flags) = @_;
+
+  for my $flag(@flags) {
+    return 1 if $flag;
+  }
+  return 0;
+}
+
+#-------------------------------------------------------------------------------
+
+sub company_is_active {
+  my ($self, $company_status) = @_;
+
+  return $company_status eq 'active';
+}
+
+#-------------------------------------------------------------------------------
+
+sub company_is_in_liquidation {
+  my ($self, $company_type, $company_status) = @_;
+
+  return ($self->config->{feature}{order_liquidation_certificate}
+      and $company_type ne 'limited-partnership'
+      and $company_status eq 'liquidation');
+}
+
+#-------------------------------------------------------------------------------
+
+sub company_is_dissolved {
+  my ($self, $company_status) = @_;
+
+  return $company_status eq 'dissolved';
 }
 
 #-------------------------------------------------------------------------------
