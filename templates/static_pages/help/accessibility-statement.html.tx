@@ -54,8 +54,8 @@
     <p>Or write to us at:</p>
     % } else {
         <li>email at <a class="govuk-link" href="mailto:enquiries@companieshouse.gov.uk">enquiries@companieshouse.gov.uk</a></li>
-        <li>telephone: +44 (0)303 1234 500 <br>(Monday to Friday 8.30am to 6pm, <a class="govuk-link" href="https://www.gov.uk/call-charges">national call rate</a>)</li>
-        <li>minicom: 02920 381245</li>
+        <li>telephone: <a href="tel:+443031234500">+44 (0)303 1234 500</a> <br>(Monday to Friday 8.30am to 6pm, <a class="govuk-link" href="https://www.gov.uk/call-charges">national call rate</a>)</li>
+        <li>minicom: <a href="tel:+442920381245">02920 381245</a></li>
         <li>writing to us at:</li>
     </ul>
 
