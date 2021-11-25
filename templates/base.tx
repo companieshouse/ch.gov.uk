@@ -7,8 +7,12 @@
     <% } %>
 
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <!-- Company numbers are not taken as a phone number -->
-    <meta name="format-detection" content="telephone=no">
+    
+    % if !$disable_number_exclusion {
+      <!-- Company numbers are not taken as a phone number -->
+      <meta name="format-detection" content="telephone=no">
+    % }
+    
     <title data-id="<% $route_name %>"><% $title %></title>
 
     <meta name="description" content="<% if $company.company_name { %><% $company.company_name %> - <% } %>Free company information from Companies House including registered office address, filing history, accounts, annual return, officers, charges, business activity">
