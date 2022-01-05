@@ -145,7 +145,10 @@
     </table>
     <h3 class="heading-medium">Analytics cookies</h3>
     <p>These cookies are optional. With your permission, we use them to find out how you use our services. For example, which pages you visit, how long you are on the site, how you got there and what you click on. This information helps us to improve our services.</p>
-    <p>Our cookies do not store or collect any personal information (such as your name or address), or anything that allows us to find out who you are. We do not share our analytics information with anyone.</p>
+    <p>
+      Our cookies do not store or collect any personal information (such as your name or address), or anything that allows us to find out who you are. We use Google Analytics software (Universal Analytics) and LUX Real User Monitoring (RUM) software from SpeedCurve to collect anonymised information about how you use GOV.UK.
+      We do this to help make sure the site is meeting the needs of its users and to help us make improvements to the site and to government digital services.
+    </p>
     <p>We use the following analytics cookies:</p>
     <table style="margin-bottom:30px;">
       <thead>
