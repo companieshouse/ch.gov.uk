@@ -14,7 +14,7 @@
     			       <% if $results.searchTerm { %>
                             <h2 class="heading-large" id="no-results-heading" >No results found for "<% $results.searchTerm %>"</h2>
 				             <p>
-				                 There are no companies that match your search. Please try searching again using different search criteria.
+				                 There are no companies that match your search. Try searching again using different search criteria.
 				             </p>
 			           <% } %>
              </div>
