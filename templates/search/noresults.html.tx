@@ -10,13 +10,13 @@
 %       include 'search/form.tx'
         <div class="grid-row">
              <div class="column-two-thirds">
-		             <article id="no-results" class="text">
-    			       <% if $results.searchTerm { %>
+                     <article id="no-results" class="text">
+                       <% if $results.searchTerm { %>
                             <h2 class="heading-large" id="no-results-heading" >No results found</h2>
-				             <p>
-				                 There are no companies that match your search. Try searching again using different search criteria.
-				             </p>
-			           <% } %>
+                             <p>
+                                 There are no companies that match your search. Try searching again using different search criteria.
+                             </p>
+                       <% } %>
              </div>
             % if $results.kind == 'search#disqualified-officers' {
                 <div class="column-third" id="disqualification-column">

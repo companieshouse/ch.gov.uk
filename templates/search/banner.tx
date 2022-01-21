@@ -35,11 +35,12 @@
 <script id="noresults-template" type="text/html">
     <div class="grid-row">
         <div class="column-two-thirds">
-                <article id="no-results" class="text"> for "<span class='term'>{{term}}</span>"</h2>
-                        <p>
+                <article id="no-results" class="text">
+        				<h2 class="heading-large">No results found</h2>
+        				<p>
                             There are no companies that match your search. Try searching again using different search criteria.
-                        </p>
-                </article>
+        				</p>
+        		</article>
         </div>
         % if $results.kind == 'search#disqualified-officers' {
             <div class="column-third" id="disqualification-column">
