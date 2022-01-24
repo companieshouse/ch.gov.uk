@@ -9,7 +9,7 @@
 % }
 
 % if ($header_or_body == 'header') {
-	<div class="content">
+    <div class="content">
 % } else {
 % if !$results {
     <h1 id="start-searching" class="main-title center">
@@ -20,17 +20,17 @@
     <p id="search-cta-label">Enter company name, number or officer name</p>
 % }
     <div class="search-bar-active">
-	    <div class="searchfield">
+        <div class="searchfield">
 % }
         <label class="govuk-visually-hidden" for="site-search-text">Enter company name, number or officer name</label>
-		    <input type="search" autocomplete="off" name="q" id="site-search-text" title="Search" value="<% $results.searchTerm %>" <% if ($header_or_body == 'header') { %> placeholder="Search"  class="header-search"<% } else { %> placeholder="Start here..."<% } %> />
+            <input type="search" autocomplete="off" name="q" id="site-search-text" title="Search" value="<% $results.searchTerm %>" <% if ($header_or_body == 'header') { %> placeholder="Search"  class="header-search"<% } else { %> placeholder="Start here..."<% } %> />
 % if ($header_or_body == 'header') {
         <input class="submit" type="submit" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SiteSearch', 'Header']);"<% } %> id="search-btn" value="Search" />
 % } else {
-		<button type="submit" id="search-submit" class="search-submit">Search</button>
-		<p id='slowsearch' class='slow-search-msg' style='display:none'>Please press ENTER to search</p>
+        <button type="submit" id="search-submit" class="search-submit">Search</button>
+        <p id='slowsearch' class='slow-search-msg' style='display:none'>Please press ENTER to search</p>
 % }
-	    </div>
+        </div>
     </div>
 
 </form>
@@ -59,11 +59,11 @@
     <div class="grid-row">
         <div class="column-two-thirds">
                 <article id="no-results-js" class="text">
-        				<h2 class="heading-large">No results found for "<span class='term'>{{term}}</span>"</h2>
-        				<p>
-                    Please try searching again using different search criteria.
-        				</p>
-        		</article>
+                        <h2 class="heading-large">No results found</h2>
+                        <p>
+                            There are no companies that match your search. Try searching again using different search criteria.
+                        </p>
+                </article>
         </div>
         % if $results.kind == 'search#disqualified-officers' {
             <div class="column-third" id="disqualification-column-js">
@@ -86,23 +86,23 @@
 
 <script id="hit-template" type="text/html">
 {{#type_is_company}}
-	<li class="type-company">
-		<h3>
-			<a href="{{url}}"title="View company"> {{{title}}}</a>
-		</h3>
+    <li class="type-company">
+        <h3>
+            <a href="{{url}}"title="View company"> {{{title}}}</a>
+        </h3>
         {{#snippet}}<p class="meta crumbtrail inset">Matching previous names:<br/><span>{{{ snippet }}}</span></p>{{/snippet}}
         <p class="meta crumbtrail"> {{{description}}} </p>
         <p>{{{ address_snippet }}}</p>
-	</li>
+    </li>
 {{/type_is_company}}
 
 {{#type_is_officer}}
-	<li class="type-officer">
-		<h3><a href="{{url}}">{{{title}}}</a></h3>
+    <li class="type-officer">
+        <h3><a href="{{url}}">{{{title}}}</a></h3>
         {{#snippet}}<p class="meta crumbtrail inset">Matching appointment names:<br/><span>{{{ snippet }}}</span></p>{{/snippet}}
         <p class="meta crumbtrail"> {{{description}}} </p>
         <p>{{{ address_snippet }}}</p>
-	</li>
+    </li>
 {{/type_is_officer}}
 
 {{#type_is_disqualified-officer}}

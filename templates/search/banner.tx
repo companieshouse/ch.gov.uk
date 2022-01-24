@@ -35,10 +35,10 @@
 <script id="noresults-template" type="text/html">
     <div class="grid-row">
         <div class="column-two-thirds">
-        		<article id="no-results" class="text">
-        				<h2 class="heading-large">No results found for "<span class='term'>{{term}}</span>"</h2>
+                <article id="no-results" class="text">
+        				<h2 class="heading-large">No results found</h2>
         				<p>
-                            Please try searching again using different search criteria.
+                            There are no companies that match your search. Try searching again using different search criteria.
         				</p>
         		</article>
         </div>
@@ -63,24 +63,24 @@
 
 <script id="hit-template" type="text/html">
 {{#type_is_company}}
-	<li class="type-company">
-		<h3>
-			<a href="{{url}}"title="View company"> {{{title}}}
-			</a>
-		</h3>
+    <li class="type-company">
+        <h3>
+            <a href="{{url}}"title="View company"> {{{title}}}
+            </a>
+        </h3>
         {{#snippet}}<p class="meta crumbtrail inset">Matching previous names:<br/><span>{{{ snippet }}}</span></
         <p class="meta crumbtrail"> {{{description}}} </p>
         <p>{{{ address_snippet }}}</p>
-	</li>
+    </li>
 {{/type_is_company}}
 
 {{#type_is_officer}}
-	<li class="type-officer">
-		<h3><a href="{{url}}">{{{title}}}</a></h3>
+    <li class="type-officer">
+        <h3><a href="{{url}}">{{{title}}}</a></h3>
         {{#snippet}}<p class="meta crumbtrail inset">Matching appointment names:<br/><span>{{{ snippet }}}</span></
         <p class="meta crumbtrail"> {{{description}}} </p>
         <p>{{{ address_snippet }}}</p>
-	</li>
+    </li>
 {{/type_is_officer}}
 
 {{#type_is_disqualified-officer}}
