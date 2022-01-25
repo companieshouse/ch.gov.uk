@@ -66,7 +66,7 @@
                     % }
                 </td>
                 <td class="nowrap">
-                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') && !($item._show_post_95) || $item.links.document_metadata  {
+                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') && (!($item.type == 'PRE95') || !($item.type == 'PRE95M')) || $item.links.document_metadata  {
                     % if $item.type == "NEWINC" {
                         £30
                     % } else {
@@ -75,7 +75,7 @@
                 % }
                 </td>
                 <td> 
-                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') && !($item._show_post_95) || $item.links.document_metadata  {
+                % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') && (!($item.type == 'PRE95') || !($item.type == 'PRE95M')) || $item.links.document_metadata  {
                     <form action="<%'/company/' ~ $company.company_number ~ '/certified-documents' %>" method="post">
                         <input type="hidden" id="<% $item.transaction_id %>" name="transaction" value="<% $item.transaction_id %>">
                         <input type="submit" class="select-document-button-link" id="add-document-to-order-<% $item.transaction_id%>"

@@ -100,7 +100,6 @@ sub view {
     }
 
     my $xhtml_available_date = $self->config->{xhtml_available_date} || '2015-06-01';
-    my $pre_95_date = '1996-01-01';
 
     # Get the filing history for the company from the API
     $self->ch_api->company($self->stash('company_number'))->filing_history($query)->force_api_key(1)->get->on(
@@ -112,12 +111,8 @@ sub view {
                 my $transaction_date = $doc->{date};
                 my $formatted_transaction_date = date_convert($transaction_date);
                 my $formatted_xhtml_available_date = date_convert($xhtml_available_date);
-                my $formatted_pre_95_date = date_convert($pre_95_date);
                 if ( $formatted_transaction_date >= $formatted_xhtml_available_date) {
                     $doc->{_xhtml_is_available} = 1 ;
-                }
-                if ( $formatted_transaction_date >= $formatted_pre_95_date) {
-                    $doc->{_show_post_95} = 1;
                 }
 
                 # Generate a missing message for documents before a defined unavailable date
