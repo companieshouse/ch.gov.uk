@@ -17,7 +17,7 @@
                 </span>
               </summary>
               <div class="govuk-details__text" id="company-snapshot-details-content" aria-hidden="false">
-                <p id="snapshot-list">The latest 100 entries for:</p>
+                <p id="snapshot-list">The snapshot includes:</p>
                 <ul class="govuk-list govuk-list--bullet">
                   <li>Filing history</li>
                   <li>Officers</li>
