@@ -64,8 +64,11 @@ sub view {
   my %dissolved_certificate_orderable = map {$_ => 1 } @dissolved_certificate_orders_company_types;
 
   $show_snapshot = 0 if exists $snapshot_not_orderable{$company_type};
-  $show_certificate = 1 if ($self->company_is_active($company_status) or $self->company_is_in_liquidation($company_type, $company_status))
-      and exists $certificate_orderable{$company_type};
+  $show_certificate = 1 if (
+      $self->company_is_active($company_status)
+      or $self->company_is_in_liquidation($company_type, $company_status)
+      or $self->company_is_in_administration($company_type, $company_status)
+  ) and exists $certificate_orderable{$company_type};
   $show_certified_document = 0 if $filing_history eq "" or ($filing_history ne "" and $company_type eq "uk-establishment");
   $show_dissolved_certificate = 1 if $self->company_is_dissolved($company_status) and exists $dissolved_certificate_orderable{$company_type};
 
@@ -110,6 +113,16 @@ sub company_is_in_liquidation {
   return ($self->config->{feature}{order_liquidation_certificate}
       and $company_type ne 'limited-partnership'
       and $company_status eq 'liquidation');
+}
+
+#-------------------------------------------------------------------------------
+
+sub company_is_in_administration {
+  my ($self, $company_type, $company_status) = @_;
+
+  return ($self->config->{feature}{order_administration_certificate}
+      and $company_type ne 'limited-partnership'
+      and $company_status eq 'administration');
 }
 
 #-------------------------------------------------------------------------------
