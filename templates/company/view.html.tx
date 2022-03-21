@@ -26,6 +26,9 @@
             %   when "scottish-partnership" {
                   <dt><% l('Service address') %></dt>
             %   }
+            %   when "registered-overseas-entity" {
+                  <dt><% l('Correspondence address') %></dt>
+            %   }
             %   default {
                   <dt><% l('Registered office address') %></dt>
             %   }
@@ -33,6 +36,8 @@
             <dd class="text data">
             % if $company.type == "oversea-company" and $company.registered_office_address.size() == 0 {
                 <% l('Refer to parent registry') %>
+            % } else if $company.type == "registered-overseas-entity" {
+                <% l($c.address_as_string( $company.service_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } )) %>
             % }
             % else {
                 % $c.address_as_string( $company.registered_office_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
@@ -149,6 +154,13 @@
             % }
         </dl>
     </div>
+ 
+    % if $company.type == "registered-overseas-entity" {
+        <h2 class="heading-medium">
+            Annual update
+        </h2>
+    % }    
+
     % if $company.foreign_company_details.is_a_credit_financial_institution {
         <p>This company is a credit/financial institution</p>
     % }
@@ -375,10 +387,17 @@
             </table>
     %    }
     % }
-    % if $company.foreign_company_details {
+    % if $company.foreign_company_details || $company.type {
         <h2 class="heading-medium">Company details in the country of incorporation</h2>
        % my $foreign_details = $company.foreign_company_details;
+       % my $company_type = $company.type;
         <div class="grid-row">
+        % if $company_type {
+          <dl class="column-third">
+            <dt id="">Overseas entity address</dt>
+            <dd class="text data"><% $c.address_as_string( $company.service_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } ) %></dd>
+          </dl>
+        % }
         % if $foreign_details.originating_registry.country {
             <dl class="column-third">
                 <dt>Incorporated in</dt>
