@@ -13,6 +13,7 @@
 %    "receiver-manager"                           => [ "instrumented-on" ],
 %    "administrative-receiver"                    => [ "instrumented-on" ],
 %    "foreign-insolvency"                         => [ ],
+%    "moratorium"                                 => [ "moratorium-started-on", "moratorium-ended-on" ],
 % };
 
 % # display case dates for a insolvency case
