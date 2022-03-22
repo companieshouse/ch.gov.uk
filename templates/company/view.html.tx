@@ -406,12 +406,11 @@
             </table>
     %    }
     % }
-    % if $company.foreign_company_details || $company.type {
+    % if $company.foreign_company_details || $company.type == "registered-overseas-entity" {
         <h2 class="heading-medium">Company details in the country of incorporation</h2>
        % my $foreign_details = $company.foreign_company_details;
-       % my $company_type = $company.type;
         <div class="grid-row">
-        % if $company_type {
+        % if $company.type == "registered-overseas-entity" {
           <dl class="column-two-thirds">
             <dt id="overseas-entity-ddress">Overseas entity address</dt>
             <dd class="text data"><% $c.address_as_string( $company.service_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } ) %></dd>
