@@ -153,13 +153,7 @@
                 <dd class="data" id="company-creation-date"><% $c.isodate_as_string($company.date_of_creation) %></dd>
             % }
         </dl>
-    </div>
- 
-    % if $company.type == "registered-overseas-entity" {
-        <h2 class="heading-medium">
-            Annual update
-        </h2>
-    % }    
+    </div>    
 
     % if $company.foreign_company_details.is_a_credit_financial_institution {
         <p>This company is a credit/financial institution</p>
@@ -182,6 +176,7 @@
              % }
            % }
            % else {
+               % if $company.type != "registered-overseas-entity" {
                 % if $company.accounts.overdue == 1 and ($company.type != "oversea-company" and $company.type != "uk-establishment"){
                     <div class="help-notice overdue"><h2 class="heading-medium">Accounts overdue</h2></div>
                 % } else {
@@ -254,9 +249,32 @@
                 -->
            % }
          </div>
+         % }
       % }
 
-      % if $company.confirmation_statement.size() {
+      % if $company.confirmation_statement.size() { 
+         % if $company.type == "registered-overseas-entity" {
+            <dl class="column-two-thirds">
+            <h2 class="heading-medium"><strong>Annual update</strong></h2>
+            % if $company.confirmation_statement.next_made_up_to {
+                <p>
+                %if ($company.confirmation_statement.last_made_up_to) {
+                %l('Next update date')
+                %} else {
+                %l('First update date')
+                %}
+                <strong><% $c.isodate_as_string($company.confirmation_statement.next_made_up_to) %></strong> <br>
+                due by <strong><% $c.isodate_as_string($company.confirmation_statement.next_due) %></strong>
+            </p>
+            %  }
+            %  if $company.confirmation_statement.last_made_up_to {
+                  <p>
+                    <% l('Last update dated') %> <strong><% $c.isodate_as_string($company.confirmation_statement.last_made_up_to) %></strong>
+                  </p>
+            %  }
+            <dl>
+         % } 
+         % else {
          <div class="column-half">
          %  if $company.confirmation_statement.overdue == 1 {
                 <div class="help-notice overdue"><h2 class="heading-medium">Confirmation statement overdue</h2></div>
@@ -265,11 +283,11 @@
          %  }
          % if $company.confirmation_statement.next_made_up_to {
               <p>
-         %    if ($company.confirmation_statement.last_made_up_to) {
-         %       l('Next statement date')
-         %    } else {
-         %       l('First statement date')
-         %    }
+              % if ($company.confirmation_statement.last_made_up_to) {
+              %    l('Next statement date')
+              % } else {
+              %     l('First statement date')
+              % }
               <strong><% $c.isodate_as_string($company.confirmation_statement.next_made_up_to) %></strong> <br>
               due by <strong><% $c.isodate_as_string($company.confirmation_statement.next_due) %></strong>
               </p>
@@ -280,6 +298,7 @@
                 </p>
          %  }
          </div>
+        % } 
       % }
 
       % if $company.annual_return.size() && ! $company.confirmation_statement.last_made_up_to {
@@ -393,8 +412,8 @@
        % my $company_type = $company.type;
         <div class="grid-row">
         % if $company_type {
-          <dl class="column-third">
-            <dt id="">Overseas entity address</dt>
+          <dl class="column-two-thirds">
+            <dt id="overseas-entity-ddress">Overseas entity address</dt>
             <dd class="text data"><% $c.address_as_string( $company.service_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } ) %></dd>
           </dl>
         % }
