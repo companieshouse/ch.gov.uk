@@ -211,7 +211,7 @@ sub coHasNoSic
   my $cnumb=shift;
   unless ($cnumb) { return undef };
   my $prefix = substr(uc $cnumb,0,2);
-  return (($prefix eq 'BR' || $prefix eq 'FC' || $prefix eq 'GS' || $prefix eq 'SF' || $prefix eq 'NF' || $prefix eq 'IC' || $prefix eq 'IP' || $prefix eq 'LP' || $prefix eq 'SF' || $prefix eq 'NF' || $prefix eq 'AC' || $prefix eq 'RC' || $prefix eq 'LP' || $prefix eq 'OC' || $prefix eq 'SP' || $prefix eq 'SA' || $prefix eq 'SR' || $prefix eq 'SL' || $prefix eq 'SI' || $prefix eq 'SO' || $prefix eq 'NO' || $prefix eq 'NA' || $prefix eq 'GE' || $prefix eq 'NR' || $prefix eq 'NF' || $prefix eq 'GN' || $prefix eq 'NV' || $prefix eq 'NL' || $prefix eq 'NC' || $prefix eq 'RO' || $prefix eq 'SG' || $prefix eq 'PC' || $prefix eq 'CE' || $prefix eq 'CS') ? 1 : 0);
+  return (($prefix eq 'BR' || $prefix eq 'FC' || $prefix eq 'GS' || $prefix eq 'SF' || $prefix eq 'NF' || $prefix eq 'IC' || $prefix eq 'IP' || $prefix eq 'LP' || $prefix eq 'SF' || $prefix eq 'NF' || $prefix eq 'AC' || $prefix eq 'RC' || $prefix eq 'LP' || $prefix eq 'OC' || $prefix eq 'SP' || $prefix eq 'SA' || $prefix eq 'SR' || $prefix eq 'SL' || $prefix eq 'SI' || $prefix eq 'SO' || $prefix eq 'NO' || $prefix eq 'NA' || $prefix eq 'GE' || $prefix eq 'NR' || $prefix eq 'NF' || $prefix eq 'GN' || $prefix eq 'NV' || $prefix eq 'NL' || $prefix eq 'NC' || $prefix eq 'RO' || $prefix eq 'SG' || $prefix eq 'PC' || $prefix eq 'CE' || $prefix eq 'CS' || $prefix eq 'OE') ? 1 : 0);
 }
 #   -----------------------------------------------------------------------------
 
