@@ -413,9 +413,11 @@
         % if $company.type == "registered-overseas-entity" {
           <dl class="column-two-thirds">
             <dt id="overseas-entity-ddress">Overseas entity address</dt>
-            <dd class="text data"><% $c.address_as_string( $company.service_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } ) %></dd>
+            <dd class="text data"><% $c.address_as_string( $company.registered_office_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } ) %></dd>
           </dl>
         % }
+        </div>
+        <div class="grid-row">
         % if $foreign_details.originating_registry.country {
             <dl class="column-third">
                 <dt>Incorporated in</dt>
