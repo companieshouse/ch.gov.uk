@@ -94,6 +94,15 @@
                     </dd>
                 </dl>
 
+                % if $officer.principal_office_address {
+                    <dl>
+                        <dt><% l('Principal office address') %></dt>
+                        <dd id="officer-principal-office-address-<% $~officer.count %>" class="data">
+                        % $c.address_as_string( $officer.principal_office_address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                    </dd>
+                </dl>
+                % }
+
                 <div class="grid-row">
 
                     %# this is always displayed
@@ -142,6 +151,15 @@
                     % }
 
                 </div> <%# /grid-row%>
+
+                % if $officer.responsibilities {
+                    <dl>
+                        <dt><% l('Responsibilities') %></dt>
+                        <dd id="officer-responsibilities-<% $~officer.count %>" class="data">
+                            <% $officer.responsibilities %>
+                        </dd>
+                    </dl>
+                % }
 
                 <div class="grid-row">
                     % if $officer.nationality {
@@ -224,6 +242,15 @@
                         </dl>
                     % }
                 </div> <%# /grid-row %>
+
+                % if $officer.contact_details {
+                    <dl>
+                        <dt><% l('Contact for corporate managing officer') %></dt>
+                        <dd id="officer-contact-details-<% $~officer.count %>" class="data">
+                            % $c.address_as_string( $officer.contact_details, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                        </dd>
+                    </dl>
+                % }
             </div>
         % }
     </div>
