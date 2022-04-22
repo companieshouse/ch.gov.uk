@@ -247,7 +247,7 @@
                     <dl>
                         <dt><% l('Contact for corporate managing officer') %></dt>
                         <dd id="officer-contact-details-<% $~officer.count %>" class="data">
-                            % $c.address_as_string( $officer.contact_details, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                            % $c.address_as_string( $officer.contact_details, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1, include_names => 1 } )
                         </dd>
                     </dl>
                 % }

@@ -62,6 +62,31 @@ sub as_string {
         $address_as_string
     ) if $opts->{include_care_of};
 
+    if ($opts->{include_names}) {
+        my $forename = "";
+        my $other_forenames = "";
+        my $surname = "";
+
+        if ($address->{forename}) {
+            $forename = $address->{forename};
+        }
+
+        if ($address->{other_forenames}) {
+            $other_forenames = $address->{other_forenames};
+        }
+
+        if ($address->{surname}) {
+            $surname = $address->{surname};
+        }
+
+        my $full_name = join ' ', $forename, $other_forenames, $surname;
+
+        $address_as_string = join ', ', grep { $_ && length $_ } (
+            $full_name,
+            $address_as_string
+        ) if $full_name;
+    }
+
     $address_as_string =~ s/,,/,/g if $opts->{suppress_double_commas};
 
     return $address_as_string;
