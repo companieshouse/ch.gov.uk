@@ -64,6 +64,15 @@
                         </dl>
                     </div>
 
+                    % if $appointment.principal_office_address {
+                        <dl>
+                            <dt><% l('Principal office address') %></dt>
+                            <dd id="appointment-principal-office-address-<% $~appointment.count %>" class="data">
+                                % $c.address_as_string( $appointment.principal_office_address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                            </dd>
+                        </dl>
+                    % }
+
                     <div class="grid-row">
 
                         <dl class="column-third">
@@ -103,6 +112,15 @@
                         % }
 
                     </div> <%# /grid-row%>
+
+                    % if $appointment.responsibilities {
+                        <dl>
+                            <dt><% l('Responsibilities') %></dt>
+                            <dd id="appointment-responsibilities-<% $~appointment.count %>" class="data">
+                                <% $appointment.responsibilities %>
+                            </dd>
+                        </dl>
+                    % }
 
                     <div class="grid-row">
 
@@ -174,6 +192,14 @@
                                 </dl>
                             % }
                         </div>
+                        % if $appointment.contact_details {
+                            <dl>
+                                <dt><% l('Contact for corporate managing officer') %></dt>
+                                <dd id="appointment-contact-details-<% $~appointment.count %>" class="data">
+                                    % $c.address_as_string( $appointment.contact_details, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1, include_names => 1 } )
+                                </dd>
+                            </dl>
+                        % }
                     % }
                 </div>
             % }
