@@ -79,7 +79,7 @@
                             <dt id="appointment-type-field-<% $~appointment.count %>"><% l('Role') %>
                                 % if $appointment.resigned_on {
                                     <span id="appointment-status-tag-<% $~appointment.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
-                                % } else if $appointment.appointed_to.company_status != 'dissolved' && $appointment.appointed_to.company_status != 'converted-closed' && $appointment.appointed_to.company_status != 'closed' {
+                                % } else if $appointment.appointed_to.company_status != 'dissolved' && $appointment.appointed_to.company_status != 'converted-closed' && $appointment.appointed_to.company_status != 'closed' && $company.company_status != "removed" {
                                     <span id="<% $appointment.appointed_to.company_number %>-appointment-status-tag-<% $~appointment.count %>" class="status-tag font-xsmall">Active</span>
                                 % }
                             </dt>
