@@ -79,7 +79,7 @@
                             <dt id="appointment-type-field-<% $~appointment.count %>"><% l('Role') %>
                                 % if $appointment.resigned_on {
                                     <span id="appointment-status-tag-<% $~appointment.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
-                                % } else if $appointment.appointed_to.company_status == 'active' {
+                                % } else if $appointment.appointed_to.company_status != 'dissolved' && $appointment.appointed_to.company_status != 'converted-closed' && $appointment.appointed_to.company_status != 'closed' {
                                     <span id="<% $appointment.appointed_to.company_number %>-appointment-status-tag-<% $~appointment.count %>" class="status-tag font-xsmall">Active</span>
                                 % }
                             </dt>
@@ -153,7 +153,7 @@
 
                     </div> <%# /grid-row%>
 
-                    % if $appointment.identification {
+                    % if $appointment.identification && $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer"{
                         <h3 class="identification-type-<% $~appointment.count %>">
                             % if ($appointment.identification.identification_type == 'non-eea') {
                                 Registered in a
