@@ -153,14 +153,16 @@
 
                     </div> <%# /grid-row%>
 
-                    % if $appointment.identification && $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer"{
+                    % if $appointment.identification {
                         <h3 class="identification-type-<% $~appointment.count %>">
                             % if ($appointment.identification.identification_type == 'non-eea') {
                                 Registered in a
                             % } else if ($appointment.identification.identification_type == 'eea'){
                                 Registered in an
                             % }
-                            <% $c.cv_lookup( 'identification_type', $appointment.identification.identification_type ) %> <a href="/help/corporate-officer-identification-type">What's this?</a>
+                            % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" {
+                                <% $c.cv_lookup( 'identification_type', $appointment.identification.identification_type ) %> <a href="/help/corporate-officer-identification-type">What's this?</a>
+                            % }
                         </h3>
                         <div class="grid-row">
                             % if $appointment.identification.legal_authority {
