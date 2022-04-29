@@ -110,7 +110,7 @@
                         <dt><% l('Role') %>
                             % if $officer.resigned_on  {
                                <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
-                            % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' && $company.company_status != 'closed' && $company.company_status != "removed" {
+                            % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' && $company.company_status != 'closed' && $company.company_status != 'removed' {
                                <span id="officer-status-tag-<% $~officer.count %>" class="status-tag font-xsmall">Active</span>
                             % }
                         </dt>
