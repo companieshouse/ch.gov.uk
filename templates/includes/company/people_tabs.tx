@@ -13,21 +13,21 @@
                 <% if $pscs { %>
 	            	<li id='pscs-tab' class="active">
 	                    <a id='pscs-link' class="govuk-link" href='#'>
-	                      <% if ($company.type != 'registered-overseas-entity') { %>
-	                        Persons with significant control</a>
-                        <% } else { %>
-                          Beneficial owners</a>
-                        <% } %>
+	                        <% if ($company.type != 'registered-overseas-entity') { %>
+	                            Persons with significant control</a>
+                            <% } else { %>
+                                Beneficial owners</a>
+                            <% } %>
 	            	</li>
 	            <% } else { %>
 	            	<li id='pscs-tab'>
-	            	  <% if ($company.type != 'registered-overseas-entity') { %>
-                    <a id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" >
-                    Persons with significant control</a>
-                  <% } else { %>
-                    <a id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" >
-                    Beneficial owners</a>
-                  <% } %>
+                        <% if ($company.type != 'registered-overseas-entity') { %>
+                            <a id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" >
+                            Persons with significant control</a>
+                        <% } else { %>
+                            <a id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" >
+                            Beneficial owners</a>
+                        <% } %>
 	            	</li>
 	            <% } %>
             <% } %>
