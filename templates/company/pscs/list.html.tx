@@ -7,11 +7,15 @@
 
     % include '/includes/company/people_tabs.tx' { active => 'pscs-tab' };
 
+    % my $psc_or_bo_text = $company.type != 'registered-overseas-entity' ? 'persons with significant control' : 'beneficial owners';
+
+    % my $company_or_roe_text = $company.type != 'registered-overseas-entity' ? 'company' : 'registered overseas entity';
+
     % if $exemptions  {
          <div class="warning-overview">
                <p id="exemption-info" class="heading-small">
            % if $pscs.total_results == 0 {
-                The PSC information is not available because: 
+                The PSC information is not available because:
            % } else {
                 The PSC information is no longer updated at Companies House because:
            % }
@@ -25,30 +29,51 @@
     % }
 
         % if $current_page_number == 1 {
-        % if $pscs.total_results == 0 && $exemptions { 
+        % if $pscs.total_results == 0 && $exemptions {
         % } else if $pscs.total_results == 0 {
             <p class="text" id="no-pscs">
-            There are no persons with significant control or statements available for this company.
+            There are no <% $psc_or_bo_text %> or statements available for this <% $company_or_roe_text %>.
         % } else {
             <p class="heading-medium total-appointments" id="company-pscs">
             <% $pscs.active_psc_count %>
-            % if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' { 
-                <%
-                    ln(
-                        'active person with significant control /',
-                        'active persons with significant control /',
-                        $pscs.active_psc_count
-                    )
-                %>
-            % } else {
-                <%
-                    ln(
-                        'person with significant control /',
-                        'persons with significant control /',
-                        $pscs.active_psc_count
-                    )
-                %>
-            % }
+
+            % if $company.type != 'registered-overseas-entity' {
+              % if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' {
+                  <%
+                      ln(
+                          'active person with significant control /',
+                          'active persons with significant control /',
+                          $pscs.active_psc_count
+                      )
+                  %>
+              % } else {
+                  <%
+                      ln(
+                          'person with significant control /',
+                          'persons with significant control /',
+                          $pscs.active_psc_count
+                      )
+                  %>
+              % }
+             % } else {
+               % if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' {
+                   <%
+                       ln(
+                           'active beneficial owner /',
+                           'active beneficial owners /',
+                           $pscs.active_psc_count
+                       )
+                   %>
+               % } else {
+                   <%
+                       ln(
+                           'beneficial owner /',
+                           'beneficial owners /',
+                           $pscs.active_psc_count
+                       )
+                   %>
+               % }
+             % }
 
             <% $pscs.active_statement_count %>
             % if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' { 
@@ -110,6 +135,15 @@
                         % }
                     </h2>
                 % }
+
+                % if $psc.is_sanctioned {
+                  <p>
+                      <a target="_blank" href="https://www.gov.uk/government/publications/the-uk-sanctions-list">
+                          Sanction declared
+                          <span class="govuk-visually-hidden">Link opens in a new window</span>
+                      </a>
+                  </p>
+                % }
                 
                 % if $psc.address {
                     <dl>
@@ -120,16 +154,26 @@
                     </dl>
                 % }
 
-                <div class="grid-row">
+                % if $psc.principal_office_address {
+                    <dl>
+                        <dt id="psc-principal-office-address-field-<% $~psc.count %>"><% l('Principal office address') %></dt>
+                        <dd class="data" id="psc-principal-office-address-value-<% $~psc.count %>">
+                            % $c.address_as_string( $psc.principal_office_address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                        </dd>
+                    </dl>
+                % }
 
+                <div class="grid-row">
                     % if $psc.description {
                          <dl class="column-half">
                             <dd id="psc-description-<% $~psc.count %>" class="data">
                                 <% $c.psc_lookup($psc.description, 'super_secure_description') %>
                             </dd>
                         </dl>
-                    % } 
- 
+                    % }
+                 </div> <%# /grid-row%>
+
+                 <div class="grid-row">
                     % if $psc.notified_on {
                         <dl class="column-quarter">
                             <dt><% l('Notified on') %></dt>
@@ -169,61 +213,69 @@
                             </dd>
                         </dl>
                     % }
-
-
                 </div> <%# /grid-row%>
 
+                <div class="grid-row">
+                    % if $psc.identification.legal_authority {
+                        <dl class="column-quarter">
+                            <dt><% l('Governing law') %></dt>
+                            <dd id="psc-legal-authority-<% $~psc.count %>" class="data">
+                                <% $psc.identification.legal_authority %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $psc.identification.legal_form {
+                        <dl class="column-quarter">
+                            <dt><% l('Legal form') %></dt>
+                            <dd id="psc-legal-form-<% $~psc.count %>" class="data">
+                                 <% $psc.identification.legal_form %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $psc.identification.place_registered {
+                        <dl class="column-quarter">
+                            <dt><% l('Place registered') %></dt>
+                            <dd id="psc-place-registered-<% $~psc.count %>" class="data">
+                                <% $psc.identification.place_registered %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $psc.identification.registration_number {
+                        <dl class="column-quarter">
+                            <dt><% l('Registration number') %></dt>
+                            <dd id="psc-registration-number-<% $~psc.count %>" class="data">
+                                <% $psc.identification.registration_number %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+
+                 <div class="grid-row">
+                     % if $psc.country_of_residence {
+                         <dl class="column-quarter">
+                             <dt><% l('Country of residence') %></dt>
+                             <dd id="psc-country-of-residence-<% $~psc.count %>" class="data">
+                                 <% $psc.country_of_residence %>
+                             </dd>
+                         </dl>
+                     % }
+
+                     % if $psc.identification.country_registered {
+                         <dl class="column-quarter">
+                             <dt><% l('Incorporated in') %></dt>
+                             <dd id="psc-country-registered-<% $~psc.count %>" class="data">
+                                 <% $psc.identification.country_registered %>
+                             </dd>
+                         </dl>
+                     % }
+                 </div> <%# /grid-row %>
+
 
                 <div class="grid-row">
-                        % if $psc.identification.legal_authority {
-                            <dl class="column-half">
-                                <dt><% l('Governing law') %></dt>
-                                <dd id="psc-legal-authority-<% $~psc.count %>" class="data">
-                                    <% $psc.identification.legal_authority %>
-                                </dd>
-                            </dl>
-                        % }
-
-                        % if $psc.identification.legal_form {
-                            <dl class="column-half">
-                                <dt><% l('Legal form') %></dt>
-                                <dd id="psc-legal-form-<% $~psc.count %>" class="data">
-                                     <% $psc.identification.legal_form %>
-                                </dd>
-                            </dl>
-                        % }
-
-                    </div> <%# /grid-row %>
-                    
-                    <div class="grid-row">
-
-                        % if $psc.identification.place_registered {
-                            <dl class="column-half">
-                                <dt><% l('Place registered') %></dt>
-                                <dd id="psc-place-registered-<% $~psc.count %>" class="data">
-                                    <% $psc.identification.place_registered %>
-                                </dd>
-                            </dl>
-                        % }
-
-                        % if $psc.identification.registration_number {
-                            <dl class="column-half">
-                                <dt><% l('Registration number') %></dt>
-                                <dd id="psc-registration-number-<% $~psc.count %>" class="data">
-                                    <% $psc.identification.registration_number %>
-                                </dd>
-                            </dl>
-                        % }
-
-
-
-                    </div> <%# /grid-row %>
- 
-
-
-                <div class="grid-row">
-
-                % if $psc.natures_of_control {
+                    % if $psc.natures_of_control {
                         <dl class="column-two-thirds">
                             <dt><% l('Nature of control') %></dt>
                             % for $psc.natures_of_control -> $noc {
@@ -233,30 +285,7 @@
                             % }
                         </dl>
                     % }
-
-
-                    % if $psc.country_of_residence {
-                        <dl class="column-third">
-                            <dt><% l('Country of residence') %></dt>
-                            <dd id="psc-country-of-residence-<% $~psc.count %>" class="data">
-                                <% $psc.country_of_residence %>
-                            </dd>
-                        </dl>
-                    % }
-
-                    % if $psc.identification.country_registered {
-                        <dl class="column-third">
-                            <dt><% l('Incorporated in') %></dt>
-                            <dd id="psc-country-registered-<% $~psc.count %>" class="data">
-                                <% $psc.identification.country_registered %>
-                            </dd>
-                        </dl>
-                    % }
-
-
-
                 </div> <%# /grid-row %>
-                
 
             </div>
 
