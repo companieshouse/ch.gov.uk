@@ -139,7 +139,7 @@
                 % if $psc.is_sanctioned {
                   <p>
                       <a target="_blank" href="https://www.gov.uk/government/publications/the-uk-sanctions-list">
-                          UK sanction declared
+                          Sanction declared
                           <span class="govuk-visually-hidden">Link opens in a new window</span>
                       </a>
                   </p>
