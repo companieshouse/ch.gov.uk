@@ -126,14 +126,14 @@
                 % } else {
                     <h2 class="heading-medium heading-with-border">
                         <span id="psc-name-<% $~psc.count %>">
-                           % if $psc.name {
-                             <span><b><% $psc.name %></b></span>
-                           % } else {
-                             % if ($psc.kind != 'super-secure-beneficial-owner') {
-                                Protected person with significant control
-                             % } else {
-                                Beneficial owner
-                             % }
+                            % if $psc.name {
+                                <span><b><% $psc.name %></b></span>
+                            % } else {
+                                % if ($psc.kind != 'super-secure-beneficial-owner') {
+                                    Protected person with significant control
+                                % } else {
+                                    Beneficial owner
+                                % }
                            % }
                         </span>
                         % if $psc.ceased_on || $psc.ceased {
