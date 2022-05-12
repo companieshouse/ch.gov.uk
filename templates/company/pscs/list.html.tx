@@ -225,7 +225,7 @@
 
                 <div class="grid-row">
                     % if $psc.identification.legal_authority {
-                        <dl class="column-quarter">
+                        <dl class="column-half">
                             <dt><% l('Governing law') %></dt>
                             <dd id="psc-legal-authority-<% $~psc.count %>" class="data">
                                 <% $psc.identification.legal_authority %>
@@ -234,16 +234,18 @@
                     % }
 
                     % if $psc.identification.legal_form {
-                        <dl class="column-quarter">
+                        <dl class="column-half">
                             <dt><% l('Legal form') %></dt>
                             <dd id="psc-legal-form-<% $~psc.count %>" class="data">
                                  <% $psc.identification.legal_form %>
                             </dd>
                         </dl>
                     % }
+                </div> <%# /grid-row %>
 
+                <div class="grid-row">
                     % if $psc.identification.place_registered {
-                        <dl class="column-quarter">
+                        <dl class="column-half">
                             <dt><% l('Place registered') %></dt>
                             <dd id="psc-place-registered-<% $~psc.count %>" class="data">
                                 <% $psc.identification.place_registered %>
@@ -252,7 +254,7 @@
                     % }
 
                     % if $psc.identification.registration_number {
-                        <dl class="column-quarter">
+                        <dl class="column-half">
                             <dt><% l('Registration number') %></dt>
                             <dd id="psc-registration-number-<% $~psc.count %>" class="data">
                                 <% $psc.identification.registration_number %>
@@ -263,7 +265,7 @@
 
                  <div class="grid-row">
                      % if $psc.country_of_residence {
-                         <dl class="column-quarter">
+                         <dl class="column-half">
                              <dt><% l('Country of residence') %></dt>
                              <dd id="psc-country-of-residence-<% $~psc.count %>" class="data">
                                  <% $psc.country_of_residence %>
@@ -272,7 +274,7 @@
                      % }
 
                      % if $psc.identification.country_registered {
-                         <dl class="column-quarter">
+                         <dl class="column-half">
                              <dt><% l('Incorporated in') %></dt>
                              <dd id="psc-country-registered-<% $~psc.count %>" class="data">
                                  <% $psc.identification.country_registered %>
@@ -284,7 +286,7 @@
 
                 <div class="grid-row">
                     % if $psc.natures_of_control {
-                        <dl class="column-two-thirds">
+                        <dl class="column-full">
                             <dt><% l('Nature of control') %></dt>
                             % for $psc.natures_of_control -> $noc {
                             <dd id="psc-noc-<% $~psc.count %>-<% $noc %>" class="data">
