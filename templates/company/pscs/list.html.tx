@@ -76,7 +76,7 @@
              % }
 
             <% $pscs.active_statement_count %>
-            % if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' { 
+            % if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' && $company.company_status != 'removed'{
                 <%
                     ln(
                         'active statement',
