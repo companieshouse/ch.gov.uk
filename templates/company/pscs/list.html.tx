@@ -138,7 +138,7 @@
                         </span>
                         % if $psc.ceased_on || $psc.ceased {
                             <span id="psc-status-tag-<% $~psc.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
-                        % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed'{
+                        % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' && $company.company_status != 'removed'{
                             <span id="psc-status-tag-<% $~psc.count %>" class="status-tag font-xsmall">Active</span>
                         % }
                     </h2>
