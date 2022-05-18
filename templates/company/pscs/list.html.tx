@@ -311,7 +311,7 @@
                         </span>
                         % if $psc.ceased_on {
                             <span id="statement-status-tag-<% $~psc.count %>" class="status-tag ceased-tag font-xsmall">Withdrawn</span>
-                        % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed'{
+                        % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' && $company.company_status != 'removed' {
                             <span id="statement-status-tag-<% $~psc.count %>" class="status-tag font-xsmall">Active</span>
                         % }
                     </h2>
@@ -322,7 +322,7 @@
                         </span>
                         % if $psc.ceased_on {
                             <span id="statement-status-tag-<% $~psc.count %>" class="status-tag ceased-tag font-xsmall">Withdrawn</span>
-                        % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed'{
+                        % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' && $company.company_status != 'removed'{
                             <span id="statement-status-tag-<% $~psc.count %>" class="status-tag font-xsmall">Active</span>
                         % }
                     </h2>
