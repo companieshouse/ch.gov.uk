@@ -69,12 +69,10 @@ sub as_string {
             $name = $address->{name};
         }
 
-        my $full_name = join ' ', $name;
-
         $address_as_string = join ', ', grep { $_ && length $_ } (
-            $full_name,
+            $name,
             $address_as_string
-        ) if $full_name;
+        ) if $name;
     }
 
     $address_as_string =~ s/,,/,/g if $opts->{suppress_double_commas};
