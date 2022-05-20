@@ -63,23 +63,13 @@ sub as_string {
     ) if $opts->{include_care_of};
 
     if ($opts->{include_names}) {
-        my $forename = "";
-        my $other_forenames = "";
-        my $surname = "";
+        my $name = "";
 
-        if ($address->{forename}) {
-            $forename = $address->{forename};
+        if ($address->{name}) {
+            $name = $address->{name};
         }
 
-        if ($address->{other_forenames}) {
-            $other_forenames = $address->{other_forenames};
-        }
-
-        if ($address->{surname}) {
-            $surname = $address->{surname};
-        }
-
-        my $full_name = join ' ', $forename, $other_forenames, $surname;
+        my $full_name = join ' ', $name;
 
         $address_as_string = join ', ', grep { $_ && length $_ } (
             $full_name,
