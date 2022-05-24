@@ -101,7 +101,7 @@
     <div class="appointments-list">
         % for $pscs.items -> $psc {
             
-            % if $psc.name || $psc.description{ 
+            % if $psc.name || $psc.description || $company.type == 'registered-overseas-entity'{
             
             <div class="appointment-<% $~psc.count %>">
                 % if $~psc.is_first {
