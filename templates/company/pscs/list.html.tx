@@ -110,8 +110,10 @@
                            % if $psc.name { 
                                <span><b><% $psc.name %></b></span>
                            % } else {
-                                % if ($psc.kind != 'super-secure-beneficial-owner') {
+                                % if ($psc.kind == 'super-secure-person-with-significant-control') {
                                     Protected person with significant control
+                                % } else if ($psc.kind == 'super-secure-beneficial-owner') {
+                                    Protected beneficial owner
                                 % } else {
                                     Beneficial owner
                                 % }
@@ -129,8 +131,10 @@
                             % if $psc.name {
                                 <span><b><% $psc.name %></b></span>
                             % } else {
-                                % if ($psc.kind != 'super-secure-beneficial-owner') {
+                                % if ($psc.kind == 'super-secure-person-with-significant-control') {
                                     Protected person with significant control
+                                % } else if ($psc.kind == 'super-secure-beneficial-owner') {
+                                    Protected beneficial owner
                                 % } else {
                                     Beneficial owner
                                 % }
