@@ -101,13 +101,12 @@
     <div class="appointments-list">
         % for $pscs.items -> $psc {
             
-            % if $psc.name || $psc.description || $company.type == 'registered-overseas-entity'{
-            
+            % if $psc.name || $psc.description || $psc.kind == 'corporate-entity-beneficial-owner' || $psc.kind == 'individual-beneficial-owner' || $psc.kind == 'legal-person-beneficial-owner' || $psc.kind == 'super-secure-beneficial-owner'{
             <div class="appointment-<% $~psc.count %>">
                 % if $~psc.is_first {
                     <h2 class="heading-medium">
                         <span id="psc-name-<% $~psc.count %>">
-                           % if $psc.name { 
+                           % if $psc.name {
                                <span><b><% $psc.name %></b></span>
                            % } else {
                                 % if ($psc.kind == 'super-secure-person-with-significant-control') {
