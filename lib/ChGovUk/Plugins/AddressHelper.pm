@@ -62,19 +62,6 @@ sub as_string {
         $address_as_string
     ) if $opts->{include_care_of};
 
-    if ($opts->{include_names}) {
-        my $name = "";
-
-        if ($address->{name}) {
-            $name = $address->{name};
-        }
-
-        $address_as_string = join ', ', grep { $_ && length $_ } (
-            $name,
-            $address_as_string
-        ) if $name;
-    }
-
     $address_as_string =~ s/,,/,/g if $opts->{suppress_double_commas};
 
     return $address_as_string;
