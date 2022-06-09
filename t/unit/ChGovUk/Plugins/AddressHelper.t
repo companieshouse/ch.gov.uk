@@ -27,10 +27,7 @@ my $api_hash = {
     region           => 'Glamorgan',
     postal_code      => 'SA1 3SN',
     po_box           => '789',
-    care_of          => 'The Janitor',
-    forename         => 'Cliff',
-    other_forenames  => 'John',
-    surname          => 'Richard'
+    care_of          => 'The Janitor'
 };
 
 test_method_register();
@@ -85,18 +82,6 @@ sub test_helper_address_as_string_with_po_box {
         is(
             $app->controller->address_as_string($api_hash, {include_po_box => 1}),
             'PO Box Tottenham Hotspur, Civic Centre, Oystermouth Road, The Seafront, Swansea, Glamorgan, Wales, SA1 3SN'
-        );
-    };
-}
-
-# ------------------------------------------------------------------------------
-
-sub test_helper_address_as_string_with_names {
-    subtest "Test method - as_string with optional name fields" => sub {
-        is(
-            $app->controller->address_as_string($api_hash, {include_names => 1} ),
-            'Cliff John Richard, The Janitor, Civic Centre, Oystermouth Road, The Seafront, Swansea, Glamorgan, Wales, SA1 3SN',
-            'Get formatted address as string with care of field'
         );
     };
 }

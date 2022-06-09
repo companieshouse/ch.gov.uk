@@ -51,6 +51,14 @@
                     <h2 class="heading-medium heading-with-border" id="company-name-<% $~appointment.count %>">
                         <a href="<% $appointment.links.company %>"><% $appointment.appointed_to.company_name %> (<% $appointment.appointed_to.company_number %>)</a>
                     </h2>
+                    % if $appointment.contact_details {
+                        <dl>
+                            <dt><% l('Contact for corporate managing officer') %></dt>
+                            <dd id="appointment-contact-details-<% $~appointment.count %>" class="data">
+                                <% $appointment.contact_details.contact_name %>
+                            </dd>
+                        </dl>
+                    % }
                     <div class="grid-row">
                         <dl class="column-third">
                             <dt id="company-status-field-<% $~appointment.count %>">Company status</dt>
@@ -194,14 +202,6 @@
                                 </dl>
                             % }
                         </div>
-                        % if $appointment.contact_details {
-                            <dl>
-                                <dt><% l('Contact for corporate managing officer') %></dt>
-                                <dd id="appointment-contact-details-<% $~appointment.count %>" class="data">
-                                    % $c.address_as_string( $appointment.contact_details, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1, include_names => 1 } )
-                                </dd>
-                            </dl>
-                        % }
                     % }
                 </div>
             % }

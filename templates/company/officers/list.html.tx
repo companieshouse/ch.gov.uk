@@ -84,8 +84,17 @@
                         </span>
                     </h2>
 
-                   % }
-</h2>
+                % }
+                </h2>
+
+                % if $officer.contact_details {
+                    <dl>
+                        <dt><% l('Correspondence name') %></dt>
+                        <dd id="officer-contact-details-<% $~officer.count %>" class="data">
+                            <% $officer.contact_details.contact_name %>
+                        </dd>
+                    </dl>
+                % }
 
                 <dl>
                     <dt id="officer-address-field-<% $~officer.count %>"><% l('Correspondence address') %></dt>
@@ -242,15 +251,6 @@
                         </dl>
                     % }
                 </div> <%# /grid-row %>
-
-                % if $officer.contact_details {
-                    <dl>
-                        <dt><% l('Contact for corporate managing officer') %></dt>
-                        <dd id="officer-contact-details-<% $~officer.count %>" class="data">
-                            % $c.address_as_string( $officer.contact_details, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1, include_names => 1 } )
-                        </dd>
-                    </dl>
-                % }
             </div>
         % }
     </div>
