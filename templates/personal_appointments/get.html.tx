@@ -53,7 +53,7 @@
                     </h2>
                     % if $appointment.contact_details {
                         <dl>
-                            <dt><% l('Contact for corporate managing officer') %></dt>
+                            <dt><% l('Correspondence name') %></dt>
                             <dd id="appointment-contact-details-<% $~appointment.count %>" class="data">
                                 <% $appointment.contact_details.contact_name %>
                             </dd>
