@@ -86,7 +86,11 @@
                         <dl class="column-third">
                             <dt id="appointment-type-field-<% $~appointment.count %>"><% l('Role') %>
                                 % if $appointment.resigned_on {
-                                    <span id="appointment-status-tag-<% $~appointment.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
+                                    % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" {
+                                        <span id="appointment-status-tag-<% $~appointment.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
+                                    % } else
+                                        <span id="appointment-status-tag-<% $~appointment.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
+                                    % }
                                 % } else if $appointment.appointed_to.company_status != 'dissolved' && $appointment.appointed_to.company_status != 'converted-closed' && $appointment.appointed_to.company_status != 'closed' && $appointment.appointed_to.company_status != 'removed' {
                                     <span id="<% $appointment.appointed_to.company_number %>-appointment-status-tag-<% $~appointment.count %>" class="status-tag font-xsmall">Active</span>
                                 % }
@@ -98,10 +102,17 @@
 
                         <dl class="column-third">
                             % if $appointment.appointed_on {
-                                <dt id="appointed-field<% $~appointment.count %>"><% l('Appointed on') %></dt>
-                                <dd id="appointed-value<% $~appointment.count %>" class="data">
-                                    <% $c.isodate_as_string($appointment.appointed_on) %>
-                                </dd>
+                                % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" {
+                                    <dt id="appointed-field<% $~appointment.count %>"><% l('Appointed on') %></dt>
+                                    <dd id="appointed-value<% $~appointment.count %>" class="data">
+                                        <% $c.isodate_as_string($appointment.appointed_on) %>
+                                    </dd>
+                                % } else {
+                                    <dt id="appointed-field<% $~appointment.count %>"><% l('Notified on') %></dt>
+                                    <dd id="appointed-value<% $~appointment.count %>" class="data">
+                                        <% $c.isodate_as_string($appointment.appointed_on) %>
+                                    </dd>
+                                % }
                             % } else {
                                 <dt id="appointed-field<% $~appointment.count %>"><% l('Appointed before') %></dt>
                                 <dd id="appointed-value<% $~appointment.count %>" class="data">
@@ -111,12 +122,21 @@
                         </dl>
 
                         % if $appointment.resigned_on {
-                            <dl class="column-third">
-                                <dt id="resigned-field-<% $~appointment.count %>"><% l('Resigned on') %></dt>
-                                <dd id="resigned-value-<% $~appointment.count %>" class="data">
-                                    <% $c.isodate_as_string( $appointment.resigned_on ) %>
-                                </dd>
-                            </dl>
+                            % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" {
+                                <dl class="column-third">
+                                    <dt id="resigned-field-<% $~appointment.count %>"><% l('Resigned on') %></dt>
+                                    <dd id="resigned-value-<% $~appointment.count %>" class="data">
+                                        <% $c.isodate_as_string( $appointment.resigned_on ) %>
+                                    </dd>
+                                </dl>
+                            % } else {
+                                <dl class="column-third">
+                                    <dt id="resigned-field-<% $~appointment.count %>"><% l('Ceased on') %></dt>
+                                    <dd id="resigned-value-<% $~appointment.count %>" class="data">
+                                        <% $c.isodate_as_string( $appointment.resigned_on ) %>
+                                    </dd>
+                                </dl>
+                            % }
                         % }
 
                     </div> <%# /grid-row%>
