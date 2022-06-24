@@ -86,7 +86,7 @@
                         <dl class="column-third">
                             <dt id="appointment-type-field-<% $~appointment.count %>"><% l('Role') %>
                                 % if $appointment.resigned_on {
-                                    % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" {
+                                    % if $appointment.officer_role != 'managing-officer' || $appointment.officer_role != 'corporate-managing-officer' {
                                         <span id="appointment-status-tag-<% $~appointment.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
                                     % } else {
                                         <span id="appointment-status-tag-<% $~appointment.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
@@ -102,7 +102,7 @@
 
                         <dl class="column-third">
                             % if $appointment.appointed_on {
-                                % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" {
+                                % if $appointment.officer_role != 'managing-officer' || $appointment.officer_role != 'corporate-managing-officer' {
                                     <dt id="appointed-field<% $~appointment.count %>"><% l('Appointed on') %></dt>
                                     <dd id="appointed-value<% $~appointment.count %>" class="data">
                                         <% $c.isodate_as_string($appointment.appointed_on) %>
@@ -122,7 +122,7 @@
                         </dl>
 
                         % if $appointment.resigned_on {
-                            % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" {
+                            % if $appointment.officer_role != 'managing-officer' || $appointment.officer_role != 'corporate-managing-officer' {
                                 <dl class="column-third">
                                     <dt id="resigned-field-<% $~appointment.count %>"><% l('Resigned on') %></dt>
                                     <dd id="resigned-value-<% $~appointment.count %>" class="data">
