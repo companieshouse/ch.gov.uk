@@ -118,7 +118,11 @@
                     <dl class="column-quarter">
                         <dt><% l('Role') %>
                             % if $officer.resigned_on  {
-                               <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
+                                % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
+                                   <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
+                                 %} else {  
+                                   <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
+                                %} 
                             % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' && $company.company_status != 'closed' && $company.company_status != 'removed' {
                                <span id="officer-status-tag-<% $~officer.count %>" class="status-tag font-xsmall">Active</span>
                             % }
@@ -142,21 +146,39 @@
                     % }
 
                     % if $officer.appointed_on {
+                      % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
+                        <dl class="column-quarter">
+                            <dt><% l('Notified on') %></dt>
+                            <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.appointed_on ) %>
+                            </dd>
+                        </dl>
+                     % }  else {
                         <dl class="column-quarter">
                             <dt><% l('Appointed on') %></dt>
                             <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
                                 <% $c.isodate_as_string( $officer.appointed_on ) %>
                             </dd>
                         </dl>
+                       % }
                     % }
 
                     % if $officer.resigned_on {
+                        % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
+                        <dl class="column-quarter">
+                            <dt><% l('Ceased on') %></dt>
+                            <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.appointed_on ) %>
+                            </dd>
+                        </dl>
+                       % } else {
                         <dl class="column-quarter">
                             <dt><% l('Resigned on') %></dt>
                             <dd id="officer-resigned-on-<% $~officer.count %>" class="data">
                                 <% $c.isodate_as_string( $officer.resigned_on ) %>
                             </dd>
                         </dl>
+                        % }
                     % }
 
                 </div> <%# /grid-row%>
