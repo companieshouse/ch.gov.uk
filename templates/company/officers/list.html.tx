@@ -118,7 +118,7 @@
                     <dl class="column-quarter">
                         <dt><% l('Role') %>
                             % if $officer.resigned_on  {
-                                % if $officer.identification.identification_type == 'registered-overseas-entity-corporate-managing-officer' {
+                                % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
                                    <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
                                  %} else {  
                                    <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
@@ -146,7 +146,7 @@
                     % }
 
                     % if $officer.appointed_on {
-                      % if $officer.identification.identification_type == 'registered-overseas-entity-corporate-managing-officer' {
+                      % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
                         <dl class="column-quarter">
                             <dt><% l('Notified on') %></dt>
                             <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
@@ -164,7 +164,7 @@
                     % }
 
                     % if $officer.resigned_on {
-                        % if $officer.identification.identification_type == 'registered-overseas-entity-corporate-managing-officer' {
+                        % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
                         <dl class="column-quarter">
                             <dt><% l('Ceased on') %></dt>
                             <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
