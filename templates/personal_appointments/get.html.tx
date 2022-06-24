@@ -88,7 +88,7 @@
                                 % if $appointment.resigned_on {
                                     % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" {
                                         <span id="appointment-status-tag-<% $~appointment.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
-                                    % } else
+                                    % } else {
                                         <span id="appointment-status-tag-<% $~appointment.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
                                     % }
                                 % } else if $appointment.appointed_to.company_status != 'dissolved' && $appointment.appointed_to.company_status != 'converted-closed' && $appointment.appointed_to.company_status != 'closed' && $appointment.appointed_to.company_status != 'removed' {
