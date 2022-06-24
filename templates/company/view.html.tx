@@ -255,13 +255,13 @@
       % if $company.confirmation_statement.size() { 
          % if $company.type == "registered-overseas-entity" {
             <dl class="column-two-thirds">
-            <h2 class="heading-medium"><strong>Annual update</strong></h2>
+            <h2 class="heading-medium"><strong>Annual statement</strong></h2>
             % if $company.confirmation_statement.next_made_up_to {
                 <p>
                 %if ($company.confirmation_statement.last_made_up_to) {
-                %l('Next update date')
+                %l('Next statement date')
                 %} else {
-                %l('First update date')
+                %l('First statement date')
                 %}
                 <strong><% $c.isodate_as_string($company.confirmation_statement.next_made_up_to) %></strong> <br>
                 due by <strong><% $c.isodate_as_string($company.confirmation_statement.next_due) %></strong>
@@ -269,7 +269,7 @@
             %  }
             %  if $company.confirmation_statement.last_made_up_to {
                   <p>
-                    <% l('Last update dated') %> <strong><% $c.isodate_as_string($company.confirmation_statement.last_made_up_to) %></strong>
+                    <% l('Last statement dated') %> <strong><% $c.isodate_as_string($company.confirmation_statement.last_made_up_to) %></strong>
                   </p>
             %  }
             <dl>
