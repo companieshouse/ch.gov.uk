@@ -228,12 +228,12 @@ sub merge_pscs_and_statements {
     $pscs = $self->order_pscs_for_roe($pscs, $statements);
 
     for my $item (@{ $pscs }) {
-     $item->{statement_6_flag} = 1 if ( $item->{statement} eq "psc-has-failed-to-confirm-changed-details");
-     if ( $item->{ceased_on} || $item->{ceased} ) {
-        push @ceased_items, $item;
-     } else {
-        push @active_items, $item;
-     }
+        $item->{statement_6_flag} = 1 if ( $item->{statement} eq "psc-has-failed-to-confirm-changed-details");
+        if ( $item->{ceased_on} || $item->{ceased} ) {
+            push @ceased_items, $item;
+        } else {
+            push @active_items, $item;
+        }
     }
     push @active_items, @ceased_items;
 
