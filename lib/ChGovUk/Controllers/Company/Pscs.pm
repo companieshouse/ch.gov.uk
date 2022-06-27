@@ -225,14 +225,7 @@ sub merge_pscs_and_statements {
     my @active_items;
     my @ceased_items;
 
-    my $company_type = $self->stash->{company}->{type};
-    if ($company_type eq "registered-overseas-entity") {
-        debug "ROE, statements come before PSCs.";
-        unshift @{ $pscs }, @{ $statements };
-    } else {
-        debug "non-ROE, statements come after PSCs.";
-        push @{ $pscs }, @{ $statements };
-    }
+    $pscs = $self->order_pscs_for_roe($pscs, $statements);
 
     for my $item (@{ $pscs }) {
      $item->{statement_6_flag} = 1 if ( $item->{statement} eq "psc-has-failed-to-confirm-changed-details");
@@ -300,6 +293,23 @@ sub get_exemptions_resource {
         }
       )->execute;
 
+}
+
+#-------------------------------------------------------------------------------
+
+sub order_pscs_for_roe {
+    my ($self, $pscs, $statements) = @_;
+
+    my $company_type = $self->stash->{company}->{type};
+    if ($company_type eq "registered-overseas-entity") {
+        debug "ROE, statements come before PSCs.";
+        unshift @{ $pscs }, @{ $statements };
+    } else {
+        debug "non-ROE, statements come after PSCs.";
+        push @{ $pscs }, @{ $statements };
+    }
+
+    return $pscs
 }
 
 #-------------------------------------------------------------------------------
