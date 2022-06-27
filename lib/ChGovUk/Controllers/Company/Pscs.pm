@@ -222,8 +222,8 @@ sub list {
 sub merge_pscs_and_statements {
     my ($self, $pscs, $statements) = @_;
 
-     my @active_items;
-     my @ceased_items;
+    my @active_items;
+    my @ceased_items;
 
     my $company_type = $self->stash->{company}->{type};
     if ($company_type eq "registered-overseas-entity") {
@@ -234,18 +234,17 @@ sub merge_pscs_and_statements {
         push @{ $pscs }, @{ $statements };
     }
 
-     for my $item (@{ $pscs }) {
-         $item->{statement_6_flag} = 1 if ( $item->{statement} eq "psc-has-failed-to-confirm-changed-details");
-         if ( $item->{ceased_on} || $item->{ceased} ) {
-            push @ceased_items, $item;
-         } else {
-            push @active_items, $item;
-         }
+    for my $item (@{ $pscs }) {
+     $item->{statement_6_flag} = 1 if ( $item->{statement} eq "psc-has-failed-to-confirm-changed-details");
+     if ( $item->{ceased_on} || $item->{ceased} ) {
+        push @ceased_items, $item;
+     } else {
+        push @active_items, $item;
      }
-     push @active_items, @ceased_items;
+    }
+    push @active_items, @ceased_items;
 
-         return \@active_items;
-
+    return \@active_items;
 }
 
 #-------------------------------------------------------------------------------
