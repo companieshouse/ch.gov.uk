@@ -167,8 +167,8 @@
                         % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
                         <dl class="column-quarter">
                             <dt><% l('Ceased on') %></dt>
-                            <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
-                                <% $c.isodate_as_string( $officer.appointed_on ) %>
+                            <dd id="officer-resigned-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.resigned_on ) %>
                             </dd>
                         </dl>
                        % } else {
