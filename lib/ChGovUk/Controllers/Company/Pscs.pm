@@ -6,6 +6,7 @@ use CH::Perl;
 use CH::Util::Pager;
 use CH::Util::DateHelper;
 use Mojo::IOLoop::Delay;
+use Data::Dumper;
 
 #-------------------------------------------------------------------------------
 
@@ -303,13 +304,29 @@ sub order_pscs_for_roe {
     my $company_type = $self->stash->{company}->{type};
 
     # TODO ROE-847 Generalise this.
-    my $statement = @{ $statements }[0];
+    # my $statement = @{ $statements }[0];
+    # my $statement_is_active;
+    # if ($statement->{ceased_on}) {
+    #     $statement_is_active = false;
+    # } else {
+    #     $statement_is_active = true;
+    # }
+    #
+    # my $index = 0;
+    # my $statement = @{ $statements }[$index];
+    # while ($statement->{ceased_on}) {
+    #     $index++;
+    #     $statement = @{ $statements }[$index];
+    # }
+
+    debug "\$statements = %s", Dumper($statements);
+    my $first_active_statement = $self->get_first_active_statement($statements);
 
     my $statement_is_active;
-    if ($statement->{ceased_on}) {
-        $statement_is_active = false;
-    } else {
+    if (defined $first_active_statement) {
         $statement_is_active = true;
+    } else {
+        $statement_is_active = false;
     }
 
     my $company_status = $self->stash->{company}->{company_status};
@@ -330,6 +347,53 @@ sub order_pscs_for_roe {
     }
 
     return $pscs
+}
+
+#-------------------------------------------------------------------------------
+
+sub get_first_active_statement {
+    my ($self, $statements) = @_;
+
+    my @statements = @{ $statements };
+    if (scalar @statements == 0) {
+        return (-1, undef);
+    }
+
+    my $index_of_first_active_statement = 0;
+    my $first_active_statement = @statements[$index_of_first_active_statement];
+    while (defined $first_active_statement and $first_active_statement->{ceased_on}) {
+        $index_of_first_active_statement++;
+        $first_active_statement = @statements[$index_of_first_active_statement];
+    }
+
+    if (!defined $first_active_statement or $first_active_statement->{ceased_on}) {
+        debug "INACTIVE";
+        # Not actually active, so we didn't find any active statements then.
+        return (-1, undef);
+    } else {
+        debug "ACTIVE";
+        return ($index_of_first_active_statement, $first_active_statement);
+    }
+}
+
+#-------------------------------------------------------------------------------
+
+sub get_rest_of_statements {
+    my ($self, $index_of_first_active_statement, $statements) = @_;
+
+    my @statements = @{ $statements };
+    if (scalar @statements == 0) {
+        return [];
+    }
+
+    my @rest_of_statements;
+    for (my $index = 0; $index < scalar @statements; $index++) {
+        if ($index != $index_of_first_active_statement) {
+            push @rest_of_statements, $statements[$index];
+        }
+    }
+
+    return \@rest_of_statements;
 }
 
 #-------------------------------------------------------------------------------
