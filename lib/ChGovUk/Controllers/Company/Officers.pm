@@ -70,10 +70,8 @@ sub list {
                 $self->stash(is_active_filter_set => 1);
             }
 
-            my $company_prefix = substr(uc $company_number,0,2);
             my $is_overseas_entity = 0;
-
-            if ($company_prefix eq "OE") {
+            if (substr(uc $company_number,0,2) eq "OE") {
                 $is_overseas_entity = 1;
             }
 
