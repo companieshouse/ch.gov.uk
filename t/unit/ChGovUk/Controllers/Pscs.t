@@ -22,6 +22,7 @@ sub test_order_pscs_for_roe {
         my $pscs_controller = $CLASS->new(
             stash   => {
                 company => {
+                    company_status => "active",
                     type => "ltd"
                 },
             }
@@ -198,6 +199,7 @@ sub test_order_pscs_for_roe {
                     'self' => '/company/OE000002/persons-with-significant-control-statements/wifoccBKENLo5y_bMmEJhE-fJSs'
                 },
                 'notified_on' => '2022-06-21',
+                'ceased_on' => '2022-06-22',
                 'statement' => 'at-least-one-beneficial-owner-unidentified'
             }
         ];
