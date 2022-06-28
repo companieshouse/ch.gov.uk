@@ -301,11 +301,31 @@ sub order_pscs_for_roe {
     my ($self, $pscs, $statements) = @_;
 
     my $company_type = $self->stash->{company}->{type};
-    if ($company_type eq "registered-overseas-entity") {
-        debug "ROE, statements come before PSCs.";
+
+    # TODO ROE-847 Generalise this.
+    my $statement = @{ $statements }[0];
+
+    my $statement_is_active;
+    if ($statement->{ceased_on}) {
+        $statement_is_active = false;
+    } else {
+        $statement_is_active = true;
+    }
+
+    my $company_status = $self->stash->{company}->{company_status};
+
+    my $company_is_active;
+    if ($company_status eq 'dissolved' or $company_status eq 'converted-closed' or $company_status eq 'removed') {
+        $company_is_active = false;
+    } else {
+        $company_is_active = true;
+    }
+
+    if ($company_type eq "registered-overseas-entity" and $statement_is_active and $company_is_active) {
+        debug "ROE, active statements come before PSCs.";
         unshift @{ $pscs }, @{ $statements };
     } else {
-        debug "non-ROE, statements come after PSCs.";
+        debug "non-ROE, or no active statements, statements come after PSCs.";
         push @{ $pscs }, @{ $statements };
     }
 
