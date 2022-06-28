@@ -80,11 +80,11 @@ sub list {
             $self->stash(categories => $categories);
             $self->stash(is_overseas_entity => $is_overseas_entity);
             $self->stash(officers => {
-                items              => $results->{items},
-                active_count       => $results->{active_count},
-                inactive_count     => $results->{inactive_count},
-                resigned_count     => $results->{resigned_count},
-                total_results      => $results->{total_results},
+                items          => $results->{items},
+                active_count   => $results->{active_count},
+                inactive_count => $results->{inactive_count},
+                resigned_count => $results->{resigned_count},
+                total_results  => $results->{total_results},
             });
 
             for my $item (@{ $results->{items} }) {
