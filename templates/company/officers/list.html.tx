@@ -44,13 +44,23 @@
                     )
                 %>
                 / <% $officers.resigned_count %>
-                <%
-                    ln(
-                        'resignation',
-                        'resignations',
-                        $officers.resigned_count
-                    )
-                %>
+                % if $is_overseas_entity {
+                    <%
+                        ln(
+                            'cessation',
+                            'cessations',
+                            $officers.resigned_count
+                        )
+                    %>
+                % } else {
+                    <%
+                        ln(
+                            'resignation',
+                            'resignations',
+                            $officers.resigned_count
+                        )
+                    %>
+                % }
             % }
         % } else {
             % if $officers.active_count == 0 {

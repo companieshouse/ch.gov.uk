@@ -70,7 +70,13 @@ sub list {
                 $self->stash(is_active_filter_set => 1);
             }
 
+            my $is_overseas_entity = 0;
+            if (substr(uc $company_number,0,2) eq "OE") {
+                $is_overseas_entity = 1;
+            }
+
             $self->stash(categories => $categories);
+            $self->stash(is_overseas_entity => $is_overseas_entity);
             $self->stash(officers => {
                 items          => $results->{items},
                 active_count   => $results->{active_count},
