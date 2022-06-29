@@ -226,7 +226,7 @@ sub merge_pscs_and_statements {
     my @active_items;
     my @ceased_items;
 
-    $pscs = $self->order_pscs_for_roe($pscs, $statements);
+    push @{ $pscs }, @{ $statements };
 
     for my $item (@{ $pscs }) {
         $item->{statement_6_flag} = 1 if ( $item->{statement} eq "psc-has-failed-to-confirm-changed-details");
@@ -237,6 +237,11 @@ sub merge_pscs_and_statements {
         }
     }
     push @active_items, @ceased_items;
+
+    my $company_type = $self->stash->{company}->{type};
+    if ($company_type eq "registered-overseas-entity") {
+        $self->move_first_active_statement_to_fore(\@active_items);
+    }
 
     return \@active_items;
 }
@@ -298,6 +303,23 @@ sub get_exemptions_resource {
 
 #-------------------------------------------------------------------------------
 
+sub move_first_active_statement_to_fore {
+    my ($self, $items) = @_;
+
+    my ($first_active_statement_index, $first_active_statement) = $self->get_first_active_statement($items);
+
+    if (defined $first_active_statement and
+        $self->get_company_is_active()) {
+        debug "ROE, first active statement comes first before the PSCs, the other items follow after.";
+        my $rest_of_statements = $self->get_rest_of_statements($first_active_statement_index, $items);
+        splice $items, 0, 1, $first_active_statement;
+        splice $items, 1, scalar @{$items} - 1, @{$rest_of_statements};
+    }
+
+}
+
+#-------------------------------------------------------------------------------
+
 sub order_pscs_for_roe {
     my ($self, $pscs, $statements) = @_;
 
@@ -331,7 +353,10 @@ sub get_first_active_statement {
 
     my $index_of_first_active_statement = 0;
     my $first_active_statement = @statements[$index_of_first_active_statement];
-    while (defined $first_active_statement and $first_active_statement->{ceased_on}) {
+    while (defined $first_active_statement) {
+        if ($first_active_statement->{statement} and !$first_active_statement->{ceased_on}) {
+            last;
+        }
         $index_of_first_active_statement++;
         $first_active_statement = @statements[$index_of_first_active_statement];
     }
