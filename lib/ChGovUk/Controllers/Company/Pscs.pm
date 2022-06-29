@@ -303,24 +303,8 @@ sub order_pscs_for_roe {
 
     my $company_type = $self->stash->{company}->{type};
 
-    # TODO ROE-847 Generalise this.
-    # my $statement = @{ $statements }[0];
-    # my $statement_is_active;
-    # if ($statement->{ceased_on}) {
-    #     $statement_is_active = false;
-    # } else {
-    #     $statement_is_active = true;
-    # }
-    #
-    # my $index = 0;
-    # my $statement = @{ $statements }[$index];
-    # while ($statement->{ceased_on}) {
-    #     $index++;
-    #     $statement = @{ $statements }[$index];
-    # }
-
-    debug "\$statements = %s", Dumper($statements);
-    my $first_active_statement = $self->get_first_active_statement($statements);
+    my ($first_active_statement_index, $first_active_statement) = $self->get_first_active_statement($statements);
+    my $rest_of_statements = $self->get_rest_of_statements($first_active_statement_index, $statements);
 
     my $statement_is_active;
     if (defined $first_active_statement) {
@@ -339,8 +323,9 @@ sub order_pscs_for_roe {
     }
 
     if ($company_type eq "registered-overseas-entity" and $statement_is_active and $company_is_active) {
-        debug "ROE, active statements come before PSCs.";
-        unshift @{ $pscs }, @{ $statements };
+        debug "ROE, first active statement comes before PSCs, the rest follow after.";
+        unshift @ { $pscs },  $first_active_statement;
+        push @{ $pscs },  @{ $rest_of_statements };
     } else {
         debug "non-ROE, or no active statements, statements come after PSCs.";
         push @{ $pscs }, @{ $statements };

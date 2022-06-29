@@ -2,6 +2,7 @@ use CH::Perl;
 use CH::Test;
 use Test::More;
 use Readonly;
+use Data::Dumper;
 
 Readonly my $CLASS => 'ChGovUk::Controllers::Company::Pscs';
 
@@ -111,7 +112,7 @@ sub test_order_pscs_for_roe {
 
         my @results = $pscs_controller->order_pscs_for_roe(@pscs, @statements);
 
-        is_deeply (@results, @expected, 'correct ordering - statements after pscs')
+        is_deeply (@results, @expected, 'correct ordering - statements after pscs');
     };
 
     subtest "ROE company, no active statements because only statement is ceased" => sub {
@@ -208,7 +209,7 @@ sub test_order_pscs_for_roe {
 
         my @results = $pscs_controller->order_pscs_for_roe(@pscs, @statements);
 
-        is_deeply (@results, @expected, 'correct ordering - statements after pscs')
+        is_deeply (@results, @expected, 'correct ordering - statements after pscs');
     };
 
     subtest "ROE company, no active statements because company is removed" => sub {
@@ -303,7 +304,7 @@ sub test_order_pscs_for_roe {
 
         my @results = $pscs_controller->order_pscs_for_roe(@pscs, @statements);
 
-        is_deeply (@results, @expected, 'correct ordering - statements after pscs')
+        is_deeply (@results, @expected, 'correct ordering - statements after pscs');
     };
 
     subtest "ROE company, 1 active statement" => sub {
@@ -398,7 +399,7 @@ sub test_order_pscs_for_roe {
 
         my @results = $pscs_controller->order_pscs_for_roe(@pscs, @statements);
 
-        is_deeply (@results, @expected, 'correct ordering - pscs after statements')
+        is_deeply (@results, @expected, 'correct ordering - pscs after active statement');
     };
 
     subtest "ROE company, multiple statements" => sub {
@@ -442,7 +443,7 @@ sub test_order_pscs_for_roe {
 
         my @statements = [
             {
-                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012e',
+                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012a',
                 'kind' => 'persons-with-significant-control-statement',
                 'links' => {
                     'self' => '/company/OE000002/persons-with-significant-control-statements/wifoccBKENLo5y_bMmEJhE-fJSs'
@@ -452,17 +453,17 @@ sub test_order_pscs_for_roe {
                 'statement' => 'at-least-one-beneficial-owner-unidentified'
             },
             {
-                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012e',
+                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012b',
                 'kind' => 'persons-with-significant-control-statement',
                 'links' => {
                     'self' => '/company/OE000002/persons-with-significant-control-statements/wifoccBKENLo5y_bMmEJhE-fJSs'
                 },
                 'notified_on' => '2022-06-21',
-                'ceased_on' => '2022-06-22', # inactive
+                'ceased_on' => '2022-06-23', # inactive
                 'statement' => 'at-least-one-beneficial-owner-unidentified'
             },
             {
-                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012e',
+                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012c',
                 'kind' => 'persons-with-significant-control-statement',
                 'links' => {
                     'self' => '/company/OE000002/persons-with-significant-control-statements/wifoccBKENLo5y_bMmEJhE-fJSs'
@@ -471,7 +472,7 @@ sub test_order_pscs_for_roe {
                 'statement' => 'at-least-one-beneficial-owner-unidentified'
             },
             {
-                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012f',
+                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012d',
                 'kind' => 'persons-with-significant-control-statement',
                 'links' => {
                     'self' => '/company/OE000002/persons-with-significant-control-statements/wifoccBKENLo5y_bMmEJhE-fJSs'
@@ -483,7 +484,7 @@ sub test_order_pscs_for_roe {
 
         my @expected = [
             {
-                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012e',
+                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012c',
                 'kind' => 'persons-with-significant-control-statement',
                 'links' => {
                     'self' => '/company/OE000002/persons-with-significant-control-statements/wifoccBKENLo5y_bMmEJhE-fJSs'
@@ -519,7 +520,7 @@ sub test_order_pscs_for_roe {
                 'notified_on' => '2022-06-21'
             },
             {
-                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012f',
+                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012d',
                 'kind' => 'persons-with-significant-control-statement',
                 'links' => {
                     'self' => '/company/OE000002/persons-with-significant-control-statements/wifoccBKENLo5y_bMmEJhE-fJSs'
@@ -528,7 +529,7 @@ sub test_order_pscs_for_roe {
                 'statement' => 'at-least-one-beneficial-owner-unidentified'
             },
             {
-                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012e',
+                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012a',
                 'kind' => 'persons-with-significant-control-statement',
                 'links' => {
                     'self' => '/company/OE000002/persons-with-significant-control-statements/wifoccBKENLo5y_bMmEJhE-fJSs'
@@ -538,20 +539,23 @@ sub test_order_pscs_for_roe {
                 'statement' => 'at-least-one-beneficial-owner-unidentified'
             },
             {
-                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012e',
+                'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012b',
                 'kind' => 'persons-with-significant-control-statement',
                 'links' => {
                     'self' => '/company/OE000002/persons-with-significant-control-statements/wifoccBKENLo5y_bMmEJhE-fJSs'
                 },
                 'notified_on' => '2022-06-21',
-                'ceased_on' => '2022-06-22', # inactive
+                'ceased_on' => '2022-06-23', # inactive
                 'statement' => 'at-least-one-beneficial-owner-unidentified'
             }
         ];
 
         my @results = $pscs_controller->order_pscs_for_roe(@pscs, @statements);
 
-        is_deeply (@results, @expected, 'correct ordering - pscs after first active statement')
+        # TODO ROE-847 Remove this.
+        debug "\@results = %s", Dumper(@results);
+
+        is_deeply (@results, @expected, 'correct ordering - pscs after first active statement, remaining statements follow, active before ceased');
     };
 
 }
