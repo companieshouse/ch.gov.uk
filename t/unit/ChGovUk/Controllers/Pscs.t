@@ -70,7 +70,7 @@ sub test_order_pscs_for_roe {
             }
         ];
 
-        my @expected = (3, [
+        my @expected = [
             {
                 'address' => {
                     'address_line_1' => 'Old Church Road',
@@ -107,7 +107,7 @@ sub test_order_pscs_for_roe {
                 'notified_on' => '2022-06-21',
                 'statement' => 'at-least-one-beneficial-owner-unidentified'
             }
-        ]);
+        ];
 
         my @results = $pscs_controller->order_pscs_for_roe(@pscs, @statements);
 
