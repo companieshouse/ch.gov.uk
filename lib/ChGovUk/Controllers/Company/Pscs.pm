@@ -311,9 +311,9 @@ sub move_first_active_statement_to_fore {
     if (defined $first_active_statement and
         $self->get_company_is_active()) {
         debug "ROE, first active statement comes first before the PSCs, the other items follow after.";
-        my $rest_of_statements = $self->get_rest_of_statements($first_active_statement_index, $items);
+        my $rest_of_items = $self->get_rest_of_items($first_active_statement_index, $items);
         splice $items, 0, 1, $first_active_statement;
-        splice $items, 1, scalar @{$items} - 1, @{$rest_of_statements};
+        splice $items, 1, scalar @{$items} - 1, @{$rest_of_items};
     }
 
 }
@@ -330,7 +330,7 @@ sub order_pscs_for_roe {
         defined $first_active_statement and
         $self->get_company_is_active()) {
         debug "ROE, first active statement comes before PSCs, the rest follow after.";
-        my $rest_of_statements = $self->get_rest_of_statements($first_active_statement_index, $statements);
+        my $rest_of_statements = $self->get_rest_of_items($first_active_statement_index, $statements);
         unshift @ { $pscs },  $first_active_statement;
         push @{ $pscs },  @{ $rest_of_statements };
     } else {
@@ -344,51 +344,51 @@ sub order_pscs_for_roe {
 #-------------------------------------------------------------------------------
 
 sub get_first_active_statement {
-    my ($self, $statements) = @_;
+    my ($self, $items) = @_;
 
-    my @statements = @{ $statements };
-    if (scalar @statements == 0) {
+    my @items = @{ $items };
+    if (scalar @items == 0) {
         return (-1, undef);
     }
 
     my $index_of_first_active_statement = 0;
-    my $first_active_statement = @statements[$index_of_first_active_statement];
+    my $first_active_statement = @items[$index_of_first_active_statement];
     while (defined $first_active_statement) {
         if ($first_active_statement->{statement} and !$first_active_statement->{ceased_on}) {
             last;
         }
         $index_of_first_active_statement++;
-        $first_active_statement = @statements[$index_of_first_active_statement];
+        $first_active_statement = @items[$index_of_first_active_statement];
     }
 
     if (!defined $first_active_statement or $first_active_statement->{ceased_on}) {
-        debug "INACTIVE";
+        debug "No active statement found";
         # Not actually active, so we didn't find any active statements then.
         return (-1, undef);
     } else {
-        debug "ACTIVE";
+        debug "ACTIVE statement found.";
         return ($index_of_first_active_statement, $first_active_statement);
     }
 }
 
 #-------------------------------------------------------------------------------
 
-sub get_rest_of_statements {
-    my ($self, $index_of_first_active_statement, $statements) = @_;
+sub get_rest_of_items {
+    my ($self, $index_of_first_active_statement, $items) = @_;
 
-    my @statements = @{ $statements };
-    if (scalar @statements == 0) {
+    my @items = @{ $items };
+    if (scalar @items == 0) {
         return [];
     }
 
-    my @rest_of_statements;
-    for (my $index = 0; $index < scalar @statements; $index++) {
+    my @rest_of_items;
+    for (my $index = 0; $index < scalar @items; $index++) {
         if ($index != $index_of_first_active_statement) {
-            push @rest_of_statements, $statements[$index];
+            push @rest_of_items, $items[$index];
         }
     }
 
-    return \@rest_of_statements;
+    return \@rest_of_items;
 }
 
 #-------------------------------------------------------------------------------
