@@ -304,26 +304,11 @@ sub order_pscs_for_roe {
     my $company_type = $self->stash->{company}->{type};
 
     my ($first_active_statement_index, $first_active_statement) = $self->get_first_active_statement($statements);
-    my $rest_of_statements = $self->get_rest_of_statements($first_active_statement_index, $statements);
-
-    my $statement_is_active;
-    if (defined $first_active_statement) {
-        $statement_is_active = true;
-    } else {
-        $statement_is_active = false;
-    }
-
-    my $company_status = $self->stash->{company}->{company_status};
-
-    my $company_is_active;
-    if ($company_status eq 'dissolved' or $company_status eq 'converted-closed' or $company_status eq 'removed') {
-        $company_is_active = false;
-    } else {
-        $company_is_active = true;
-    }
-
-    if ($company_type eq "registered-overseas-entity" and $statement_is_active and $company_is_active) {
+    if ($company_type eq "registered-overseas-entity" and
+        defined $first_active_statement and
+        $self->get_company_is_active()) {
         debug "ROE, first active statement comes before PSCs, the rest follow after.";
+        my $rest_of_statements = $self->get_rest_of_statements($first_active_statement_index, $statements);
         unshift @ { $pscs },  $first_active_statement;
         push @{ $pscs },  @{ $rest_of_statements };
     } else {
@@ -379,6 +364,19 @@ sub get_rest_of_statements {
     }
 
     return \@rest_of_statements;
+}
+
+#-------------------------------------------------------------------------------
+
+sub get_company_is_active {
+    my ($self) = @_;
+
+    my $company_status = $self->stash->{company}->{company_status};
+    if ($company_status eq 'dissolved' or $company_status eq 'converted-closed' or $company_status eq 'removed') {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 #-------------------------------------------------------------------------------
