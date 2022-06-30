@@ -333,13 +333,13 @@ sub get_first_active_statement {
     }
 
     my $index_of_first_active_statement = 0;
-    my $first_active_statement = @items[$index_of_first_active_statement];
+    my $first_active_statement = $items[$index_of_first_active_statement];
     while (defined $first_active_statement) {
         if ($first_active_statement->{statement} and !$first_active_statement->{ceased_on}) {
             last;
         }
         $index_of_first_active_statement++;
-        $first_active_statement = @items[$index_of_first_active_statement];
+        $first_active_statement = $items[$index_of_first_active_statement];
     }
 
     if (!defined $first_active_statement or $first_active_statement->{ceased_on}) {
