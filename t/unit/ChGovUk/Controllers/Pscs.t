@@ -12,7 +12,7 @@ methods_ok $CLASS, qw(list order_pscs_for_roe);
 
 test_order_pscs_for_roe();
 test_get_first_active_statement();
-test_get_rest_of_statements();
+test_get_rest_of_items();
 
 done_testing;
 
@@ -698,13 +698,40 @@ sub test_get_first_active_statement {
 
 }
 
-sub test_get_rest_of_statements {
+sub test_get_rest_of_items {
 
-    subtest "gets rest of statements" => sub {
+    subtest "gets rest of items" => sub {
 
         my $pscs_controller = $CLASS->new();
 
-        my @statements = [
+        my @items = [
+            {
+                'address' => {
+                    'address_line_1' => 'Old Church Road',
+                    'locality' => 'Cardiff',
+                    'postal_code' => 'CF14 1AA',
+                    'premises' => '29',
+                    'region' => 'South Glamorgan'
+                },
+                'date_of_birth' => '1977-06-01',
+                'etag' => 'fe3a190ba4f6e662796af13ae2db2aab42730185',
+                'is_sanctioned' => 1,
+                'kind' => 'individual-beneficial-owner',
+                'links' => {
+                    'self' => '/company/OE000002/persons-with-significant-control/individual-beneficial-owner/DHxa-VEwiFq8gi3K_0fpcVO2tIA'
+                },
+                'name' => 'Jack James Sparrow',
+                'name_elements' => {
+                    'forename' => 'Jack',
+                    'middle_name' => 'James',
+                    'surname' => 'Sparrow'
+                },
+                'nationality' => 'New Zealander',
+                'natures_of_control' => [
+                    'ownership-of-shares-more-than-25-percent-as-trust-registered-overseas-entity'
+                ],
+                'notified_on' => '2022-06-21'
+            },
             {
                 'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012a',
                 'kind' => 'persons-with-significant-control-statement',
@@ -744,9 +771,36 @@ sub test_get_rest_of_statements {
                 'statement' => 'at-least-one-beneficial-owner-unidentified'
             }
         ];
-        my $index_of_first_active_statement = 2;
+        my $index_of_first_active_statement = 3;
 
-        my @expected_rest_of_statements = [
+        my @expected_rest_of_items = [
+            {
+                'address' => {
+                    'address_line_1' => 'Old Church Road',
+                    'locality' => 'Cardiff',
+                    'postal_code' => 'CF14 1AA',
+                    'premises' => '29',
+                    'region' => 'South Glamorgan'
+                },
+                'date_of_birth' => '1977-06-01',
+                'etag' => 'fe3a190ba4f6e662796af13ae2db2aab42730185',
+                'is_sanctioned' => 1,
+                'kind' => 'individual-beneficial-owner',
+                'links' => {
+                    'self' => '/company/OE000002/persons-with-significant-control/individual-beneficial-owner/DHxa-VEwiFq8gi3K_0fpcVO2tIA'
+                },
+                'name' => 'Jack James Sparrow',
+                'name_elements' => {
+                    'forename' => 'Jack',
+                    'middle_name' => 'James',
+                    'surname' => 'Sparrow'
+                },
+                'nationality' => 'New Zealander',
+                'natures_of_control' => [
+                    'ownership-of-shares-more-than-25-percent-as-trust-registered-overseas-entity'
+                ],
+                'notified_on' => '2022-06-21'
+            },
             {
                 'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012a',
                 'kind' => 'persons-with-significant-control-statement',
@@ -778,30 +832,127 @@ sub test_get_rest_of_statements {
             }
         ];
 
-        my $rest_of_statements = $pscs_controller->get_rest_of_statements($index_of_first_active_statement, @statements);
+        my $rest_of_items = $pscs_controller->get_rest_of_items($index_of_first_active_statement, @items);
 
-        is_deeply($rest_of_statements, @expected_rest_of_statements, 'gets rest of statements, as expected')
+        is_deeply($rest_of_items, @expected_rest_of_items, 'gets rest of items, as expected')
     };
 
-    subtest "gets empty statements from empty statements" => sub {
+    subtest "gets no items where there are no no items" => sub {
 
         my $pscs_controller = $CLASS->new();
 
-        my @statements = [];
+        my @items = [];
         my $index_of_first_active_statement = -1;
 
-        my @expected_rest_of_statements = [];
+        my @expected_rest_of_items = [];
 
-        my $rest_of_statements = $pscs_controller->get_rest_of_statements($index_of_first_active_statement, @statements);
+        my $rest_of_items = $pscs_controller->get_rest_of_items($index_of_first_active_statement, @items);
 
-        is_deeply($rest_of_statements, @expected_rest_of_statements, 'gets empty rest of statements, as expected')
+        is_deeply($rest_of_items, @expected_rest_of_items, 'gets no items, as expected')
     };
 
-    subtest "gets all statements where there are no active statements" => sub {
+    subtest "gets all items where there are no statements" => sub {
 
         my $pscs_controller = $CLASS->new();
 
-        my @statements = [
+        my @items = [
+            {
+                'address' => {
+                    'address_line_1' => 'Old Church Road',
+                    'locality' => 'Cardiff',
+                    'postal_code' => 'CF14 1AA',
+                    'premises' => '29',
+                    'region' => 'South Glamorgan'
+                },
+                'date_of_birth' => '1977-06-01',
+                'etag' => 'fe3a190ba4f6e662796af13ae2db2aab42730185',
+                'is_sanctioned' => 1,
+                'kind' => 'individual-beneficial-owner',
+                'links' => {
+                    'self' => '/company/OE000002/persons-with-significant-control/individual-beneficial-owner/DHxa-VEwiFq8gi3K_0fpcVO2tIA'
+                },
+                'name' => 'Jack James Sparrow',
+                'name_elements' => {
+                    'forename' => 'Jack',
+                    'middle_name' => 'James',
+                    'surname' => 'Sparrow'
+                },
+                'nationality' => 'New Zealander',
+                'natures_of_control' => [
+                    'ownership-of-shares-more-than-25-percent-as-trust-registered-overseas-entity'
+                ],
+                'notified_on' => '2022-06-21'
+            }
+        ];
+        my $index_of_first_active_statement = -1;
+
+        my @expected_rest_of_items = [
+            {
+                'address' => {
+                    'address_line_1' => 'Old Church Road',
+                    'locality' => 'Cardiff',
+                    'postal_code' => 'CF14 1AA',
+                    'premises' => '29',
+                    'region' => 'South Glamorgan'
+                },
+                'date_of_birth' => '1977-06-01',
+                'etag' => 'fe3a190ba4f6e662796af13ae2db2aab42730185',
+                'is_sanctioned' => 1,
+                'kind' => 'individual-beneficial-owner',
+                'links' => {
+                    'self' => '/company/OE000002/persons-with-significant-control/individual-beneficial-owner/DHxa-VEwiFq8gi3K_0fpcVO2tIA'
+                },
+                'name' => 'Jack James Sparrow',
+                'name_elements' => {
+                    'forename' => 'Jack',
+                    'middle_name' => 'James',
+                    'surname' => 'Sparrow'
+                },
+                'nationality' => 'New Zealander',
+                'natures_of_control' => [
+                    'ownership-of-shares-more-than-25-percent-as-trust-registered-overseas-entity'
+                ],
+                'notified_on' => '2022-06-21'
+            }
+        ];
+
+        my $rest_of_items = $pscs_controller->get_rest_of_items($index_of_first_active_statement, @items);
+
+        is_deeply($rest_of_items, @expected_rest_of_items, 'gets all items, as expected')
+    };
+
+    subtest "gets all items where there are no active statements" => sub {
+
+        my $pscs_controller = $CLASS->new();
+
+        my @items = [
+            {
+                'address' => {
+                    'address_line_1' => 'Old Church Road',
+                    'locality' => 'Cardiff',
+                    'postal_code' => 'CF14 1AA',
+                    'premises' => '29',
+                    'region' => 'South Glamorgan'
+                },
+                'date_of_birth' => '1977-06-01',
+                'etag' => 'fe3a190ba4f6e662796af13ae2db2aab42730185',
+                'is_sanctioned' => 1,
+                'kind' => 'individual-beneficial-owner',
+                'links' => {
+                    'self' => '/company/OE000002/persons-with-significant-control/individual-beneficial-owner/DHxa-VEwiFq8gi3K_0fpcVO2tIA'
+                },
+                'name' => 'Jack James Sparrow',
+                'name_elements' => {
+                    'forename' => 'Jack',
+                    'middle_name' => 'James',
+                    'surname' => 'Sparrow'
+                },
+                'nationality' => 'New Zealander',
+                'natures_of_control' => [
+                    'ownership-of-shares-more-than-25-percent-as-trust-registered-overseas-entity'
+                ],
+                'notified_on' => '2022-06-21'
+            },
             {
                 'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012a',
                 'kind' => 'persons-with-significant-control-statement',
@@ -845,11 +996,11 @@ sub test_get_rest_of_statements {
         ];
         my $index_of_first_active_statement = -1;
 
-        my @expected_rest_of_statements = @statements;
+        my @expected_rest_of_items = @items;
 
-        my $rest_of_statements = $pscs_controller->get_rest_of_statements($index_of_first_active_statement, @statements);
+        my $rest_of_items = $pscs_controller->get_rest_of_items($index_of_first_active_statement, @items);
 
-        is_deeply($rest_of_statements, @expected_rest_of_statements, 'gets all statements, as expected')
+        is_deeply($rest_of_items, @expected_rest_of_items, 'gets all items, as expected')
     }
 
 }
