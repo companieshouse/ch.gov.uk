@@ -6,7 +6,6 @@ use CH::Perl;
 use CH::Util::Pager;
 use CH::Util::DateHelper;
 use Mojo::IOLoop::Delay;
-use Data::Dumper;
 
 #-------------------------------------------------------------------------------
 
@@ -306,7 +305,7 @@ sub move_first_active_statement_to_top_for_roe {
     my ($self, $items) = @_;
 
     my $company_type = $self->stash->{company}->{type};
-    if (!$company_type eq "registered-overseas-entity") {
+    if ($company_type ne "registered-overseas-entity") {
         # Not ROE, do nothing here.
         return;
     }
