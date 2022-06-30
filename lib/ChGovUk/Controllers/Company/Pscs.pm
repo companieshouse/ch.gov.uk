@@ -222,23 +222,24 @@ sub list {
 sub merge_pscs_and_statements {
     my ($self, $pscs, $statements) = @_;
 
-     my @active_items;
-     my @ceased_items;
+    my @active_items;
+    my @ceased_items;
 
-     push @{ $pscs }, @{ $statements };
+    push @{ $pscs }, @{ $statements };
 
-     for my $item (@{ $pscs }) {
-         $item->{statement_6_flag} = 1 if ( $item->{statement} eq "psc-has-failed-to-confirm-changed-details");
-         if ( $item->{ceased_on} || $item->{ceased} ) {
+    for my $item (@{ $pscs }) {
+        $item->{statement_6_flag} = 1 if ( $item->{statement} eq "psc-has-failed-to-confirm-changed-details");
+        if ( $item->{ceased_on} || $item->{ceased} ) {
             push @ceased_items, $item;
-         } else {
+        } else {
             push @active_items, $item;
-         }
-     }
-     push @active_items, @ceased_items;
+        }
+    }
+    push @active_items, @ceased_items;
 
-         return \@active_items;
+    $self->move_first_active_statement_to_top_for_roe(\@active_items);
 
+    return \@active_items;
 }
 
 #-------------------------------------------------------------------------------
@@ -294,6 +295,94 @@ sub get_exemptions_resource {
         }
       )->execute;
 
+}
+
+#-------------------------------------------------------------------------------
+
+# Moves the first active statement (if any) to the head of the list of items to
+# be displayed, for ROE companies only.
+sub move_first_active_statement_to_top_for_roe {
+    my ($self, $items) = @_;
+
+    my $company_type = $self->stash->{company}->{type};
+    if ($company_type ne "registered-overseas-entity") {
+        # Not ROE, do nothing here.
+        return;
+    }
+
+    my ($first_active_statement_index, $first_active_statement) = $self->get_first_active_statement($items);
+
+    if (defined $first_active_statement and
+        $self->get_company_is_active()) {
+        debug "ROE, first active statement comes first before the PSCs, the other items follow after.";
+        my $rest_of_items = $self->get_rest_of_items($first_active_statement_index, $items);
+        splice $items, 0, 1, $first_active_statement;
+        splice $items, 1, scalar @{$items} - 1, @{$rest_of_items};
+    }
+
+}
+
+#-------------------------------------------------------------------------------
+
+sub get_first_active_statement {
+    my ($self, $items) = @_;
+
+    my @items = @{ $items };
+    if (scalar @items == 0) {
+        return (-1, undef);
+    }
+
+    my $index_of_first_active_statement = 0;
+    my $first_active_statement = $items[$index_of_first_active_statement];
+    while (defined $first_active_statement) {
+        if ($first_active_statement->{statement} and !$first_active_statement->{ceased_on}) {
+            last;
+        }
+        $index_of_first_active_statement++;
+        $first_active_statement = $items[$index_of_first_active_statement];
+    }
+
+    if (!defined $first_active_statement or $first_active_statement->{ceased_on}) {
+        debug "No active statement found.";
+        # Not actually active, so we didn't find any active statements then.
+        return (-1, undef);
+    } else {
+        debug "ACTIVE statement found.";
+        return ($index_of_first_active_statement, $first_active_statement);
+    }
+}
+
+#-------------------------------------------------------------------------------
+
+sub get_rest_of_items {
+    my ($self, $index_of_first_active_statement, $items) = @_;
+
+    my @items = @{ $items };
+    if (scalar @items == 0) {
+        return [];
+    }
+
+    my @rest_of_items;
+    for (my $index = 0; $index < scalar @items; $index++) {
+        if ($index != $index_of_first_active_statement) {
+            push @rest_of_items, $items[$index];
+        }
+    }
+
+    return \@rest_of_items;
+}
+
+#-------------------------------------------------------------------------------
+
+sub get_company_is_active {
+    my ($self) = @_;
+
+    my $company_status = $self->stash->{company}->{company_status};
+    if ($company_status eq 'dissolved' or $company_status eq 'converted-closed' or $company_status eq 'removed') {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 #-------------------------------------------------------------------------------
