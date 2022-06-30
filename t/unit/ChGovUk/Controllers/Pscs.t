@@ -566,7 +566,34 @@ sub test_get_first_active_statement {
 
         my $pscs_controller = $CLASS->new();
 
-        my @statements = [
+        my @items = [
+            {
+                'address' => {
+                    'address_line_1' => 'Old Church Road',
+                    'locality' => 'Cardiff',
+                    'postal_code' => 'CF14 1AA',
+                    'premises' => '29',
+                    'region' => 'South Glamorgan'
+                },
+                'date_of_birth' => '1977-06-01',
+                'etag' => 'fe3a190ba4f6e662796af13ae2db2aab42730185',
+                'is_sanctioned' => 1,
+                'kind' => 'individual-beneficial-owner',
+                'links' => {
+                    'self' => '/company/OE000002/persons-with-significant-control/individual-beneficial-owner/DHxa-VEwiFq8gi3K_0fpcVO2tIA'
+                },
+                'name' => 'Jack James Sparrow',
+                'name_elements' => {
+                    'forename' => 'Jack',
+                    'middle_name' => 'James',
+                    'surname' => 'Sparrow'
+                },
+                'nationality' => 'New Zealander',
+                'natures_of_control' => [
+                    'ownership-of-shares-more-than-25-percent-as-trust-registered-overseas-entity'
+                ],
+                'notified_on' => '2022-06-21'
+            },
             {
                 'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012a',
                 'kind' => 'persons-with-significant-control-statement',
@@ -617,24 +644,67 @@ sub test_get_first_active_statement {
                 'notified_on' => '2022-06-21', # active
                 'statement' => 'at-least-one-beneficial-owner-unidentified'
             };
-        my $expected_first_active_statement_index = 2;
+        my $expected_first_active_statement_index = 3;
 
-        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@statements);
+        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@items);
 
         is($index, $expected_first_active_statement_index, 'found expected first active statement');
         is_deeply($first_active_statement, $expected_first_active_statement, 'found expected first active statement');
+    };
+
+    subtest "gets no active statement from no items" => sub {
+
+        my $pscs_controller = $CLASS->new();
+
+        my @no_items = [];
+
+        my $expected_first_active_statement = undef;
+        my $expected_first_active_statement_index = -1;
+
+        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@no_items);
+
+        is($index, $expected_first_active_statement_index, 'found no first active statement, as expected');
+        is_deeply($first_active_statement, $expected_first_active_statement, 'found no first active statement, as expected')
     };
 
     subtest "gets no active statement from no statements" => sub {
 
         my $pscs_controller = $CLASS->new();
 
-        my @no_statements = [];
+        my @items_with_no_statements = [
+            {
+                'address' => {
+                    'address_line_1' => 'Old Church Road',
+                    'locality' => 'Cardiff',
+                    'postal_code' => 'CF14 1AA',
+                    'premises' => '29',
+                    'region' => 'South Glamorgan'
+                },
+                'date_of_birth' => '1977-06-01',
+                'etag' => 'fe3a190ba4f6e662796af13ae2db2aab42730185',
+                'is_sanctioned' => 1,
+                'kind' => 'individual-beneficial-owner',
+                'links' => {
+                    'self' => '/company/OE000002/persons-with-significant-control/individual-beneficial-owner/DHxa-VEwiFq8gi3K_0fpcVO2tIA'
+                },
+                'name' => 'Jack James Sparrow',
+                'name_elements' => {
+                    'forename' => 'Jack',
+                    'middle_name' => 'James',
+                    'surname' => 'Sparrow'
+                },
+                'nationality' => 'New Zealander',
+                'natures_of_control' => [
+                    'ownership-of-shares-more-than-25-percent-as-trust-registered-overseas-entity'
+                ],
+                'notified_on' => '2022-06-21'
+            }
+        ];
 
         my $expected_first_active_statement = undef;
         my $expected_first_active_statement_index = -1;
 
-        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@no_statements);
+        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@items_with_no_statements);
 
         is($index, $expected_first_active_statement_index, 'found no first active statement, as expected');
         is_deeply($first_active_statement, $expected_first_active_statement, 'found no first active statement, as expected')
@@ -644,7 +714,34 @@ sub test_get_first_active_statement {
 
         my $pscs_controller = $CLASS->new();
 
-        my @statements = [
+        my @items = [
+            {
+                'address' => {
+                    'address_line_1' => 'Old Church Road',
+                    'locality' => 'Cardiff',
+                    'postal_code' => 'CF14 1AA',
+                    'premises' => '29',
+                    'region' => 'South Glamorgan'
+                },
+                'date_of_birth' => '1977-06-01',
+                'etag' => 'fe3a190ba4f6e662796af13ae2db2aab42730185',
+                'is_sanctioned' => 1,
+                'kind' => 'individual-beneficial-owner',
+                'links' => {
+                    'self' => '/company/OE000002/persons-with-significant-control/individual-beneficial-owner/DHxa-VEwiFq8gi3K_0fpcVO2tIA'
+                },
+                'name' => 'Jack James Sparrow',
+                'name_elements' => {
+                    'forename' => 'Jack',
+                    'middle_name' => 'James',
+                    'surname' => 'Sparrow'
+                },
+                'nationality' => 'New Zealander',
+                'natures_of_control' => [
+                    'ownership-of-shares-more-than-25-percent-as-trust-registered-overseas-entity'
+                ],
+                'notified_on' => '2022-06-21'
+            },
             {
                 'etag' => 'b166d2a8a7d0983b315a290dc2a0966be280012a',
                 'kind' => 'persons-with-significant-control-statement',
@@ -690,7 +787,7 @@ sub test_get_first_active_statement {
         my $expected_first_active_statement = undef;
         my $expected_first_active_statement_index = -1;
 
-        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@statements);
+        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@items);
 
         is($index, $expected_first_active_statement_index, 'found no first active statement, as expected');
         is_deeply($first_active_statement, $expected_first_active_statement, 'found no first active statement, as expected')
