@@ -44,13 +44,23 @@
                     )
                 %>
                 / <% $officers.resigned_count %>
-                <%
-                    ln(
-                        'resignation',
-                        'resignations',
-                        $officers.resigned_count
-                    )
-                %>
+                % if $is_overseas_entity {
+                    <%
+                        ln(
+                            'cessation',
+                            'cessations',
+                            $officers.resigned_count
+                        )
+                    %>
+                % } else {
+                    <%
+                        ln(
+                            'resignation',
+                            'resignations',
+                            $officers.resigned_count
+                        )
+                    %>
+                % }
             % }
         % } else {
             % if $officers.active_count == 0 {
@@ -167,8 +177,8 @@
                         % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
                         <dl class="column-quarter">
                             <dt><% l('Ceased on') %></dt>
-                            <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
-                                <% $c.isodate_as_string( $officer.appointed_on ) %>
+                            <dd id="officer-resigned-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.resigned_on ) %>
                             </dd>
                         </dl>
                        % } else {
