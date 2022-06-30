@@ -238,10 +238,7 @@ sub merge_pscs_and_statements {
     }
     push @active_items, @ceased_items;
 
-    my $company_type = $self->stash->{company}->{type};
-    if ($company_type eq "registered-overseas-entity") {
-        $self->move_first_active_statement_to_fore(\@active_items);
-    }
+    $self->move_first_active_statement_to_top_for_roe(\@active_items);
 
     return \@active_items;
 }
@@ -303,8 +300,16 @@ sub get_exemptions_resource {
 
 #-------------------------------------------------------------------------------
 
-sub move_first_active_statement_to_fore {
+# Moves the first active statement (if any) to the head of the list of items to
+# be displayed, for ROE companies only.
+sub move_first_active_statement_to_top_for_roe {
     my ($self, $items) = @_;
+
+    my $company_type = $self->stash->{company}->{type};
+    if (!$company_type eq "registered-overseas-entity") {
+        # Not ROE, do nothing here.
+        return;
+    }
 
     my ($first_active_statement_index, $first_active_statement) = $self->get_first_active_statement($items);
 
@@ -362,7 +367,7 @@ sub get_first_active_statement {
     }
 
     if (!defined $first_active_statement or $first_active_statement->{ceased_on}) {
-        debug "No active statement found";
+        debug "No active statement found.";
         # Not actually active, so we didn't find any active statements then.
         return (-1, undef);
     } else {
