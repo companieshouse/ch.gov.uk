@@ -324,29 +324,6 @@ sub move_first_active_statement_to_top_for_roe {
 
 #-------------------------------------------------------------------------------
 
-sub order_pscs_for_roe {
-    my ($self, $pscs, $statements) = @_;
-
-    my $company_type = $self->stash->{company}->{type};
-
-    my ($first_active_statement_index, $first_active_statement) = $self->get_first_active_statement($statements);
-    if ($company_type eq "registered-overseas-entity" and
-        defined $first_active_statement and
-        $self->get_company_is_active()) {
-        debug "ROE, first active statement comes before PSCs, the rest follow after.";
-        my $rest_of_statements = $self->get_rest_of_items($first_active_statement_index, $statements);
-        unshift @ { $pscs },  $first_active_statement;
-        push @{ $pscs },  @{ $rest_of_statements };
-    } else {
-        debug "non-ROE, or no active statements, statements come after PSCs.";
-        push @{ $pscs }, @{ $statements };
-    }
-
-    return $pscs
-}
-
-#-------------------------------------------------------------------------------
-
 sub get_first_active_statement {
     my ($self, $items) = @_;
 

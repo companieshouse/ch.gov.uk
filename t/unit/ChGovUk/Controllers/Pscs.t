@@ -7,7 +7,12 @@ Readonly my $CLASS => 'ChGovUk::Controllers::Company::Pscs';
 
 use_ok $CLASS;
 new_ok $CLASS;
-methods_ok $CLASS, qw(list order_pscs_for_roe);
+methods_ok $CLASS, qw(
+    list
+    move_first_active_statement_to_top_for_roe
+    get_first_active_statement
+    get_rest_of_items
+    get_company_is_active);
 
 test_move_first_active_statement_to_top_for_roe();
 test_get_first_active_statement();
