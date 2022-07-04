@@ -237,15 +237,15 @@ sub view_details {
 
             $result->{show_alterations_statement} = $self->should_show_alterations_statement( $result );
 
-            $self->_get_image_location($result->{creation_transaction}, $filing_delay->begin(0) );
-
-            # Do not merge with the loop above because it will break the delays and return garbage to
             for my $transaction (@{$result->{transactions}}) {
                if ( defined $transaction->{links}->{filing}) {
                    my $additional_transaction_delay_end = $filing_delay->begin(0);
                    $self->_get_image_location($transaction, $additional_transaction_delay_end);
                }
             }
+
+            # Do not merge with the loop above, the creation_transaction must be handled separately
+            $self->_get_image_location($result->{creation_transaction}, $filing_delay->begin(0) );
 
        },
         failure => sub {
