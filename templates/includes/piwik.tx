@@ -119,24 +119,8 @@
     });
   }
 
-  function isViewingRoeProfilePage() {
-    var pageTitle = $(document).find("title").data("id");
-    var companyType = $(document).find("#company-type").text().trim();
-    return pageTitle === "company_profile" && companyType === 'Overseas entity';
-  }
-
-  function trackViewingRoeProfilePage() {
-    if (isViewingRoeProfilePage()) {
-        var companyNumber = $(document).find("#company-number").text().trim().split('\n')[1].trim();
-        console.log('Tracking viewing ROE profile for ' + companyNumber + '.');
-        // TODO ROE-930: Use goal ID 9 for apollo1.
-        _paq.push(['trackGoal', 4]);
-    }
-  }
-
   $(document).ready(function () {
     bindPiwikListener();
-    trackViewingRoeProfilePage();
   });
 </script>
 <!-- End Piwik Code -->
