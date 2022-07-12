@@ -121,11 +121,10 @@
 
   function trackRoe() {
     console.log('trackRoe(): ' + $(document).find("title").data("id") + '.');
-    // TODO ROE-930: Use find().
-    var companyType = $("#company-type").text().trim();
+    var companyType = $(document).find("#company-type").text().trim();
     console.log('company-type: ' +  companyType  + '.');
     if (companyType === 'Overseas entity') {
-        var companyNumber = $("#company-number").text().trim().split('\n')[1].trim();
+        var companyNumber = $(document).find("#company-number").text().trim().split('\n')[1].trim();
         console.log('Tracking ROE viewing for ' + companyNumber + '.');
         // TODO ROE-930: Use goal ID 9 for apollo1.
         _paq.push(['trackGoal', 4]);
