@@ -32,7 +32,7 @@
     % if $c.is_signed_in {
       <div class="onlyJS">
       <div id="widget">
-      <a class="render-document govuk-button govuk-button--secondary piwik-event" data-event-id="View company information snapshot" href="#">View company information snapshot
+      <a class="render-document govuk-button govuk-button--secondary piwik-event" data-event-id="<% $view_snapshot_event %>" href="#">View company information snapshot
           <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
         <div id="status-widget" class="widget-footer visually-hidden">
           <div id="status">
@@ -48,7 +48,7 @@
       </div>
       <div id="download-button"></div>
       % } else {
-      <a class="govuk-button govuk-button--secondary piwik-event" data-event-id="View company information snapshot" href="<% $c.url_for('user_sign_in') %>">View company information snapshot
+      <a class="govuk-button govuk-button--secondary piwik-event" data-event-id="<% $view_snapshot_event %>" href="<% $c.url_for('user_sign_in') %>">View company information snapshot
           <span class="govuk-visually-hidden">link opens in new tab/window</span></a>
     % }
   % }

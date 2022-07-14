@@ -76,6 +76,7 @@ sub view {
   $self->stash(show_certificate => $show_certificate);
   $self->stash(show_certified_document => $show_certified_document);
   $self->stash(show_dissolved_certificate => $show_dissolved_certificate);
+  $self->stash(view_snapshot_event => $self->get_view_snapshot_matomo_event($company_type));
 
   my @flags = ($show_snapshot, $show_certificate, $show_certified_document, $show_dissolved_certificate);
 
@@ -132,6 +133,21 @@ sub company_is_dissolved {
 
   return $company_status eq 'dissolved';
 }
+
+#-------------------------------------------------------------------------------
+
+sub get_view_snapshot_matomo_event {
+  my ($self, $company_type) = @_;
+
+  if ($company_type eq 'registered-overseas-entity') {
+    debug "Returning %s", "View ROE company information snapshot";
+    return "View ROE company information snapshot";
+  } else {
+    debug "Returning %s", "View company information snapshot";
+    return "View company information snapshot";
+  }
+}
+
 
 #-------------------------------------------------------------------------------
 
