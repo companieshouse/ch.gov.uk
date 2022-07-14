@@ -180,6 +180,8 @@ sub list {
                        statement_count          => $psc_statements->{total_results},
                        total_results            => $total_results_combined,
                      });
+                     my $company_type = $self->stash->{company}->{type};
+                     $self->stash(view_pscs_event => $self->get_view_pscs_matomo_event($company_type));
 
                      my $exemption_delay = Mojo::IOLoop::Delay->new;
                      my $exemption_delay_end;
@@ -384,6 +386,19 @@ sub get_company_is_active {
         return true;
     }
 }
+
+#-------------------------------------------------------------------------------
+
+sub get_view_pscs_matomo_event {
+    my ($self, $company_type) = @_;
+
+    if ($company_type eq 'registered-overseas-entity') {
+        return "View beneficial owners";
+    } else {
+        return "View persons with significant control";
+    }
+}
+
 
 #-------------------------------------------------------------------------------
 1;
