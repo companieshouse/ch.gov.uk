@@ -494,7 +494,7 @@
             if (isViewingRoeProfilePage()) {
                 var companyNumber = $(document).find("#company-number").text().trim().split('\n')[1].trim();
                 console.log('Tracking viewing ROE profile for ' + companyNumber + '.');
-                _paq.push(['trackGoal', <% $c.config.piwik.view_roe_profile_goal_id %>]);
+                _paq.push(['trackEvent', 'company_view_all', 'View ROE company']);
             }
           }
 
