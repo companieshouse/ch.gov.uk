@@ -115,5 +115,4 @@ piwik:
   url: "<:= $env.PIWIK_URL :>"
   site_id: <:= $env.PIWIK_SITE_ID :>
   embed: <:= $env.PIWIK_EMBED :>
-  view_roe_profile_goal_id: <:= $env.PIWIK_VIEW_ROE_PROFILE_GOAL_ID :>
 : }

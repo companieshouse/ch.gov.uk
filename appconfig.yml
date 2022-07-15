@@ -72,7 +72,6 @@ piwik:
   url: "<PIWIK_URL>"
   site_id: <PIWIK_SITE_ID>
   embed: <PIWIK_EMBED>
-  view_roe_profile_goal_id: <PIWIK_VIEW_ROE_PROFILE_GOAL_ID>
 
 statsd:
   host: "<STATSD_HOST>"
