@@ -281,4 +281,29 @@ subtest "Certificate not orderable for limited partnership in administration" =>
 
 #-------------------------------------------------------------------------------
 
+subtest "\$view_snapshot_event is 'View non-ROE company information snapshot' for a non-ROE company" => sub {
+    plan tests => 1;
+    $view_all_ctrl->stash(company => {
+        company_number => "00006400",
+        type           => "ltd",
+    });
+    $view_all_ctrl->view();
+    is $view_all_ctrl->stash->{view_snapshot_event}, "View non-ROE company information snapshot", "\$view_snapshot_event should be 'View non-ROE company information snapshot'";
+};
+
+#-------------------------------------------------------------------------------
+
+subtest "\$view_snapshot_event is 'View ROE company information snapshot' for a ROE company" => sub {
+    plan tests => 1;
+    $view_all_ctrl->stash(company => {
+        company_number => "OE000002",
+        type           => "registered-overseas-entity",
+    });
+    $view_all_ctrl->view();
+    is $view_all_ctrl->stash->{view_snapshot_event}, "View ROE company information snapshot", "\$view_snapshot_event should be 'View ROE company information snapshot'";
+};
+
+#-------------------------------------------------------------------------------
+
+
 done_testing();

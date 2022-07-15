@@ -431,4 +431,31 @@ sub test_get_rest_of_items {
 
 }
 
+subtest "\$view_pscs_event is 'View persons with significant control' for a non-ROE company" => sub {
+    plan tests => 1;
+    my $pscs_controller = $CLASS->new(
+        stash => {
+            company => {
+                company_number => "00006400",
+                type           => "ltd",
+            }
+        });
+    $pscs_controller->stash_view_pscs_event();
+    is $pscs_controller->stash->{view_pscs_event}, "View persons with significant control", "\$view_pscs_event should be 'View persons with significant control'";
+};
+
+subtest "\$view_pscs_event is 'View beneficial owners' for a ROE company" => sub {
+    plan tests => 1;
+    my $pscs_controller = $CLASS->new(
+        stash => {
+            company => {
+                company_number => "OE000002",
+                type           => "registered-overseas-entity",
+            }
+        });
+    $pscs_controller->stash_view_pscs_event();
+    is $pscs_controller->stash->{view_pscs_event}, "View beneficial owners", "\$view_pscs_event should be 'View beneficial owners'";
+};
+
+
 # ==============================================================================
