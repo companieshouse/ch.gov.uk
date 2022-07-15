@@ -483,23 +483,10 @@
     % if $c.config.piwik.embed {
         <!-- Piwik -->
         <script type="text/javascript">
-
-          function isViewingRoeProfilePage() {
-            var pageTitle = $(document).find("title").data("id");
-            var companyType = $(document).find("#company-type").text().trim();
-            return pageTitle === "company_profile" && companyType === 'Overseas entity';
-          }
-
-          function trackViewingRoeProfilePage() {
-            if (isViewingRoeProfilePage()) {
-                var companyNumber = $(document).find("#company-number").text().trim().split('\n')[1].trim();
-                console.log('Tracking viewing ROE profile for ' + companyNumber + '.');
-                _paq.push(['trackEvent', 'company_view_all', 'View ROE company']);
-            }
-          }
-
           $(document).ready(function () {
-              trackViewingRoeProfilePage();
+                var companyNumber = $(document).find("#company-number").text().trim().split('\n')[1].trim();
+                console.log('Tracking viewing company profile for ' + companyNumber + '.');
+                _paq.push(['trackEvent', 'company_view_all', '<% $view_company_event %>']);
           });
         </script>
         <!-- End Piwik Code -->
