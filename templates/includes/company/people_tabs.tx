@@ -12,10 +12,7 @@
             <% if ($c.config.feature.psc == 1) { %>
                 <% if $pscs { %>
 	            	<li id='pscs-tab' class="active">
-	                    <a id='pscs-link'
-	                       class="govuk-link"
-	                       onclick="javascript:_paq.push(['trackEvent', 'people_tab', '<% $view_pscs_event %>']);"
-	                       href='#'>
+	                    <a id='pscs-link' class="govuk-link" href='#'>
 	                        <% if ($company.type != 'registered-overseas-entity') { %>
 	                            Persons with significant control</a>
                             <% } else { %>
@@ -25,16 +22,10 @@
 	            <% } else { %>
 	            	<li id='pscs-tab'>
                         <% if ($company.type != 'registered-overseas-entity') { %>
-                            <a id='pscs-link'
-                               class="govuk-link"
-                               onclick="javascript:_paq.push(['trackEvent', 'people_tab', '<% $view_pscs_event %>']);"
-                               href="<% $c.url_for("list_pscs") %>" >
+                            <a id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" >
                             Persons with significant control</a>
                         <% } else { %>
-                            <a id='pscs-link'
-                               class="govuk-link"
-                               onclick="javascript:_paq.push(['trackEvent', 'people_tab', '<% $view_pscs_event %>']);"
-                               href="<% $c.url_for("list_pscs") %>" >
+                            <a id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" >
                             Beneficial owners</a>
                         <% } %>
 	            	</li>
