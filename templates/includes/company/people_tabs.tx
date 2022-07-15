@@ -38,10 +38,8 @@
             <script type="text/javascript">
 
               $(document).ready(function () {
-                  console.log('People tab loaded, event is "<% $view_pscs_event %>".');
                   var viewPscsEvent = '<% $view_pscs_event %>';
                   if (viewPscsEvent) {
-                    console.log('Tracking event "' + viewPscsEvent + '".');
                     _paq.push(['trackEvent', 'people_tab', viewPscsEvent]);
                   }
               });

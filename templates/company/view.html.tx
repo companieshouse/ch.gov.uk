@@ -484,8 +484,6 @@
         <!-- Piwik -->
         <script type="text/javascript">
           $(document).ready(function () {
-                var companyNumber = $(document).find("#company-number").text().trim().split('\n')[1].trim();
-                console.log('Tracking viewing company profile for ' + companyNumber + '.');
                 _paq.push(['trackEvent', 'company_view_all', '<% $view_company_event %>']);
           });
         </script>
