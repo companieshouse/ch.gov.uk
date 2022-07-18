@@ -480,5 +480,15 @@
       % }
     % }
 
+    % if $c.config.piwik.embed {
+        <!-- Piwik -->
+        <script type="text/javascript">
+          $(document).ready(function () {
+                _paq.push(['trackEvent', 'company_view_all', '<% $view_company_event %>']);
+          });
+        </script>
+        <!-- End Piwik Code -->
+    %}
+
   %}
 % }

@@ -14,6 +14,8 @@ sub view {
 
     trace "display company profile for: %s", $company_number [COMPANY PROFILE];
 
+    $self->stash_view_company_event();
+
     if ($company_number =~ /^(IP|SP|NP|NO|RS|SR|RC|NR|IC|SI|NV|AC|SA|NA|PC)\w{6}$/) {
         return $self->render(template => "company/partial_data_available/view");
     }
@@ -42,6 +44,18 @@ sub authorise {
 
     $self->redirect_to($destination);
     return;
+}
+
+#-------------------------------------------------------------------------------
+
+sub stash_view_company_event {
+    my ($self) = @_;
+
+    my $company_type = $self->stash->{company}->{type};
+    my $view_company_event = "View non-ROE company";
+    $view_company_event = "View ROE company" if ($company_type eq 'registered-overseas-entity');
+
+    $self->stash(view_company_event => $view_company_event);
 }
 
 #-------------------------------------------------------------------------------

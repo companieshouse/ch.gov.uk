@@ -32,3 +32,17 @@
 	            <% } %>
             <% } %>
 	    </ul>
+
+        % if $c.config.piwik.embed {
+            <!-- Piwik -->
+            <script type="text/javascript">
+
+              $(document).ready(function () {
+                  var viewPscsEvent = '<% $view_pscs_event %>';
+                  if (viewPscsEvent) {
+                    _paq.push(['trackEvent', 'people_tab', viewPscsEvent]);
+                  }
+              });
+            </script>
+            <!-- End Piwik Code -->
+        %}

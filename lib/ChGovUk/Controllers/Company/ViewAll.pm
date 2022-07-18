@@ -77,6 +77,8 @@ sub view {
   $self->stash(show_certified_document => $show_certified_document);
   $self->stash(show_dissolved_certificate => $show_dissolved_certificate);
 
+  $self->stash_view_snapshot_event();
+
   my @flags = ($show_snapshot, $show_certificate, $show_certified_document, $show_dissolved_certificate);
 
   if ($self->should_render_more_tab_view(@flags)) {
@@ -131,6 +133,18 @@ sub company_is_dissolved {
   my ($self, $company_status) = @_;
 
   return $company_status eq 'dissolved';
+}
+
+#-------------------------------------------------------------------------------
+
+sub stash_view_snapshot_event {
+  my ($self) = @_;
+
+  my $company_type = $self->stash->{company}->{type};
+  my $view_snapshot_event = "View non-ROE company information snapshot";
+  $view_snapshot_event = "View ROE company information snapshot" if ($company_type eq 'registered-overseas-entity');
+
+  $self->stash(view_snapshot_event => $view_snapshot_event);
 }
 
 #-------------------------------------------------------------------------------
