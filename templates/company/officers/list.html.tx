@@ -287,6 +287,16 @@
         % }
     </div>
 
+    % if $company.super_secure_managing_officer_count >= 1 {
+        <div class="grid-row">
+            <div class="column-half">
+                <h2 class="heading-medium heading-with-border">Protected managing officer <span class="status-tag font-xsmall">Active</span></h2>
+
+                <p><strong>The details of <% $company.super_secure_managing_officer_count %> managing officers are not shown because restrictions on using or disclosing any of the individual’s particulars are in force</strong></p>
+            </div>
+        </div>
+    % }
+
     % if $officers.total_results > $paging.entries_per_page {
         <ul class="pager">
             % if ($paging.previous_page) {
