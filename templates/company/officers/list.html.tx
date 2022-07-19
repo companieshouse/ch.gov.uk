@@ -289,9 +289,10 @@
 
     % if $company.super_secure_managing_officer_count >= 1 {
         <div class="grid-row">
-            <div class="column-half">
+            <div class="column-full">
                 <h2 class="heading-medium heading-with-border">Protected managing officer <span class="status-tag font-xsmall">Active</span></h2>
-
+            </div>
+            <div class="column-half">
                 <p><strong>The details of <% $company.super_secure_managing_officer_count %> managing officers are not shown because restrictions on using or disclosing any of the individual’s particulars are in force</strong></p>
             </div>
         </div>
