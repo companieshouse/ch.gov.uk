@@ -290,7 +290,11 @@
     % if $company.super_secure_managing_officer_count >= 1 {
         <div class="grid-row">
             <div class="column-full">
-                <h2 class="heading-medium heading-with-border">Protected managing officer <span class="status-tag font-xsmall">Active</span></h2>
+                % if $company.company_status != "removed" {
+                    <h2 class="heading-medium heading-with-border">Protected managing officer <span class="status-tag font-xsmall">Active</span></h2>
+                % } else {
+                    <h2 class="heading-medium heading-with-border">Protected managing officer</h2>
+                % }
             </div>
             <div class="column-half">
                 % if $company.super_secure_managing_officer_count == 1 {
