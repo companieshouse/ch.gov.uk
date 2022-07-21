@@ -5,7 +5,7 @@
         % if $company.links.filing_history {
         %     include "/includes/company/tab.tx" { tabid => 'filing-history-tab',   page => '/filing-history', title => 'Filing history' }
         % }
-        % if $company.links.officers || $company.links.persons_with_significant_control || $company.links.persons_with_significant_control_statements {
+        % if $company.links.officers || $company.links.persons_with_significant_control || $company.links.persons_with_significant_control_statements || $company.super_secure_managing_officer_count >= 1{
         %     include "/includes/company/tab.tx" { tabid => 'people-tab',         page => '/officers',       title => 'People' };
         % }
         % if $company.links.charges && ($c.config.feature.mortgage || $c.can_do('/admin/mortgages')) {
