@@ -34,9 +34,6 @@
                 Description <span class="govuk-visually-hidden">(of the document filed at Companies House)</span>
             </th>
             <th class="nowrap">
-                Fee <span class="govuk-visually-hidden">(of the certified document)</span>
-            </th>
-            <th class="nowrap">
                 Order option <span class="govuk-visually-hidden">(allows ordering of a certified document)</span>
             </th>
         </tr>
@@ -65,16 +62,7 @@
                       % }
                     % }
                 </td>
-                <td class="nowrap">
                 % if ($item.type != 'PRE95') && ($item.type != 'PRE95M') {
-                    % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
-                        % if $item.type == "NEWINC" {
-                            £30
-                        % } else {
-                            £15 
-                        % }
-                    % }
-                    </td>
                     <td> 
                     % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
                         <form action="<%'/company/' ~ $company.company_number ~ '/certified-documents' %>" method="post">
