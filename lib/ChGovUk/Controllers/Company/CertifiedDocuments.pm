@@ -202,7 +202,23 @@ sub post {
             my ($api, $tx) = @_;
             my $certifiedCopy = $tx->success->json;
             my $certifiedCopyId = $certifiedCopy->{'id'};
-            my $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-details";
+            my $basket_client = ChGovUk::Controllers::Company::BasketClient->new({
+                user_agent   => $self->ua,
+                access_token => $self->access_token->{access_token},
+                basket_url   => $self->config->{basket_api_url}
+            });
+
+            my $basket = $basket_client->get_basket;
+            my $location;
+            if ($basket->{enrolled}) {
+                if ($basket->{hasDeliverableItems}) {
+                    $location = "/basket";
+                } else {
+                    $location = "/delivery-details";
+                }
+            } else {
+                $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-details";
+            }
             $self->redirect_to($location);
         },
         error   => sub {
