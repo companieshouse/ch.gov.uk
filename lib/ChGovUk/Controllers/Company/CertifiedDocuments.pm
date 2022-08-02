@@ -135,13 +135,19 @@ sub view {
             trace "filing history total_count %d entries per page %d",
                 $pager->total_entries, $pager->entries_per_page() [FILING_HISTORY];
 
+            my $access_token = $self->access_token->{access_token};
             my $basket_client = ChGovUk::Controllers::Company::BasketClient->new({
                 user_agent   => $self->ua,
-                access_token => $self->access_token->{access_token},
+                access_token => $access_token,
                 basket_url   => $self->config->{basket_api_url}
             });
 
             my $basket = $basket_client->get_basket;
+            if (!$basket) {
+                error 'Error fetching basket for user [%s]', $access_token;
+                $self->render_exception("Error fetching basket");
+                return;
+            }
 
             $self->stash(current_page_number     => $pager->current_page);
             $self->stash(page_set                => $pager->pages_in_set());
@@ -202,15 +208,30 @@ sub post {
             my ($api, $tx) = @_;
             my $certifiedCopy = $tx->success->json;
             my $certifiedCopyId = $certifiedCopy->{'id'};
+            my $access_token = $self->access_token->{access_token};
             my $basket_client = ChGovUk::Controllers::Company::BasketClient->new({
-                user_agent   => $self->ua,
-                access_token => $self->access_token->{access_token},
-                basket_url   => $self->config->{basket_api_url}
+                user_agent      => $self->ua,
+                access_token    => $access_token,
+                basket_url      => $self->config->{basket_api_url},
+                append_item_url => $self->config->{append_item_to_basket_url}
             });
 
             my $basket = $basket_client->get_basket;
+            if (!$basket) {
+                error 'Error fetching basket for user [%s]', $access_token;
+                $self->render_exception("Error fetching basket");
+                return;
+            }
             my $location;
             if ($basket->{enrolled}) {
+                my $response = $basket_client->append_item_to_basket({
+                    item_uri => $certifiedCopy->{links}{self}
+                });
+                if ($response->{status}) {
+                    error 'Error adding item [%s] to basket for user [%s]', $certifiedCopyId, $access_token;
+                    $self->render_exception("Error adding item to basket");
+                    return;
+                }
                 if ($basket->{hasDeliverableItems}) {
                     $location = "/basket";
                 } else {

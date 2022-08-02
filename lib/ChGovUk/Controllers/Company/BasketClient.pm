@@ -5,6 +5,7 @@ use Moose;
 has 'user_agent' => (is => 'ro', isa => 'Object');
 has 'access_token' => (is => 'ro', isa => 'Str');
 has 'basket_url' => (is => 'ro', isa => 'Str');
+has 'append_item_url' => (is => 'ro', isa => 'Str');
 
 sub get_basket {
     my $self = shift;
@@ -25,6 +26,18 @@ sub get_basket {
     }
 
     return undef;
+}
+
+sub append_item_to_basket {
+    my ($self, $request) = @_;
+
+    my $tx = $self->user_agent->post($self->append_item_url => { Authorization => 'Bearer ' . $self->access_token } => json => $request);
+
+    if ($tx->success) {
+        return { status => 0 };
+    } else {
+        return { status => 1 };
+    }
 }
 
 1;

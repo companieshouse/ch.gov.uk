@@ -37,6 +37,12 @@ sub get {
     return $self->mockTransaction;
 }
 
+sub post {
+    my ($self) = shift;
+
+    return $self->mockTransaction;
+}
+
 package main;
 
 use Test::More;
@@ -53,11 +59,16 @@ subtest "Can use the basket client as a dependency" => sub {
 };
 
 subtest "Can instantiate a basket client" => sub {
-    $basket_client = new_ok $class => [{user_agent => MockUserAgent->new({mockTransaction => $mockTransaction}), access_token => "access_token", basket_url => "basket_url"}];
+    $basket_client = new_ok $class => [{
+        user_agent      => MockUserAgent->new({ mockTransaction => $mockTransaction }),
+        access_token    => "access_token",
+        basket_url      => "basket_url",
+        append_item_url => "append_item_url"
+    }];
 };
 
 subtest "Can use a basket client to fetch a user's basket" => sub {
-    can_ok $basket_client, 'get_basket';
+    can_ok $basket_client, qw(get_basket append_item_to_basket);
 };
 
 subtest "Get basket" => sub {
@@ -84,6 +95,26 @@ subtest "Get basket" => sub {
         $mockTransaction->mockResponse(undef);
         my $actual = $basket_client->get_basket;
         is $actual, undef, "Return value should be undefined";
+    };
+};
+
+subtest "Append item to basket" => sub {
+    plan tests => 2;
+    subtest "Return status=0 if item successfully appended to basket" => sub {
+        $mockTransaction->mockResponse({
+            mockResponse => MockResponse->new
+        });
+        my $actual = $basket_client->append_item_to_basket({
+            item_uri => "/path/to/item"
+        });
+        is_deeply $actual, { status => 0 }, "The method should indicate the operation completed successfully";
+    };
+    subtest "Return status=1 if error returned by client" => sub {
+        $mockTransaction->mockResponse(undef);
+        my $actual = $basket_client->append_item_to_basket({
+            item_uri => "/path/to/item"
+        });
+        is_deeply $actual, { status => 1 }, "The method should indicate the operation failed";
     };
 };
 

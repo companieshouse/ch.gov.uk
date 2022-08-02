@@ -144,4 +144,5 @@ show_feedback_page: <SHOW_FEEDBACK_PAGE>
 
 allowed_return_to_hosts: <ALLOWED_RETURN_TO_HOSTS>
 
-basket_api_url: <BASKET_API_URL>
+basket_api_url: "<ERIC_LOCAL_URL>/basket"
+append_item_to_basket_url: "<ERIC_LOCAL_URL>/basket/items/append"
