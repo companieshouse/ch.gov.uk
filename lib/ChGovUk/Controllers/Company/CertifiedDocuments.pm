@@ -11,6 +11,7 @@ use POSIX qw/ceil/;
 use JSON::XS;
 use ChGovUk::Plugins::FilterHelper;
 use DateTime;
+use ChGovUk::Controllers::Company::BasketClient;
 
 # all categories (that can be filtered by)
 use constant AVAILABLE_CATEGORIES => {
@@ -134,6 +135,14 @@ sub view {
             trace "filing history total_count %d entries per page %d",
                 $pager->total_entries, $pager->entries_per_page() [FILING_HISTORY];
 
+            my $basket_client = ChGovUk::Controllers::Company::BasketClient->new({
+                user_agent   => $self->ua,
+                access_token => $self->access_token->{access_token},
+                basket_url   => $self->config->{basket_api_url}
+            });
+
+            my $basket = $basket_client->get_basket;
+
             $self->stash(current_page_number     => $pager->current_page);
             $self->stash(page_set                => $pager->pages_in_set());
             $self->stash(next_page               => $pager->next_page());
@@ -146,6 +155,7 @@ sub view {
             $self->stash(categories              => $categories);
             $self->stash(selected_category_count => $selected_category_count);
             $self->stash(split_category_at       => ceil(@$categories / 2));
+            $self->stash(enrolled                => $basket->{enrolled});
 
             if ($self->req->is_xhr) {
                 $self->render(template => 'company/filing_history/view_content_certified');
