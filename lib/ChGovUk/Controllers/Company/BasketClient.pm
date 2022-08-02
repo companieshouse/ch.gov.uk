@@ -1,0 +1,31 @@
+package ChGovUk::Controllers::Company::BasketClient;
+
+use Moose;
+
+has 'user_agent' => (is => 'ro', isa => 'Object');
+has 'access_token' => (is => 'ro', isa => 'Str');
+has 'basket_url' => (is => 'ro', isa => 'Str');
+
+sub get_basket {
+    my $self = shift;
+    my $tx = $self->user_agent->get($self->basket_url => { Authorization => "Bearer ".$self->access_token });
+
+    if ($tx->success) {
+        my $body = $tx->success->json;
+        my $hasDeliverableItems;
+
+        for my $item (@{$body->{items} || []}) {
+            if ($item->{kind} eq 'item#certificate' || $item->{kind} eq 'item#certified-copy') {
+                $hasDeliverableItems = 1;
+                last;
+            }
+        }
+
+        return { enrolled => $body->{enrolled}, hasDeliverableItems => $hasDeliverableItems }
+    }
+
+    return undef;
+}
+
+1;
+
