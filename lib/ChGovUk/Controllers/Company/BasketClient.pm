@@ -12,7 +12,7 @@ sub get_basket {
 
     if ($tx->success) {
         my $body = $tx->success->json;
-        my $hasDeliverableItems;
+        my $hasDeliverableItems = 0;
 
         for my $item (@{$body->{items} || []}) {
             if ($item->{kind} eq 'item#certificate' || $item->{kind} eq 'item#certified-copy') {
@@ -21,7 +21,7 @@ sub get_basket {
             }
         }
 
-        return { enrolled => $body->{enrolled}, hasDeliverableItems => $hasDeliverableItems }
+        return { enrolled => ${$body->{enrolled} || \0}, hasDeliverableItems => $hasDeliverableItems };
     }
 
     return undef;
