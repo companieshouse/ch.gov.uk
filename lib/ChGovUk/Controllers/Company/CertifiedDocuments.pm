@@ -11,6 +11,7 @@ use POSIX qw/ceil/;
 use JSON::XS;
 use ChGovUk::Plugins::FilterHelper;
 use DateTime;
+use ChGovUk::Controllers::Company::BasketClient;
 
 # all categories (that can be filtered by)
 use constant AVAILABLE_CATEGORIES => {
@@ -134,6 +135,20 @@ sub view {
             trace "filing history total_count %d entries per page %d",
                 $pager->total_entries, $pager->entries_per_page() [FILING_HISTORY];
 
+            my $access_token = $self->access_token->{access_token};
+            my $basket_client = ChGovUk::Controllers::Company::BasketClient->new({
+                user_agent   => $self->ua,
+                access_token => $access_token,
+                basket_url   => $self->config->{basket_api_url}
+            });
+
+            my $basket = $basket_client->get_basket;
+            if (!$basket) {
+                error 'Error fetching basket for user [%s]', $access_token;
+                $self->render_exception("Error fetching basket");
+                return;
+            }
+
             $self->stash(current_page_number     => $pager->current_page);
             $self->stash(page_set                => $pager->pages_in_set());
             $self->stash(next_page               => $pager->next_page());
@@ -146,6 +161,7 @@ sub view {
             $self->stash(categories              => $categories);
             $self->stash(selected_category_count => $selected_category_count);
             $self->stash(split_category_at       => ceil(@$categories / 2));
+            $self->stash(enrolled                => $basket->{enrolled});
 
             if ($self->req->is_xhr) {
                 $self->render(template => 'company/filing_history/view_content_certified');
@@ -192,7 +208,38 @@ sub post {
             my ($api, $tx) = @_;
             my $certifiedCopy = $tx->success->json;
             my $certifiedCopyId = $certifiedCopy->{'id'};
-            my $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-details";
+            my $access_token = $self->access_token->{access_token};
+            my $basket_client = ChGovUk::Controllers::Company::BasketClient->new({
+                user_agent      => $self->ua,
+                access_token    => $access_token,
+                basket_url      => $self->config->{basket_api_url},
+                append_item_url => $self->config->{append_item_to_basket_url}
+            });
+
+            my $basket = $basket_client->get_basket;
+            if (!$basket) {
+                error 'Error fetching basket for user [%s]', $access_token;
+                $self->render_exception("Error fetching basket");
+                return;
+            }
+            my $location;
+            if ($basket->{enrolled}) {
+                my $response = $basket_client->append_item_to_basket({
+                    item_uri => $certifiedCopy->{links}{self}
+                });
+                if ($response->{status}) {
+                    error 'Error adding item [%s] to basket for user [%s]', $certifiedCopyId, $access_token;
+                    $self->render_exception("Error adding item to basket");
+                    return;
+                }
+                if ($basket->{hasDeliverableItems}) {
+                    $location = "/basket";
+                } else {
+                    $location = "/delivery-details";
+                }
+            } else {
+                $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-details";
+            }
             $self->redirect_to($location);
         },
         error   => sub {
