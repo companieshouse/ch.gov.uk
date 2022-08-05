@@ -192,7 +192,7 @@ sub post {
             my ($api, $tx) = @_;
             my $certifiedCopy = $tx->success->json;
             my $certifiedCopyId = $certifiedCopy->{'id'};
-            my $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-details";
+            my $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-options";
             $self->redirect_to($location);
         },
         error   => sub {
