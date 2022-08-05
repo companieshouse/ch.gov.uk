@@ -235,10 +235,10 @@ sub post {
                 if ($basket->{hasDeliverableItems}) {
                     $location = "/basket";
                 } else {
-                    $location = "/delivery-details";
+                    $location = "/delivery-options";
                 }
             } else {
-                $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-details";
+                $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-options";
             }
             $self->redirect_to($location);
         },
