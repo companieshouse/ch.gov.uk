@@ -1,4 +1,4 @@
-% cascade base { title => 'File abridged or full accounts - Find and update company information - GOV.UK', disable_header_search => 1, user_bar => false }
+% cascade base { title => 'File abridged or full accounts - Find and update company information - GOV.UK', disable_header_search => 1 }
 % around content -> {
 
 <ul>
