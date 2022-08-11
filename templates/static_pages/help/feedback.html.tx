@@ -1,4 +1,4 @@
-% cascade base { title => 'Feedback - Find and update company information - GOV.UK', disable_header_search => 1, user_bar => false, insights_bar => false, alternative_skiplink => true }
+% cascade base { title => 'Feedback - Find and update company information - GOV.UK', disable_header_search => 1, user_bar => true, insights_bar => false, alternative_skiplink => true }
 
 % around content -> {
 
