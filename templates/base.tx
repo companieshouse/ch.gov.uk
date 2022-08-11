@@ -174,7 +174,7 @@
     <main id="page-container" class="search <% $classes %> govuk-width-container" role="main">
 
       % if !$feedback_banner {
-        % if $certified_copies {
+        % if $certified_copies || $user_bar != false {
           <div>
         % } else {
           <div class="govuk-phase-banner">
