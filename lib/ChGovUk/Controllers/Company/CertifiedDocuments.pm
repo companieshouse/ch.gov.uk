@@ -235,7 +235,7 @@ sub post {
                 if ($basket->{hasDeliverableItems}) {
                     $location = "/basket";
                 } else {
-                    $location = "/delivery-options";
+                    $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-options";
                 }
             } else {
                 $location = "/orderable/certified-copies/${certifiedCopyId}/delivery-options";
