@@ -6,46 +6,7 @@
 
     % include '/includes/company/page_header.tx'
 
-    <div class="govuk-tabs" data-module="govuk-tabs">
-        <ul class="govuk-tabs__list">
-            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                <a class="govuk-tabs__tab" href="#past-day">
-                    Overview
-                </a>
-            </li>
-            <li class="govuk-tabs__list-item">
-                <a class="govuk-tabs__tab" href="#past-week">
-                    Filing history
-                </a>
-            </li>
-            <li class="govuk-tabs__list-item">
-                <a class="govuk-tabs__tab" href="#past-week">
-                    People
-                </a>
-            </li>
-            <li class="govuk-tabs__list-item">
-                <a class="govuk-tabs__tab" href="#past-week">
-                    Charges
-                </a>
-            </li>
-            <li class="govuk-tabs__list-item">
-                <a class="govuk-tabs__tab" href="#past-week">
-                    Insolvency
-                </a>
-            </li>
-            <li class="govuk-tabs__list-item">
-                <a class="govuk-tabs__tab" href="#past-week">
-                    UK establishments
-                </a>
-            </li>
-            <li class="govuk-tabs__list-item">
-                <a class="govuk-tabs__tab" href="#past-week">
-                    More
-                </a>
-            </li>
-        </ul>
-    </div>
-
+    % include '/includes/company/tabs.tx' { active => 'company-overview-tab' };
     <dl>
     % if $company.company_number == $c.authorised_company and $company.registered_office_is_in_dispute {
               <dt> <span id="roa-dispute" ><% l('Registered office address replaced') %></span> <a id="dispute-help-link"  href="/help/replaced-address-help.html"><% l("what's this?") %></a></dt>
@@ -530,5 +491,4 @@
     %}
 
   %}
-  </div>
 % }

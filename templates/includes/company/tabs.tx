@@ -1,30 +1,35 @@
-<div class="section-tabs js-tabs">
-    <ul>
+<div class="govuk-tabs" data-module="govuk-tabs">
+    <ul class="govuk-tabs__list">
         % include "/includes/company/tab.tx" { tabid => 'company-overview-tab', page => '', title => '<span class="govuk-visually-hidden">Company </span>Overview' }
 
         % if $company.links.filing_history {
-        %     include "/includes/company/tab.tx" { tabid => 'filing-history-tab',   page => '/filing-history', title => 'Filing history' }
+            % include "/includes/company/tab.tx" { tabid => 'filing-history-tab',   page => '/filing-history', title => 'Filing history' }
         % }
+
         % if $company.links.officers || $company.links.persons_with_significant_control || $company.links.persons_with_significant_control_statements || $company.super_secure_managing_officer_count >= 1{
-        %     include "/includes/company/tab.tx" { tabid => 'people-tab',         page => '/officers',       title => 'People' };
+            % include "/includes/company/tab.tx" { tabid => 'people-tab',         page => '/officers',       title => 'People' };
         % }
+
         % if $company.links.charges && ($c.config.feature.mortgage || $c.can_do('/admin/mortgages')) {
-        %     include "/includes/company/tab.tx" { tabid => 'charges-tab',        page => '/charges',      title => 'Charges' };
+            % include "/includes/company/tab.tx" { tabid => 'charges-tab',        page => '/charges',      title => 'Charges' };
         % }
+
         % if $company.links.insolvency {
-        %     include "/includes/company/tab.tx" { tabid => 'insolvency-tab',   page => '/insolvency',     title => 'Insolvency' };
+            % include "/includes/company/tab.tx" { tabid => 'insolvency-tab',   page => '/insolvency',     title => 'Insolvency' };
         % }
+
         % if $company.links.registers {
-        %     include "/includes/company/tab.tx" { tabid => 'register-tab', page => '/registers', title => 'Registers' };
+            % include "/includes/company/tab.tx" { tabid => 'register-tab', page => '/registers', title => 'Registers' };
         % }
+
         % if $company.links.uk_establishments {
-        %     include "/includes/company/tab.tx" { tabid => 'ukestablishment-tab', page => '/ukestablishments', title => 'UK establishments' };
+            % include "/includes/company/tab.tx" { tabid => 'ukestablishment-tab', page => '/ukestablishments', title => 'UK establishments' };
         % }
 
         % if $c.config.feature.company_report {
-          % if ($company.links.filing_history && $company.type != "uk-establishment") || $company.type != "assurance-company" && $company.type != "industrial-and-provident-society" && $company.type != "royal-charter"  && $company.type != "investment-company-with-variable-capital" && $company.type != "charitable-incorporated-organisation" && $company.type != "scottish-charitable-incorporated-organisation" && $company.type != "uk-establishment" && $company.type != "registered-society-non-jurisdictional" && $company.type != "protected-cell-company" && $company.type != "eeig" && $company.type != "protected-cell-company" && $company.type != "further-education-or-sixth-form-college-corporation"  && $company.type != "icvc-securities" && $company.type != "icvc-warrant" && $company.type != "icvc-umbrella" {
-            %     include "/includes/company/tab.tx" { tabid => 'more-tab', page => '/more', title => 'More'};
-          % }
-       % }
+            % if ($company.links.filing_history && $company.type != "uk-establishment") || $company.type != "assurance-company" && $company.type != "industrial-and-provident-society" && $company.type != "royal-charter"  && $company.type != "investment-company-with-variable-capital" && $company.type != "charitable-incorporated-organisation" && $company.type != "scottish-charitable-incorporated-organisation" && $company.type != "uk-establishment" && $company.type != "registered-society-non-jurisdictional" && $company.type != "protected-cell-company" && $company.type != "eeig" && $company.type != "protected-cell-company" && $company.type != "further-education-or-sixth-form-college-corporation"  && $company.type != "icvc-securities" && $company.type != "icvc-warrant" && $company.type != "icvc-umbrella" {
+                % include "/includes/company/tab.tx" { tabid => 'more-tab', page => '/more', title => 'More'};
+            % }
+        % }
     </ul>
 </div>
