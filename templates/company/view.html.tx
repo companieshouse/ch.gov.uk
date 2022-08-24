@@ -6,7 +6,7 @@
 
     % include '/includes/company/page_header.tx'
 
-    % include '/includes/company/tabs.tx' { active => 'company-overview-tab' };
+    % include '/includes/company/tabs_start.tx' { active => 'company-overview-tab' };
 
     <dl>
     % if $company.company_number == $c.authorised_company and $company.registered_office_is_in_dispute {
@@ -490,6 +490,6 @@
         </script>
         <!-- End Piwik Code -->
     %}
-
+    % include '/includes/company/tabs_end.tx' {};
   %}
 % }

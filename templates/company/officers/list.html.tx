@@ -6,7 +6,7 @@
 
     % include '/includes/company/page_header.tx'
 
-    % include '/includes/company/tabs.tx' { active => 'people-tab' };
+    % include '/includes/company/tabs_start.tx' { active => 'people-tab' };
 
     % include '/includes/company/people_tabs.tx' { active => 'officers-tab' };
 
@@ -337,4 +337,5 @@
             % }
         </ul>
     %}
+    % include '/includes/company/tabs_end.tx' {};
 % }

@@ -2,7 +2,7 @@
 % around content -> {
 % include '/includes/company/page_header.tx'
 
-% include '/includes/company/tabs.tx' { active => 'charges-tab' };
+% include '/includes/company/tabs_start.tx' { active => 'charges-tab' };
 
 <ol role="list" class="breadcrumb">
     <li><a id="charges-index" href="/company/<% $company_number %>/charges"><% l('Charges') %></a></li>
@@ -205,5 +205,7 @@
         % }
     </ul>
 % }
+
+% include '/includes/company/tabs_end.tx' {};
 
 % }
