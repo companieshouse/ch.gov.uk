@@ -31,7 +31,7 @@
     </div>
 
     <h2 class="heading-medium" id="company-appointments">
-        <% $company_appointments %>
+        <span class="govuk-visually-hidden">Officers:</span><% $company_appointments %>
     </h2>
 
     <div class="appointments-list">
