@@ -2,7 +2,7 @@
 % around content -> {
 % include '/includes/company/page_header.tx'
 
-% include '/includes/company/tabs.tx' { active => 'insolvency-tab' };
+% include '/includes/company/tabs_start.tx' { active => 'insolvency-tab' };
   % for $insolvency.cases.reverse()->$case {
     % if $~case.is_first{
       %if $~case.size == 1 {
@@ -69,5 +69,5 @@
       </p>
     % }
   % }
-
+  % include '/includes/company/tabs_end.tx' {};
 % }

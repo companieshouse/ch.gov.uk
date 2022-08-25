@@ -5,7 +5,7 @@
 <script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes -->
 <script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script>  <!-- Needed for new GDS-style radio buttons and checkboxes -->
 
-% include '/includes/company/tabs.tx' { active => 'charges-tab' };
+% include '/includes/company/tabs_start.tx' { active => 'charges-tab' };
 
     <div class="js-only">
         <form id="mortgage-filter" class="form grid-row">
@@ -41,4 +41,6 @@
     <div id="mortgage-content" class="mortgages-list">
         % include 'company/mortgages/view_content.html.tx'
     </div>
+
+    % include '/includes/company/tabs_end.tx' {};
 % }

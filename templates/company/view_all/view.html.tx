@@ -3,7 +3,7 @@
 % around content -> {
   % if $show_snapshot || $show_orders || $show_certified_document {
       % include '/includes/company/page_header.tx'
-      % include '/includes/company/tabs.tx' { active => 'more-tab' };
+      % include '/includes/company/tabs_start.tx' { active => 'more-tab' };
   % }
 
   % if $show_snapshot {
@@ -125,5 +125,6 @@
         <a class="govuk-button govuk-button--secondary piwik-event" data-event-id="Order certified document" href="<% $c.external_url_for('certified_copies_url', company_number => $company.company_number) %>">Order certified document</a>
     % }
   %}
+  % include '/includes/company/tabs_end.tx' {};
 % }
 % }

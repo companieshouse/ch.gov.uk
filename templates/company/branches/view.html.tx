@@ -2,7 +2,7 @@
 % around content -> {
 % include '/includes/company/page_header.tx'
 
-% include '/includes/company/tabs.tx' { active => 'ukestablishment-tab' };
+% include '/includes/company/tabs_start.tx' { active => 'ukestablishment-tab' };
 % if $number_of_branches == 0 { # no branches found for this company 
     <p class="text">
         <%
@@ -39,4 +39,5 @@
         % }
     </table>
 % }
+% include '/includes/company/tabs_end.tx' {};
 %}

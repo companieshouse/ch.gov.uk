@@ -2,7 +2,7 @@
 
 % around content -> {
     % include '/includes/company/page_header.tx'
-    % include '/includes/company/tabs.tx' { active => 'register-tab' };
+    % include '/includes/company/tabs_start.tx' { active => 'register-tab' };
     <div id="list-of-registers">
         % if $directors {
             % register_type_details($directors);
@@ -108,4 +108,5 @@
             </tbody>
         </table>
     </div>
+    % include '/includes/company/tabs_end.tx' {};
 % }
