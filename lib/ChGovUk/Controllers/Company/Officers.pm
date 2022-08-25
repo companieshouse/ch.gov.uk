@@ -171,7 +171,7 @@ sub build_company_appointments() {
             my $resignation_type = $is_overseas_entity ?
                 ln('cessation', 'cessations', $resigned_count) :
                 ln('resignation', 'resignations', $resigned_count);
-            return $officer_count . ' ' .
+            return ' ' . $officer_count . ' ' .
                 ln('officer ', 'officers ', $officer_count) . '/ ' .
                 $resigned_count . ' ' . $resignation_type;
         }
@@ -179,7 +179,7 @@ sub build_company_appointments() {
         if ($active_count == 0) {
             return "There are no current officers available for this company."
         } else {
-            return $active_count . ' ' . ln('current officer ', 'current officers ', $officer_count);
+            return ' ' . $active_count . ' ' . ln('current officer ', 'current officers ', $officer_count);
         }
     }
 }
