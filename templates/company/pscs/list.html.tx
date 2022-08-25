@@ -35,6 +35,7 @@
             There are no <% $psc_or_bo_text %> or statements available for this <% $company_or_roe_text %>.
         % } else {
             <p class="heading-medium total-appointments" id="company-pscs">
+            <span class="govuk-visually-hidden">Persons with significant control:</span>
             <% $pscs.active_psc_count %>
 
             % if $company.type != 'registered-overseas-entity' {
