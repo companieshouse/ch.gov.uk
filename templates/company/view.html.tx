@@ -6,7 +6,8 @@
 
     % include '/includes/company/page_header.tx'
 
-    % include '/includes/company/tabs.tx' { active => 'company-overview-tab' };
+    % include '/includes/company/tabs_start.tx' { active => 'company-overview-tab' };
+
     <dl>
     % if $company.company_number == $c.authorised_company and $company.registered_office_is_in_dispute {
               <dt> <span id="roa-dispute" ><% l('Registered office address replaced') %></span> <a id="dispute-help-link"  href="/help/replaced-address-help.html"><% l("what's this?") %></a></dt>
@@ -489,6 +490,6 @@
         </script>
         <!-- End Piwik Code -->
     %}
-
+    % include '/includes/company/tabs_end.tx' {};
   %}
 % }

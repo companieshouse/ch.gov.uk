@@ -48,7 +48,7 @@
 
 
     % include '/includes/company/page_header.tx'
-    % include '/includes/company/tabs.tx' { active => 'filing-history-tab' };
+    % include '/includes/company/tabs_start.tx' { active => 'filing-history-tab' };
 
 % if $company.type == "uk-establishment" {
 <div class="grid-row">
@@ -143,4 +143,5 @@
                 </div>
         % }
     %}
+    % include '/includes/company/tabs_end.tx' {};
 % }

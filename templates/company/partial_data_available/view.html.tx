@@ -3,7 +3,7 @@
 % around content -> {
     % include '/includes/company/page_header.tx'
 
-    % include '/includes/company/tabs.tx' { active => 'company-overview-tab' };
+    % include '/includes/company/tabs_start.tx' { active => 'company-overview-tab' };
 
     % my $company_status = $c.cv_lookup( 'company_status', $company.company_status);
     % if $company_status == $c.cv_lookup( 'company_status', 'converted-closed') {
@@ -53,4 +53,6 @@
             </dd>
         </dl>
     </div>
+
+    % include '/includes/company/tabs_end.tx' {};
 % }
