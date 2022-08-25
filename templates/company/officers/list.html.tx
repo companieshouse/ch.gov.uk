@@ -31,51 +31,7 @@
     </div>
 
     <h2 class="heading-medium" id="company-appointments">
-        % if (!$is_active_filter_set) {
-            % if $officers.active_count + $officers.inactive_count + $officers.resigned_count == 0 {
-                    There are no officer details available for this company.
-            % } else {
-                <% $officers.active_count + $officers.inactive_count + $officers.resigned_count %>
-                <%
-                    ln(
-                        'officer ',
-                        'officers ',
-                        $officers.active_count + $officers.inactive_count + $officers.resigned_count
-                    )
-                %>
-                / <% $officers.resigned_count %>
-                % if $is_overseas_entity {
-                    <%
-                        ln(
-                            'cessation',
-                            'cessations',
-                            $officers.resigned_count
-                        )
-                    %>
-                % } else {
-                    <%
-                        ln(
-                            'resignation',
-                            'resignations',
-                            $officers.resigned_count
-                        )
-                    %>
-                % }
-            % }
-        % } else {
-            % if $officers.active_count == 0 {
-                There are no current officers available for this company.
-            % } else {
-                <% $officers.active_count %>
-                <%
-                    ln(
-                        'current officer ',
-                        'current officers ',
-                        $officers.active_count + $officers.inactive_count + $officers.resigned_count
-                    )
-                %>
-            % }
-        % }
+        <span class="govuk-visually-hidden">Officers:</span><% $company_appointments %>
     </h2>
 
     <div class="appointments-list">

@@ -5,6 +5,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use CH::Perl;
 use CH::Util::Pager;
 use CH::Util::DateHelper;
+use Locale::Simple;
 
 use constant AVAILABLE_CATEGORIES => {
     active => 'Current officers'
@@ -65,9 +66,11 @@ sub list {
 
             # If the filter string contains 'active' we are assuming
             # the active filter is set. If is_active_filter_set then we
-            # supress the resigned_count on template.
+            # suppress the resigned_count on template.
+            my $is_active_filter_set = 0;
             if ($filter =~ /active/) {
                 $self->stash(is_active_filter_set => 1);
+                $is_active_filter_set = 1;
             }
 
             my $is_overseas_entity = 0;
@@ -84,6 +87,8 @@ sub list {
                 resigned_count => $results->{resigned_count},
                 total_results  => $results->{total_results},
             });
+            $self->stash(company_appointments =>
+                build_company_appointments($results, $is_active_filter_set, $is_overseas_entity));
 
             for my $item (@{ $results->{items} }) {
                 if ($item->{date_of_birth}) {
@@ -150,6 +155,34 @@ sub list {
 }
 
 #-------------------------------------------------------------------------------
+
+# Builds a company appointments string such as '49 officers / 42 resignations'.
+sub build_company_appointments() {
+    my ($results, $is_active_filter_set, $is_overseas_entity) = @_;
+
+    my $active_count = $results->{active_count};
+    my $resigned_count = $results->{resigned_count};
+    my $officer_count = $active_count + $results->{inactive_count} + $resigned_count;
+
+    if (!$is_active_filter_set) {
+        if ($officer_count == 0) {
+            return "There are no officer details available for this company.";
+        } else {
+            my $resignation_type = $is_overseas_entity ?
+                ln('cessation', 'cessations', $resigned_count) :
+                ln('resignation', 'resignations', $resigned_count);
+            return ' ' . $officer_count . ' ' .
+                ln('officer ', 'officers ', $officer_count) . '/ ' .
+                $resigned_count . ' ' . $resignation_type;
+        }
+    } else {
+        if ($active_count == 0) {
+            return "There are no current officers available for this company."
+        } else {
+            return ' ' . $active_count . ' ' . ln('current officer ', 'current officers ', $officer_count);
+        }
+    }
+}
 
 1;
 

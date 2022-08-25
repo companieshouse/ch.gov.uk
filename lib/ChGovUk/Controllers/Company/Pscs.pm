@@ -182,6 +182,7 @@ sub list {
                      });
 
                      $self->stash_view_pscs_event();
+                     $self->stash_psc_type_heading();
 
                      my $exemption_delay = Mojo::IOLoop::Delay->new;
                      my $exemption_delay_end;
@@ -400,4 +401,18 @@ sub stash_view_pscs_event {
 }
 
 #-------------------------------------------------------------------------------
+
+# Provides the appropriate screen reader heading content as determined by company type.
+sub stash_psc_type_heading {
+    my ($self) = @_;
+
+    my $company_type = $self->stash->{company}->{type};
+    my $psc_type_heading = "Persons with significant control";
+    $psc_type_heading = "Beneficial owners" if ($company_type eq 'registered-overseas-entity');
+
+    $self->stash(psc_type_heading => $psc_type_heading);
+}
+
+    #-------------------------------------------------------------------------------
+
 1;
