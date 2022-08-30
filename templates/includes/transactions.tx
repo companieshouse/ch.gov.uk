@@ -82,7 +82,7 @@
                                 % if $c.can_do('/admin/transaction-lookup') {
                                     <th class="actions">Actions</th>
                                 % } else {
-                                    <th class="govuk-visually-hidden">Actions hidden</th>
+                                    <th class="actions"><span class="govuk-visually-hidden">Actions</span></th>
                                 % }
                             </tr>
                         </thead>
