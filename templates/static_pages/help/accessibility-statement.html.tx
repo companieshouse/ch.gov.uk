@@ -28,11 +28,11 @@
     <p>We know some parts of this service aren’t fully accessible:</p>
 
     <ul class="list-bullet">
-        <li>most PDF documents are not accessible in a number of ways including missing text alternatives and missing document structure.</li>
+        <li>some PDF documents are not accessible in a few ways including missing text alternatives and missing document structure.</li>
     </ul>
 
     <ul class="list-bullet">
-        <li>Due to a known bug in the Chrome web browser, in some circumstances users of screen reader technology may get presented with incorrect information when using our accounts filing service</li>
+        <li>Due to a known bug in the Chrome web browser, in some circumstances users of assistive technology such as screen readers may get presented with incorrect information when using our accounts filing service</li>
     </ul>
 
     <h2 class="heading-medium">
@@ -109,7 +109,7 @@
         PDFs and other documents
     </h2>
 
-    <p>Many of our PDFs don’t meet accessibility standards - for example, they may not be structured so they’re accessible to a screen reader. This doesn’t meet WCAG 2.1 success criterion 4.1.2 (name, role value). We are investigating a solution to this problem and will update this statement in due course.</p>
+    <p>Many of our PDFs don’t meet accessibility standards - for example, they may not be structured so they’re accessible to a screen reader. This doesn’t meet WCAG 2.1 success criterion 4.1.2 (name, role value). We are currently fixing these PDFs.</p>
 
     <h2 class="heading-medium">
         How we tested this service
@@ -117,7 +117,7 @@
 
     <p>We regularly carry out internal tests for compliance with the Web Content Accessibility Guidelines V2.1 level A and level AA using a variety of manual and automated testing tools.</p>
 
-    <p>This service was last (externally) audited on 10 October 2017. The audit was carried out by the  <a href="https://digitalaccessibilitycentre.org/" class="govuk-link">Digital Accessibility Centre</a>.</p>
+    <p>This service was last (externally) audited on 19 July 2022. The audit was carried out by the  <a href="https://digitalaccessibilitycentre.org/" class="govuk-link">Digital Accessibility Centre</a>.</p>
 
     <p>We tested:</p>
 
@@ -125,10 +125,8 @@
         <li>Sign in/Register</li>
         <li>Search for a company</li>
         <li>Search for a company officer</li>
-        <li>Search for a director that is disqualified</li>
-        <li>File accounts </li>
-        <li>‘Is there anything wrong with this page?’ (enables users to report any issues with the data on the screen)</li>
-        <li>‘Follow a company’ (enables users to receive alerts of company transactions)</li>
+        <li>Your filings</li>
+        <li>The company profile</li>
     </ul>
 
     <h2 class="heading-medium">
@@ -147,16 +145,12 @@
         <li>build and test our services to meet
             <a class="govuk-link" href="https://www.gov.uk/service-manual/helping-people-to-use-your-service/making-your-service-accessible-an-introduction#meeting-government-accessibility-requirements">government accessibility requirements</a>
         </li>
-        <li>are developing
-            <a class="govuk-link" href="https://gds.blog.gov.uk/2018/06/20/creating-the-uk-governments-accessibility-empathy-lab/">an assistive technology lab</a>
-            in our Cardiff office to improve the testing of our services and raise awareness of accessibility
-        </li>
     </ul>
 
     <br>
     <p><a class="govuk-link" href="https://companieshouse.blog.gov.uk/category/user-research/">Read our blogs about usability</a>
           to find out more about our user research work.</p>
-    <p>This statement was prepared on 7 May 2020. It was last updated on 29 September 2021.</p>
+    <p>This statement was prepared on 7 May 2020. It was last updated on 30 August 2022.</p>
 
     </article>
 % }
