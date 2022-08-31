@@ -42,11 +42,11 @@
     <p>We know some parts of this service aren’t fully accessible:</p>
 
     <ul class="list-bullet">
-        <li>some PDF documents are not accessible in a few ways including missing text alternatives and missing document structure.</li>
+        <li>some PDF documents are not accessible in a few ways including missing text alternatives and missing document structure</li>
     </ul>
 
     <ul class="list-bullet">
-        <li>Due to a known bug in the Chrome web browser, in some circumstances users of assistive technology such as screen readers may get presented with incorrect information when using our accounts filing service</li>
+        <li>due to a known bug in the Chrome web browser, in some circumstances users of assistive technology such as screen readers may get presented with incorrect information when using our accounts filing service</li>
     </ul>
 
     <h2 class="heading-medium" id="reporting-accessibility">
