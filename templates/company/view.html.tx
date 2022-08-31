@@ -88,7 +88,6 @@
 
     <div class="grid-row">
         <dl class="column-two-thirds">
-            <br>
             <dt><% l('This is a UK establishment of')%></dt>
             <a href="<%'/company/' ~ $company.branch_company_details.parent_company_number  %>"  id="parent_number_link"><%($company.branch_company_details.parent_company_name)%></a>
             <br>
@@ -143,7 +142,6 @@
                      % if $company.is_community_interest_company {
                         <span class="normal" id="cic-indicator">&mdash; <% l('Community Interest Company (CIC)') %></span>
                      % }
-                   % }
                 % }
             </dd>
         </dl>
@@ -327,8 +325,8 @@
                   <strong><% $c.isodate_as_string($company.annual_return.last_made_up_to) %></strong>
                   </p>
            %  }
-           </div>
         % }
+        </div>
     </div>
 
     % if $company.show_officer_summary {
