@@ -180,6 +180,7 @@
                        <strong><% $c.isodate_as_string($company.accounts.last_accounts.made_up_to) %></strong>
                    </p>
              % }
+             </div>
            % }
            % else {
                % if $company.type != "registered-overseas-entity" {
