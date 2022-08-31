@@ -325,8 +325,8 @@
                   <strong><% $c.isodate_as_string($company.annual_return.last_made_up_to) %></strong>
                   </p>
            %  }
-           </div>
         % }
+        </div>
     </div>
 
     % if $company.show_officer_summary {
