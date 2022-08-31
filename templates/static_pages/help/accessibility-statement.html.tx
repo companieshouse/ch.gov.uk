@@ -106,7 +106,7 @@
         Status messages
     </h2>
 
-    <p>Messages which update the status of the page are not marked up programmatically for screen reader users. This doesn’t meet WCAG 2.1 success criterion 4.1.3 Status messages. We plan to address this non-compliance shortly.</p>
+    <p>Messages which update the status of the page are not marked up programmatically for screen reader users. This doesn’t meet WCAG 2.1 success criterion 4.1.3 Status Messages. We plan to address this non-compliance shortly.</p>
 
     <h2 class="heading-medium">
         How we tested this service
