@@ -1,9 +1,11 @@
 <div class="your-filings">
 <div class="one-filing rejected">
-    <h2 class="heading-medium">
-        <a id="company-name" href="/company/<% $transaction.company_number %>"><% $transaction.company_name %> </a>
-        <span id="company-number">Company number <Strong><% $transaction.company_number %></Strong></span>
-    </h2>
+    % if $transaction.company_number {
+        <h2 class="heading-medium">
+            <a id="company-name" href="/company/<% $transaction.company_number %>"><% $transaction.company_name %> </a>
+            <span id="company-number">Company number <Strong><% $transaction.company_number %></Strong></span>
+        </h2>
+    % }
 
     <div class="grid-row">
         <div class="column-third column-description" id="description">
