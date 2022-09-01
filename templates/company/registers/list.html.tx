@@ -108,5 +108,5 @@
             </tbody>
         </table>
     </div>
-    % include '/includes/company/tabs_end.tx' {};
 % }
+% include '/includes/company/tabs_end.tx' {};
