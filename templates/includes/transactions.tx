@@ -9,12 +9,14 @@
 
     <div class="your-filings">
         <div class="one-filing rejected">
+        % if $transaction.company_name {
             <h2 class="heading-medium">
                 <a id="company-name-<% $~transaction.count %>" href="/company/<% $transaction.company_number %>"><% $transaction.company_name %></a>
                 % if $transaction.company_number {
                     <span id="company-number-<% $~transaction.count %>">Company number <Strong><% $transaction.company_number %></Strong></span>
                 % }
             </h2>
+        % }    
             <div class="grid-row">
                 <div class="column-third column-description" id="description-<% $~transaction.count %>">
                     Description<strong><% $transaction.description %></strong>
