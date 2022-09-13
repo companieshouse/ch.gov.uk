@@ -97,13 +97,6 @@
                 % $company.branch_company_details.parent_company_number
             </dd>
         </dl>
-
-        <dl class="column-third">
-            % if $company.date_of_creation {
-                <dt id="company-birth-type"><% l($c.cv_lookup( 'company_birth_type', $company.type)) %></dt>
-                <dd class="data" id="company-creation-date"><% $c.isodate_as_string($company.date_of_creation) %></dd>
-            % }
-        </dl>
     </div>
 
   % } else {
