@@ -19,31 +19,31 @@ sub home {
                 my $json = $tx->res->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 if ($show_basket_link) {
-                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [ HOMEPAGE ];
+                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [HOMEPAGE];
                 }
                 else {
-                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [ HOMEPAGE ];
+                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [HOMEPAGE];
                 }
                 $self->do_render(scalar @{$json->{data}{items} || []}, $json->{data}{enrolled} || undef);
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
-                debug "User not authenticated; not displaying basket link", [ HOMEPAGE ];
+                debug "User not authenticated; not displaying basket link", [HOMEPAGE];
                 $self->do_render(0, undef);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
-                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [ HOMEPAGE ];
+                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
                 $self->do_render(0, undef);
             },
             error          => sub {
                 my ($api, $tx) = @_;
-                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [ HOMEPAGE ];
+                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
                 $self->do_render(0, undef);
             }
         )->execute;
     } else {
-        debug "User not signed in; not displaying basket link", [ HOMEPAGE ];
+        debug "User not signed in; not displaying basket link", [HOMEPAGE];
         $self->do_render(0, undef);
     }
 }
