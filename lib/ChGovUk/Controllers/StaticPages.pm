@@ -17,13 +17,14 @@ sub home {
                 my ($api, $tx) = @_;
                 my $json = $tx->res->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
+                my $items = scalar @{$json->{data}{items} || []};
                 if ($show_basket_link) {
                     debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [HOMEPAGE];
                 }
                 else {
                     debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [HOMEPAGE];
                 }
-                $self->do_render(scalar @{$json->{data}{items} || []}, $json->{data}{enrolled} || undef);
+                $self->do_render($items, $show_basket_link);
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
