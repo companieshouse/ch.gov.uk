@@ -3,7 +3,6 @@ package ChGovUk::Controllers::StaticPages;
 use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Util::CVConstants;
-use ChGovUk::Controllers::Company::BasketClient;
 
 #-------------------------------------------------------------------------------
 
