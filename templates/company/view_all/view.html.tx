@@ -62,7 +62,7 @@
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
           <span class="govuk-details__summary-text">
-            What you'll need
+            What you'll need <strong class="govuk-visually-hidden">to order a certified certificate</strong>
           </span>
         </summary>
         <div class="govuk-details__text" id="order-a-certificate-details-content" aria-hidden="false">
@@ -86,7 +86,7 @@
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
           <span class="govuk-details__summary-text">
-            What you'll need
+            What you'll need <strong class="govuk-visually-hidden">to order a certified certificate</strong>
           </span>
         </summary>
         <div class="govuk-details__text" id="order-a-certificate-details-content" aria-hidden="false">
@@ -110,7 +110,7 @@
       <details class="govuk-details" role="group">
         <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
           <span class="govuk-details__summary-text">
-            What you'll need
+            What you'll need <strong class="govuk-visually-hidden">to order a certified document</strong>
           </span>
         </summary>
         <div class="govuk-details__text" id="order-certified-document-details-content" aria-hidden="false">
