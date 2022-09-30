@@ -5,6 +5,8 @@
     % include includes::transactions {title => $title ~ ' ' ~ $search}
 
     % if !$transactions {
-        <p><strong>No results found.</strong></p>
+        <div id="no-results" role="status">
+                <p><strong>No results found.</strong></p>
+        </div>
     % }
 % }
