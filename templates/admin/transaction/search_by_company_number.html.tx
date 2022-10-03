@@ -6,7 +6,7 @@
 
     % if !$transactions {
         <div id="no-results" role="status">
-                <p><strong>No results found.</strong></p>
+            <p><strong>No results found.</strong></p>
         </div>
     % }
 % }
