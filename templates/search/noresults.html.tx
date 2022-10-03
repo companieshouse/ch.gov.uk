@@ -9,15 +9,16 @@
         <div class="column-full-width">
 %       include 'search/form.tx'
         <div class="grid-row">
-             <div class="column-two-thirds">
-                     <article id="no-results" class="text">
-                       <% if $results.searchTerm { %>
-                            <h2 class="heading-large" id="no-results-heading" >No results found</h2>
-                             <p>
-                                 There are no results that match your search. Try searching again using different search criteria.
-                             </p>
-                       <% } %>
-             </div>
+            <div class="column-two-thirds">
+                <div id="no-results" role="status">
+                    <% if $results.searchTerm { %>
+                        <h2 class="heading-large" id="no-results-heading" >No results found</h2>
+                        <p>
+                            There are no results that match your search. Try searching again using different search criteria.
+                        </p>
+                    <% } %>
+                </div>
+            </div>
             % if $results.kind == 'search#disqualified-officers' {
                 <div class="column-third" id="disqualification-column">
                     <div class="quick-look font-xsmall" id="disqualification-info">
