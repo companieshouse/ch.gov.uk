@@ -33,9 +33,11 @@
 
                 <h2 class="govuk-visually-hidden">All results</h2>
                 % if $total_results == 0 {
-                    <h2 class="heading-small">
-                        No exact company name matches found for "<% $query | uc %>"
-                    </h2>
+                    <div id="no-results" role="status">
+                        <h2 class="heading-small">
+                            No exact company name matches found for "<% $query | uc %>"
+                        </h2>
+                    </div>
                     <p>
                         <a target="_blank" href="https://www.gov.uk/register-a-company-online">
                             Register a private limited company online
