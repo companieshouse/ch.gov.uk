@@ -14,7 +14,13 @@
             <form id="name-availability-search" action="/company-name-availability" method="get" accept-charset="utf-8" role="search" class="search-header js-search-hash">
 
                 <div class="searchfield">
-                    <input type="search" autocomplete="off" name="q" id="company-name-availability-search-text" title="Search" value="<% $query %>" placeholder="Search"/>
+                    <input type="search"
+                           autocomplete="off"
+                           name="q"
+                           id="company-name-availability-search-text"
+                           title="Search"
+                           value="<% $query %>" placeholder="Search"
+                           class="govuk-input"/>
                     <button type="submit" id="search-submit" class="search-submit">Search</button>
                     <p id="slowsearch" class="slow-search-msg" style="display:none">Please press ENTER to search</p>
                 </div>
