@@ -45,7 +45,7 @@
                         </h2>
                     </div>
                     <p>
-                        <a target="_blank" href="https://www.gov.uk/register-a-company-online">
+                        <a class="govuk-link" target="_blank" href="https://www.gov.uk/register-a-company-online">
                             Register a private limited company online
                             <span class="govuk-visually-hidden">Link opens in a new window</span>
                         </a>
