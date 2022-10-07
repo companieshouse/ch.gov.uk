@@ -23,7 +23,7 @@
         <div class="searchfield">
 % }
         <label class="govuk-visually-hidden" for="site-search-text">Enter company name, number or officer name</label>
-            <input type="search" autocomplete="off" name="q" id="site-search-text" title="Search" value="<% $results.searchTerm %>" <% if ($header_or_body == 'header') { %> placeholder="Search"  class="header-search"<% } else { %> placeholder="Start here..."<% } %> />
+            <input type="search" autocomplete="off" name="q" id="site-search-text" title="Search" value="<% $results.searchTerm %>" <% if ($header_or_body == 'header') { %> placeholder="Search"  class="header-search govuk-input"<% } else { %> placeholder="Start here..."<% } %> />
 % if ($header_or_body == 'header') {
         <input class="submit" type="submit" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SiteSearch', 'Header']);"<% } %> id="search-btn" value="Search" />
 % } else {

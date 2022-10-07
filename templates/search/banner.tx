@@ -46,8 +46,8 @@
             <div class="column-third" id="disqualification-column">
                 <div class="quick-look font-xsmall" id="disqualification-info">
                     <ul class="list-bullet">
-                        <li><a href="/register-of-disqualifications/A" rel="external" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Register of disqualifications<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
-                        <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                        <li><a href="/register-of-disqualifications/A" rel="external" class="govuk-link" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Register of disqualifications<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                        <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director"  class="govuk-link" target="_blank">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -65,7 +65,7 @@
 {{#type_is_company}}
     <li class="type-company">
         <h3>
-            <a href="{{url}}"title="View company"> {{{title}}}
+            <a href="{{url}}"title="View company" class="govuk-link"> {{{title}}}
             </a>
         </h3>
         {{#snippet}}<p class="meta crumbtrail inset">Matching previous names:<br/><span>{{{ snippet }}}</span></
@@ -76,7 +76,7 @@
 
 {{#type_is_officer}}
     <li class="type-officer">
-        <h3><a href="{{url}}">{{{title}}}</a></h3>
+        <h3><a href="{{url}}" class="govuk-link">{{{title}}}</a></h3>
         {{#snippet}}<p class="meta crumbtrail inset">Matching appointment names:<br/><span>{{{ snippet }}}</span></
         <p class="meta crumbtrail"> {{{description}}} </p>
         <p>{{{ address_snippet }}}</p>
@@ -85,7 +85,7 @@
 
 {{#type_is_disqualified-officer}}
     <li class="type-disqualified-officer">
-        <h3><a href="{{url}}">{{{title}}}</a></h3>
+        <h3><a href="{{url}}" class="govuk-link">{{{title}}}</a></h3>
         {{#snippet}}<p class="meta crumbtrail inset">Matching disqualification names:<br/><span>{{{ snippet }}}</span></
         <p class="meta crumbtrail"> {{{description}}} </p>
         <p>{{{ address_snippet }}}</p>
