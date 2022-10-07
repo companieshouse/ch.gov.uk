@@ -53,7 +53,8 @@
                                     <!-- $item._score -->
                                     <a href="<% $item.links.self %>"
                                         <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SearchSuggestions', 'SearchResult-<% $~item +1%>' ]);"<% } %>title="View company">
-                                        <% $item.title %>
+                                        <% $item.title % 
+                                        class="govuk-link">
                                     </a>
                                 </h3>
                                 <% if $item.snippet { %>
@@ -64,7 +65,7 @@
                             </li>
                         % } elsif $item.kind == "searchresults#disqualified-officer" {
                             <li class="type-disqualification">
-                                <h3><a href="<% $item.links.self %>"><% $item.title %></a></h3>
+                                <h3><a href="<% $item.links.self %>" class="govuk-link"><% $item.title %></a></h3>
                                 <% if $item.snippet { %>
                                     <p class="meta crumbtrail inset">Matching disqualification names: <br/><span><% $item.snippet %></span></p>
                                 <% } %>
@@ -88,8 +89,8 @@
             <div class="column-third" id="disqualification-column">
                 <div class="quick-look font-xsmall" id="disqualification-info">
                     <ul class="list-bullet">
-                        <li><a href="/register-of-disqualifications/A" rel="external" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Register of disqualifications<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
-                        <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                        <li><a href="/register-of-disqualifications/A" rel="external" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %> class="govuk-link">Register of disqualifications<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                        <li><a rel="external" href="https://www.gov.uk/report-a-disqualified-director" target="_blank" class="govuk-link">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -102,7 +103,7 @@
         <ul class="pager" id="pager">
             % if ($pager.previous_page) {
                 <li>
-                    <a class="page" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
+                    <a class="page govuk-link" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
                         Previous
                     </a>
                 </li>
@@ -112,10 +113,10 @@
                     % if $page <= $pager.page_limit {
                         % if $pager.current_page == $page {
                             <span class="govuk-visually-hidden">Page </span>
-                            <span id="page-<% $page %>" class="page"><% $page %></span>
+                            <span id="page-<% $page %>" class="page govuk-link"><% $page %></span>
                             <span class="govuk-visually-hidden"> of <% $pager.total_pages %></span>
                         % } else {
-                            <a id="page-<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>">
+                            <a id="page-<% $page %>" class="page govuk-link" href="<% $c.url_with.query([ page => $page ]) %>">
                             <span class="govuk-visually-hidden">Page </span><% $page %><span class="govuk-visually-hidden"> of <% $pager.total_pages %></span></a>
                         % }
                     % }
@@ -123,7 +124,7 @@
             % }
             % if ($pager.current_page < $pager.page_limit && $pager.next_page) {
                 <li>
-                    <a class="page" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
+                    <a class="page govuk-link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
                         Next
                     </a>
                 </li>
