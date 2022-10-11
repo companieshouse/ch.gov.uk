@@ -40,7 +40,7 @@
                     % for $results.items -> $item {
                         % if $item.kind == "searchresults#officer" {
                             <li class="type-officer">
-                                <h3><a href="<% $item.links.self %>"><% $item.title %></a></h3>
+                                <h3><a class="govuk-link" href="<% $item.links.self %>"><% $item.title %></a></h3>
                                 <% if $item.snippet { %>
                                     <p class="meta crumbtrail inset">Matching appointment names: <br/><span><% $item.snippet %></span></p>
                                 <% } %>
@@ -64,7 +64,7 @@
                             </li>
                         % } elsif $item.kind == "searchresults#disqualified-officer" {
                             <li class="type-disqualification">
-                                <h3><a href="<% $item.links.self %>"><% $item.title %></a></h3>
+                                <h3><a class="govuk-link" href="<% $item.links.self %>"><% $item.title %></a></h3>
                                 <% if $item.snippet { %>
                                     <p class="meta crumbtrail inset">Matching disqualification names: <br/><span><% $item.snippet %></span></p>
                                 <% } %>

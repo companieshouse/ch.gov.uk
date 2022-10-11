@@ -203,17 +203,17 @@
 
                           <li id="signed-in-user" class="user"><% $c.user_email %>: </li>
 
-                          <li><a href="<% $c.external_url_for('manage_user_details') %>">Your details</a></li>
+                          <li><a class="govuk-link" href="<% $c.external_url_for('manage_user_details') %>">Your details</a></li>
 
-                          <li><a id="recent_filings" href="<% $c.config.url_for.companies_house_search_page %><%"/user/transactions"%>">Your filings</a></li>
+                          <li><a class="govuk-link" id="recent_filings" href="<% $c.config.url_for.companies_house_search_page %><%"/user/transactions"%>">Your filings</a></li>
 
                           % if !$c.config.disable_follow {
-                              <li><a id="following" href="<% $c.config.monitor.gui_url %>">Companies you follow</a></li>
+                              <li><a class="govuk-link" id="following" href="<% $c.config.monitor.gui_url %>">Companies you follow</a></li>
                           % }
                           % if $show_basket_link {
-                              <li><a id="basket" href="<% $c.config.basket_web_url %>">Basket (<%= $basket_items %>)</a></li>
+                              <li><a class="govuk-link" id="basket" href="<% $c.config.basket_web_url %>">Basket (<%= $basket_items %>)</a></li>
                           % }
-                          <li><a id="user-signout" href="<% $c.url_for('user_sign_out') %>">Sign out</a></li>
+                          <li><a class="govuk-link" id="user-signout" href="<% $c.url_for('user_sign_out') %>">Sign out</a></li>
 
                     % } else {
 
