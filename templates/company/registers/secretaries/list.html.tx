@@ -13,13 +13,13 @@
                 % if $~secretary.is_first {
                     <h2 class="heading-medium">
                         <span id="officer-name-<% $~secretary.count %>">
-                            <a href="<% $secretary.links.officer.appointments %>"><% $secretary.name %></a>
+                            <a class="govuk-link" href="<% $secretary.links.officer.appointments %>"><% $secretary.name %></a>
                         </span>
                     </h2>
                 % } else {
                     <h2 class="heading-medium heading-with-border">
                         <span id="officer-name-<% $~secretary.count %>">
-                            <a href="<% $secretary.links.officer.appointments %>"><% $secretary.name %></a>
+                            <a class="govuk-link" href="<% $secretary.links.officer.appointments %>"><% $secretary.name %></a>
                         </span>
                     </h2>
                 % }

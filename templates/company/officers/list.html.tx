@@ -40,13 +40,13 @@
                 % if $~officer.is_first {
                     <h2 class="heading-medium">
                         <span id="officer-name-<% $~officer.count %>">
-                            <a href="<% $officer.links.officer.appointments %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $officer.name %></a>
+                            <a class="govuk-link" href="<% $officer.links.officer.appointments %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $officer.name %></a>
                         </span>
 
                 % } else {
                     <h2 class="heading-medium heading-with-border">
                         <span id="officer-name-<% $~officer.count %>">
-                            <a href="<% $officer.links.officer.appointments %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $officer.name %></a>
+                            <a class="govuk-link" href="<% $officer.links.officer.appointments %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $officer.name %></a>
                         </span>
                     </h2>
 
