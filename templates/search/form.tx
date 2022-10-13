@@ -27,7 +27,7 @@
 % if ($header_or_body == 'header') {
         <input class="submit govuk-button" type="submit" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SiteSearch', 'Header']);"<% } %> id="search-btn" value="Search" />
 % } else {
-        <button type="submit" id="search-submit" class="search-submit govuk-button">Search</button>
+        <button type="submit" id="search-submit" class="search-submit gem-c-search__submit">Search</button>
         <p id='slowsearch' class='slow-search-msg' style='display:none'>Please press ENTER to search</p>
 % }
         </div>
