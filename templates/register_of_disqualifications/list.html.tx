@@ -11,11 +11,11 @@
                 % for $alphabet -> $letter {
                     % if $active_letter == $letter {
                         <li class="active">
-                            <a href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
+                            <a class="govuk-link" href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
                         </li>
                     % } else {
                         <li class="inactive">
-                            <a href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
+                            <a class="govuk-link" href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
                         </li>
                     % }
                 % }
@@ -37,7 +37,7 @@
                     </tr>
                     % for $disqualifications.items -> $item {
                         <tr>
-                            <td><a href="<%= $item.links.self %>"><%= $item.title %></a></td>
+                            <td><a class="govuk-link" href="<%= $item.links.self %>"><%= $item.title %></a></td>
                             <td><%= $c.isodate_as_string($item.date_of_birth) %></td>
                             <td><%= $item.address.locality %></td>
                         </tr>
@@ -53,7 +53,7 @@
                 <ul class="pager" id="pager">
                     % if ($pager.previous_page) {
                         <li>
-                            <a class="page" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
+                            <a class="page govuk-link" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
                                 Previous
                             </a>
                         </li>
@@ -61,17 +61,17 @@
                     % for $pager.pages_in_set -> $page {
                         <li>
                             % if $pager.current_page == $page {
-                                <span id="page-<% $page %>" class="page">
+                                <span id="page-<% $page %>" class="page govuk-link">
                                 <% $page %></span>
                             % } else {
-                                <a id="page-<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>">
+                                <a id="page-<% $page %>" class="page govuk-link" href="<% $c.url_with.query([ page => $page ]) %>">
                                 <% $page %></a>
                             % }
                         </li>
                     % }
                     % if ($pager.next_page) {
                         <li>
-                            <a class="page" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
+                            <a class="page govuk-link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
                                 Next
                             </a>
                         </li>
