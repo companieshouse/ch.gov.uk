@@ -2,7 +2,7 @@
 % around content -> {
 
   % if $c.config.display_image_disabled_message {
-    <div class="warning-overview" id="image-disabled-notice"><b><% $c.config.image_disabled_message_header %>:</b> <% tl($c.config.image_disabled_message_text) %></div>
+    <div class="warning-overview" id="image-disabled-notice"><b><% $c.config.image_disabled_message_header %>:</b> <% tlgds($c.config.image_disabled_message_text) %></div>
   % }
 
 
