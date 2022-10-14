@@ -15,7 +15,7 @@
     <div class="search-bar-active">
         <div class="searchfield">
             <input type="search" class="govuk-input" placeholder="Search for a company or officer" value="" title="Search for a company or officer" id="site-search-text" name="q" autocomplete="off">
-            <button class="search-submit govuk-button" id="search-submit" type="submit">Search</button>
+            <button class="search-submit gem-c-search__submit" id="search-submit" type="submit">Search</button>
             <p style="display:none" class="slow-search-msg" id="slowsearch">Please press ENTER to search</p>
         </div>  <!--end searchfield-->
     </form>
