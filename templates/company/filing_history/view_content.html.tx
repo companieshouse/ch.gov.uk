@@ -90,7 +90,7 @@
                             <a href="orderable/missing-image-deliveries/<% $item.transaction_id %>" class="normal piwik-event link-updater-js govuk-link" data-event-id="Request Document">
                                 Request Document
                                 <span class="govuk-visually-hidden">
-                                % tl($item.description_values.description)
+                                <% tl($item.description_values.description) || tl($c.fhd_lookup($item.description), $item.description_values)  %>
                                 </span>
                             </a>
                          % }
