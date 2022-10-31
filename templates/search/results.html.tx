@@ -102,7 +102,7 @@
         <ul class="pager" id="pager">
             % if ($pager.previous_page) {
                 <li>
-                    <a class="page govuk-link" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
+                    <a class="page govuk-link  govuk-pagination__link" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
                         Previous
                     </a>
                 </li>
@@ -123,7 +123,7 @@
             % }
             % if ($pager.current_page < $pager.page_limit && $pager.next_page) {
                 <li>
-                    <a class="page govuk-link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
+                    <a class="page govuk-link  govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
                         Next
                     </a>
                 </li>
