@@ -53,7 +53,7 @@
                 <ul class="pager" id="pager">
                     % if ($pager.previous_page) {
                         <li>
-                            <a class="page govuk-link  govuk-pagination__link" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
+                            <a class="page govuk-link govuk-pagination__link" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
                                 Previous
                             </a>
                         </li>
@@ -61,17 +61,17 @@
                     % for $pager.pages_in_set -> $page {
                         <li>
                             % if $pager.current_page == $page {
-                                <span id="page-<% $page %>" class="page govuk-link  govuk-pagination__link">
+                                <span id="page-<% $page %>" class="page govuk-link govuk-pagination__link">
                                 <% $page %></span>
                             % } else {
-                                <a id="page-<% $page %>" class="page govuk-link  govuk-pagination__link" href="<% $c.url_with.query([ page => $page ]) %>">
+                                <a id="page-<% $page %>" class="page govuk-link govuk-pagination__link" href="<% $c.url_with.query([ page => $page ]) %>">
                                 <% $page %></a>
                             % }
                         </li>
                     % }
                     % if ($pager.next_page) {
                         <li>
-                            <a class="page govuk-link  govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
+                            <a class="page govuk-link govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
                                 Next
                             </a>
                         </li>
