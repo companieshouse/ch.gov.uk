@@ -23,8 +23,6 @@ sub company_name_availability {
                           : 'Company name availability checker - Find and update company information - GOV.UK'
     );
 
-    debug "Calling get_basket()...", [HOMEPAGE];
-
     $self->get_basket($company_name);
 }
 
@@ -74,7 +72,6 @@ sub perform_search() {
             # don't throw to the error page show a message inline
             $self->stash(query => $company_name, show_error => 1);
 
-            # TODO Use agreed error page if really appropriate here?
             debug "search failure, stash = %s", Dumper($self->stash), [HOMEPAGE];
             return $self->render(template => "company/company_name_availability/form");
 
@@ -121,7 +118,7 @@ sub get_basket() {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
-                debug "not_authorised", [HOMEPAGE];
+                debug "GET basket not_authorised", [HOMEPAGE];
                 debug "User not authenticated; not displaying basket link", [HOMEPAGE];
                 $self->stash_basket_link(0, undef);
                 if ($company_name) {
@@ -134,21 +131,15 @@ sub get_basket() {
             },
             failure        => sub {
                 my ($api, $tx) = @_;
-                debug "failure", [HOMEPAGE];
-                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
+                debug "Failure returned by GET basket endpoint; not displaying basket link.", [HOMEPAGE];
                 $self->stash_basket_link(0, undef);
-                my $message = "get basket failure";
-                debug "get basket failure, stash = %s", Dumper($self->stash), [HOMEPAGE];
-                return $self->render_exception($message);
+                return $self->render_error($tx, 'failure', 'getting basket');
             },
             error          => sub {
                 my ($api, $tx) = @_;
-                debug "error", [HOMEPAGE];
-                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
+                debug "Error returned by GET Basket endpoint; not displaying basket link.", [HOMEPAGE];
                 $self->stash_basket_link(0, undef);
-                my $message = "get basket error";
-                debug "get basket error, stash = %s", Dumper($self->stash), [HOMEPAGE];
-                return $self->render_exception($message);
+                return $self->render_error($tx, 'error', 'getting basket');
             }
         )->execute;
     } else {
@@ -167,12 +158,19 @@ sub get_basket() {
 sub stash_basket_link {
     my ($self, $basket_items, $show_basket_link) = @_;
 
-    debug "Stashing basket_items = %s, show_basket_link = %s", $basket_items, Dumper($show_basket_link) [HOMEPAGE];
     $self->stash(
         basket_items     => $basket_items,
         show_basket_link => $show_basket_link
     );
-    debug "AFTER stashing basket link, stash = %s", Dumper($self->stash), [HOMEPAGE];
+}
+
+sub render_error {
+    my($self, $tx, $error_type, $action) = @_;
+
+    my $error_code = $tx->error->{code} // 0;
+    my $error_message = $tx->error->{message} // 0;
+    my $message = (uc $error_type).' '.(defined $error_code ? "[$error_code] " : '').$action.': '.$error_message;
+    return $self->render_exception($message);
 }
 
 # =============================================================================
