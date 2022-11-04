@@ -141,7 +141,12 @@ sub get_basket() {
                 $self->stash_basket_link(0, undef);
                 my $message = "get basket failure";
                 debug "get basket failure, stash = %s", Dumper($self->stash), [HOMEPAGE];
-                return $self->render_exception($message);
+                # return $self->render_exception($message);
+                $self->render(
+                    'error',
+                    error => "search_service_unavailable",
+                    description => "The search service is currently unavailable",
+                    status => 500 );
             },
             error          => sub {
                 my ($api, $tx) = @_;
