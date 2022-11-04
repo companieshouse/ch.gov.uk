@@ -74,17 +74,19 @@ sub perform_search() {
             # don't throw to the error page show a message inline
             $self->stash(query => $company_name, show_error => 1);
 
-            debug "search failure , stash = %s", Dumper($self->stash), [HOMEPAGE];
+            # TODO Use agreed error page if really appropriate here?
+            debug "search failure, stash = %s", Dumper($self->stash), [HOMEPAGE];
             return $self->render(template => "company/company_name_availability/form");
 
         },
         error => sub {
             my ($api, $error) = @_;
 
+            # TODO Replace render_exception() with agreed error page if possible.
             my $message = "Error retrieving search results: $error";
             error '%s', $message;
 
-            debug "search error , stash = %s", Dumper($self->stash), [HOMEPAGE];
+            debug "search error, stash = %s", Dumper($self->stash), [HOMEPAGE];
             return $self->render_exception($message);
         },
     )->execute;
@@ -122,7 +124,6 @@ sub get_basket() {
                 my ($api, $tx) = @_;
                 debug "not_authorised", [HOMEPAGE];
                 debug "User not authenticated; not displaying basket link", [HOMEPAGE];
-                # TODO Or render exception?
                 $self->stash_basket_link(0, undef);
                 if ($company_name) {
                     debug "not_authorised: Calling perform_search()", [HOMEPAGE];
@@ -136,15 +137,21 @@ sub get_basket() {
                 my ($api, $tx) = @_;
                 debug "failure", [HOMEPAGE];
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                # TODO Or render exception?
+                # TODO Replace render_exception() with agreed error page if appropriate here and possible.
                 $self->stash_basket_link(0, undef);
+                my $message = "get basket failure";
+                debug "get basket failure, stash = %s", Dumper($self->stash), [HOMEPAGE];
+                return $self->render_exception($message);
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 debug "error", [HOMEPAGE];
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                # TODO Or render exception?
+                # TODO Replace render_exception() with agreed error page if possible.
                 $self->stash_basket_link(0, undef);
+                my $message = "get basket error";
+                debug "get basket error, stash = %s", Dumper($self->stash), [HOMEPAGE];
+                return $self->render_exception($message);
             }
         )->execute;
     } else {
