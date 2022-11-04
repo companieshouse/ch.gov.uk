@@ -82,7 +82,6 @@ sub perform_search() {
         error => sub {
             my ($api, $error) = @_;
 
-            # TODO Replace render_exception() with agreed error page if possible.
             my $message = "Error retrieving search results: $error";
             error '%s', $message;
 
@@ -137,22 +136,15 @@ sub get_basket() {
                 my ($api, $tx) = @_;
                 debug "failure", [HOMEPAGE];
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                # TODO Replace render_exception() with agreed error page if appropriate here and possible.
                 $self->stash_basket_link(0, undef);
                 my $message = "get basket failure";
                 debug "get basket failure, stash = %s", Dumper($self->stash), [HOMEPAGE];
-                # return $self->render_exception($message);
-                $self->render(
-                    'error',
-                    error => "search_service_unavailable",
-                    description => "The search service is currently unavailable",
-                    status => 500 );
+                return $self->render_exception($message);
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 debug "error", [HOMEPAGE];
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                # TODO Replace render_exception() with agreed error page if possible.
                 $self->stash_basket_link(0, undef);
                 my $message = "get basket error";
                 debug "get basket error, stash = %s", Dumper($self->stash), [HOMEPAGE];
