@@ -210,7 +210,6 @@
                           % if !$c.config.disable_follow {
                               <li><a class="govuk-link" id="following" href="<% $c.config.monitor.gui_url %>">Companies you follow</a></li>
                           % }
-                         [$show_basket_link = <% $show_basket_link %>]
                           % if $show_basket_link {
                               <li><a class="govuk-link" id="basket" href="<% $c.config.basket_web_url %>">Basket (<%= $basket_items %>)</a></li>
                           % }

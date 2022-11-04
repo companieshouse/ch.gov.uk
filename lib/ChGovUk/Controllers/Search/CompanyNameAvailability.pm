@@ -13,6 +13,8 @@ sub company_name_availability {
 
     my ($self) = @_;
 
+    $self->render_later;
+
     my $company_name = $self->req->param('q');
 
     $self->stash(
@@ -23,17 +25,11 @@ sub company_name_availability {
 
     debug "Calling get_basket()...", [HOMEPAGE];
 
-    $self->get_basket();
+    $self->get_basket($company_name);
+}
 
-    debug "AFTER get_basket() stash = %s", Dumper($self->stash), [HOMEPAGE];
-    debug "\$company_name = %s", Dumper($company_name), [HOMEPAGE];
-
-    return $self->render(template => 'company/company_name_availability/form')
-        unless $company_name;
-
-    debug "CONTINUING ON TO render_later", [HOMEPAGE];
-    
-    $self->render_later;
+sub perform_search() {
+    my ($self, $company_name) = @_;
 
     debug "About to execute search", [HOMEPAGE];
     $self->ch_api->search->companies({
@@ -74,8 +70,8 @@ sub company_name_availability {
 
             return $self->render('error', error => 'outside_result_set', description => 'You have requested a page outside of the available result set', status => 416)
                 if $error_code == 416;
-              
-            # don't throw to the error page show a message inline 
+
+            # don't throw to the error page show a message inline
             $self->stash(query => $company_name, show_error => 1);
 
             debug "search failure , stash = %s", Dumper($self->stash), [HOMEPAGE];
@@ -92,10 +88,11 @@ sub company_name_availability {
             return $self->render_exception($message);
         },
     )->execute;
+
 }
 
 sub get_basket() {
-    my ($self) = @_;
+    my ($self, $company_name) = @_;
     if ($self->is_signed_in) {
         debug "Signed in, calling basket API", [HOMEPAGE];
         $self->ch_api->basket->get->on(
@@ -111,34 +108,45 @@ sub get_basket() {
                 else {
                     debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [HOMEPAGE];
                 }
-                $self->do_render($items, $show_basket_link);
+                $self->stash_basket_link($items, $show_basket_link);
+                if ($company_name) {
+                    debug "success: Calling perform_search()", [HOMEPAGE];
+                    $self->perform_search($company_name);
+                } else {
+                    debug "success: Rendering page", [HOMEPAGE];
+                    return $self->render(template => "company/company_name_availability/form");
+                }
+
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
                 debug "not_authorised", [HOMEPAGE];
                 debug "User not authenticated; not displaying basket link", [HOMEPAGE];
-                $self->do_render(0, undef);
+                # TODO Or render exception?
+                $self->stash_basket_link(0, undef);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
                 debug "failure", [HOMEPAGE];
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                $self->do_render(0, undef);
+                # TODO Or render exception?
+                $self->stash_basket_link(0, undef);
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 debug "error", [HOMEPAGE];
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                $self->do_render(0, undef);
+                # TODO Or render exception?
+                $self->stash_basket_link(0, undef);
             }
         )->execute;
     } else {
         debug "User not signed in; not displaying basket link", [HOMEPAGE];
-        $self->do_render(0, undef);
+        $self->stash_basket_link(0, undef);
     }
 }
 
-sub do_render {
+sub stash_basket_link {
     my ($self, $basket_items, $show_basket_link) = @_;
 
     debug "Stashing basket_items = %s, show_basket_link = %s", $basket_items, $show_basket_link [HOMEPAGE];
@@ -146,8 +154,7 @@ sub do_render {
         basket_items     => $basket_items,
         show_basket_link => $show_basket_link
     );
-    debug "AFTER stashing, stash = %s", Dumper($self->stash), [HOMEPAGE];
-    # $self->render;
+    debug "AFTER stashing basket link, stash = %s", Dumper($self->stash), [HOMEPAGE];
 }
 
 # =============================================================================
