@@ -124,6 +124,13 @@ sub get_basket() {
                 debug "User not authenticated; not displaying basket link", [HOMEPAGE];
                 # TODO Or render exception?
                 $self->stash_basket_link(0, undef);
+                if ($company_name) {
+                    debug "not_authorised: Calling perform_search()", [HOMEPAGE];
+                    $self->perform_search($company_name);
+                } else {
+                    debug "not_authorised: Rendering page", [HOMEPAGE];
+                    return $self->render(template => "company/company_name_availability/form");
+                }
             },
             failure        => sub {
                 my ($api, $tx) = @_;
@@ -143,13 +150,20 @@ sub get_basket() {
     } else {
         debug "User not signed in; not displaying basket link", [HOMEPAGE];
         $self->stash_basket_link(0, undef);
+        if ($company_name) {
+            debug "Not signed in: Calling perform_search()", [HOMEPAGE];
+            $self->perform_search($company_name);
+        } else {
+            debug "Not signed in: Rendering page", [HOMEPAGE];
+            return $self->render(template => "company/company_name_availability/form");
+        }
     }
 }
 
 sub stash_basket_link {
     my ($self, $basket_items, $show_basket_link) = @_;
 
-    debug "Stashing basket_items = %s, show_basket_link = %s", $basket_items, $show_basket_link [HOMEPAGE];
+    debug "Stashing basket_items = %s, show_basket_link = %s", $basket_items, Dumper($show_basket_link) [HOMEPAGE];
     $self->stash(
         basket_items     => $basket_items,
         show_basket_link => $show_basket_link
