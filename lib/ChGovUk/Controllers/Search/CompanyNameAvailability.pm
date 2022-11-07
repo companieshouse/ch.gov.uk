@@ -3,6 +3,7 @@ package ChGovUk::Controllers::Search::CompanyNameAvailability;
 use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::Util;
+use Data::Dumper;
 
 use constant DEFAULT_ITEMS_PER_PAGE => 50;
 
@@ -12,6 +13,8 @@ sub company_name_availability {
 
     my ($self) = @_;
 
+    $self->render_later;
+
     my $company_name = $self->req->param('q');
 
     $self->stash(
@@ -20,11 +23,13 @@ sub company_name_availability {
                           : 'Company name availability checker - Find and update company information - GOV.UK'
     );
 
-    return $self->render(template => 'company/company_name_availability/form')
-        unless $company_name;
-    
-    $self->render_later;
+    $self->get_basket($company_name);
+}
 
+sub perform_search() {
+    my ($self, $company_name) = @_;
+
+    debug "About to execute search", [HOMEPAGE];
     $self->ch_api->search->companies({
         'q'              => $company_name,
         'items_per_page' => DEFAULT_ITEMS_PER_PAGE,
@@ -49,6 +54,7 @@ sub company_name_availability {
                                   : 'Company name availability checker - Find and update company information - GOV.UK'
             );
 
+            debug "search success , stash = %s", Dumper($self->stash), [HOMEPAGE];
             return $self->render(template => "company/company_name_availability/form");
 
         },
@@ -62,10 +68,11 @@ sub company_name_availability {
 
             return $self->render('error', error => 'outside_result_set', description => 'You have requested a page outside of the available result set', status => 416)
                 if $error_code == 416;
-              
-            # don't throw to the error page show a message inline 
+
+            # don't throw to the error page show a message inline
             $self->stash(query => $company_name, show_error => 1);
 
+            debug "search failure, stash = %s", Dumper($self->stash), [HOMEPAGE];
             return $self->render(template => "company/company_name_availability/form");
 
         },
@@ -75,9 +82,95 @@ sub company_name_availability {
             my $message = "Error retrieving search results: $error";
             error '%s', $message;
 
+            debug "search error, stash = %s", Dumper($self->stash), [HOMEPAGE];
             return $self->render_exception($message);
         },
     )->execute;
+
+}
+
+sub get_basket() {
+    my ($self, $company_name) = @_;
+    if ($self->is_signed_in) {
+        debug "Signed in, calling basket API", [HOMEPAGE];
+        $self->ch_api->basket->get->on(
+            success        => sub {
+                my ($api, $tx) = @_;
+                debug "success", [HOMEPAGE];
+                my $json = $tx->res->json;
+                my $show_basket_link = $json->{data}{enrolled} || undef;
+                my $items = scalar @{$json->{data}{items} || []};
+                if ($show_basket_link) {
+                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [HOMEPAGE];
+                }
+                else {
+                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [HOMEPAGE];
+                }
+                $self->stash_basket_link($items, $show_basket_link);
+                if ($company_name) {
+                    debug "success: Calling perform_search()", [HOMEPAGE];
+                    $self->perform_search($company_name);
+                } else {
+                    debug "success: Rendering page", [HOMEPAGE];
+                    return $self->render(template => "company/company_name_availability/form");
+                }
+
+            },
+            not_authorised => sub {
+                my ($api, $tx) = @_;
+                debug "GET basket not_authorised", [HOMEPAGE];
+                debug "User not authenticated; not displaying basket link", [HOMEPAGE];
+                $self->stash_basket_link(0, undef);
+                if ($company_name) {
+                    debug "not_authorised: Calling perform_search()", [HOMEPAGE];
+                    $self->perform_search($company_name);
+                } else {
+                    debug "not_authorised: Rendering page", [HOMEPAGE];
+                    return $self->render(template => "company/company_name_availability/form");
+                }
+            },
+            failure        => sub {
+                my ($api, $tx) = @_;
+                debug "Failure returned by GET basket endpoint; not displaying basket link.", [HOMEPAGE];
+                $self->stash_basket_link(0, undef);
+                return $self->render_error($tx, 'failure', 'getting basket');
+            },
+            error          => sub {
+                my ($api, $tx) = @_;
+                debug "Error returned by GET Basket endpoint; not displaying basket link.", [HOMEPAGE];
+                $self->stash_basket_link(0, undef);
+                return $self->render_error($tx, 'error', 'getting basket');
+            }
+        )->execute;
+    } else {
+        debug "User not signed in; not displaying basket link", [HOMEPAGE];
+        $self->stash_basket_link(0, undef);
+        if ($company_name) {
+            debug "Not signed in: Calling perform_search()", [HOMEPAGE];
+            $self->perform_search($company_name);
+        } else {
+            debug "Not signed in: Rendering page", [HOMEPAGE];
+            return $self->render(template => "company/company_name_availability/form");
+        }
+    }
+}
+
+sub stash_basket_link {
+    my ($self, $basket_items, $show_basket_link) = @_;
+
+    $self->stash(
+        basket_items     => $basket_items,
+        show_basket_link => $show_basket_link
+    );
+}
+
+sub render_error {
+    my($self, $tx, $error_type, $action) = @_;
+
+    my $error_code = $tx->error->{code} // 0;
+    my $error_message = $tx->error->{message} // 0;
+    my $message = (uc $error_type).' '.(defined $error_code ? "[$error_code] " : '').$action.': '.$error_message;
+    return $self->render_exception($message);
 }
 
 # =============================================================================
