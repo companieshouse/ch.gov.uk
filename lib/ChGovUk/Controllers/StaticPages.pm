@@ -97,9 +97,6 @@ sub render_filepath {
         debug "User not signed in; not displaying basket link", [HOMEPAGE];
         $self->do_render_2(0, undef, $path);
     }
-
-    my $path = 'static_pages/help/' . $self->param('filepath');
-    $self->render(template => $path );
 }
 
 sub do_render {
