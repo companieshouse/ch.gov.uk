@@ -35,12 +35,12 @@ sub home {
             failure        => sub {
                 my ($api, $tx) = @_;
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                $self->do_render(0, undef);
+                return $self->render_error($tx, 'failure', 'getting basket');
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                $self->do_render(0, undef);
+                return $self->render_error($tx, 'failure', 'getting basket');
             }
         )->execute;
     } else {
