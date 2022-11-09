@@ -76,21 +76,20 @@ sub render_filepath {
                 }
                 $self->do_render_2($items, $show_basket_link, $path);
             },
-            # TODO BI-11899 What's wrong with this?
-            # not_authorised => sub {
-            #     my ($api, $tx) = @_;
-            #     debug "User not authenticated; not displaying basket link", [HOMEPAGE];
-            #     $self->do_render(0, undef);
-            # },
+            not_authorised => sub {
+                my ($api, $tx) = @_;
+                debug "User not authenticated; not displaying basket link", [HOMEPAGE];
+                $self->do_render_2(0, undef, $path);
+            },
             failure        => sub {
                 my ($api, $tx) = @_;
                 debug "Failure returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                $self->do_render_2(0, undef, $path);
+                return $self->render_error($tx, 'failure', 'getting basket');
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                $self->do_render_2(0, undef, $path);
+                return $self->render_error($tx, 'failure', 'getting basket');
             }
         )->execute;
     } else {
@@ -128,6 +127,15 @@ sub do_render_2 {
     debug "stash AFTER = %s", Dumper($self->stash), [HOMEPAGE];
 
     $self->render(template => $path);
+}
+
+sub render_error {
+    my($self, $tx, $error_type, $action) = @_;
+
+    my $error_code = $tx->error->{code} // 0;
+    my $error_message = $tx->error->{message} // 0;
+    my $message = (uc $error_type).' '.(defined $error_code ? "[$error_code] " : '').$action.': '.$error_message;
+    return $self->render_exception($message);
 }
 
 #===============================================================================
