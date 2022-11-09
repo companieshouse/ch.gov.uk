@@ -25,12 +25,12 @@ sub home {
                 else {
                     debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [HOMEPAGE];
                 }
-                $self->do_render($items, $show_basket_link);
+                $self->render_homepage($items, $show_basket_link);
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
                 debug "User not authenticated; not displaying basket link", [HOMEPAGE];
-                $self->do_render(0, undef);
+                $self->render_homepage(0, undef);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
@@ -45,16 +45,12 @@ sub home {
         )->execute;
     } else {
         debug "User not signed in; not displaying basket link", [HOMEPAGE];
-        $self->do_render(0, undef);
+        $self->render_homepage(0, undef);
     }
 }
 
 sub render_filepath {
     my ($self) = @_;
-
-    debug "render_filepath: filepath = %s",  $self->param('filepath'), [HOMEPAGE];
-    my $path = 'static_pages/help/' . $self->param('filepath');
-    debug "render_filepath: \$path = %s",  $path, [HOMEPAGE];
 
     $self->render_later;
 
@@ -74,12 +70,12 @@ sub render_filepath {
                 else {
                     debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [HOMEPAGE];
                 }
-                $self->do_render_2($items, $show_basket_link, $path);
+                $self->render_static_page($items, $show_basket_link);
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
                 debug "User not authenticated; not displaying basket link", [HOMEPAGE];
-                $self->do_render_2(0, undef, $path);
+                $self->render_static_page(0, undef);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
@@ -94,14 +90,14 @@ sub render_filepath {
         )->execute;
     } else {
         debug "User not signed in; not displaying basket link", [HOMEPAGE];
-        $self->do_render_2(0, undef, $path);
+        $self->render_static_page(0, undef);
     }
 }
 
-sub do_render {
+sub render_homepage {
     my ($self, $basket_items, $show_basket_link) = @_;
 
-    debug "do_render(%s, %s)", $basket_items, $show_basket_link [HOMEPAGE];
+    debug "render_homepage(%s, %s)", $basket_items, $show_basket_link [HOMEPAGE];
 
     my $search_type = 'all';
 
@@ -114,18 +110,17 @@ sub do_render {
     $self->render;
 }
 
-sub do_render_2 {
-    my ($self, $basket_items, $show_basket_link, $path) = @_;
+sub render_static_page {
+    my ($self, $basket_items, $show_basket_link) = @_;
 
-    debug "do_render_2(%s, %s, %s)", $basket_items, $show_basket_link, $path [HOMEPAGE];
+    debug "render_static_page(%s, %s)", $basket_items, $show_basket_link [HOMEPAGE];
 
     $self->stash(
         basket_items     => $basket_items,
         show_basket_link => $show_basket_link
     );
 
-    debug "stash AFTER = %s", Dumper($self->stash), [HOMEPAGE];
-
+    my $path = 'static_pages/help/' . $self->param('filepath');
     $self->render(template => $path);
 }
 
