@@ -3,7 +3,6 @@ package ChGovUk::Controllers::StaticPages;
 use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Util::CVConstants;
-use Data::Dumper;
 
 #-------------------------------------------------------------------------------
 
@@ -12,41 +11,7 @@ sub home {
 
     $self->render_later;
 
-    if ($self->is_signed_in) {
-        $self->ch_api->basket->get->on(
-            success        => sub {
-                my ($api, $tx) = @_;
-                my $json = $tx->res->json;
-                my $show_basket_link = $json->{data}{enrolled} || undef;
-                my $items = scalar @{$json->{data}{items} || []};
-                if ($show_basket_link) {
-                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [HOMEPAGE];
-                }
-                else {
-                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [HOMEPAGE];
-                }
-                $self->render_homepage($items, $show_basket_link);
-            },
-            not_authorised => sub {
-                my ($api, $tx) = @_;
-                debug "User not authenticated; not displaying basket link", [HOMEPAGE];
-                $self->render_homepage(0, undef);
-            },
-            failure        => sub {
-                my ($api, $tx) = @_;
-                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                return $self->render_error($tx, 'failure', 'getting basket');
-            },
-            error          => sub {
-                my ($api, $tx) = @_;
-                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                return $self->render_error($tx, 'failure', 'getting basket');
-            }
-        )->execute;
-    } else {
-        debug "User not signed in; not displaying basket link", [HOMEPAGE];
-        $self->render_homepage(0, undef);
-    }
+    $self->get_basket(0);
 }
 
 sub render_filepath {
@@ -54,13 +19,16 @@ sub render_filepath {
 
     $self->render_later;
 
+    $self->get_basket(1);
+}
+
+sub get_basket {
+    my ($self, $is_static_page) = @_;
+
     if ($self->is_signed_in) {
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
-
-                debug "success", [HOMEPAGE];
-
                 my $json = $tx->res->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
@@ -70,16 +38,16 @@ sub render_filepath {
                 else {
                     debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [HOMEPAGE];
                 }
-                $self->render_static_page($items, $show_basket_link);
+                $self->render_page($items, $show_basket_link, $is_static_page);
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
                 debug "User not authenticated; not displaying basket link", [HOMEPAGE];
-                $self->render_static_page(0, undef);
+                $self->render_page(0, undef, $is_static_page);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
-                debug "Failure returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
+                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
                 return $self->render_error($tx, 'failure', 'getting basket');
             },
             error          => sub {
@@ -90,7 +58,18 @@ sub render_filepath {
         )->execute;
     } else {
         debug "User not signed in; not displaying basket link", [HOMEPAGE];
-        $self->render_static_page(0, undef);
+        $self->render_page(0, undef, $is_static_page);
+    }
+
+}
+
+sub render_page {
+    my ($self, $basket_items, $show_basket_link, $is_static_page) = @_;
+
+    if ($is_static_page) {
+        $self->render_static_page($basket_items, $show_basket_link);
+    } else {
+        $self->render_homepage($basket_items, $show_basket_link);
     }
 }
 
