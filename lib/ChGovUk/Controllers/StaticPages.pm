@@ -48,12 +48,12 @@ sub get_basket {
             failure        => sub {
                 my ($api, $tx) = @_;
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                return $self->render_error($tx, 'failure', 'getting basket');
+                $self->render_error($tx, 'failure', 'getting basket');
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                return $self->render_error($tx, 'failure', 'getting basket');
+                $self->render_error($tx, 'failure', 'getting basket');
             }
         )->execute;
     } else {
@@ -109,7 +109,7 @@ sub render_error {
     my $error_code = $tx->error->{code} // 0;
     my $error_message = $tx->error->{message} // 0;
     my $message = (uc $error_type).' '.(defined $error_code ? "[$error_code] " : '').$action.': '.$error_message;
-    return $self->render_exception($message);
+    $self->render_exception($message);
 }
 
 #===============================================================================
