@@ -61,6 +61,8 @@ sub results {
 	$query =~ s/\s+$//;
 	$query =~ s/\s+/ /sg;
 
+    $self->get_basket_link;
+
     # nothing requested, so return nothing
     if (length $query == 0){
 	    trace "Render no results for %s", $wants_json ? 'JSON' : 'HTML' [Search];
@@ -196,6 +198,65 @@ sub results {
     }
 
     return $self->render_later;
+}
+
+
+sub get_basket_link {
+    my ( $self ) = @_;
+        if ($self->is_signed_in) {
+        $self->ch_api->basket->get->on(
+            success        => sub {
+                my ($api, $tx) = @_;
+                my $json = $tx->success->json;
+                my $show_basket_link = $json->{data}{enrolled} || undef;
+                my $items = scalar @{$json->{data}{items} || []};
+                if ($show_basket_link) {
+                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [SEARCH];
+                }
+                else {
+                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [SEARCH];
+                }
+                $self->stash_basket_link($show_basket_link, $items);
+            },
+            not_authorised => sub {
+                my ($api, $tx) = @_;
+                debug "User not authenticated; not displaying basket link", [SEARCH];
+                $self->stash_basket_link(undef, 0);
+            },
+            failure        => sub {
+                my ($api, $tx) = @_;
+                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [SEARCH];
+                $self->stash_basket_link(undef, 0);
+                return $self->render_error($tx, 'failure', 'getting basket');
+            },
+            error          => sub {
+                my ($api, $tx) = @_;
+                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [SEARCH];
+                $self->stash_basket_link(undef, 0);
+                return $self->render_error($tx, 'error', 'getting basket');
+            }
+        )->execute;
+    } else {
+        $self->stash_basket_link(undef, 0);
+    }
+}
+
+sub stash_basket_link {
+    my ( $self, $show_basket_link, $basket_items ) = @_;
+
+    $self->stash(
+        show_basket_link => $show_basket_link,
+        basket_items     => $basket_items
+    );
+}
+
+sub render_error {
+    my($self, $tx, $error_type, $action) = @_;
+
+    my $error_code = $tx->error->{code} // 0;
+    my $error_message = $tx->error->{message} // 0;
+    my $message = (uc $error_type).' '.(defined $error_code ? "[$error_code] " : '').$action.': '.$error_message;
+    return $self->render_exception($message);
 }
 
 # ---------------------------------------------------------------------------------------------------
