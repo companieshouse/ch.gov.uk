@@ -11,6 +11,20 @@ sub home {
 
     $self->render_later;
 
+    $self->get_basket(0);
+}
+
+sub render_filepath {
+    my ($self) = @_;
+
+    $self->render_later;
+
+    $self->get_basket(1);
+}
+
+sub get_basket {
+    my ($self, $is_static_page) = @_;
+
     if ($self->is_signed_in) {
         $self->ch_api->basket->get->on(
             success        => sub {
@@ -24,38 +38,45 @@ sub home {
                 else {
                     debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [HOMEPAGE];
                 }
-                $self->do_render($items, $show_basket_link);
+                $self->render_page($items, $show_basket_link, $is_static_page);
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
                 debug "User not authenticated; not displaying basket link", [HOMEPAGE];
-                $self->do_render(0, undef);
+                $self->render_page(0, undef, $is_static_page);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                $self->do_render(0, undef);
+                $self->render_error($tx, 'failure', 'getting basket');
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                $self->do_render(0, undef);
+                $self->render_error($tx, 'failure', 'getting basket');
             }
         )->execute;
     } else {
         debug "User not signed in; not displaying basket link", [HOMEPAGE];
-        $self->do_render(0, undef);
+        $self->render_page(0, undef, $is_static_page);
+    }
+
+}
+
+sub render_page {
+    my ($self, $basket_items, $show_basket_link, $is_static_page) = @_;
+
+    if ($is_static_page) {
+        $self->render_static_page($basket_items, $show_basket_link);
+    } else {
+        $self->render_homepage($basket_items, $show_basket_link);
     }
 }
 
-sub render_filepath {
-    my ($self) = @_;
-    my $path = 'static_pages/help/' . $self->param('filepath');
-    $self->render(template => $path );
-}
-
-sub do_render {
+sub render_homepage {
     my ($self, $basket_items, $show_basket_link) = @_;
+
+    debug "render_homepage(%s, %s)", $basket_items, $show_basket_link [HOMEPAGE];
 
     my $search_type = 'all';
 
@@ -66,6 +87,29 @@ sub do_render {
         show_basket_link => $show_basket_link
     );
     $self->render;
+}
+
+sub render_static_page {
+    my ($self, $basket_items, $show_basket_link) = @_;
+
+    debug "render_static_page(%s, %s)", $basket_items, $show_basket_link [HOMEPAGE];
+
+    $self->stash(
+        basket_items     => $basket_items,
+        show_basket_link => $show_basket_link
+    );
+
+    my $path = 'static_pages/help/' . $self->param('filepath');
+    $self->render(template => $path);
+}
+
+sub render_error {
+    my($self, $tx, $error_type, $action) = @_;
+
+    my $error_code = $tx->error->{code} // 0;
+    my $error_message = $tx->error->{message} // 0;
+    my $message = (uc $error_type).' '.(defined $error_code ? "[$error_code] " : '').$action.': '.$error_message;
+    $self->render_exception($message);
 }
 
 #===============================================================================
