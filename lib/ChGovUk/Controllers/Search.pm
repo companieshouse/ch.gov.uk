@@ -227,13 +227,11 @@ sub get_basket_link {
                 my ($api, $tx) = @_;
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [SEARCH];
                 $self->stash_basket_link(undef, 0);
-                return $self->render_error($tx, 'failure', 'getting basket');
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 debug "Error returned by getBasketLinks endpoint; not displaying basket link", [SEARCH];
                 $self->stash_basket_link(undef, 0);
-                return $self->render_error($tx, 'error', 'getting basket');
             }
         )->execute;
     } else {
@@ -248,15 +246,6 @@ sub stash_basket_link {
         show_basket_link => $show_basket_link,
         basket_items     => $basket_items
     );
-}
-
-sub render_error {
-    my($self, $tx, $error_type, $action) = @_;
-
-    my $error_code = $tx->error->{code} // 0;
-    my $error_message = $tx->error->{message} // 0;
-    my $message = (uc $error_type).' '.(defined $error_code ? "[$error_code] " : '').$action.': '.$error_message;
-    return $self->render_exception($message);
 }
 
 # ---------------------------------------------------------------------------------------------------
