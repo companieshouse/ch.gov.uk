@@ -208,17 +208,17 @@ sub get_basket_link {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
-                debug "User not authenticated; not displaying basket link", [SEARCH];
+                warn "User not authenticated; not displaying basket link", [SEARCH];
                 $self->stash_basket_link(undef, 0);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
-                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [SEARCH];
+                log_error($tx, "failure");
                 $self->stash_basket_link(undef, 0);
             },
             error          => sub {
                 my ($api, $tx) = @_;
-                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [SEARCH];
+                log_error($tx, "error");
                 $self->stash_basket_link(undef, 0);
             }
         )->execute;
@@ -234,6 +234,15 @@ sub stash_basket_link {
         show_basket_link => $show_basket_link,
         basket_items     => $basket_items
     );
+}
+
+sub log_error {
+    my($tx, $error_type) = @_;
+
+    my $error_code = $tx->error->{code} // 0;
+    my $error_message = $tx->error->{message} // 0;
+    my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
+    error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [SEARCH];
 }
 
 # ---------------------------------------------------------------------------------------------------
