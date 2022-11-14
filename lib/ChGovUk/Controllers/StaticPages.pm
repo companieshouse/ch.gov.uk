@@ -42,18 +42,18 @@ sub get_basket {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
-                debug "User not authenticated; not displaying basket link", [HOMEPAGE];
+                warn "User not authenticated; not displaying basket link", [HOMEPAGE];
                 $self->render_page(0, undef, $is_static_page);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
-                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                $self->render_error($tx, 'failure', 'getting basket');
+                log_error($tx, "failure");
+                $self->render_page(0, undef, $is_static_page);
             },
             error          => sub {
                 my ($api, $tx) = @_;
-                debug "Error returned by getBasketLinks endpoint; not displaying basket link", [HOMEPAGE];
-                $self->render_error($tx, 'failure', 'getting basket');
+                log_error($tx, "error");
+                $self->render_page(0, undef, $is_static_page);
             }
         )->execute;
     } else {
@@ -110,6 +110,15 @@ sub render_error {
     my $error_message = $tx->error->{message} // 0;
     my $message = (uc $error_type).' '.(defined $error_code ? "[$error_code] " : '').$action.': '.$error_message;
     $self->render_exception($message);
+}
+
+sub log_error {
+    my($tx, $error_type) = @_;
+
+    my $error_code = $tx->error->{code} // 0;
+    my $error_message = $tx->error->{message} // 0;
+    my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
+    error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [HOMEPAGE];
 }
 
 #===============================================================================
