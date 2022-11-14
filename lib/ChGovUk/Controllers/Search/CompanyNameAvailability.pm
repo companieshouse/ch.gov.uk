@@ -92,62 +92,62 @@ sub perform_search() {
 sub get_basket() {
     my ($self, $company_name) = @_;
     if ($self->is_signed_in) {
-        debug "Signed in, calling basket API", [HOMEPAGE];
+        debug "Signed in, calling basket API", [COMPANY_NAME_AVAILABILITY];
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
-                debug "success", [HOMEPAGE];
+                debug "success", [COMPANY_NAME_AVAILABILITY];
                 my $json = $tx->res->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
                 if ($show_basket_link) {
-                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [HOMEPAGE];
+                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [COMPANY_NAME_AVAILABILITY];
                 }
                 else {
-                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [HOMEPAGE];
+                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [COMPANY_NAME_AVAILABILITY];
                 }
                 $self->stash_basket_link($items, $show_basket_link);
                 if ($company_name) {
-                    debug "success: Calling perform_search()", [HOMEPAGE];
+                    debug "success: Calling perform_search()", [COMPANY_NAME_AVAILABILITY];
                     $self->perform_search($company_name);
                 } else {
-                    debug "success: Rendering page", [HOMEPAGE];
+                    debug "success: Rendering page", [COMPANY_NAME_AVAILABILITY];
                     return $self->render(template => "company/company_name_availability/form");
                 }
 
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
-                debug "GET basket not_authorised", [HOMEPAGE];
-                debug "User not authenticated; not displaying basket link", [HOMEPAGE];
+                debug "GET basket not_authorised", [COMPANY_NAME_AVAILABILITY];
+                warn "User not authenticated; not displaying basket link", [COMPANY_NAME_AVAILABILITY];
                 $self->stash_basket_link(0, undef);
                 if ($company_name) {
-                    debug "not_authorised: Calling perform_search()", [HOMEPAGE];
+                    debug "not_authorised: Calling perform_search()", [COMPANY_NAME_AVAILABILITY];
                     $self->perform_search($company_name);
                 } else {
-                    debug "not_authorised: Rendering page", [HOMEPAGE];
+                    debug "not_authorised: Rendering page", [COMPANY_NAME_AVAILABILITY];
                     return $self->render(template => "company/company_name_availability/form");
                 }
             },
             failure        => sub {
                 my ($api, $tx) = @_;
-                debug "Failure returned by GET basket endpoint; not displaying basket link.", [HOMEPAGE];
+                log_error($tx, "failure");
                 $self->stash_basket_link(0, undef);
             },
             error          => sub {
                 my ($api, $tx) = @_;
-                debug "Error returned by GET Basket endpoint; not displaying basket link.", [HOMEPAGE];
+                log_error($tx, "error");
                 $self->stash_basket_link(0, undef);
             }
         )->execute;
     } else {
-        debug "User not signed in; not displaying basket link", [HOMEPAGE];
+        debug "User not signed in; not displaying basket link", [COMPANY_NAME_AVAILABILITY];
         $self->stash_basket_link(0, undef);
         if ($company_name) {
-            debug "Not signed in: Calling perform_search()", [HOMEPAGE];
+            debug "Not signed in: Calling perform_search()", [COMPANY_NAME_AVAILABILITY];
             $self->perform_search($company_name);
         } else {
-            debug "Not signed in: Rendering page", [HOMEPAGE];
+            debug "Not signed in: Rendering page", [COMPANY_NAME_AVAILABILITY];
             return $self->render(template => "company/company_name_availability/form");
         }
     }
@@ -160,6 +160,15 @@ sub stash_basket_link {
         basket_items     => $basket_items,
         show_basket_link => $show_basket_link
     );
+}
+
+sub log_error {
+    my($tx, $error_type) = @_;
+
+    my $error_code = $tx->error->{code} // 0;
+    my $error_message = $tx->error->{message} // 0;
+    my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
+    error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [COMPANY_NAME_AVAILABILITY];
 }
 
 # =============================================================================
