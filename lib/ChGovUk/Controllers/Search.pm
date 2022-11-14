@@ -63,18 +63,6 @@ sub results {
 
     $self->get_basket_link;
 
-    # nothing requested, so return nothing
-    if (length $query == 0){
-	    trace "Render no results for %s", $wants_json ? 'JSON' : 'HTML' [Search];
-	    if ($wants_json) {
-	        $self->render(json => {hits=>{ hits => [] }} );
-	    } else {
-            $self->stash(results => { kind => "search#$search_type" });
-	        $self->render(template => 'search/noresults');
-	    }
-	    return;
-	}
-
     # Pager with scrolling through page numbers functionality turned off
     my $page = $self->param('page') || 1;
     $page = 1 if $page < 1;
