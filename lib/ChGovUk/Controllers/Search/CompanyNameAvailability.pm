@@ -164,7 +164,6 @@ sub search_or_render {
         debug "%s: Rendering page", $log_type, [COMPANY_NAME_AVAILABILITY];
         return $self->render(template => "company/company_name_availability/form");
     }
-
 }
 
 # =============================================================================
