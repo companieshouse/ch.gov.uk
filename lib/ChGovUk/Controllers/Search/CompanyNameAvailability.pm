@@ -107,63 +107,32 @@ sub get_basket() {
                     debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [COMPANY_NAME_AVAILABILITY];
                 }
                 $self->stash_basket_link($items, $show_basket_link);
-                if ($company_name) {
-                    debug "success: Calling perform_search()", [COMPANY_NAME_AVAILABILITY];
-                    $self->perform_search($company_name);
-                } else {
-                    debug "success: Rendering page", [COMPANY_NAME_AVAILABILITY];
-                    return $self->render(template => "company/company_name_availability/form");
-                }
-
+                $self->search_or_render($company_name, "success");
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
                 debug "GET basket not_authorised", [COMPANY_NAME_AVAILABILITY];
                 warn "User not authenticated; not displaying basket link", [COMPANY_NAME_AVAILABILITY];
                 $self->stash_basket_link(0, undef);
-                if ($company_name) {
-                    debug "not_authorised: Calling perform_search()", [COMPANY_NAME_AVAILABILITY];
-                    $self->perform_search($company_name);
-                } else {
-                    debug "not_authorised: Rendering page", [COMPANY_NAME_AVAILABILITY];
-                    return $self->render(template => "company/company_name_availability/form");
-                }
+                $self->search_or_render($company_name, "not_authorised");
             },
             failure        => sub {
                 my ($api, $tx) = @_;
                 log_error($tx, "failure");
                 $self->stash_basket_link(0, undef);
-                if ($company_name) {
-                    debug "failure: Calling perform_search()", [COMPANY_NAME_AVAILABILITY];
-                    $self->perform_search($company_name);
-                } else {
-                    debug "failure: Rendering page", [COMPANY_NAME_AVAILABILITY];
-                    return $self->render(template => "company/company_name_availability/form");
-                }
+                $self->search_or_render($company_name, "failure");
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 log_error($tx, "error");
                 $self->stash_basket_link(0, undef);
-                if ($company_name) {
-                    debug "error: Calling perform_search()", [COMPANY_NAME_AVAILABILITY];
-                    $self->perform_search($company_name);
-                } else {
-                    debug "error: Rendering page", [COMPANY_NAME_AVAILABILITY];
-                    return $self->render(template => "company/company_name_availability/form");
-                }
+                $self->search_or_render($company_name, "error");
             }
         )->execute;
     } else {
         debug "User not signed in; not displaying basket link", [COMPANY_NAME_AVAILABILITY];
         $self->stash_basket_link(0, undef);
-        if ($company_name) {
-            debug "Not signed in: Calling perform_search()", [COMPANY_NAME_AVAILABILITY];
-            $self->perform_search($company_name);
-        } else {
-            debug "Not signed in: Rendering page", [COMPANY_NAME_AVAILABILITY];
-            return $self->render(template => "company/company_name_availability/form");
-        }
+        $self->search_or_render($company_name, "Not signed in");
     }
 }
 
@@ -183,6 +152,19 @@ sub log_error {
     my $error_message = $tx->error->{message} // 0;
     my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
     error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [COMPANY_NAME_AVAILABILITY];
+}
+
+sub search_or_render {
+    my($self, $company_name, $log_type) = @_;
+
+    if ($company_name) {
+        debug "%s: Calling perform_search()", $log_type, [COMPANY_NAME_AVAILABILITY];
+        $self->perform_search($company_name);
+    } else {
+        debug "%s: Rendering page", $log_type, [COMPANY_NAME_AVAILABILITY];
+        return $self->render(template => "company/company_name_availability/form");
+    }
+
 }
 
 # =============================================================================
