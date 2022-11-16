@@ -29,7 +29,7 @@ sub company_name_availability {
 sub perform_search() {
     my ($self, $company_name) = @_;
 
-    debug "About to execute search", [HOMEPAGE];
+    debug "About to execute search", [COMPANY_NAME_AVAILABILITY];
     $self->ch_api->search->companies({
         'q'              => $company_name,
         'items_per_page' => DEFAULT_ITEMS_PER_PAGE,
@@ -54,7 +54,7 @@ sub perform_search() {
                                   : 'Company name availability checker - Find and update company information - GOV.UK'
             );
 
-            debug "search success , stash = %s", Dumper($self->stash), [HOMEPAGE];
+            debug "search success , stash = %s", Dumper($self->stash), [COMPANY_NAME_AVAILABILITY];
             return $self->render(template => "company/company_name_availability/form");
 
         },
@@ -72,7 +72,7 @@ sub perform_search() {
             # don't throw to the error page show a message inline
             $self->stash(query => $company_name, show_error => 1);
 
-            debug "search failure, stash = %s", Dumper($self->stash), [HOMEPAGE];
+            debug "search failure, stash = %s", Dumper($self->stash), [COMPANY_NAME_AVAILABILITY];
             return $self->render(template => "company/company_name_availability/form");
 
         },
@@ -82,7 +82,7 @@ sub perform_search() {
             my $message = "Error retrieving search results: $error";
             error '%s', $message;
 
-            debug "search error, stash = %s", Dumper($self->stash), [HOMEPAGE];
+            debug "search error, stash = %s", Dumper($self->stash), [COMPANY_NAME_AVAILABILITY];
             return $self->render_exception($message);
         },
     )->execute;
@@ -133,11 +133,25 @@ sub get_basket() {
                 my ($api, $tx) = @_;
                 log_error($tx, "failure");
                 $self->stash_basket_link(0, undef);
+                if ($company_name) {
+                    debug "failure: Calling perform_search()", [COMPANY_NAME_AVAILABILITY];
+                    $self->perform_search($company_name);
+                } else {
+                    debug "failure: Rendering page", [COMPANY_NAME_AVAILABILITY];
+                    return $self->render(template => "company/company_name_availability/form");
+                }
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 log_error($tx, "error");
                 $self->stash_basket_link(0, undef);
+                if ($company_name) {
+                    debug "error: Calling perform_search()", [COMPANY_NAME_AVAILABILITY];
+                    $self->perform_search($company_name);
+                } else {
+                    debug "error: Rendering page", [COMPANY_NAME_AVAILABILITY];
+                    return $self->render(template => "company/company_name_availability/form");
+                }
             }
         )->execute;
     } else {
