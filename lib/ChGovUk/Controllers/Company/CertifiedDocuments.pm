@@ -55,7 +55,7 @@ sub view {
     }
 
     if( ! $self->is_signed_in ) {
-        my $return_to = $self->req->headers->referrer . ',' . scalar $self->req->url;
+        my $return_to = $self->req->headers->referrer;
         debug "Certified Documents - user not logged in, redirecting to login with return_to[%s]", $return_to [ROUTING];
         $self->redirect_to( $self->url_for('user_sign_in')->query( return_to => $return_to) );
         return 0;
