@@ -1,6 +1,8 @@
 package ChGovUk::Controllers::Admin::User::Filings;
 
-use Mojo::Base 'Mojolicious::Controller';
+# use Mojo::Base 'Mojolicious::Controller';
+use Moose;
+extends 'ChGovUk::Controllers::BasketLinkController';
 
 use CH::Perl;
 use CH::Util::Pager;
@@ -12,6 +14,17 @@ use MIME::Base64 qw(encode_base64url);
 
 sub list {
     my ($self) = @_;
+
+    $self->render_later;
+    my $next = sub { $self->build_filings_list_and_render; };
+    $self->get_basket_link($next);
+}
+
+#-------------------------------------------------------------------------------
+
+sub build_filings_list_and_render() {
+    my ($self) = @_;
+
     # Process the incoming parameters
     my $page             = abs(int($self->param('page') || 1));     # Which page has been requested
     my $items_per_page = $self->config->{recent_filings}->{items_per_page} || 25;
@@ -20,8 +33,8 @@ sub list {
 
     #  Uncomment to enable paging when available
     my $query = {
-      #  start_index    => $pager->first,
-      #  items_per_page => $pager->entries_per_page,
+        #  start_index    => $pager->first,
+        #  items_per_page => $pager->entries_per_page,
         user_id        => $self->param('user_id')
     };
 
@@ -36,15 +49,15 @@ sub list {
                     $doc->{closed_at_time} = CH::Util::DateHelper->isotime_as_string($doc->{closed_at})->strftime("%l:%M%P");
                 }
                 if  (($doc->{status} eq "open" ||
-                      $doc->{status} eq "closed pending payment") && $doc->{resume_journey_uri}) {
-                        $self->_build_resume_link($doc, $doc->{resume_journey_uri});
+                    $doc->{status} eq "closed pending payment") && $doc->{resume_journey_uri}) {
+                    $self->_build_resume_link($doc, $doc->{resume_journey_uri});
                 }
             }
 
             # Work out the paging numbers
             $pager->total_entries( $rf_results->{total_result} // 0 );
             warn "recent filings total_count %d entries per page %d",
-            $pager->total_entries, $pager->entries_per_page() [RECENT_FILINGS];
+                $pager->total_entries, $pager->entries_per_page() [RECENT_FILINGS];
 
             $self->stash(current_page_number    => $pager->current_page);
             $self->stash(page_set               => $pager->pages_in_set());
@@ -70,7 +83,6 @@ sub list {
 
     )->execute;
 
-    $self->render_later;
 }
 
 #-------------------------------------------------------------------------------
