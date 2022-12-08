@@ -3,7 +3,7 @@ package ChGovUk::Controllers::Company::ViewAll;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Perl;
 
-  my @snapshot_company_types = (
+  my @snapshot_not_available_company_types = (
     "assurance-company",
     "industrial-and-provident-society",
     "royal-charter",
@@ -58,7 +58,7 @@ sub view {
   my $show_certified_document = 1;
   my $show_dissolved_certificate = 0;
 
-  my %snapshot_not_orderable = map { $_ => 1 } @snapshot_company_types;
+  my %snapshot_not_orderable = map { $_ => 1 } @snapshot_not_available_company_types;
   my %certificate_orderable = map { $_ => 1 } @certificate_orders_company_types;
   my %dissolved_certificate_orderable = map {$_ => 1 } @dissolved_certificate_orders_company_types;
 
