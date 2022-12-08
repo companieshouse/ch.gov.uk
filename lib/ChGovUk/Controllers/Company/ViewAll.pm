@@ -13,7 +13,6 @@ use CH::Perl;
     "uk-establishment",
     "registered-society-non-jurisdictional",
     "protected-cell-company",
-    "eeig",
     "protected-cell-company",
     "further-education-or-sixth-form-college-corporation",
     "icvc-securities",
