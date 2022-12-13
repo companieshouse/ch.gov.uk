@@ -58,7 +58,7 @@ subtest "Render not found view if snapshots cannot be generated, company is neit
 subtest "Hide snapshots link if not supported for company type" => sub {
     plan tests => 5;
     $view_all_ctrl->stash(company => {
-        type           => "eeig",
+        type           => "royal-charter",
         company_status => "active",
         links          => {
             filing_history => '/company/GS123456/filing-history'
@@ -124,7 +124,7 @@ subtest "Show dissolved certified certificate link if company is dissolved" => s
 subtest "Hide dissolved certified certificate link if not orderable for company type" => sub {
     plan tests => 5;
     $view_all_ctrl->stash(company => {
-        type           => "eeig",
+        type           => "royal-charter",
         company_status => "dissolved",
         links          => {
             filing_history => '/company/GS123456/filing-history'
