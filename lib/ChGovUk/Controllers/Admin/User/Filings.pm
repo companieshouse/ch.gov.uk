@@ -1,6 +1,5 @@
 package ChGovUk::Controllers::Admin::User::Filings;
 
-# use Mojo::Base 'Mojolicious::Controller';
 use Moose;
 extends 'ChGovUk::Controllers::BasketLinkController';
 
