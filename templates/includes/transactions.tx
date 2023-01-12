@@ -11,9 +11,11 @@
         <div class="one-filing rejected">
         % if $transaction.company_name {
             <h2 class="heading-medium">
-                <a id="company-name-<% $~transaction.count %>" href="/company/<% $transaction.company_number %>"><% $transaction.company_name %></a>
                 % if $transaction.company_number {
+                    <a id="company-name-<% $~transaction.count %>" href="/company/<% $transaction.company_number %>"><% $transaction.company_name %></a>
                     <span id="company-number-<% $~transaction.count %>">Company number <Strong><% $transaction.company_number %></Strong></span>
+                % } else {
+                    <span id="company-name-<% $~transaction.count %>"><strong><% $transaction.company_name %></strong></span>
                 % }
             </h2>
         % }    
