@@ -31,6 +31,16 @@
                     % }
                 % }
             % }
+            % if $c.config.feature.enable_oe_auth_code {
+                % if $company.type == "registered-overseas-entity" {
+                      <a href="<% $c.url_for.to_abs %>" id="request_auth_code_roe" class="govuk-button"
+                          % if $c.config.piwik.embed {
+                              onclick="javascript:_paq.push(['trackEvent', 'RequestAuthcodeROE']);"
+                          % }
+                      ><% l('Request an authentication code') %> 
+                      </a>
+                % }
+            % }
             % if $company.company_number == $c.authorised_company {
                   <a href="<% $c.sign_url($c.external_url_for('make_authcode_change', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs])) %>" id="manage_auth_code" class="font-xsmall">Manage company authentication</a>
             % }
