@@ -33,11 +33,11 @@
             % }
             % if $c.config.feature.enable_oe_auth_code {
                 % if $company.type == "registered-overseas-entity" {
-                      <a href="<% $c.url_for.to_abs %>" id="request_auth_code_roe" class="govuk-button"
+                      <a href="<% $c.external_url_for('authcode_request_email',company_number => $company.company_number) %>" id="request_authcode_email" class="govuk-button"
                           % if $c.config.piwik.embed {
-                              onclick="javascript:_paq.push(['trackEvent', 'RequestAuthcodeROE']);"
+                              onclick="javascript:_paq.push(['trackEvent', 'RequestAuthcodeEmail']);"
                           % }
-                      ><% l('Request an authentication code') %> 
+                      ><% l('Request authentication code') %> 
                       </a>
                 % }
             % }
