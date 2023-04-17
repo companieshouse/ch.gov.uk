@@ -45,6 +45,7 @@ identity_providers:
 external_url_for:
   manage_user_details        : '<ACCOUNT_URL>/user/account'
   make_authcode_change       : '<ACCOUNT_URL>/company/:company_number/authcode/change'
+  authcode_request_email     : '<ACCOUNT_URL>/company/:company_number/authcode/request_email'
   follow_company             : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-follow'
   unfollow_company           : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-unfollow'
   file_accounts              : '<EXTERNAL_FILE_ACCOUNTS_URL>'
