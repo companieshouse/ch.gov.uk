@@ -17,14 +17,14 @@
                    % if $following_company {
                       <a href="<% $c.external_url_for('unfollow_company', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs]) %> " class="govuk-button" id="unfollow-this-company"
                           % if $c.config.piwik.embed {
-                              onclick="javascript:_paq.push(['trackEvent', 'UnfollowCompany']);"
+                              onclick="javascript:_paq.push(['trackEvent', 'UnfollowCompany', 'UnfollowCompany']);"
                           % }
                       ><% l('Unfollow this company') %>
                       </a>
                     % } else {
                       <a href="<% $c.external_url_for('follow_company', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs ]) %>" class="govuk-button" id="follow-this-company"
                           % if $c.config.piwik.embed {
-                              onclick="javascript:_paq.push(['trackEvent', 'FollowCompany']);"
+                              onclick="javascript:_paq.push(['trackEvent', 'FollowCompany', 'FollowCompany']);"
                           % }
                       ><% l('Follow this company') %>
                       </a>
@@ -35,7 +35,7 @@
                 % if $company.type == "registered-overseas-entity" {
                       <a href="<% $c.external_url_for('authcode_request_email',company_number => $company.company_number) %>" id="request_authcode_email" class="govuk-button"
                           % if $c.config.piwik.embed {
-                              onclick="javascript:_paq.push(['trackEvent', 'RequestOEAuthcodeEmail']);"
+                              onclick="javascript:_paq.push(['trackEvent', 'RequestOEAuthcodeEmail', 'RequestOEAuthcodeEmail']);"
                           % }
                       ><% l('Request authentication code') %> 
                       </a>
