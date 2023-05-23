@@ -15,13 +15,13 @@
             <div class="form-group">
                 <a href="<% $c.url_for('company_follow') %>" class="button" id="follow-company-confirmed""
                     % if $c.config.piwik.embed {
-                        onclick="javascript:_paq.push(['trackEvent', 'FollowCompanyConfirmed']);"
+                        onclick="javascript:_paq.push(['trackEvent', 'FollowCompanyConfirmed', 'FollowCompanyConfirmed']);"
                     % }
                 >Yes</a>
                 <p class="action-link">
                     <a href="<% $c.url_for('company') %>" id="follow-company-cancelled"
                         % if $c.config.piwik.embed {
-                            onclick="javascript:_paq.push(['trackEvent', 'FollowCompanyCancelled']);"
+                            onclick="javascript:_paq.push(['trackEvent', 'FollowCompanyCancelled', 'FollowCompanyCancelled']);"
                         % }
                     >Cancel</a>
                 </p>
