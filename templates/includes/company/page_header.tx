@@ -41,7 +41,7 @@
                       </a>
                 % }
             % }
-            % if $company.company_number == $c.authorised_company {
+            % if ($company.company_number == $c.authorised_company) && ($company.type != "registered-overseas-entity") {
                   <a href="<% $c.sign_url($c.external_url_for('make_authcode_change', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs])) %>" id="manage_auth_code" class="font-xsmall">Manage company authentication</a>
             % }
             % if !$c.config.disable_filing {
