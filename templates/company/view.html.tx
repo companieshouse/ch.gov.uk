@@ -255,7 +255,13 @@
     % if $company.confirmation_statement.size() {
         % if $company.type == "registered-overseas-entity" {
             <dl class="column-two-thirds">
-            <h2 class="heading-medium"><strong>Annual statement</strong></h2>
+
+            % if $company.confirmation_statement.overdue == 1 {
+                <div class="help-notice overdue"><h2 class="heading-medium">Annual statement overdue</h2></div>
+            % } else {
+                <h2 class="heading-medium"><strong>Annual statement</strong></h2>
+            % }
+
             % if $company.confirmation_statement.next_made_up_to {
                 <p>
                     % if ($company.confirmation_statement.last_made_up_to) {
