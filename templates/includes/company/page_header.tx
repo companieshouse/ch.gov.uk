@@ -11,6 +11,19 @@
             <strong><% $company.company_number %></strong>
         </p>
 
+        % if ($company.corporate_annotation) {
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-warning-text corporate-annotations-text govuk-!-margin-bottom-2">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <span class="govuk-warning-text__assistive">Important</span>
+                        <p class="govuk-warning-text__text">The registered office of the company is ineffective.</p>
+                        <p class="govuk-warning-text__text">In the opinion of the Secretary of State, the company name is intended to facilitate the commission of an offence involving dishonesty or deception.</p>
+                    </div>
+                </div>
+            </div>
+        % }
+
         <div class="actions">
            % if !$c.config.disable_follow {
                % if ($c.config.private_beta_follow && $c.is_signed_in) || !$c.config.private_beta_follow {
