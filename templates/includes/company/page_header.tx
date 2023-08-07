@@ -11,6 +11,24 @@
             <strong><% $company.company_number %></strong>
         </p>
 
+        % if ($company.corporate_annotation) {
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-warning-text corporate-annotations-text govuk-!-margin-bottom-2">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <span class="govuk-warning-text__assistive">Important</span>
+                        % for $company.corporate_annotation -> $ca {
+                            % if $ca.type != "other" {
+                                <p class="govuk-warning-text__text"><% l($c.cv_lookup( 'corporate_annotation_type', $ca.type)) %></p>
+                            % } else {
+                                <p class="govuk-warning-text__text"><% $ca.description %></p>
+                            % }
+                        % }
+                    </div>
+                </div>
+            </div>
+        % }
+
         <div class="actions">
            % if !$c.config.disable_follow {
                % if ($c.config.private_beta_follow && $c.is_signed_in) || !$c.config.private_beta_follow {
