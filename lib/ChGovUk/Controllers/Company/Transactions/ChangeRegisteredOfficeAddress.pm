@@ -12,6 +12,7 @@ sub get {
     my ($self) = @_;
 
     debug "In forms-ad01#get" [GET];
+    my $ecct = $self->config->{feature}->{ecct};
 
     my $country_list = ChGovUk::Models::Address->get_country_name_list( list_type => 'restricted' );
     $self->stash(country_list => $country_list);
@@ -42,7 +43,7 @@ sub get {
         success => sub {
             my ($api, $tx) = @_;
             my $addr = ChGovUk::Models::Address->new->from_api_hash($tx->success->json);
-            $self->stash(old_address => $addr->as_string, po_box => $addr->po_box, care_of => $addr->care_of, disable_header_search => 1, etag => $addr->etag);
+            $self->stash(old_address => $addr->as_string, po_box => $addr->po_box, care_of => $addr->care_of, disable_header_search => 1, etag => $addr->etag, po_box_enabled => !$ecct);
             $self->render(template => 'company/transactions/change_registered_office_address');
         }
     )->execute;

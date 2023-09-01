@@ -107,6 +107,7 @@ feature:
     order_liquidation_certificate: <ORDER_LIQUIDATION_CERTIFICATE>
     order_administration_certificate: <ORDER_ADMINISTRATION_CERTIFICATE>
     enable_oe_auth_code: <FEATURE_FLAG_ENABLE_OE_AUTH_CODE_22032023>
+    ecct: <FEATURE_FLAG_ENABLE_ECCT_01092023>
 
 image_service_start_date: <IMAGE_SERVICE_START_DATE>
 
