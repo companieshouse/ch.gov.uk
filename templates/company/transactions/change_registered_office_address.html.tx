@@ -3,8 +3,6 @@
     %  include 'company/transactions/current_address.html.tx' { form => $form }
 % }
 
-% my $bullet_point1 = "a document addressed to the company, and delivered there by hand or by post, would be expected to come to the attention of a person acting on behalf of the company, and"
-% my $bullet_point2 = "a person can get an acknowledgement of delivery, to record the delivery of documents to the new registered office address."
 % around form_content -> {
 <fieldset>
     <legend class="heading-medium text">What is the new address of the company?</legend>
