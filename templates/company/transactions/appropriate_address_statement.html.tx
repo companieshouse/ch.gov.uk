@@ -1,0 +1,16 @@
+% if $include_appropriate_addr_summary {
+      <details class="govuk-details" role="group">
+              <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
+                <span class="govuk-details__summary-text">
+                  What does 'appropriate address' mean?
+                </span>
+              </summary>
+              <div class="govuk-details__text" id="company-snapshot-details-content" aria-hidden="false">
+                <p id="snapshot-list">An address is an 'appropriate address' if, in the ordinary course of events:</p>
+                <ul class="govuk-list govuk-list--bullet">
+                  <li>a document addressed to the company, and delivered there by hand or by post, would be expected to come to the attention of a person acting on behalf of the company, and</li>
+                  <li>a person can get an acknowledgement of delivery, to record the delivery of documents to the new registered office address.</li>
+                </ul>
+              </div>
+      </details>
+% }
