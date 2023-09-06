@@ -9,8 +9,8 @@
 <fieldset>
     <legend class="heading-medium text">What is the new address of the company?</legend>
     % $c.include_later('includes/forms/errors', form => $form, form_title => 'Filing Error');
-    % include 'includes/forms/address.tx' { form => $form, name => 'address', include_po_box => $po_box_enabled }
-    % include 'company/transactions/appropriate_address_statement.html.tx' { include_appropriate_addr_summary => !$po_box_enabled }
+    % include 'includes/forms/address.tx' { form => $form, name => 'address', include_po_box => $ecct_disabled }
+    % include 'company/transactions/appropriate_address_statement.html.tx' { show_appropriate_addr_statement => !$ecct_disabled }
     % $form.hidden_field( name => 'address[etag]', value => $etag );
 </fieldset>
 % }

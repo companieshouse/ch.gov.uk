@@ -1,4 +1,4 @@
-% if $include_appropriate_addr_summary {
+% if $show_appropriate_addr_statement {
       % $form.checkbox ( label => 'The new registered office address is an appropriate address as outlined in section 86(2) of the Companies Act 2006.', name => 'address[statement]', class => 'block-label selection-button-checkbox');
       <details class="govuk-details" role="group">
               <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
