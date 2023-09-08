@@ -12,13 +12,11 @@
     % }
 
     % if $form.errors_count() > 0 {
+        <script>let oldtitle = document.title;  document.title = "Error: "+oldtitle;</script>
         <div class="error-summary" role="group" tabindex="-1">
             <h2 class="heading-medium error-summary-heading">
                 <% $form_title %>
             </h2>
-            <p>
-                This form has errors
-            </p>
             <ul class="error-summary-list">
             % for $form.errors -> $error {
                 <li><a href="#<% $error.id %>"><% $error.text %></a></li>
