@@ -6,15 +6,16 @@ use MooseX::Model;
 
 # TODO not sure this should live here
 our %api_field_map = (
-    'address[premises]' => 'premises',
-    'address[line_1]'   => 'address_line_1',
-    'address[line_2]'   => 'address_line_2',
-    'address[town]'     => 'locality',
-    'address[county]'   => 'region',
-    'address[postcode]' => 'postal_code',
-    'address[country]'  => 'country',
-    'address[po_box]'   => 'po_box',
-    'address[etag]'     => 'reference_etag',
+    'address[premises]'  => 'premises',
+    'address[line_1]'    => 'address_line_1',
+    'address[line_2]'    => 'address_line_2',
+    'address[town]'      => 'locality',
+    'address[county]'    => 'region',
+    'address[postcode]'  => 'postal_code',
+    'address[country]'   => 'country',
+    'address[po_box]'    => 'po_box',
+    'address[etag]'      => 'reference_etag',
+    'address[statement]' => 'accept_appropriate_office_address_statement'
 );
 
 #-------------------------------------------------------------------------------
