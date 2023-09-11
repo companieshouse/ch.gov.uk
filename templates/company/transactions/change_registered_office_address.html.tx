@@ -8,7 +8,6 @@
 % around form_content -> {
 <fieldset>
     <legend class="heading-medium text">What is the new address of the company?</legend>
-    % $c.include_later('includes/forms/errors', form => $form, form_title => 'Filing Error');
     % include 'includes/forms/address.tx' { form => $form, name => 'address', include_po_box => !$ecct_enabled };
     % if $ecct_enabled {
         % include 'company/transactions/appropriate_address_statement.html.tx'
