@@ -3,6 +3,8 @@ package ChGovUk::Models::Address;
 use CH::Perl;
 use CH::Util::CountryCodes;
 
+use Mojo::JSON;
+
 use Moose;
 use MooseX::Model;
 
@@ -76,7 +78,7 @@ sub as_api_hash {
     $api_hash->{locality}       = $self->town     if $self->town;
     $api_hash->{po_box}         = $self->po_box   if $self->po_box;
     $api_hash->{care_of}        = $self->care_of  if $self->care_of;
-    $api_hash->{accept_appropriate_office_address_statement} = 'true' if $self->statement;
+    $api_hash->{accept_appropriate_office_address_statement} = Mojo::JSON::true if $self->statement;
 
     return $api_hash;
 }
