@@ -1,5 +1,5 @@
 <div class="form-group">
-%   $form.submit_button( label => $submit_label // 'Submit', name => 'submit', id => 'submit', disabled => $disabled );
+%   $form.submit_button( label => $submit_label // 'Submit', name => 'submit', id => 'submit', disabled => $disabled, ecct_enabled => $ecct_enabled, piwik_embed => $c.config.piwik.embed );
 	<p class="action-link">
 %   $form.submit_button( label => 'Cancel', name => 'cancel', id => 'cancel', class => 'button-link' );
 	</p>

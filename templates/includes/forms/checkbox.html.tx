@@ -5,7 +5,13 @@
     %   }
     % }
     <label id="<% $id %>-label" for="<% $id %>" class="<% $class %>">
-    <input type="checkbox" id="<% $id %>" name="<% $name %>" value="1" <% if $value || $c.param($name) { %>checked="checked"<% } %> />
+    % if $ecct_enabled {
+        % my $eventDesc = 'appropriate-office-address-statement'
+        <input type="checkbox" id="<% $id %>" name="<% $name %>" value="1" <% if $value || $c.param($name) { %>checked="checked"<% } %> <% if $piwik_embed { %> onclick="javascript:_paq.push(['trackEvent', '<% $eventDesc %>', 'checkbox-clicked'])"<% } %>/>
+    % }
+    % else {
+        <input type="checkbox" id="<% $id %>" name="<% $name %>" value="1" <% if $value || $c.param($name) { %>checked="checked"<% } %> />
+    % }
     <% $label %>
     </label>
 </div>
