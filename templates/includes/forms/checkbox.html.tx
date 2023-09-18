@@ -15,9 +15,9 @@
         if (ecct_enabled) {
             var checkboxValue = document.getElementById("appropriateAddress").checked;
             if (checkboxValue == false) {
-                _paq.push(['trackEvent', 'appropriate-office-address-statement-checkbox-clicked', 'false']);
+                _paq.push(['trackEvent', 'appropriate-office-address-statement-checkbox-clicked', 'unticked']);
             } else {
-                _paq.push(['trackEvent', 'appropriate-office-address-statement-checkbox-clicked', 'true']);
+                _paq.push(['trackEvent', 'appropriate-office-address-statement-checkbox-clicked', 'ticked']);
             }
         }
     }
