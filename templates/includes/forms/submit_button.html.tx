@@ -1,5 +1,5 @@
 % if $ecct_enabled {
-    % my $eventDesc = 'change-registered-office-address'
+    % my $eventDesc = 'change-of-registered-office-address'
      <input type="submit" id="<% $id %>" name="<% $name %>" value="<% $label %>" class="<% if ( $class ) { %><%$class%><% } else { %>button<% } %>" <% if $disabled { %>disabled="disabled"<% } %> <% if $piwik_embed { %> onclick="javascript:_paq.push(['trackEvent', '<% $eventDesc %>', 'submit-button-clicked']);"<% } %>/>
 % }
 % else {
