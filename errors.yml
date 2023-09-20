@@ -134,7 +134,7 @@ errors:
               etag:
                 etag-mismatch: "This address has been recently updated. Check the current address to see if it's correct."
               statement:
-                required: "You need to accept the registered office address statement"
+                must_be_true: "You need to accept the registered office address statement"
 
           register_charge:
             creation_date:
