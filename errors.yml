@@ -49,6 +49,8 @@ errors:
     search_service_unavailable: "The search service is currently unavailable"
     page_unavailable: "You have requested a page that is currently unavailable."
 
+    po_box_not_allowed: "You cannot use a PO box number for the registered office address"
+
   ch_gov_uk:
     models:
       company:
@@ -132,7 +134,7 @@ errors:
               etag:
                 etag-mismatch: "This address has been recently updated. Check the current address to see if it's correct."
               statement:
-                required: "You need to accept the registered office address statement"
+                must_be_true: "You need to accept the registered office address statement"
 
           register_charge:
             creation_date:
