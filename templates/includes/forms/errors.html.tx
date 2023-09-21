@@ -20,6 +20,10 @@
             <ul class="error-summary-list">
             % for $form.errors -> $error {
                 <li><a href="#<% $error.id %>"><% $error.text %></a></li>
+                % my $errorID = lc($error.id);
+                % if ($errorID == 'address-statement-must_be_true-error') {
+                      <script>var _paq = _paq || [];_paq.push(['trackEvent', 'error-on-appropriate-office-address-statement', '<% $error.text %>']);</script>
+                % }
             % }
             </ul>
         </div>

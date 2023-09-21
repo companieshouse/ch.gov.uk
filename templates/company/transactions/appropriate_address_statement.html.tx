@@ -1,4 +1,4 @@
-% $form.checkbox ( label => 'The new registered office address is an appropriate address as outlined in section 86(2) of the Companies Act 2006.', name => 'address[statement]', class => 'block-label selection-button-checkbox');
+% $form.checkbox ( label => 'The new registered office address is an appropriate address as outlined in section 86(2) of the Companies Act 2006.', id => 'appropriateAddress', name => 'address[statement]', class => 'block-label selection-button-checkbox', ecct_enabled => $ecct_enabled, piwik_embed => $piwik_embed);
 <details class="govuk-details" role="group">
     <summary class="govuk-details__summary" role="button" aria-controls="details-content" aria-expanded="true">
         <span class="govuk-details__summary-text">What does 'appropriate address' mean?</span>

@@ -15,7 +15,7 @@
 	% block form_content -> {}
 
 	% block form_submit -> {
-	%   include "includes/forms/transaction_submit_buttons.html.tx";
+	%   include "includes/forms/transaction_submit_buttons.html.tx" { ecct_enabled => $ecct_enabled };
 	% }
 
 	% $form.end;

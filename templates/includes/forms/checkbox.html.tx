@@ -5,7 +5,17 @@
     %   }
     % }
     <label id="<% $id %>-label" for="<% $id %>" class="<% $class %>">
-    <input type="checkbox" id="<% $id %>" name="<% $name %>" value="1" <% if $value || $c.param($name) { %>checked="checked"<% } %> />
+    <input type="checkbox" id="<% $id %>" name="<% $name %>" value="1" <% if $value || $c.param($name) { %>checked="checked"<% } %> <% if $piwik_embed { %> onclick="writeCheckboxEvent()" <% } %> />
     <% $label %>
     </label>
 </div>
+<script type="text/javascript">
+    function writeCheckboxEvent() {
+        var checkboxValue = document.getElementById("appropriateAddress").checked;
+        if (checkboxValue == false) {
+            _paq.push(['trackEvent', 'appropriate-office-address-statement-checkbox-clicked', 'unticked']);
+        } else {
+            _paq.push(['trackEvent', 'appropriate-office-address-statement-checkbox-clicked', 'ticked']);
+        }
+    }
+</script>
