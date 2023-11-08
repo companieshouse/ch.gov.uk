@@ -119,7 +119,7 @@
                                 <% $c.isodate_as_string( $officer.appointed_on ) %>
                             </dd>
                         </dl>
-                     % }  else {
+                      % } else {
                         <dl class="column-quarter">
                             <dt><% l('Appointed on') %></dt>
                             <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
@@ -127,6 +127,13 @@
                             </dd>
                         </dl>
                        % }
+                    % } else if $officer.appointed_before {
+                        <dl class="column-quarter">
+                           <dt><% l('Appointed before') %></dt>
+                           <dd id="officer-appointed-before<% $~officer.count %>" class="data">
+                               <% $c.isodate_as_string( $officer.appointed_before ) %>
+                           </dd>
+                        </dl>
                     % }
 
                     % if $officer.resigned_on {
