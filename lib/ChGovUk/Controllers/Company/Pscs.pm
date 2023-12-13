@@ -302,6 +302,8 @@ sub get_exemptions_resource {
 
 #-------------------------------------------------------------------------------
 
+# Moves the active statements (if any) to the head of the list of items to
+# be displayed, for ROE companies only.
 sub move_all_active_statements_to_top_for_roe {
     my ($self, $items) = @_;
 
