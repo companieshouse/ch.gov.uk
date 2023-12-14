@@ -119,21 +119,19 @@ use_ok $CLASS;
 new_ok $CLASS;
 methods_ok $CLASS, qw(
     list
-    move_first_active_statement_to_top_for_roe
-    get_first_active_statement
-    get_rest_of_items
+    move_all_active_statements_to_top_for_roe
+    get_all_active_statements
     get_company_is_active);
 
-test_move_first_active_statement_to_top_for_roe();
-test_get_first_active_statement();
-test_get_rest_of_items();
+test_move_active_statements_to_top_for_roe();
+test_get_all_active_statements();
 test_event_stashing();
 
 done_testing;
 
 # ==============================================================================
 
-sub test_move_first_active_statement_to_top_for_roe {
+sub test_move_active_statements_to_top_for_roe {
 
     subtest "non-ROE company" => sub {
 
@@ -156,7 +154,7 @@ sub test_move_first_active_statement_to_top_for_roe {
             $ACTIVE_STATEMENT_E
         ];
 
-        $pscs_controller->move_first_active_statement_to_top_for_roe(@items);
+        $pscs_controller->move_all_active_statements_to_top_for_roe(@items);
 
         is_deeply (@items, @expected_items, 'correct ordering - statements after pscs');
     };
@@ -182,12 +180,12 @@ sub test_move_first_active_statement_to_top_for_roe {
             $INACTIVE_STATEMENT_E
         ];
 
-        $pscs_controller->move_first_active_statement_to_top_for_roe(@items);
+        $pscs_controller->move_all_active_statements_to_top_for_roe(@items);
 
         is_deeply (@items, @expected_items, 'correct ordering - statements after pscs');
     };
 
-    subtest "ROE company, no moving of first active statement because company is removed" => sub {
+    subtest "ROE company, no moving of active statement because company is removed" => sub {
 
         my $pscs_controller = $CLASS->new(
             stash   => {
@@ -208,7 +206,7 @@ sub test_move_first_active_statement_to_top_for_roe {
             $ACTIVE_STATEMENT_E
         ];
 
-        $pscs_controller->move_first_active_statement_to_top_for_roe(@items);
+        $pscs_controller->move_all_active_statements_to_top_for_roe(@items);
 
         is_deeply (@items, @expected_items, 'correct ordering - statements after pscs');
     };
@@ -234,7 +232,7 @@ sub test_move_first_active_statement_to_top_for_roe {
             $PSC
         ];
 
-        $pscs_controller->move_first_active_statement_to_top_for_roe(@items);
+        $pscs_controller->move_all_active_statements_to_top_for_roe(@items);
 
         is_deeply (@items, @expected_items, 'correct ordering - pscs after active statement');
     };
@@ -258,24 +256,23 @@ sub test_move_first_active_statement_to_top_for_roe {
             $ACTIVE_STATEMENT_D
         ];
 
+        # Inactive statements are added outside of the subroutine
         my @expected_items = [
             $ACTIVE_STATEMENT_C,
-            $PSC,
-            $INACTIVE_STATEMENT_A,
-            $INACTIVE_STATEMENT_B,
-            $ACTIVE_STATEMENT_D
+            $ACTIVE_STATEMENT_D,
+            $PSC
         ];
 
-        $pscs_controller->move_first_active_statement_to_top_for_roe(@items);
+        $pscs_controller->move_all_active_statements_to_top_for_roe(@items);
 
         is_deeply (@items, @expected_items, 'correct ordering - pscs after first active statement, remaining statements follow in their original order');
     };
 
 }
 
-sub test_get_first_active_statement {
+sub test_get_all_active_statements {
 
-    subtest "gets first active statement" => sub {
+    subtest "gets all active statements" => sub {
 
         my $pscs_controller = $CLASS->new();
 
@@ -288,27 +285,25 @@ sub test_get_first_active_statement {
         ];
 
         my $expected_first_active_statement = $ACTIVE_STATEMENT_C;
-        my $expected_first_active_statement_index = 3;
+        my $expected_second_active_statement = $ACTIVE_STATEMENT_D;
 
-        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@items);
+        my @active_statements = $pscs_controller->get_all_active_statements(@items);
 
-        is($index, $expected_first_active_statement_index, 'found expected first active statement');
-        is_deeply($first_active_statement, $expected_first_active_statement, 'found expected first active statement');
+        is(@active_statements[0]->{data}, $expected_first_active_statement, 'found expected first active statement');
+        is(@active_statements[1]->{data}, $expected_second_active_statement, 'found expected second active statement');
     };
 
-    subtest "gets no active statement from no items" => sub {
+    subtest "gets no active statements from no items" => sub {
 
         my $pscs_controller = $CLASS->new();
 
         my @no_items = [];
 
-        my $expected_first_active_statement = undef;
-        my $expected_first_active_statement_index = -1;
+        my @expected_active_statements = ();
 
-        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@no_items);
+        my @active_statements = $pscs_controller->get_all_active_statements(@no_items);
 
-        is($index, $expected_first_active_statement_index, 'found no first active statement, as expected');
-        is_deeply($first_active_statement, $expected_first_active_statement, 'found no first active statement, as expected')
+        is_deeply(\@active_statements, \@expected_active_statements, 'found no active statements, as expected');
     };
 
     subtest "gets no active statement from no statements" => sub {
@@ -319,13 +314,11 @@ sub test_get_first_active_statement {
             $PSC
         ];
 
-        my $expected_first_active_statement = undef;
-        my $expected_first_active_statement_index = -1;
+        my @expected_active_statements = ();
 
-        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@items_with_no_statements);
+        my @active_statements = $pscs_controller->get_all_active_statements(@items_with_no_statements);
 
-        is($index, $expected_first_active_statement_index, 'found no first active statement, as expected');
-        is_deeply($first_active_statement, $expected_first_active_statement, 'found no first active statement, as expected')
+        is_deeply(\@active_statements, \@expected_active_statements, 'found no active statements, as expected');
     };
 
     subtest "gets no active statement when none of the statements are active" => sub {
@@ -340,95 +333,12 @@ sub test_get_first_active_statement {
             $INACTIVE_STATEMENT_D
         ];
 
-        my $expected_first_active_statement = undef;
-        my $expected_first_active_statement_index = -1;
+        my @expected_active_statements = ();
 
-        my ($index, $first_active_statement) = $pscs_controller->get_first_active_statement(@items);
+        my @active_statements = $pscs_controller->get_all_active_statements(@items);
 
-        is($index, $expected_first_active_statement_index, 'found no first active statement, as expected');
-        is_deeply($first_active_statement, $expected_first_active_statement, 'found no first active statement, as expected')
+        is_deeply(\@active_statements, \@expected_active_statements, 'found no active statements, as expected');
     };
-
-}
-
-sub test_get_rest_of_items {
-
-    subtest "gets rest of items" => sub {
-
-        my $pscs_controller = $CLASS->new();
-
-        my @items = [
-            $PSC,
-            $INACTIVE_STATEMENT_A,
-            $INACTIVE_STATEMENT_B,
-            $ACTIVE_STATEMENT_C,
-            $ACTIVE_STATEMENT_D
-        ];
-        my $index_of_first_active_statement = 3;
-
-        my @expected_rest_of_items = [
-            $PSC,
-            $INACTIVE_STATEMENT_A,
-            $INACTIVE_STATEMENT_B,
-            $ACTIVE_STATEMENT_D
-        ];
-
-        my $rest_of_items = $pscs_controller->get_rest_of_items($index_of_first_active_statement, @items);
-
-        is_deeply($rest_of_items, @expected_rest_of_items, 'gets rest of items, as expected')
-    };
-
-    subtest "gets no items where there are no no items" => sub {
-
-        my $pscs_controller = $CLASS->new();
-
-        my @items = [];
-        my $index_of_first_active_statement = -1;
-
-        my @expected_rest_of_items = [];
-
-        my $rest_of_items = $pscs_controller->get_rest_of_items($index_of_first_active_statement, @items);
-
-        is_deeply($rest_of_items, @expected_rest_of_items, 'gets no items, as expected')
-    };
-
-    subtest "gets all items where there are no statements" => sub {
-
-        my $pscs_controller = $CLASS->new();
-
-        my @items = [
-            $PSC
-        ];
-        my $index_of_first_active_statement = -1;
-
-        my @expected_rest_of_items = [
-            $PSC
-        ];
-
-        my $rest_of_items = $pscs_controller->get_rest_of_items($index_of_first_active_statement, @items);
-
-        is_deeply($rest_of_items, @expected_rest_of_items, 'gets all items, as expected')
-    };
-
-    subtest "gets all items where there are no active statements" => sub {
-
-        my $pscs_controller = $CLASS->new();
-
-        my @items = [
-            $PSC,
-            $INACTIVE_STATEMENT_A,
-            $INACTIVE_STATEMENT_B,
-            $INACTIVE_STATEMENT_C,
-            $INACTIVE_STATEMENT_D
-        ];
-        my $index_of_first_active_statement = -1;
-
-        my @expected_rest_of_items = @items;
-
-        my $rest_of_items = $pscs_controller->get_rest_of_items($index_of_first_active_statement, @items);
-
-        is_deeply($rest_of_items, @expected_rest_of_items, 'gets all items, as expected')
-    }
 
 }
 
