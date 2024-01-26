@@ -5,6 +5,7 @@ base:
 
 api:
   url: <ERIC_LOCAL_URL>
+  private_url: <PRIVATE_API_URL>
   key: <CHS_API_KEY>
 
 cdn:

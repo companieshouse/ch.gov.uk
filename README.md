@@ -41,7 +41,7 @@ $ make build
 If a build error is encountered during the 'test' phase, running the following command may fix it:
 
 ```
-$ aws s3 cp s3://release.ch.gov.uk/ch.gov.uk-deps/ch.gov.uk-deps-1.1.5.zip . && unzip ch.gov.uk-deps-1.1.5.zip -d <<PATH-TO-DOCKER-CHS-DEVELOPMENT-REPO>>/repositories/ch-gov-uk/local;
+$ aws s3 cp s3://release.ch.gov.uk/ch.gov.uk-deps/ch.gov.uk-deps-1.1.6.zip . && unzip ch.gov.uk-deps-1.1.6.zip -d <<PATH-TO-DOCKER-CHS-DEVELOPMENT-REPO>>/repositories/ch-gov-uk/local;
 ```
 
 #### Running the service
