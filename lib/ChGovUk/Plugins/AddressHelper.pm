@@ -12,6 +12,20 @@ sub register {
 
     $app->helper(address_as_string => \&as_string);
 
+    $app->helper(should_display_address => sub {
+        my ($controller, $address, $opts) = @_;
+
+        my $not_available_text = 'NOT AVAILABLE';
+        if ((defined $address->{premises} && uc ($address->{premises}) eq $not_available_text) && 
+            (defined $address->{address_line_1} && uc ($address->{address_line_1}) eq $not_available_text) &&
+            (defined $address->{locality} && uc ($address->{locality}) eq $not_available_text) &&
+            (defined $address->{region} && uc ($address->{region}) eq $not_available_text) &&
+            (defined $address->{postal_code} && uc ($address->{postal_code}) eq $not_available_text)) {
+            return false;
+        }
+        return true;
+    });
+
     return;
 }
 
