@@ -136,7 +136,7 @@ sub test_helper_should_display_address_true_scenario {
     subtest "Test method - fields populated" => sub {
         is(
             $app->controller->should_display_address($api_hash),
-            true,
+            1,
             'Valid address should return true'
         );
     };
@@ -157,7 +157,7 @@ sub test_helper_should_display_address_false_scenario {
     subtest "Test method - fields populated as NOT AVAILABLE" => sub {
         is(
             $app->controller->should_display_address($api_hash),
-            false,
+            0,
             'Address fields populated with NOT AVAILABLE should return false'
         );
     };
