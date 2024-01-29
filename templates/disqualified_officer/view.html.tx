@@ -14,35 +14,46 @@
             % for $disqualifications -> $disqualification {
                 <h2 class="heading-medium">
                     <% $c.disqualified_officer_description_lookup( 'disqualification_type', $disqualification.disqualification_type ) %>
-                    % if $disqualification.heard_on {
-                        (<% $c.isodate_as_string($disqualification.heard_on) %>)
-                    % }
-                    % else if $disqualification.undertaken_on {
-                        (<% $c.isodate_as_string($disqualification.undertaken_on) %>)
+                    % if ( $disqualification.disqualification_type != "sanction" ) {
+                        % if $disqualification.heard_on {
+                            (<% $c.isodate_as_string($disqualification.heard_on) %>)
+                        % }
+                        % else if $disqualification.undertaken_on {
+                            (<% $c.isodate_as_string($disqualification.undertaken_on) %>)
+                        % }
                     % }
                 </h2>
-                <dl class="">
-                    <dt>Address provided by the disqualifying authority</dt>
-                    <dd class="data"><% $c.address_as_string( $disqualification.address ) %></dd>
-                </dl>
+                % if ( $disqualification.disqualification_type != "sanction" || ( $disqualification.disqualification_type == "sanction" && $c.should_display_address( $disqualification.address ) )) {
+                    <dl class="">
+                        <dt>Address provided by the disqualifying authority</dt>
+                        <dd class="data"><% $c.address_as_string( $disqualification.address ) %></dd>
+                    </dl>
+                % }
                 <div class="grid-row">
                     <dl class="column-third">
                         <dt>Start date</dt>
                         <dd class="data"><% $c.isodate_as_string( $disqualification.disqualified_from ) %></dd>
                     </dl>
-                    <dl class="column-third">
+                    % if ( $disqualification.disqualification_type != "sanction" ) {
+                        <dl class="column-third">
                         <dt>End date</dt>
                         <dd class="data"><% $c.isodate_as_string( $disqualification.disqualified_until ) %></dd>
-                    </dl>
+                        </dl>
+                    % }
                 </div>
                 <div class="grid-row">
                     % if $disqualification.case_identifier {
                         <dl class="column-third">
-                            <dt>Case Reference</dt>
+                            % if ( $disqualification.disqualification_type == "sanction" ) {
+                                <dt>UK Sanction List Reference</dt>
+                            % } else {
+                                <dt>Case Reference</dt>
+                            % }
+                            
                             <dd class="data"><% $disqualification.case_identifier %></dd>
                         </dl>
                     % }
-                    % if $disqualification.court_name {
+                    % if ( $disqualification.court_name && $disqualification.disqualification_type != "sanction" ) {
                         <dl class="column-third">
                             <dt>Court</dt>
                             <dd class="data"><% $disqualification.court_name %></dd>
@@ -101,7 +112,7 @@
         % if $exemptions {
             <hr class="section">
             <h2 class="heading-large leadin">Exemptions</h2>
-            <p class="leadin">Permission has been granted by the court to act for the following company(s)</p>
+            <p class="leadin">Permission has been granted by a relevant authority to act for the following company(s)</p>
             <div class="exemptions">
             % for $exemptions -> $exemption {
                 <div class="exemption">
