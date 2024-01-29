@@ -42,7 +42,7 @@ done_testing();
 
 sub test_method_register{
     subtest "Test method - register" => sub {
-        registers_helpers $PLUGIN, qw(address_as_string);
+        registers_helpers $PLUGIN, qw( address_as_string should_display_address );
     };
 }
 
@@ -116,6 +116,49 @@ sub test_helper_address_as_string_with_house_number_as_premise {
             $app->controller->address_as_string($api_hash),
             '14 Monkswell Road, Exeter, Devon, England, EX4 4NS',
             'Get formatted address as string with care of field'
+        );
+    };
+}
+
+# ==============================================================================
+
+sub test_helper_should_display_address_true_scenario {
+
+    $api_hash =  {
+        premises         => 14,
+        address_line_1   => 'Monkswell Road',
+        locality         => 'Exeter',
+        country          => 'England',
+        region           => 'Devon',
+        postal_code      => 'EX4 4NS',
+    };
+
+    subtest "Test method - fields populated" => sub {
+        is(
+            $app->controller->should_display_address($api_hash),
+            true,
+            'Valid address should return true'
+        );
+    };
+}
+
+# ==============================================================================
+
+sub test_helper_should_display_address_false_scenario {
+
+    $api_hash =  {
+        premises         => 'NOT AVAILABLE',
+        address_line_1   => 'NOT AVAILABLE',
+        locality         => 'NOT AVAILABLE',
+        region           => 'NOT AVAILABLE',
+        postal_code      => 'NOT AVAILABLE',
+    };
+
+    subtest "Test method - fields populated as NOT AVAILABLE" => sub {
+        is(
+            $app->controller->should_display_address($api_hash),
+            false,
+            'Address fields populated with NOT AVAILABLE should return false'
         );
     };
 }
