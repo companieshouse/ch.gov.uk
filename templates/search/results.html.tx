@@ -69,7 +69,9 @@
                                     <p class="meta crumbtrail inset">Matching disqualification names: <br/><span><% $item.snippet %></span></p>
                                 <% } %>
                                 <p class="meta crumbtrail"><% $item.description %></p>
-                                <p><% $item.address_snippet %></p>
+                                <% if $item.address_snippet != "Not Available, Not Available, Not Available, Not Available, NOT AVAILABLE" { %>
+                                    <p><% $item.address_snippet %></p>
+                                <% } %>
                             </li>
                         % } # End-if
                     % } # Next
