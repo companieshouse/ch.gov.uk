@@ -481,7 +481,7 @@
         </dl>
       </div>
       % if $company.type == "charitable-incorporated-organisation"  {
-          <p id="cio-further-info" class="text">Refer to the Charity Commission <a href="http://apps.charitycommission.gov.uk/showcharity/registerofcharities/RegisterHomePage.aspx">Register of Charities</a> for further information about this charity</p>
+          <p id="cio-further-info" class="text">Refer to the Charity Commission <a href="https://register-of-charities.charitycommission.gov.uk/">Register of Charities</a> for further information about this charity</p>
       % } else if $company.type == "scottish-charitable-incorporated-organisation"  {
           <p id="cio-further-info" class="text">Refer to the Scottish Charity Regulator <a href="https://www.oscr.org.uk/">Scottish Charity Register</a> for further information about this charity</p>
       % }
