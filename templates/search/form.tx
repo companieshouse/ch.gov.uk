@@ -12,18 +12,13 @@
     <div class="content">
 % } else {
 % if !$results {
-    <h1 id="start-searching" class="main-title center">
-                <label class="heading-xlarge">
-                  Search the register
-                </label>
-    </h1>
-    <p id="search-cta-label">Enter company name, number or officer name</p>
+    <h1 id="start-searching" class="main-title center"> Search the register </h1>
+    <p><label id="search-cta-label" for="site-search-text">Enter company name, number or officer name</label></p>
 % }
     <div class="search-bar-active">
         <div class="searchfield">
 % }
-        <label class="govuk-visually-hidden" for="site-search-text">Enter company name, number or officer name</label>
-            <input type="search" class="govuk-input" autocomplete="off" name="q" id="site-search-text" title="Search" value="<% $results.searchTerm %>" <% if ($header_or_body == 'header') { %> placeholder="Search"  class="header-search"<% } else { %> placeholder="Start here..."<% } %> />
+         <input type="search" class="govuk-input" autocomplete="off" name="q" id="site-search-text" title="Search" value="">
 % if ($header_or_body == 'header') {
         <input class="submit govuk-button" type="submit" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SiteSearch', 'Header']);"<% } %> id="search-btn" value="Search" />
 % } else {
