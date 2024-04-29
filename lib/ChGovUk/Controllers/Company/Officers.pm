@@ -134,9 +134,19 @@ sub list {
                 trace "Officer listing not found for company [%s]", $company_number [COMPANY PROFILE];
 
                 # render the regular list template to display message saying no officers for this company
+                my $results = {
+                    active_count   => 0,
+                    inactive_count => 0,
+                    resigned_count => 0
+                };
+                my $is_active_filter_set = 0;
+                my $is_overseas_entity = 0;
                 if ($filter =~ /active/) {
                     $self->stash(is_active_filter_set => 1);
+                    $is_active_filter_set = 1;
                 }
+                $self->stash(company_appointments =>
+                    build_company_appointments($results, $is_active_filter_set, $is_overseas_entity));
                 $self->stash(categories => $categories);
                 $self->stash(officers => {});
                 return $self->render;
