@@ -65,8 +65,10 @@
     % if $company_filing_history.total_count > 0 || $selected_category_count > 0 {
         <div class="js-only">
             <form id="filing-history-filter" class="form grid-row font-xsmall">
+            <fieldset class="govuk-!-margin-top-2">
+            <legend class="govuk-visually-hidden">Filter by category</legend>
                 <div class="column-quarter">
-                    <h2 class="heading-medium">Filter by category</h2>
+                    <h2 class="heading-medium govuk-!-margin-top-0 govuk-!-margin-bottom-3">Filter by category</h2>
                     <label for="show-filing-type" class="block-label selection-button-checkbox">
                         <input id="show-filing-type" type="checkbox"<% $show_filing_type ? ' checked' : '' %> />
                         <strong><% l('Show filing type') %></strong>
@@ -81,7 +83,7 @@
                                 % if $category.id == "confirmation-statement" {
                                     <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small">
                                         <input id="filter-category-<% $category.id %>" name="category" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
-                                        <% l('Annual returns') %>
+                                        <% l('Statements')/('Annual returns') %>
                                     </label>
                                 % } else {
                                     <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small">
@@ -98,6 +100,7 @@
                         </fieldset>
                         <input id="submit-filter-by-category" class="button js-hidden" type="submit" value="<% l('Apply filter') %>"/>
                     </div>
+                </fieldset>
                 % } else {
                     <div class="column-quarter">
                         <fieldset>
