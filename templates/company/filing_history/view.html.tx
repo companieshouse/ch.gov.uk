@@ -100,7 +100,6 @@
                         </fieldset>
                         <input id="submit-filter-by-category" class="button js-hidden" type="submit" value="<% l('Apply filter') %>"/>
                     </div>
-                </fieldset>
                 % } else {
                     <div class="column-quarter">
                         <fieldset>
@@ -120,6 +119,7 @@
                         <input id="submit-filter-by-category" class="button js-hidden" type="submit" value="<% l('Apply filter') %>"/>
                     </div>
                 % }
+            </fieldset>    
             </form>
         </div>
     % }
