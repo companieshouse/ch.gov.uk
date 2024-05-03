@@ -13,8 +13,7 @@
 	    <% } %>
 	    <% if $results.kind == 'search#companies' { %>
 	        <li id='companies-tab' class="active">
-                <label class="govuk-visually-hidden" for="search_companies">Search for companies</label>
-	            <a id='search_companies' class="govuk-link" href='#'>Companies</a><span class="govuk-visually-hidden"> selected</span>
+	            <a id="search_companies" class="govuk-link" href="#"><span class="govuk-visually-hidden>Search for </span>Companies</a><span class="govuk-visually-hidden"> selected</span>
 	        </li>
 	    <% } else { %>
 	        <li id='companies-tab'>
