@@ -64,7 +64,7 @@
                 </td>
                 % if ($item.type != 'PRE95') && ($item.type != 'PRE95M') && ($item.type != 'PRE87') && ($item.type != 'PRE87A') && ($item.type != 'PRE87M') {
                     <td>
-                    % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') || $item.links.document_metadata  {
+                    % if !($item._missing_message == 'unavailable') && !($item._missing_message == 'available_in_5_days') && $item.links.document_metadata  {
                         <form action="<%'/company/' ~ $company.company_number ~ '/certified-documents' %>" method="post">
                             <input type="hidden" id="<% $item.transaction_id %>" name="transaction" value="<% $item.transaction_id %>">
                             <input type="submit" class="select-document-button-link" id="add-document-to-order-<% $item.transaction_id%>"
