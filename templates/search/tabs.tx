@@ -2,47 +2,40 @@
 	<ul class="search-tabs">
 	    <% if $results.kind == 'search#all' { %>
 	        <li id='all-tab' class="active">
-                <label class="govuk-visually-hidden" for="search_all">Search for companies or officers</label>
-	            <a id='search_all' class="govuk-link" href='#'>All</a><span class="govuk-visually-hidden"> selected</span>
+	            <a id='search_all' class="govuk-link" href='#'><span class="govuk-visually-hidden">Search for companies or officers </span>All</a><span class="govuk-visually-hidden"> selected</span>
 	        </li>
 	    <% } else { %>
 	        <li id='all-tab'>
-                <label class="govuk-visually-hidden" for="search_all">Search for companies or officers</label>
-	            <a id='search_all' class="govuk-link" href="<% $c.url_for("search") %>?q=<% $results.searchTerm %>" >All</a>
+	            <a id='search_all' class="govuk-link" href="<% $c.url_for("search") %>?q=<% $results.searchTerm %>" ><span class="govuk-visually-hidden">Search for companies or officers </span>All</a>
 	        </li>
 	    <% } %>
 	    <% if $results.kind == 'search#companies' { %>
 	        <li id='companies-tab' class="active">
-	            <a id="search_companies" class="govuk-link" href="#"><span class="govuk-visually-hidden>Search for </span>Companies</a><span class="govuk-visually-hidden"> selected</span>
+	            <a id="search_companies" class="govuk-link" href="#"><span class="govuk-visually-hidden">Search for </span>Companies</a><span class="govuk-visually-hidden"> selected</span>
 	        </li>
 	    <% } else { %>
 	        <li id='companies-tab'>
-                <label class="govuk-visually-hidden" for="search_companies">Search for companies</label>
-	            <a id='search_companies' class="govuk-link" href="<% $c.url_for("search") %>/companies?q=<% $results.searchTerm %>" >Companies</a>
+	            <a id='search_companies' class="govuk-link" href="<% $c.url_for("search") %>/companies?q=<% $results.searchTerm %>" ><span class="govuk-visually-hidden">Search for companies</span>Companies</a>
 	        </li>
 	    <% } %>
 
 	    <% if $results.kind == 'search#officers' { %>
 	        <li id='officers-tab' class="active">
-                <label class="govuk-visually-hidden" for="search_officers">Search for officers</label>
-	            <a id='search_officers' class="govuk-link" href='#'>Officers</a><span class="govuk-visually-hidden"> selected</span>
+	            <a id='search_officers' class="govuk-link" href='#'><span class="govuk-visually-hidden">Search for </span>Officers</a><span class="govuk-visually-hidden"> selected</span>
 	        </li>
 	    <% } else { %>
 	        <li id='officers-tab'>
-                <label class="govuk-visually-hidden" for="search_officers">Search for officers</label>
-	            <a id='search_officers' class="govuk-link" href="<% $c.url_for("search") %>/officers?q=<% $results.searchTerm %>" >Officers</a>
+	            <a id='search_officers' class="govuk-link" href="<% $c.url_for("search") %>/officers?q=<% $results.searchTerm %>" ><span class="govuk-visually-hidden">Search for </span>Officers</a>
 	        </li>
 	    <% } %>
 
         <% if $results.kind == 'search#disqualified-officers' { %>
             <li id="disqualifications-tab" class="active">
-                <label class="govuk-visually-hidden" for="search_disqualifications">Search for disqualified officers</label>
-                <a id="search_disqualifications" class="govuk-link" href="#" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'SearchTabs']);"<% } %>>Disqualifications</a><span class="govuk-visually-hidden"> selected</span>
+                <a id="search_disqualifications" class="govuk-link" href="#" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'SearchTabs']);"<% } %>><span class="govuk-visually-hidden">Search for disqualified officers</span>Disqualifications</a><span class="govuk-visually-hidden"> selected</span>
             </li>
         <% } else { %>
             <li id="disqualifications-tab">
-                <label class="govuk-visually-hidden" for="search_disqualifications">Search for disqualified officers</label>
-                <a id="search_disqualifications" class="govuk-link" href="<% $c.url_for("search") %>/disqualified-officers?q=<% $results.searchTerm %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'SearchTabs']);"<% } %>>Disqualifications</a>
+                <a id="search_disqualifications" class="govuk-link" href="<% $c.url_for("search") %>/disqualified-officers?q=<% $results.searchTerm %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'SearchTabs']);"<% } %>><span class="govuk-visually-hidden">Search for disqualified officers</span>Disqualifications</a>
             </li>
         <% } %>
 	</ul>
