@@ -121,9 +121,7 @@
                 % }
             </fieldset>    
             </form>
-        </div>
-    % }
-        % if $company_filing_history.total_count == 0 && $selected_category_count == 0 {
+             % if $company_filing_history.total_count == 0 && $selected_category_count == 0 {
             % my $fh_status = $company_filing_history.filing_history_status;
 
             <p id="infoMessage" class="text">
@@ -145,6 +143,8 @@
                     % include 'company/filing_history/view_content.html.tx'
                 </div>
         % }
+        </div>
+    % }
     %}
     % include '/includes/company/tabs_end.tx' {};
 % }
