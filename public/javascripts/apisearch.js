@@ -1,11 +1,12 @@
 ﻿function gammaSearch(id) {
     var apiurl = $(id).data("api-url");
+    var encodedTerm = encodeURIComponent(request.term);
     $(id).autocomplete({
         delay: 75,
         source: function( request, response ) {
 			var ajaxManager = $.manageAjax.create('squeue',{queue:true,cacheResponse:false});
             ajaxManager.add({
-                url: apiurl+'/search?q='+request.term,
+                url: apiurl + '/search?q=' + encodedTerm,
                 type: "GET",
                 dataType: "json",
                 success: function( data ) {

@@ -3,6 +3,7 @@ package ChGovUk::Controllers::Search;
 use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Util::Pager;
+use URI::Escape;
 
 our $JSON_PAGE_SIZE = 20;
 our $DEFAULT_PAGE_SIZE = 20;
@@ -31,6 +32,8 @@ sub results {
     my $wants_json  = $self->req->headers->accept =~ /json/gi;
 
     my $query = $self->param('q');
+
+    my $encoded_query = uri_escape($query);
     
     # use the search type, or the previous search type (pst) - otherwise default 
     my $search_type = $self->param('search_type') || 'all';
@@ -51,7 +54,8 @@ sub results {
         'search_type'   => $search_type,
         'title'         => ($query) 
                         ? $query . ' - Find and update company information - GOV.UK' 
-                        : 'Find and update company information - GOV.UK' 
+                        : 'Find and update company information - GOV.UK',
+    'searchTerm' => $encoded_query  # Store the encoded query term
     );
 
     my $page_limit    = $self->config->{elasticsearch}->{max_pages}   || 2500;
@@ -77,7 +81,7 @@ sub results {
     trace "Page [%s], page size [%s]", $page, $page_size [Search];
 
     my $args = {
-        'q'				=> $query,
+        'q'				=> $encoded_query,
         'num'			=> $page_size,
         'start_index'	=> ($page-1) * $page_size
     };
