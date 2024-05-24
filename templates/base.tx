@@ -74,6 +74,37 @@
        main { display: block }
        }
     </style>
+
+    <!-- new styles to fix accessibility issues with numbered pagination -->
+<style type="text/css">
+
+ul.pager {
+ font-size: 24px;
+}
+ul.pager li {
+box-sizing: border-box;
+    position: relative;
+    min-width: 45px;
+    min-height: 45px;
+    padding: 10px 15px;
+    float: left;
+    text-align: center;
+}
+ul.pager li.active {
+    font-weight: 700;
+    font-size: 1em;
+    outline: 1px solid #0000;
+    background-color: #1d70b8;
+    color: #fff !important;
+    text-decoration: underline;
+}
+ul.pager li:hover {
+    background-color: #f3f2f1;
+}
+.pager-a-z li.active, .pager-a-z li.inactive {
+    padding-right: 15px;
+}
+</style>
   </head>
 
   <body class="govuk-template__body">
