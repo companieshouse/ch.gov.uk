@@ -15,7 +15,7 @@
                         </li>
                     % } else {
                         <li class="inactive">
-                            <a class="govuk-link  v " href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
+                            <a class="govuk-link govuk-link--no-visited-state" href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
                         </li>
                     % }
                 % }
