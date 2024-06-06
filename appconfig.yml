@@ -148,6 +148,6 @@ show_feedback_page: <SHOW_FEEDBACK_PAGE>
 
 allowed_return_to_hosts: <ALLOWED_RETURN_TO_HOSTS>
 
-basket_api_url: "<ERIC_LOCAL_URL>/basket"
+basket_api_url: "<PRIVATE_API_URL>/basket"
 basket_web_url: "<CHS_URL>/basket"
-append_item_to_basket_url: "<ERIC_LOCAL_URL>/basket/items/append"
+append_item_to_basket_url: "<PRIVATE_API_URL>/basket/items/append"
