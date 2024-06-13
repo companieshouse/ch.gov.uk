@@ -4,7 +4,7 @@ base:
   url: <BASE_URL>
 
 api:
-  url: <ERIC_LOCAL_URL>
+  url: <PRIVATE_API_URL>
   private_url: <PRIVATE_API_URL>
   key: <CHS_API_KEY>
 
