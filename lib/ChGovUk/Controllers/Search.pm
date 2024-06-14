@@ -55,7 +55,7 @@ sub results {
         'title'         => ($query) 
                         ? $query . ' - Find and update company information - GOV.UK' 
                         : 'Find and update company information - GOV.UK',
-    'searchTerm' => $encoded_query  # Store the encoded query term
+    'searchTerm' => $encoded_query  # Store the encoded query term
     );
 
     my $page_limit    = $self->config->{elasticsearch}->{max_pages}   || 2500;
