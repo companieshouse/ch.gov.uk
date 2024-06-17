@@ -33,7 +33,7 @@ sub results {
 
     my $query = $self->param('q');
 
-    my $encoded_query = uri_escape($query, { encode_reserved => 1 });
+    my $encoded_query = uri_escape($query);
     
     # use the search type, or the previous search type (pst) - otherwise default 
     my $search_type = $self->param('search_type') || 'all';
@@ -55,7 +55,7 @@ sub results {
         'title'         => ($query) 
                         ? $query . ' - Find and update company information - GOV.UK' 
                         : 'Find and update company information - GOV.UK',
-    'searchTerm' => $encoded_query  # Store the encoded query term
+        'searchTerm' => $encoded_query  # Store the encoded query term
     );
 
     my $page_limit    = $self->config->{elasticsearch}->{max_pages}   || 2500;
@@ -81,7 +81,7 @@ sub results {
     trace "Page [%s], page size [%s]", $page, $page_size [Search];
 
     my $args = {
-        'q'				=> $encoded_query,
+        'q'				=> uri_decode($query),
         'num'			=> $page_size,
         'start_index'	=> ($page-1) * $page_size
     };
@@ -134,7 +134,7 @@ sub results {
             }
             else {
                 $json_results->{numPages} = $self->_calculate_number_of_pages($json_results);
-                $json_results->{searchTerm} = $query;
+                $json_results->{searchTerm} = $encoded_query;
                 $self->stash(results => $json_results);
 
 	            if (not defined $json_results->{total_results} or $json_results->{total_results} == 0) {
