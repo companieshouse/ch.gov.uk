@@ -34,9 +34,9 @@ sub results {
     my $query = $self->param('q');
 
     # remove extra whitespace
-	$query =~ s/^\s+//;
-	$query =~ s/\s+$//;
-	$query =~ s/\s+/ /sg;
+    $query =~ s/^\s+//;
+    $query =~ s/\s+$//;
+    $query =~ s/\s+/ /sg;
 
     my $encoded_query = uri_escape($query);
     
