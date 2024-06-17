@@ -33,6 +33,11 @@ sub results {
 
     my $query = $self->param('q');
 
+    # remove extra whitespace
+	$query =~ s/^\s+//;
+	$query =~ s/\s+$//;
+	$query =~ s/\s+/ /sg;
+
     my $encoded_query = uri_escape($query);
     
     # use the search type, or the previous search type (pst) - otherwise default 
@@ -61,10 +66,6 @@ sub results {
     my $page_limit    = $self->config->{elasticsearch}->{max_pages}   || 2500;
     my $results_limit = $self->config->{elasticsearch}->{max_results} || 50000;
 
-	$query =~ s/^\s+//;
-	$query =~ s/\s+$//;
-	$query =~ s/\s+/ /sg;
-
     $self->get_basket_link;
 
     # Pager with scrolling through page numbers functionality turned off
@@ -81,7 +82,7 @@ sub results {
     trace "Page [%s], page size [%s]", $page, $page_size [Search];
 
     my $args = {
-        'q'				=> uri_decode($query),
+        'q'				=> $query,
         'num'			=> $page_size,
         'start_index'	=> ($page-1) * $page_size
     };
