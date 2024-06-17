@@ -33,7 +33,7 @@ sub results {
 
     my $query = $self->param('q');
 
-    my $encoded_query = uri_escape($query);
+    my $encoded_query = uri_escape($query, { encode_reserved => 1 });
     
     # use the search type, or the previous search type (pst) - otherwise default 
     my $search_type = $self->param('search_type') || 'all';
