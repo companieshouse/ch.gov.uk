@@ -3,6 +3,7 @@ package ChGovUk::Controllers::Search;
 use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Util::Pager;
+use URI::Escape;
 
 our $JSON_PAGE_SIZE = 20;
 our $DEFAULT_PAGE_SIZE = 20;
@@ -31,6 +32,13 @@ sub results {
     my $wants_json  = $self->req->headers->accept =~ /json/gi;
 
     my $query = $self->param('q');
+
+    # remove extra whitespace
+    $query =~ s/^\s+//;
+    $query =~ s/\s+$//;
+    $query =~ s/\s+/ /sg;
+
+    my $encoded_query = uri_escape($query);
     
     # use the search type, or the previous search type (pst) - otherwise default 
     my $search_type = $self->param('search_type') || 'all';
@@ -51,15 +59,12 @@ sub results {
         'search_type'   => $search_type,
         'title'         => ($query) 
                         ? $query . ' - Find and update company information - GOV.UK' 
-                        : 'Find and update company information - GOV.UK' 
+                        : 'Find and update company information - GOV.UK',
+        'searchTerm' => $encoded_query  # Store the encoded query term
     );
 
     my $page_limit    = $self->config->{elasticsearch}->{max_pages}   || 2500;
     my $results_limit = $self->config->{elasticsearch}->{max_results} || 50000;
-
-	$query =~ s/^\s+//;
-	$query =~ s/\s+$//;
-	$query =~ s/\s+/ /sg;
 
     $self->get_basket_link;
 
@@ -130,7 +135,7 @@ sub results {
             }
             else {
                 $json_results->{numPages} = $self->_calculate_number_of_pages($json_results);
-                $json_results->{searchTerm} = $query;
+                $json_results->{searchTerm} = $encoded_query;
                 $self->stash(results => $json_results);
 
 	            if (not defined $json_results->{total_results} or $json_results->{total_results} == 0) {
