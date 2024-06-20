@@ -38,7 +38,7 @@ sub results {
     $query =~ s/\s+$//;
     $query =~ s/\s+/ /sg;
 
-    my $encoded_query = uri_escape($query);
+    my $encoded_query = uri_escape_utf8($query);
     
     # use the search type, or the previous search type (pst) - otherwise default 
     my $search_type = $self->param('search_type') || 'all';
