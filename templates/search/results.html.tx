@@ -101,32 +101,40 @@
 
 % if $pager.show_pager {
     <div class="search-meta" id="search-meta">
-        <ul class="pager" id="pager">
+        <ul class="pager govuk-pagination__list" id="pager">
             % if ($pager.previous_page) {
-                <li>
+                <li class="govuk-pagination__item">
                     <a class="page govuk-link govuk-pagination__link" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
-                        Previous
+                        <span class="govuk-pagination__link-title">
+                            Previous<span class="govuk-visually-hidden"> page</span>
+                        </span>
                     </a>
                 </li>
             % }
             % for $pager.pages_in_set -> $page {
-                <li>
+                <li class="govuk-pagination__item">
                     % if $page <= $pager.page_limit {
                         % if $pager.current_page == $page {
-                            <span class="govuk-visually-hidden">Page </span>
-                            <span id="page-<% $page %>" class="page"><% $page %></span>
-                            <span class="govuk-visually-hidden"> of <% $pager.total_pages %></span>
+                            <li class="govuk-pagination__item govuk-pagination__item--current">
+                                <span class="govuk-visually-hidden">Page </span>
+                                <a id="page-<% $page %>" class="govuk-link govuk-pagination__link" href="<% $c.url_with.query([ page => $page ]) %>" aria-current="page"><% $page %></a>
+                                <span class="govuk-visually-hidden"> of <% $pager.total_pages %></span>
+                            </li>
                         % } else {
-                            <a id="page-<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>">
-                            <span class="govuk-visually-hidden">Page </span><% $page %><span class="govuk-visually-hidden"> of <% $pager.total_pages %></span></a>
+                            <li class="govuk-pagination__item">
+                                <a id="page-<% $page %>" class="govuk-link govuk-pagination__link" href="<% $c.url_with.query([ page => $page ]) %>">
+                                <span class="govuk-visually-hidden">Page </span><% $page %><span class="govuk-visually-hidden"> of <% $pager.total_pages %></span></a>
+                            </li>    
                         % }
                     % }
                 </li>
             % }
             % if ($pager.current_page < $pager.page_limit && $pager.next_page) {
-                <li>
+                <li class="govuk-pagination__item">
                     <a class="page govuk-link govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
-                        Next
+                        <span class="govuk-pagination__link-title">
+                            Next<span class="govuk-visually-hidden"> page</span>
+                        </span>
                     </a>
                 </li>
             % }
