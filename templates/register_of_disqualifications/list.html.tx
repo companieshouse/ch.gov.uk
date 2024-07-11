@@ -11,11 +11,11 @@
                 % for $alphabet -> $letter {
                     % if $active_letter == $letter {
                         <li class="active">
-                            <span id="page-1" class="page govuk-link"><%= $letter %></span>
+                            <a class="govuk-link" href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
                         </li>
                     % } else {
                         <li class="inactive">
-                            <a class="govuk-link govuk-link--no-visited-state" href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
+                            <a class="govuk-link" href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
                         </li>
                     % }
                 % }
