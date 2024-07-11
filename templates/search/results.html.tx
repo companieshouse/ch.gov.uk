@@ -104,28 +104,30 @@
         <ul class="pager" id="pager">
             % if ($pager.previous_page) {
                 <li>
-                    <a class="page govuk-link govuk-pagination__link govuk-link--no-visited-state" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">Previous</a>
+                    <a class="page govuk-link govuk-pagination__link" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
+                        Previous
+                    </a>
                 </li>
             % }
             % for $pager.pages_in_set -> $page {
+                <li>
                     % if $page <= $pager.page_limit {
                         % if $pager.current_page == $page {
-                            <li class="active">
-                                <span class="govuk-visually-hidden">Page </span>
-                                <span id="page-<% $page %>" class="page govuk-link"><% $page %></span>
-                                <span class="govuk-visually-hidden"> of <% $pager.total_pages %></span>
-                            </li>
+                            <span class="govuk-visually-hidden">Page </span>
+                            <span id="page-<% $page %>" class="page"><% $page %></span>
+                            <span class="govuk-visually-hidden"> of <% $pager.total_pages %></span>
                         % } else {
-                            <li>
-                                <a id="page-<% $page %>" class="page govuk-link govuk-link--no-visited-state" href="<% $c.url_with.query([ page => $page ]) %>">
-                                <span class="govuk-visually-hidden">Page </span><% $page %><span class="govuk-visually-hidden"> of <% $pager.total_pages %></span></a>
-                            </li>    
+                            <a id="page-<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>">
+                            <span class="govuk-visually-hidden">Page </span><% $page %><span class="govuk-visually-hidden"> of <% $pager.total_pages %></span></a>
                         % }
                     % }
+                </li>
             % }
             % if ($pager.current_page < $pager.page_limit && $pager.next_page) {
                 <li>
-                    <a class="page govuk-link govuk-pagination__link govuk-link--no-visited-state" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">Next</a>
+                    <a class="page govuk-link govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
+                        Next
+                    </a>
                 </li>
             % }
         </ul>
