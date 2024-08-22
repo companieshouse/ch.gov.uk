@@ -62,7 +62,7 @@
                       % }
                     % }
                 </td>
-                % if ($item.type != 'PRE95') && ($item.type != 'PRE95M') && ($item.type != 'PRE87') && ($item.type != 'PRE87A') && ($item.type != 'PRE87M') {
+                % if ($item.type != 'PRE95') && ($item.type != 'PRE95M') && ($item.type != 'PRE87') && ($item.type != 'PRE87A') && ($item.type != 'PRE87M') && ($item.type != 'PRE14') {
                     <td>
                     % if $item.links.document_metadata  {
                         <form action="<%'/company/' ~ $company.company_number ~ '/certified-documents' %>" method="post">
