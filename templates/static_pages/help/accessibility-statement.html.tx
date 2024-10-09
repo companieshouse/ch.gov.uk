@@ -49,6 +49,10 @@
         <li>due to a known bug in the Chrome web browser, in some circumstances users of assistive technology such as screen readers may get presented with incorrect information when using our accounts filing service</li>
     </ul>
 
+     <ul class="list-bullet">
+        <li>some pagination links do meet recommended minimum size</li>
+    </ul>
+
     <h2 class="heading-medium" id="reporting-accessibility">
         Reporting accessibility problems with this service
     </h2>
@@ -74,27 +78,33 @@
     <p>Companies House is committed to making its website accessible in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.</p>
 
     <p>This service is partially compliant with the
-        <a class="govuk-link" href="https://www.w3.org/TR/WCAG21/">Web Content Accessibility Guidelines version 2.1</a>
-        AA standard, due to the non-compliances listed below.
+        <a class="govuk-link" href="https://www.w3.org/TR/WCAG22/">Web Content Accessibility Guidelines version 2.2</a>
+        AA standard, due to the non-compliances listed in the next section.
     </p>
 
     <h2 class="heading-medium">
       Users of screen reading technology
     </h2>
 
-    <p>In some circumstances, users of screen reader technology may get presented with incorrect information when using our accounts filing service. This doesn’t meet WCAG 2.1 Success Criterion 3.3.2 (Labels or Instructions). This is a known bug in the Chrome web browser - these types of bugs are usually fixed by future updates to the browser.</p>
+    <p>In some circumstances, users of screen reader technology may get presented with incorrect information when using our accounts filing service. This doesn’t meet WCAG 2.2 Success Criterion 3.3.2 (Labels or Instructions). This is a known bug in the Chrome web browser - these types of bugs are usually fixed by future updates to the browser.</p>
 
     <h2 class="heading-medium">
         PDFs and other documents
     </h2>
 
-    <p>Many of our PDFs don’t meet accessibility standards - for example, they may not be structured so they’re accessible to a screen reader. This doesn’t meet WCAG 2.1 success criterion 4.1.2 (name, role value). We are currently fixing these PDFs.</p>
+    <p>Many of our PDFs don’t meet accessibility standards - for example, they may not be structured so they’re accessible to a screen reader. This doesn’t meet WCAG 2.2 success criterion 4.1.2 (name, role value). We are currently fixing these PDFs.</p>
+
+    <h2 class="heading-medium">
+        Pagination links
+    </h2>
+
+    <p>Pagination links do not meet a minimum size or have sufficient spacing around them, so may be difficult to activate for users with dexterity limitations. This doesn’t meet WCAG success criterion 2.5.8 target size (minimum). We plan to fix this issue by December 2024.</p>
 
     <h2 class="heading-medium" id="tested">
         How we tested this service
     </h2>
 
-    <p>We regularly carry out internal tests for compliance with the Web Content Accessibility Guidelines V2.1 level A and level AA using a variety of manual and automated testing tools.</p>
+    <p>We regularly carry out internal tests for compliance with the Web Content Accessibility Guidelines 2.2 level A and level AA using a variety of manual and automated testing tools.</p>
 
     <p>This service was last (externally) audited on 19 July 2022. The audit was carried out by the  <a href="https://digitalaccessibilitycentre.org/" class="govuk-link">Digital Accessibility Centre</a>.</p>
 
@@ -116,7 +126,7 @@
 
     <ul class="list-bullet">
         <li>work with real users who have accessibility issues to make sure that our services meet their needs</li>
-        <li>carry out internal tests for compliance with Web Content Accessibility Guidelines V2.1 level A and level AA</li>
+        <li>carry out internal tests for compliance with Web Content Accessibility Guidelines 2.2 level A and level AA</li>
         <li>work with external agencies in major UK cities to perform usability research with users</li>
         <li>recruit customers through
             <a class="govuk-link" href="https://www.gov.uk/government/news/help-improve-companies-house">our user panel</a>
@@ -129,7 +139,7 @@
     <br>
     <p><a class="govuk-link" href="https://companieshouse.blog.gov.uk/category/user-research/">Read our blogs about usability</a>
           to find out more about our user research work.</p>
-    <p>This statement was prepared on 7 May 2020. It was last updated on 30 August 2022.</p>
+    <p>This statement was prepared on 7 May 2020. It was last updated on 11 October 2024.</p>
 
     </article>
 % }
