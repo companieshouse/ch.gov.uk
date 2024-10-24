@@ -100,6 +100,7 @@
 </article><!-- search-container -->
 
 % if $pager.show_pager {
+    <div class="search-meta" id="search-meta">
         <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-2 govuk-pagination" aria-label="Pagination">
             % if ($pager.previous_page) {
                 <div class="govuk-pagination__prev">
@@ -113,21 +114,21 @@
                     </a>
                 </div>
             % }
+
             <ul class="govuk-pagination__list">
             % for $pager.pages_in_set -> $page {
-                    % if $page <= $pager.page_limit {
-                        % if $pager.current_page == $page {
-                            <li class="govuk-pagination__item govuk-pagination__item--current">
-                            <a id="page-<% $page %>" class="govuk-link govuk-pagination__link" href="<% $c.url_with.query([ page => $page ]) %>"><% $page %></a>
-                            </li>
-                        % } else {
-                            <li class="govuk-pagination__item">
-                                <a id="page-<% $page %>" class="govuk-link govuk-pagination__link" href="<% $c.url_with.query([ page => $page ]) %>">
-                                <span class="govuk-visually-hidden">Page </span><% $page %><span class="govuk-visually-hidden"> of <% $pager.total_pages %></span></a>
-                            </li>
-                        % }
-                    % }
-                </li>
+                % if $page <= $pager.page_limit {
+                    <li class="govuk-pagination__item <% if $pager.current_page == $page { %> govuk-pagination__item--current <% } %> ">
+                        <a
+                            class="govuk-link govuk-pagination__link"
+                            href="<% $c.url_with.query([ page => $page ]) %>"
+                            aria-label="Page <% $page %>"
+                            % if $pager.current_page == $page {
+                                aria-current="page"
+                            % }
+                        ><% $page %></a>
+                    </li>
+                % }
             % }
             </ul>
             % if ($pager.current_page < $pager.page_limit && $pager.next_page) {
@@ -152,6 +153,7 @@
             % }
             found
         </p>
+    </div><!-- ends search-meta -->
 % }
     </div><!-- column-end -->
 % }
