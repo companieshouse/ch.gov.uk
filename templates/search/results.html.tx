@@ -118,7 +118,7 @@
             <ul class="govuk-pagination__list">
             % for $pager.pages_in_set -> $page {
                 % if $page <= $pager.page_limit {
-                    <li class="govuk-pagination__item <% if $pager.current_page == $page { %> govuk-pagination__item--current <% } %> ">
+                    <li class="govuk-pagination__item govuk-!-display-block <% if $pager.current_page == $page { %> govuk-pagination__item--current <% } %> ">
                         <a
                             class="govuk-link govuk-pagination__link"
                             href="<% $c.url_with.query([ page => $page ]) %>"
