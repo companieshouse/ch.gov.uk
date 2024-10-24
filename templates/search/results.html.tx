@@ -101,36 +101,49 @@
 
 % if $pager.show_pager {
     <div class="search-meta" id="search-meta">
-        <ul class="pager" id="pager">
+        <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-2 govuk-pagination" aria-label="Pagination">
             % if ($pager.previous_page) {
-                <li>
-                    <a class="page govuk-link govuk-pagination__link" id="previous-page" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>">
-                        Previous
+                <div class="govuk-pagination__prev">
+                    <a class="govuk-link govuk-pagination__link" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>" rel="prev">
+                    <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                        <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
+                    </svg>
+                        <span class="govuk-pagination__link-title">
+                            Previous<span class="govuk-visually-hidden"> page</span>
+                        </span>
                     </a>
-                </li>
+                </div>
             % }
+
+            <ul class="govuk-pagination__list">
             % for $pager.pages_in_set -> $page {
-                <li>
-                    % if $page <= $pager.page_limit {
-                        % if $pager.current_page == $page {
-                            <span class="govuk-visually-hidden">Page </span>
-                            <span id="page-<% $page %>" class="page"><% $page %></span>
-                            <span class="govuk-visually-hidden"> of <% $pager.total_pages %></span>
-                        % } else {
-                            <a id="page-<% $page %>" class="page" href="<% $c.url_with.query([ page => $page ]) %>">
-                            <span class="govuk-visually-hidden">Page </span><% $page %><span class="govuk-visually-hidden"> of <% $pager.total_pages %></span></a>
-                        % }
-                    % }
-                </li>
+                % if $page <= $pager.page_limit {
+                    <li class="govuk-pagination__item <% if $pager.current_page == $page { %> govuk-pagination__item--current <% } %> ">
+                        <a
+                            class="govuk-link govuk-pagination__link"
+                            href="<% $c.url_with.query([ page => $page ]) %>"
+                            aria-label="Page <% $page %>"
+                            % if $pager.current_page == $page {
+                                aria-current="page"
+                            % }
+                        ><% $page %></a>
+                    </li>
+                % }
             % }
+            </ul>
             % if ($pager.current_page < $pager.page_limit && $pager.next_page) {
-                <li>
-                    <a class="page govuk-link govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>">
-                        Next
+                <div class="govuk-pagination__next">
+                    <a class="govuk-link govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>" rel="next">
+                        <span class="govuk-pagination__link-title">
+                          Next<span class="govuk-visually-hidden"> page</span>
+                        </span>
+                        <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                            <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+                        </svg>
                     </a>
-                </li>
+                </div>
             % }
-        </ul>
+        </nav>
         <p>
             <% $c.format_number($total_hits) %>
             % if ($pager.total_entries==1) {
