@@ -97,7 +97,7 @@
     </table>
 
     % if $company_filing_history.total_count > $entries_per_page {
-        <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-2 govuk-pagination" aria-label="Pagination">
+        <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-0 govuk-pagination" aria-label="Pagination">
             % if ($previous_page) {
                 <div class="govuk-pagination__prev">
                     <a class="govuk-link govuk-pagination__link" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>" rel="prev">
