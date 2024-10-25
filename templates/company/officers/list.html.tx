@@ -286,7 +286,7 @@
             <ul class="govuk-pagination__list">
             % for $paging.page_set -> $page {
             <li class="govuk-pagination__item govuk-!-display-block <% if $paging.current_page_number == $page { %> govuk-pagination__item--current <% } %> ">
-                    <a class="govuk-link govuk-pagination__link" href="<% $c.url_for %>?page=<% $page %>">
+                    <a class="govuk-link govuk-pagination__link" href="<% $c.url_for %>?page=<% $page %>"
                         aria-label="Page <% $page %>"
                         % if $paging.current_page_number == $page {
                                 aria-current="page"
