@@ -7,19 +7,23 @@
                 <h1 class="heading-xlarge" id="page-content">Register of disqualifications</h1>
             </header>
 
-            <ul class="pager pager-a-z" id="alphabetical-pager">
+        <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-0 govuk-pagination" aria-label="Pagination">
+            <ul class="govuk-pagination__list govuk-section-break govuk-section-break--l govuk-section-break--visible" id="alphabetical-pager">
                 % for $alphabet -> $letter {
-                    % if $active_letter == $letter {
-                        <li class="active">
-                            <a class="govuk-link" href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
-                        </li>
-                    % } else {
-                        <li class="inactive">
-                            <a class="govuk-link" href="/register-of-disqualifications/<%= $letter %>" class="page"><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %></a>
-                        </li>
-                    % }
+                    <li class="govuk-pagination__item govuk-!-display-block <% if $active_letter == $letter { %> govuk-pagination__item--current <% } %>">
+                        <a 
+                            class="govuk-link govuk-pagination__link" 
+                            href="/register-of-disqualifications/<%= $letter %>" 
+                            aria-label="Page <% $letter %>" 
+                            % if $active_letter == $letter {
+                                aria-current="letter"
+                            % }
+                            ><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %>
+                        </a>
+                    </li>
                 % }
             </ul>
+        </nav>
 
             % if $disqualifications.total_results > 0 {
                 <table class="full-width-table">
