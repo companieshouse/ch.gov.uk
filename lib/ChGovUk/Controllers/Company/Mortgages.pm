@@ -314,9 +314,9 @@ sub _get_image_location {
                    return $callback->($mortgage_data);
              },
                failure => sub {
-                   my ( $api, $error ) = @_;
+                   my ( $api, $tx ) = @_;
 
-                   error "Error retrieving company filing for %s: %s", $self->stash('company_number'), $error;
+                   error "Failure retrieving company filing for %s: %s", $self->stash('company_number'), $tx->error->{message};
                    return $callback->($mortgage_data);
                },
              )->execute;

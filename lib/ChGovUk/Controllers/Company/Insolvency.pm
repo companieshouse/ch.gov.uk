@@ -42,10 +42,10 @@ sub view {
             $self->render;
         },
         failure => sub {
-            my ( $api, $error ) = @_;
+            my ( $api, $tx ) = @_;
 
-            error "Error retrieving company insolvency for %s: %s",
-              $self->stash('company_number'), $error;
+            error "Failure retrieving company insolvency for %s: %s",
+              $self->stash('company_number'), $tx->error->{message};
             $self->render_exception("Error retrieving company: $error");
         }
       )->execute;

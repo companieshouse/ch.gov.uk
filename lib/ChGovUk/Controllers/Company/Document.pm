@@ -37,9 +37,10 @@ sub document {
                     my ($api, $tx) = @_;
 
                     $delay->emit('error', sprintf(
-                        'Failure fetching filing history item for company_number [%s] filing_history_id [%s]',
+                        'Failure fetching filing history item for company_number [%s] filing_history_id [%s] - %s',
                         $self->stash->{company_number},
                         $self->stash->{filing_history_id},
+                        $tx->error->{message}
                     ));
                 },
                 error => sub {
