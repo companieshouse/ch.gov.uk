@@ -3,7 +3,7 @@
   "name": "ch.gov.uk",
   "description": "CHS Core Web service",
   "owned_by": "Apollo",
-  "calls_via": "Eric",
+  "calls_via": "eric",
   "git_repo": "https://github.com/companieshouse/ch.gov.uk",
   "specification": "",
   "public": "true",
