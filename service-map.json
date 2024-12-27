@@ -2,7 +2,7 @@
   "type": "Service",
   "name": "ch.gov.uk",
   "description": "CHS Core Web service",
-  "owned_by": "TO BE ADDED",
+  "owned_by": "Apollo",
   "calls_via": "Eric",
   "git_repo": "https://github.com/companieshouse/ch.gov.uk",
   "specification": "",
@@ -11,6 +11,17 @@
   "language": "Perl",
   "integration_outgoing": [
     "cdn.ch.gov.uk,INTEGRATES_WITH",
-    "eric,INTEGRATES_WITH"
+    "eric,INTEGRATES_WITH",
+    "GETS_DATA_FROM","company-profile-api","CALLS_API",
+    "GETS_DATA_FROM","insolvency-api","CALLS_API",
+    "GETS_DATA_FROM","company-exemptions-data-api","CALLS_API",
+    "GETS_DATA_FROM","psc-data-api","CALLS_API",
+    "GETS_DATA_FROM","psc-statement-data-api","CALLS_API",
+    "GETS_DATA_FROM","charges-data-api","CALLS_API",
+    "GETS_DATA_FROM","company-appointments.api.ch.gov.uk","CALLS_API",
+    "GETS_DATA_FROM","filing-history-data-api","CALLS_API",
+    "GETS_DATA_FROM","registers-data-api","CALLS_API",
+    "GETS_DATA_FROM","disqualified-officers-data-api","CALLS_API",
+    "GETS_DATA_FROM","api.ch.gov.uk","CALLS_API"
   ]
 }
