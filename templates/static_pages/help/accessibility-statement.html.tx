@@ -42,7 +42,7 @@
     <p>We know some parts of this service aren’t fully accessible:</p>
 
     <ul class="list-bullet">
-        <li>some PDF documents are not accessible in a few ways including missing text alternatives and missing document structure</li>
+        <li>some documents are not accessible in a few ways including missing text alternatives and missing document structure</li>
     </ul>
 
     <ul class="list-bullet">
@@ -92,7 +92,7 @@
         PDFs and other documents
     </h2>
 
-    <p>Many of our PDFs don’t meet accessibility standards - for example, they may not be structured so they’re accessible to a screen reader. This doesn’t meet WCAG 2.2 success criterion 4.1.2 (name, role value). We are currently fixing these PDFs.</p>
+    <p>Many of our documents don’t meet accessibility standards - for example, they may not be structured so they’re accessible to a screen reader. This doesn’t meet WCAG 2.2 success criterion 4.1.2 (name, role value). We are currently fixing these documents.</p>
 
     <h2 class="heading-medium">
         Pagination links
@@ -139,7 +139,7 @@
     <br>
     <p><a class="govuk-link" href="https://companieshouse.blog.gov.uk/category/user-research/">Read our blogs about usability</a>
           to find out more about our user research work.</p>
-    <p>This statement was prepared on 7 May 2020. It was last updated on 11 October 2024.</p>
+    <p>This statement was prepared on 7 May 2020. It was last updated on 22 January 2025.</p>
 
     </article>
 % }
