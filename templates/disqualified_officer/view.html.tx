@@ -76,12 +76,14 @@
                     <dl class="text">
                         <dt>Reason</dt>
                         % if $disqualification.reason.section {
-                            <dd class="data"><% $c.disqualified_officer_description_lookup('act', $disqualification.reason.act) ~ ' (Section ' ~ $disqualification.reason.section ~ '): ' ~ $c.disqualified_officer_description_lookup('description_identifier', $disqualification.reason.description_identifier) %></dd>
+                            % if ( $disqualification.reason.section == "16A" ) {
+                                <dd class="data"><% $c.disqualified_officer_description_lookup('act', $disqualification.reason.act) ~ ' (Regulation ' ~ $disqualification.reason.section ~ '): ' ~ $c.disqualified_officer_description_lookup('description_identifier', $disqualification.reason.description_identifier) %></dd>
+                            % } else {
+                                <dd class="data"><% $c.disqualified_officer_description_lookup('act', $disqualification.reason.act) ~ ' (Section ' ~ $disqualification.reason.section ~ '): ' ~ $c.disqualified_officer_description_lookup('description_identifier', $disqualification.reason.description_identifier) %></dd>
+                            % }
                         % } else if $disqualification.reason.article {
                             <dd class="data"><% $c.disqualified_officer_description_lookup('act', $disqualification.reason.act) ~ ' (Article ' ~ $disqualification.reason.article ~ '): ' ~ $c.disqualified_officer_description_lookup('description_identifier', $disqualification.reason.description_identifier) %></dd>
-                         % } else if $disqualification.reason.regulation {
-                            <dd class="data"><% $c.disqualified_officer_description_lookup('act', $disqualification.reason.act) ~ ' (Regulation ' ~ $disqualification.reason.regulation ~ '): ' ~ $c.disqualified_officer_description_lookup('description_identifier', $disqualification.reason.description_identifier) %></dd>
-                        % }
+                         % }
                     </dl>
                 % }
                 % if $disqualification.last_variation {
