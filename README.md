@@ -60,7 +60,7 @@ The default configuration can be overridden by either exporting environment vari
 Docker support
 -------------
 
-Pull image from private CH registry by running `docker pull 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/ch.gov.uk:latest` command or run the following steps to build image locally:
+Pull image from private CH registry by running `docker pull 169942020521.dkr.ecr.eu-west-2.amazonaws.com/local/ch.gov.uk:latest` command or run the following steps to build image locally:
 
 1. `make` (only once to clone submodules and pull dependencies)
-2. `DOCKER_BUILDKIT=0 docker build -t 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/ch.gov.uk:latest .`
+2. `DOCKER_BUILDKIT=0 docker build -t 169942020521.dkr.ecr.eu-west-2.amazonaws.com/local/ch.gov.uk:latest .`
