@@ -39,7 +39,7 @@ sub document {
 
                     if ($code == 404) {
                         $delay->emit('not_found', sprintf(
-                            'No document_metadata_uri found for company_number [%s] filing_history_id [%s]',
+                            'Filing history item was not found for company_number [%s] filing_history_id [%s]',
                             $self->stash->{company_number},
                             $self->stash->{filing_history_id}
                         ));
@@ -135,9 +135,9 @@ sub document {
     });
 
     $delay->on(not_found => sub {
-        my ($delay, $uri) = @_;
+        my ($delay, $message) = @_;
 
-        info "[%s]: not found", $uri [DOCUMENT];
+        info "[%s]: not found", $message [DOCUMENT];
         $self->reply->not_found;
     });
 
