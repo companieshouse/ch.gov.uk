@@ -38,7 +38,11 @@ sub document {
                     my $code = $tx->error->{code} // 0;
 
                     if ($code == 404) {
-                        $delay->emit('not_found', $document_metadata_uri);
+                        $delay->emit('not_found', sprintf(
+                            'No document_metadata_uri found for company_number [%s] filing_history_id [%s]',
+                            $self->stash->{company_number},
+                            $self->stash->{filing_history_id}
+                        ));
                     }
                     else {
                         $delay->emit('error', sprintf(
@@ -66,7 +70,7 @@ sub document {
                         $next->($document_metadata_uri);
                     }
                     else {
-                        $delay->emit('not_found', $document_metadata_uri);
+                        $delay->emit('not_found', 'document_metadata not found in JSON');
                     }
                 },
             )->execute;
