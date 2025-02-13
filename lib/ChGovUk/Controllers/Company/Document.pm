@@ -35,13 +35,23 @@ sub document {
             ->get->on(
                 failure => sub {
                     my ($api, $tx) = @_;
+                    my $code = $tx->error->{code} // 0;
 
-                    $delay->emit('error', sprintf(
-                        'Failure fetching filing history item for company_number [%s] filing_history_id [%s] - %s',
-                        $self->stash->{company_number},
-                        $self->stash->{filing_history_id},
-                        $tx->error->{message}
-                    ));
+                    if ($code == 404) {
+                        $delay->emit('not_found', sprintf(
+                            'Filing history item was not found for company_number [%s] filing_history_id [%s]',
+                            $self->stash->{company_number},
+                            $self->stash->{filing_history_id}
+                        ));
+                    }
+                    else {
+                        $delay->emit('error', sprintf(
+                            'Failure fetching filing history item for company_number [%s] filing_history_id [%s] - %s',
+                            $self->stash->{company_number},
+                            $self->stash->{filing_history_id},
+                            $tx->error->{message}
+                        ));
+                    }
                 },
                 error => sub {
                     my ($api, $err) = @_;
@@ -60,7 +70,7 @@ sub document {
                         $next->($document_metadata_uri);
                     }
                     else {
-                        $delay->emit('error', 'document_metadata not found in JSON');
+                        $delay->emit('not_found', 'document_metadata not found in JSON');
                     }
                 },
             )->execute;
@@ -125,9 +135,9 @@ sub document {
     });
 
     $delay->on(not_found => sub {
-        my ($delay, $uri) = @_;
+        my ($delay, $message) = @_;
 
-        info "[%s]: not found", $uri [DOCUMENT];
+        info "[%s]: not found", $message [DOCUMENT];
         $self->reply->not_found;
     });
 
