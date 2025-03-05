@@ -1,0 +1,7 @@
+environment = "live"
+aws_profile = "live-eu-west-2"
+
+# service configs
+use_set_environment_files = true
+desired_task_count = 16 # use multi instance in live
+max_task_count = 32 # allow higher count in live
