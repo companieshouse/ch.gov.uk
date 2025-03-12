@@ -7,7 +7,7 @@ PERL_DEPS_PACKAGE    ?= $(SERVICE_NAME)-deps-$(PERL_DEPS_VERSION).zip
 PERL_DEPS_URL        ?= $(PERL_DEPS_SERVER_URL)/$(PERL_DEPS_PACKAGE)
 
 PERL_DEPS_ECS_SERVER_URL ?= s3://shared-services.eu-west-2.releases.ch.gov.uk/$(SERVICE_NAME)-deps-ecs
-PERL_DEPS_ECS_PACKAGE    ?= $(SERVICE_NAME)-deps-ecs-$(PERL_DEPS_VERSION).zip
+PERL_DEPS_ECS_PACKAGE    ?= $(SERVICE_NAME)-deps-ecs-1.0.0.zip # Temporary version override
 PERL_DEPS_ECS_URL        ?= $(PERL_DEPS_ECS_SERVER_URL)/$(PERL_DEPS_PACKAGE)
 
 LOCAL           ?= ./local
