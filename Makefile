@@ -1,9 +1,14 @@
 SERVICE_NAME         ?= ch.gov.uk
 
-PERL_DEPS_SERVER_URL ?= s3://release.ch.gov.uk/$(SERVICE_NAME)-deps
 PERL_DEPS_VERSION    ?= 1.1.13
+
+PERL_DEPS_SERVER_URL ?= s3://release.ch.gov.uk/$(SERVICE_NAME)-deps
 PERL_DEPS_PACKAGE    ?= $(SERVICE_NAME)-deps-$(PERL_DEPS_VERSION).zip
 PERL_DEPS_URL        ?= $(PERL_DEPS_SERVER_URL)/$(PERL_DEPS_PACKAGE)
+
+PERL_DEPS_ECS_SERVER_URL ?= s3://shared-services.eu-west-2.releases.ch.gov.uk/$(SERVICE_NAME)-deps-ecs
+PERL_DEPS_ECS_PACKAGE    ?= $(SERVICE_NAME)-deps-ecs-$(PERL_DEPS_VERSION).zip
+PERL_DEPS_ECS_URL        ?= $(PERL_DEPS_ECS_SERVER_URL)/$(PERL_DEPS_PACKAGE)
 
 LOCAL           ?= ./local
 
@@ -25,6 +30,10 @@ submodules: api-enumerations/.git
 api-enumerations/.git:
 	git submodule init
 	git submodule update
+
+deps-ecs:
+	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_ECS_URL) . && unzip $(PERL_DEPS_ECS_PACKAGE) -d $(CURDIR)/local; }
+	rm -f $(PERL_DEPS_ECS_PACKAGE)
 
 deps:
 	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_URL) . && unzip $(PERL_DEPS_PACKAGE) -d $(CURDIR)/local; }
