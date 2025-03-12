@@ -52,6 +52,8 @@ test: test-unit test-integration
 
 build: submodules deps
 
+build-ecs: submodules deps-ecs
+
 package:
 ifndef version
 	$(error No version given. Aborting)
