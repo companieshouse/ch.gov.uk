@@ -32,10 +32,30 @@ variable "desired_task_count" {
   description = "The desired ECS task count for this service"
   default = 1 # defaulted low for dev environments, override for production
 }
+variable "min_task_count" {
+  type        = number
+  description = "The minimum number of tasks for this service."
+  default     = 1
+}
 variable "max_task_count" {
   type        = number
   description = "The maximum number of tasks for this service."
-  default     = 3
+  default     = 3 # defaulted low for dev environments, override for production
+}
+variable "desired_task_count_search" {
+  type = number
+  description = "The desired ECS task count for the search specific service."
+  default = 1 # defaulted low for dev environments, override for production
+}
+variable "min_task_count_search" {
+  type        = number
+  description = "The minimum number of tasks for the search specific service."
+  default     = 1
+}
+variable "max_task_count_search" {
+  type        = number
+  description = "The maximum number of tasks for the search specific service."
+  default     = 3 # defaulted low for dev environments, override for production
 }
 variable "required_cpus" {
   type = number
@@ -87,6 +107,20 @@ variable "cloudwatch_alarms_enabled" {
   default     = true
 }
 
+# ----------------------------------------------------------------------
+# ALB listener options
+# ----------------------------------------------------------------------
+variable "enable_listener" {
+  description = "Whether or not to create the default service listener rules."
+  type        = bool
+  default     = false
+}
+variable "enable_listener_search" {
+  description = "Whether or not to create the search service listener rules."
+  type        = bool
+  default     = false
+}
+
 # ------------------------------------------------------------------------------
 # Service environment variable configs
 # ------------------------------------------------------------------------------
@@ -113,3 +147,19 @@ variable "chgovuk_version" {
   description = "The version of the ch.gov.uk container to run."
 }
 
+variable "eric_cpus" {
+  type        = number
+  description = "The required cpu resource for eric. 1024 here is 1 vCPU"
+  default     = 256
+}
+
+variable "eric_memory" {
+  type        = number
+  description = "The required memory for eric"
+  default     = 512
+}
+
+variable "eric_version" {
+  type        = string
+  description = "The version of the eric container to run."
+}

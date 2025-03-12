@@ -7,4 +7,4 @@ APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PORT=${PORT:=10000}
 
 export PERL5LIB="${APP_DIR}/local/lib/perl5"
-exec plenv exec perl "${APP_DIR}/script/start_app" daemon -l "http://*:${PORT}"
+exec perlbrew exec perl "${APP_DIR}/script/start_app" daemon -l "http://*:${PORT}"

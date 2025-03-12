@@ -4,3 +4,7 @@ aws_profile = "development-eu-west-2"
 # service configs
 use_set_environment_files = true
 log_level = "debug"
+
+# Listener options
+enable_listener = true
+enable_listener_search = false
