@@ -74,6 +74,26 @@ endif
 	cd $(tmpdir); zip -r ../$(SERVICE_NAME)-$(version).zip *
 	rm -rf $(tmpdir)
 
+package-ecs:
+ifndef version
+	$(error No version given. Aborting)
+endif
+	$(info Packaging ECS version: $(version))
+	$(eval tmpdir:=$(shell mktemp -d build-XXXXXXXXXX))
+	cp -r $(LOCAL) $(tmpdir)
+	cp -r ./lib $(tmpdir)
+	cp -r ./script $(tmpdir)
+	cp -r ./templates $(tmpdir)
+	cp -r ./api-enumerations $(tmpdir)
+	cp -r ./t $(tmpdir)
+	cp ./appconfig.yml $(tmpdir)
+	cp ./routes.yaml $(tmpdir)
+	cp ./errors.yml $(tmpdir)
+	cp ./log4perl.production.conf $(tmpdir)
+	cp ./start.sh $(tmpdir)
+	cd $(tmpdir); zip -r ../$(SERVICE_NAME)-ecs-$(version).zip *
+	rm -rf $(tmpdir)
+
 dist: build package
 
 docker-build: deps
