@@ -1,7 +1,15 @@
 environment = "live"
 aws_profile = "live-eu-west-2"
 
-# service configs
-use_set_environment_files = true
+# scaling configs
 desired_task_count = 16 # use multi instance in live
+min_task_count = 16 # allow higher count in live
 max_task_count = 32 # allow higher count in live
+
+desired_task_count_search = 16 # use multi instance in live
+min_task_count_search = 16 # allow higher count in live
+max_task_count_search = 32 # allow higher count in live
+
+# Listener options
+#enable_listener = true
+#enable_listener_search = true

@@ -1,11 +1,18 @@
 environment = "staging"
 aws_profile = "staging-eu-west-2"
 
-# service configs
-use_set_environment_files = true
-
-# scaling configs
-desired_task_count = 16 # use multi instance in staging
+# scaling configsdesired_task_count = 16 # use multi instance in staging
+min_task_count = 16 # allow higher count in staging
 max_task_count = 32 # allow higher count in staging
+
+desired_task_count_search = 16 # use multi instance in staging
+min_task_count_search = 16 # allow higher count in staging
+max_task_count_search = 32 # allow higher count in staging
+
 service_scaledown_schedule = "55 19 * * ? *"
 service_scaleup_schedule   = "5 6 * * ? *"
+
+# Listener options
+#enable_listener = true
+#enable_listener_search = true
+
