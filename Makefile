@@ -102,4 +102,4 @@ docker-build: deps
 docker-test: docker-build
 	docker run --env-file test.env $(DOCKER_IMAGE_TAG) plenv exec perl $(PROVE_CMD) $(PROVE_ARGS) t/unit
 
-.PHONY: all build clean dist package test test-unit test-integration deps docker-build docker-test
+.PHONY: all build build-ecs clean dist package package-ecs test test-unit test-integration deps deps-ecs docker-build docker-test
