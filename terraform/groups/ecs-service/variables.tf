@@ -57,6 +57,21 @@ variable "max_task_count_search" {
   description = "The maximum number of tasks for the search specific service."
   default     = 3 # defaulted low for dev environments, override for production
 }
+variable "desired_task_count_officers" {
+  type = number
+  description = "The desired ECS task count for the officers specific service."
+  default = 1 # defaulted low for dev environments, override for production
+}
+variable "min_task_count_officers" {
+  type        = number
+  description = "The minimum number of tasks for the officers specific service."
+  default     = 1
+}
+variable "max_task_count_officers" {
+  type        = number
+  description = "The maximum number of tasks for the officers specific service."
+  default     = 3 # defaulted low for dev environments, override for production
+}
 variable "required_cpus" {
   type = number
   description = "The required cpu resource for this service. 1024 here is 1 vCPU"
@@ -65,7 +80,7 @@ variable "required_cpus" {
 variable "required_memory" {
   type = number
   description = "The required memory for this service"
-  default = 512 # defaulted low for node service in dev environments, override for production
+  default = 512 # defaulted low for perl service in dev environments, override for production
 }
 variable "use_fargate" {
   type        = bool
@@ -117,6 +132,11 @@ variable "enable_listener" {
 }
 variable "enable_listener_search" {
   description = "Whether or not to create the search service listener rules."
+  type        = bool
+  default     = false
+}
+variable "enable_listener_officers" {
+  description = "Whether or not to create the officers service listener rules."
   type        = bool
   default     = false
 }

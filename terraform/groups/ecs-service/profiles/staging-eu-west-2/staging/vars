@@ -1,18 +1,30 @@
 environment = "staging"
 aws_profile = "staging-eu-west-2"
 
-# scaling configsdesired_task_count = 16 # use multi instance in staging
-min_task_count = 16 # allow higher count in staging
-max_task_count = 32 # allow higher count in staging
+# instance allocation
+required_cpus = 512
+required_memory = 1024
+eric_cpus = 512
+eric_memory = 1024
 
-desired_task_count_search = 16 # use multi instance in staging
-min_task_count_search = 16 # allow higher count in staging
-max_task_count_search = 32 # allow higher count in staging
+# scaling configs default
+#enable_listener = true
+#desired_task_count = 16
+#min_task_count = 16
+#max_task_count = 32
 
+# scaling configs search
+#enable_listener_search = true
+#desired_task_count_search = 16
+#min_task_count_search = 16
+#max_task_count_search = 32
+
+# scaling configs officers
+#enable_listener_officers = true
+#desired_task_count_officers = 16
+#min_task_count_officers = 16
+#max_task_count_officers = 32
+
+# staging shutdown outside of office hours
 service_scaledown_schedule = "55 19 * * ? *"
 service_scaleup_schedule   = "5 6 * * ? *"
-
-# Listener options
-#enable_listener = true
-#enable_listener_search = true
-
