@@ -7,7 +7,7 @@ locals {
   service_name_search   = "ch-gov-uk-search"
   service_name_officers = "ch-gov-uk-officers"
   container_port        = "10000"
-  eric_port             = "10000"
+  eric_port             = "10001"
   docker_repo           = "ch.gov.uk"
   kms_alias             = "alias/${var.aws_profile}/environment-services-kms"
 
