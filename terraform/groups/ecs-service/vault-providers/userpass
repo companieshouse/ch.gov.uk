@@ -1,11 +1,11 @@
 variable "hashicorp_vault_username" {
   description = "The username used when retrieving configuration from Hashicorp Vault"
-  type = string
+  type        = string
 }
 
 variable "hashicorp_vault_password" {
   description = "The password used when retrieving configuration from Hashicorp Vault"
-  type = string
+  type        = string
 }
 
 provider "vault" {

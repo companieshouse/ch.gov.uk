@@ -30,9 +30,9 @@ variable "docker_registry" {
 # Service performance and scaling configs
 # ------------------------------------------------------------------------------
 variable "desired_task_count" {
-  default = 1 # defaulted low for dev environments, override for production
+  default     = 1 # defaulted low for dev environments, override for production
   description = "The desired ECS task count for this service"
-  type = number
+  type        = number
 }
 
 variable "min_task_count" {
@@ -48,9 +48,9 @@ variable "max_task_count" {
 }
 
 variable "desired_task_count_search" {
-  default = 1 # defaulted low for dev environments, override for production
+  default     = 1 # defaulted low for dev environments, override for production
   description = "The desired ECS task count for the search specific service."
-  type = number
+  type        = number
 }
 
 variable "min_task_count_search" {
@@ -66,9 +66,9 @@ variable "max_task_count_search" {
 }
 
 variable "desired_task_count_officers" {
-  default = 1 # defaulted low for dev environments, override for production
+  default     = 1 # defaulted low for dev environments, override for production
   description = "The desired ECS task count for the officers specific service."
-  type = number
+  type        = number
 }
 
 variable "min_task_count_officers" {
@@ -84,15 +84,15 @@ variable "max_task_count_officers" {
 }
 
 variable "required_cpus" {
-  default = 256 # defaulted low for dev environments, override for production
+  default     = 256 # defaulted low for dev environments, override for production
   description = "The required cpu resource for this service. 1024 here is 1 vCPU"
-  type = number
+  type        = number
 }
 
 variable "required_memory" {
-  default = 512 # defaulted low for perl service in dev environments, override for production
+  default     = 512 # defaulted low for perl service in dev environments, override for production
   description = "The required memory for this service"
-  type = number
+  type        = number
 }
 
 variable "use_fargate" {
