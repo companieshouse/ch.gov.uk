@@ -7,6 +7,4 @@ APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PORT=${PORT:=10000}
 
 source /opt/perlbrew/etc/bashrc
-export PERL5LIB="${APP_DIR}/local/lib/perl5"
-#exec perlbrew exec perl "${APP_DIR}/script/start_app" daemon -l "http://*:${PORT}"
-/opt/perlbrew/perls/perl-5.18.2/bin/perl "${APP_DIR}/script/start_app" daemon -l "http://*:${PORT}"
+exec perlbrew exec env PERL5LIB="${APP_DIR}/local/lib/perl5" "${APP_DIR}/script/start_app" daemon -l "http://*:${PORT}"
