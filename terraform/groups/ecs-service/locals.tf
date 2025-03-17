@@ -16,9 +16,9 @@ locals {
   lb_listener_rule_priority_officers = 3    # officers service gets high usage so use low number for quicker rule evaluation
 
   # lb_listener_paths                  = ["*"] # TODO double check for any other services left in mesos this would take traffic away from!!!!!
-  lb_listener_paths          = ["/customer-feedback"] # TODO temp just test with a single route thats not heavily used
-  lb_listener_paths_search   = ["/search*"]
-  lb_listener_paths_officers = ["/company/*/officers*", "/officers*"] # handles company officers and personal appointments
+  lb_listener_paths          = ["/DISABLED-customer-feedback"]        # Remove 'DISABLED-' prefix to enable
+  lb_listener_paths_search   = ["/DISABLED-search*"]                  # Remove 'DISABLED-' prefix to enable
+  lb_listener_paths_officers = ["/company/*/officers*", "/officers*"] # Handle company officers and personal appointments
 
   healthcheck_path           = "/healthcheck"
   healthcheck_matcher        = "200"
