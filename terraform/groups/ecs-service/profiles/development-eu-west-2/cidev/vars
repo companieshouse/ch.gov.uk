@@ -1,0 +1,7 @@
+environment = "cidev"
+aws_profile = "development-eu-west-2"
+
+# Listener options
+enable_listener = true
+enable_listener_search = true
+enable_listener_officers = true
