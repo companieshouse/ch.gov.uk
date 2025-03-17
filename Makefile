@@ -31,13 +31,13 @@ api-enumerations/.git:
 	git submodule init
 	git submodule update
 
-deps-ecs:
-	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_ECS_URL) . && unzip $(PERL_DEPS_ECS_PACKAGE) -d $(CURDIR)/local; }
-	rm -f $(PERL_DEPS_ECS_PACKAGE)
-
 deps:
 	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_URL) . && unzip $(PERL_DEPS_PACKAGE) -d $(CURDIR)/local; }
 	rm -f $(PERL_DEPS_PACKAGE)
+
+deps-ecs:
+	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_ECS_URL) . && unzip $(PERL_DEPS_ECS_PACKAGE) -d $(CURDIR)/local; }
+	rm -f $(PERL_DEPS_ECS_PACKAGE)
 
 clean:
 	rm -rf $(LOCAL)
