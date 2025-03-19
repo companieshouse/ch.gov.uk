@@ -76,7 +76,8 @@ locals {
 
   task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb}" },
-    { "name" : "PORT", "value" : "${local.container_port}" }
+    { "name" : "PORT", "value" : "${local.container_port}" },
+    { "name" : "SHARED_MEMORY_PERCENTAGE", "value" : "100" }
   ])
 
   eric_environment_filename = "eric-web.env"
