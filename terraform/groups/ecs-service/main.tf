@@ -18,7 +18,7 @@ terraform {
 }
 
 module "ecs-service-search" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.303"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.304"
 
   # Environmental configuration
   environment             = var.environment
@@ -88,7 +88,7 @@ module "ecs-service-search" {
 }
 
 module "ecs-service-officers" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.303"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.304"
 
   # Environmental configuration
   environment             = var.environment
@@ -156,7 +156,7 @@ module "ecs-service-officers" {
 }
 
 module "ecs-service-default" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.303"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.304"
 
   # Environmental configuration
   environment             = var.environment
@@ -223,7 +223,7 @@ module "ecs-service-default" {
 }
 
 module "secrets" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.303"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.304"
 
   name_prefix = "${local.service_name}-${var.environment}"
   environment = var.environment
