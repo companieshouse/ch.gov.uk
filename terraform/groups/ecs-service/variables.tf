@@ -209,3 +209,9 @@ variable "eric_version" {
   description = "The version of the eric container to run."
   type        = string
 }
+
+variable "create_service_dashboard" {
+  default     = true
+  description = "Defines whether a CloudWatch dashboard is created for the ECS service (true) or not (false)"
+  type        = bool
+}

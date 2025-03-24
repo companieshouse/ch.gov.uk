@@ -18,7 +18,7 @@ terraform {
 }
 
 module "ecs-service-search" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.293"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.303"
 
   # Environmental configuration
   environment             = var.environment
@@ -83,10 +83,12 @@ module "ecs-service-search" {
   eric_port                 = local.eric_port
   eric_environment_filename = local.eric_environment_filename
   eric_secrets              = []
+
+  create_service_dashboard = var.create_service_dashboard
 }
 
 module "ecs-service-officers" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.293"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.303"
 
   # Environmental configuration
   environment             = var.environment
@@ -149,10 +151,12 @@ module "ecs-service-officers" {
   eric_port                 = local.eric_port
   eric_environment_filename = local.eric_environment_filename
   eric_secrets              = []
+
+  create_service_dashboard = var.create_service_dashboard
 }
 
 module "ecs-service-default" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.293"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.303"
 
   # Environmental configuration
   environment             = var.environment
@@ -214,10 +218,12 @@ module "ecs-service-default" {
   eric_port                 = local.eric_port
   eric_environment_filename = local.eric_environment_filename
   eric_secrets              = []
+
+  create_service_dashboard = var.create_service_dashboard
 }
 
 module "secrets" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.216"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.303"
 
   name_prefix = "${local.service_name}-${var.environment}"
   environment = var.environment
