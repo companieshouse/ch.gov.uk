@@ -84,7 +84,7 @@ module "ecs-service-search" {
   eric_environment_filename = local.eric_environment_filename
   eric_secrets              = []
 
-  create_service_dashboard = var.create_service_dashboard
+  create_service_dashboard = var.create_service_dashboard_search
 }
 
 module "ecs-service-officers" {
@@ -152,7 +152,7 @@ module "ecs-service-officers" {
   eric_environment_filename = local.eric_environment_filename
   eric_secrets              = []
 
-  create_service_dashboard = var.create_service_dashboard
+  create_service_dashboard = var.create_service_dashboard_officers
 }
 
 module "ecs-service-default" {
