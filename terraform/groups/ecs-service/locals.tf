@@ -17,7 +17,7 @@ locals {
 
   # lb_listener_paths                  = ["*"] # TODO double check for any other services left in mesos this would take traffic away from!!!!!
   lb_listener_paths          = var.enable_listener ? ["*"] : ["/DISABLED-*"]
-  lb_listener_paths_search   = var.enable_listener_search ? ["/search", "/search/disqualified-officers*", "/search/officers*", "/search/companies*"] : ["/DISABLED-search*"]
+  lb_listener_paths_search   = var.enable_listener_search ? ["/search", "/search/*"] : ["/DISABLED-search*"]
   lb_listener_paths_officers = var.enable_listener_officers ? ["/company/*/officers*", "/officers*"] : ["/DISABLED-officers"]
 
   healthcheck_path           = "/healthcheck"
