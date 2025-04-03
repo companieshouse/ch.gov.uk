@@ -15,7 +15,6 @@ locals {
   lb_listener_rule_priority_search   = 2    # search service gets high usage so use low number for quicker rule evaluation (priority 1 already taken)
   lb_listener_rule_priority_officers = 3    # officers service gets high usage so use low number for quicker rule evaluation
 
-  # lb_listener_paths                  = ["*"] # TODO double check for any other services left in mesos this would take traffic away from!!!!!
   lb_listener_paths          = var.enable_listener ? ["*"] : ["/DISABLED-*"]
   lb_listener_paths_search   = var.enable_listener_search ? ["/search", "/search/*"] : ["/DISABLED-search*"]
   lb_listener_paths_officers = var.enable_listener_officers ? ["/company/*/officers*", "/officers*"] : ["/DISABLED-officers"]
