@@ -1,7 +1,7 @@
 environment = "staging"
 aws_profile = "staging-eu-west-2"
 
-# instance allocation
+# default allocation
 required_cpus = 512
 required_memory = 1024
 eric_cpus = 512
@@ -13,11 +13,23 @@ desired_task_count = 16
 min_task_count = 8
 max_task_count = 32
 
+# search allocation
+required_cpus_search = 512
+required_memory_search = 1024
+eric_cpus_search = 512
+eric_memory_search = 1024
+
 # scaling configs search
 enable_listener_search = true
 desired_task_count_search = 16
 min_task_count_search = 8
 max_task_count_search = 32
+
+# officers allocation
+required_cpus_officers = 512
+required_memory_officers = 1024
+eric_cpus_officers = 512
+eric_memory_officers = 1024
 
 # scaling configs officers
 enable_listener_officers = true
