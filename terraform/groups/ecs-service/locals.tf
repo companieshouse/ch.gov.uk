@@ -72,9 +72,22 @@ locals {
   task_secrets = concat(local.global_secret_list, local.service_secret_list, [])
 
   task_required_memory_kb = var.required_memory * 1024
-
-  task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
+  task_environment        = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb}" },
+    { "name" : "PORT", "value" : "${local.container_port}" },
+    { "name" : "SHARED_MEMORY_PERCENTAGE", "value" : "100" }
+  ])
+
+  task_required_memory_kb_officers = var.required_memory_officers * 1024
+  task_environment_officers        = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
+    { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb_officers}" },
+    { "name" : "PORT", "value" : "${local.container_port}" },
+    { "name" : "SHARED_MEMORY_PERCENTAGE", "value" : "100" }
+  ])
+
+  task_required_memory_kb_search = var.required_memory_search * 1024
+  task_environment_search        = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
+    { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb_search}" },
     { "name" : "PORT", "value" : "${local.container_port}" },
     { "name" : "SHARED_MEMORY_PERCENTAGE", "value" : "100" }
   ])

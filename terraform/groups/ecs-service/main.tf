@@ -68,7 +68,7 @@ module "ecs-service-search" {
   cloudwatch_alarms_enabled = var.cloudwatch_alarms_enabled
 
   # Service environment variable and secret configs
-  task_environment          = local.task_environment
+  task_environment          = local.task_environment_search
   task_secrets              = local.task_secrets
   app_environment_filename  = local.app_environment_filename
   use_set_environment_files = local.use_set_environment_files
@@ -138,7 +138,7 @@ module "ecs-service-officers" {
   cloudwatch_alarms_enabled = var.cloudwatch_alarms_enabled
 
   # Service environment variable and secret configs
-  task_environment          = local.task_environment
+  task_environment          = local.task_environment_officers
   task_secrets              = local.task_secrets
   app_environment_filename  = local.app_environment_filename
   use_set_environment_files = local.use_set_environment_files
