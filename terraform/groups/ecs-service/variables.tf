@@ -95,6 +95,30 @@ variable "required_memory" {
   type        = number
 }
 
+variable "required_cpus_officers" {
+  default     = 256 # defaulted low for dev environments, override for production
+  description = "The required cpu resource for the officers service. 1024 here is 1 vCPU"
+  type        = number
+}
+
+variable "required_memory_officers" {
+  default     = 512 # defaulted low for perl service in dev environments, override for production
+  description = "The required memory for the officers service"
+  type        = number
+}
+
+variable "required_cpus_search" {
+  default     = 256 # defaulted low for dev environments, override for production
+  description = "The required cpu resource for the search service. 1024 here is 1 vCPU"
+  type        = number
+}
+
+variable "required_memory_search" {
+  default     = 512 # defaulted low for perl service in dev environments, override for production
+  description = "The required memory for the search service"
+  type        = number
+}
+
 variable "use_fargate" {
   default     = true
   description = "If true, sets the required capabilities for all containers in the task definition to use FARGATE, false uses EC2"
@@ -202,6 +226,30 @@ variable "eric_cpus" {
 variable "eric_memory" {
   default     = 512
   description = "The required memory for eric"
+  type        = number
+}
+
+variable "eric_cpus_officers" {
+  default     = 256
+  description = "The required cpu resource for officer eric. 1024 here is 1 vCPU"
+  type        = number
+}
+
+variable "eric_memory_officers" {
+  default     = 512
+  description = "The required memory for officer eric"
+  type        = number
+}
+
+variable "eric_cpus_search" {
+  default     = 256
+  description = "The required cpu resource for search eric. 1024 here is 1 vCPU"
+  type        = number
+}
+
+variable "eric_memory_search" {
+  default     = 512
+  description = "The required memory for search eric"
   type        = number
 }
 
