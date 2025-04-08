@@ -1,7 +1,7 @@
 Some Local Tests for `MojoX::Security::Session`
 =========
 
-This branch has some info on how to locally test the session ID (which is built by[MojoX::Security::Session](https://github.com/companieshouse/MojoX-Security-Session/blob/f58539273842a00f8a1c9d2ff3e95ba8faaae0ab/lib/MojoX/Security/Session.pm#L193) )
+This branch has some info on how to locally test the session ID (which is built by [MojoX::Security::Session](https://github.com/companieshouse/MojoX-Security-Session/blob/f58539273842a00f8a1c9d2ff3e95ba8faaae0ab/lib/MojoX/Security/Session.pm#L193) )
 
 ## scenario 1 (multiple calls to _generate_sessionID)
 
@@ -12,7 +12,7 @@ build a dedicated image and spin up a container as per [these info](https://gith
 ```
 $ # start a local CHS with an instance of ch.gov.uk
 $ # run a stream of GET
-$ out='session.ids2.log'; \
+$ out='session.ids.log'; \
 iterations=10000; \
 grafana_session='78311d2f13abc3613bac52f192e130a0'; \
 now=$(date +%s);  \
@@ -39,5 +39,4 @@ now=$(date +%s);  \
 
 $ # check if there are duplicates
 $ awk -F '__SID=' '{print $2}' "$out" | awk -F ';' '{print $1}' | sort | uniq -d
-
 ```
