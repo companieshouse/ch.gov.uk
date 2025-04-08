@@ -9,7 +9,7 @@ build a dedicated image and spin up a container as per [these info](https://gith
 
 ## scenario 2 (multiple GET to chs)
 
-```
+``` bash
 $ # start a local CHS with an instance of ch.gov.uk
 $ # run a stream of GET
 $ out='session.ids.log'; \
