@@ -1,66 +1,43 @@
-ch.gov.uk
+Some Local Tests for `MojoX::Security::Session`
 =========
 
-The Companies House [public beta service](https://beta.companieshouse.gov.uk/) core web application.
+This branch has some info on how to locally test the session ID (which is built by[MojoX::Security::Session](https://github.com/companieshouse/MojoX-Security-Session/blob/f58539273842a00f8a1c9d2ff3e95ba8faaae0ab/lib/MojoX/Security/Session.pm#L193) )
 
-Requirements
-------------
+## scenario 1 (multiple calls to _generate_sessionID)
 
-In order to build this service you need:
+build a dedicated image and spin up a container as per [these info](https://github.com/companieshouse/ch.gov.uk/blob/cb7a325845ac74ad4f69aa6a08837c4cbfeeea45/Dockerfile.Session.local#L19-L23)
 
-- GNU Make
-- [GetPAN](https://github.com/ian-kent/gopan/tree/master/getpan) for dependency resolution
-
-In order to run this service you need:
-
-- [Perl](https://www.perl.org/) >=5.18.2
-
-Getting started
----------------
-
-#### Building the service
-
-Clone this repository:
+## scenario 2 (multiple GET to chs)
 
 ```
-$ git clone https://github.com/companieshouse/ch.gov.uk.git
+$ # start a local CHS with an instance of ch.gov.uk
+$ # run a stream of GET
+$ out='session.ids2.log'; \
+iterations=10000; \
+grafana_session='78311d2f13abc3613bac52f192e130a0'; \
+now=$(date +%s);  \
+:> "$out";  \
+(  \
+    for i in $(seq "${iterations}"); do  \
+        printf "request [$i]: " >> "$out";  \
+        curl -s -I 'http://chs.local/' \ \
+            -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:137.0) Gecko/20100101 Firefox/137.0'  \
+            -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'  \
+            -H 'Accept-Language: en-GB,en;q=0.5'  \
+            -H 'Accept-Encoding: gzip, deflate'  \
+            -H 'Referer: http://account.chs.local/'  \
+            -H 'Connection: keep-alive'  \
+            -H "Cookie: grafana_session=78311d2f13abc3613bac52f192e130a0; grafana_session_expiry=${now};'" \
+            -H 'Upgrade-Insecure-Requests: 1'  \
+            -H 'Priority: u=0, i'  \
+            -H 'Pragma: no-cache'  \
+            -H 'Cache-Control: no-cache' | sed -n '/__SID=/p;' >> "$out";  \
+    done;  \
+) &
+
+# the above takes roughly 5 sec per GET
+
+$ # check if there are duplicates
+$ awk -F '__SID=' '{print $2}' "$out" | awk -F ';' '{print $1}' | sort | uniq -d
+
 ```
-
-Initialise the submodule:
-```
-$ git submodule init
-$ git submodule update
-```
-
-Resolve project dependencies by 'building' the service:
-
-```
-$ make build
-```
-
-If a build error is encountered during the 'test' phase, running the following command may fix it:
-
-```
-$ aws s3 cp s3://release.ch.gov.uk/ch.gov.uk-deps/ch.gov.uk-deps-1.1.6.zip . && unzip ch.gov.uk-deps-1.1.6.zip -d <<PATH-TO-DOCKER-CHS-DEVELOPMENT-REPO>>/repositories/ch-gov-uk/local;
-```
-
-#### Running the service
-
-Run the service using the provided script:
-
-```
-$ ./start.sh
-```
-
-Configuration
--------------
-
-The default configuration can be overridden by either exporting environment variables at the command line prior to launching the application or by adding variable exports to `~/.chs_env/ch.gov.uk/env`.
-
-Docker support
--------------
-
-Pull image from private CH registry by running `docker pull 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/ch.gov.uk:latest` command or run the following steps to build image locally:
-
-1. `make` (only once to clone submodules and pull dependencies)
-2. `DOCKER_BUILDKIT=0 docker build -t 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/ch.gov.uk:latest .`
