@@ -1,0 +1,23 @@
+FROM 169942020521.dkr.ecr.eu-west-2.amazonaws.com/local/ch.gov.uk:latest
+
+WORKDIR /app
+
+RUN rm -rf lib
+
+COPY lib /app/lib
+
+COPY lib/Session.pm /app/local/lib/perl5/MojoX/Security/Session.pm
+
+ENV SESSION_ID_COUNT=40000
+
+COPY lib/start.session.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+CMD ["/app/start.sh"]
+
+
+# 1/2  BUILD IMAGE
+# docker buildx build --platform linux/arm64,linux/amd64 -t mojox-security-session:local -f Dockerfile.Session.local .
+
+# 2/2  SPIN UP CONTAINER
+# docker run --rm -e SESSION_ID_COUNT=5 -it mojox-security-session:local
