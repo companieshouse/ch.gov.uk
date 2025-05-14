@@ -37,5 +37,4 @@ desired_task_count_officers = 16
 min_task_count_officers = 16
 max_task_count_officers = 32
 
-service_autoscale_target_value_cpu = 30
 service_autoscale_scale_out_cooldown = 120

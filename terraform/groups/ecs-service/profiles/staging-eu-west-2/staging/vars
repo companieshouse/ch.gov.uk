@@ -37,7 +37,6 @@ desired_task_count_officers = 8
 min_task_count_officers = 8
 max_task_count_officers = 32
 
-service_autoscale_target_value_cpu = 30
 service_autoscale_scale_out_cooldown = 120
 
 # staging shutdown outside of office hours
