@@ -31,7 +31,7 @@
     <link href="//<% $cdn_url %>/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css" rel="stylesheet" />
     <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v3.5.0/images/favicon.ico" type="image/x-icon">
   % } else {
-    <link href="//<% $cdn_url %>stylesheets/govuk-frontend/v5.10.0/govuk-frontend-5.10.0.min.css" rel="stylesheet" />
+    <link href="//<% $cdn_url %>/stylesheets/govuk-frontend/v5.10.0/govuk-frontend-5.10.0.min.css" rel="stylesheet" />
     <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/favicon.ico" type="image/x-icon">
   % }
 
