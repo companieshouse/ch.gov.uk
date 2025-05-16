@@ -151,31 +151,67 @@
           % }
           </a>
         </div>
-        % if !$certified_copies {
-        <div class="govuk-header__content">
-          <a href="/" class="govuk-header__link govuk-header__link--service-name" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
-            Find and update company information
-          </a>
-          % if ! $disable_header_search {
-              <!--<a href="#search" class="search-toggle js-header-toggle">Search</a>-->
-          % }
-        </div>
-        % } else {
-            <a href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
-                Order a certified document
+        % if ! $rebrand {
+          % if !$certified_copies {
+          <div class="govuk-header__content">
+            <a href="/" class="govuk-header__link govuk-header__link--service-name" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
+              Find and update company information
             </a>
+          </div>
+          % } else {
+              <a href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo" class="govuk-header__link govuk-header__link--service-name">
+                  Order a certified document
+              </a>
+          % }
         % }
+
       </div>
     </header>
   % }
 
-  % if $feedback_banner {
-    <div class="govuk-body" id="chs-customer-insights-top">
-    <div class="govuk-width-container">
-      <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
-    </div>
-  </div>
+  % if $rebrand {
+      <div class="govuk-service-navigation"
+        data-module="govuk-service-navigation">
+        <div class="govuk-width-container">
+          <div class="govuk-service-navigation__container">
+            <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+              <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden>
+                Menu
+              </button>
+              <ul class="govuk-service-navigation__list" id="navigation">
+                <li class="govuk-service-navigation__item">
+                  % if !$certified_copies {
+                    <a class="govuk-service-navigation__link" href="/ title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
+                      Find and update company information
+                    </a>
+                  % } else {
+                    <a class="govuk-service-navigation__link" href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo">
+                      Order a certified document
+                    </a>
+                  % }
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
   % }
+
+  % if $feedback_banner {
+    % if ! $rebrand {
+      <div class="govuk-body" id="chs-customer-insights-top">
+        <div class="govuk-width-container">
+          <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
+        </div>
+      </div>
+    % } else {
+      <div class="govuk-body" id="chs-customer-insights-top">
+        <div class="govuk-width-container">
+          <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
+        </div>
+      </div>
+    % }
+% }
 
     <main id="page-container" class="search <% $classes %> govuk-width-container" role="main">
 
