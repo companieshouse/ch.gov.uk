@@ -11,7 +11,7 @@ eric_memory = 512
 enable_listener = false
 desired_task_count = 8
 min_task_count = 8
-max_task_count = 32
+max_task_count = 48
 
 # search allocation
 required_cpus_search = 768
