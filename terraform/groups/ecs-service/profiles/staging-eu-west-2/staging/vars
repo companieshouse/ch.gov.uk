@@ -8,7 +8,7 @@ eric_cpus = 256
 eric_memory = 512
 
 # scaling configs default
-enable_listener = true
+enable_listener = false
 desired_task_count = 8
 min_task_count = 8
 max_task_count = 32
@@ -20,7 +20,7 @@ eric_cpus_search = 256
 eric_memory_search = 512
 
 # scaling configs search
-enable_listener_search = true
+enable_listener_search = false
 desired_task_count_search = 8
 min_task_count_search = 8
 max_task_count_search = 32
@@ -32,7 +32,7 @@ eric_cpus_officers = 256
 eric_memory_officers = 512
 
 # scaling configs officers
-enable_listener_officers = true
+enable_listener_officers = false
 desired_task_count_officers = 8
 min_task_count_officers = 8
 max_task_count_officers = 32
