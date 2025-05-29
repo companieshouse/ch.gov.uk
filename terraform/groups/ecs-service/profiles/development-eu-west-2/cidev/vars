@@ -2,19 +2,19 @@ environment = "cidev"
 aws_profile = "development-eu-west-2"
 
 # scaling configs default
-enable_listener = false
+enable_listener = true
 desired_task_count = 2
 min_task_count = 2
 max_task_count = 6
 
 # scaling configs search
-enable_listener_search = false
+enable_listener_search = true
 desired_task_count_search = 2
 min_task_count_search = 2
 max_task_count_search = 6
 
 # scaling configs officers
-enable_listener_officers = false
+enable_listener_officers = true
 desired_task_count_officers = 2
 min_task_count_officers = 2
 max_task_count_officers = 6
