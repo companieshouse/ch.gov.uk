@@ -138,7 +138,7 @@ variable "service_autoscale_enabled" {
 }
 
 variable "service_autoscale_target_value_cpu" {
-  default     = 25
+  default     = 15
   description = "Target CPU percentage for the ECS Service to autoscale on"
   type        = number
 }
