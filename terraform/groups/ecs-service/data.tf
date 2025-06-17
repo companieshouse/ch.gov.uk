@@ -62,3 +62,43 @@ data "aws_ssm_parameter" "global_secret" {
 data "vault_generic_secret" "shared_s3" {
   path = "aws-accounts/shared-services/s3"
 }
+
+data "aws_ami" "ec2" {
+  name_regex  = var.ec2_ami_name_regex
+  most_recent = true
+  owners      = var.ec2_ami_owners
+}
+
+data "vault_generic_secret" "stack_secrets_default" {
+  count = var.create_ecs_cluster_default ? 1 : 0
+
+  path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_default}"
+}
+
+data "aws_subnets" "stack_application_default" {
+  count = var.create_ecs_cluster_default ? 1 : 0
+
+  filter {
+    name   = "tag:Name"
+    values = [local.stack_application_subnet_pattern_default]
+  }
+  filter {
+    name   = "tag:NetworkType"
+    values = ["private"]
+  }
+}
+
+data "aws_vpc" "stack_vpc_default" {
+  count = var.create_ecs_cluster_default ? 1 : 0
+
+  filter {
+    name   = "tag:Name"
+    values = [local.stack_vpc_name_default]
+  }
+}
+
+data "aws_kms_key" "stack_kms_default" {
+  count = var.create_ecs_cluster_default ? 1 : 0
+
+  key_id = "alias/${var.aws_profile}/${local.stack_kms_key_alias_default}"
+}

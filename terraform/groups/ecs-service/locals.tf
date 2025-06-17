@@ -93,4 +93,35 @@ locals {
   ])
 
   eric_environment_filename = "eric-web.env"
+
+  # ------------------------------------------------------------------------------
+  # ECS cluster locals
+  # ------------------------------------------------------------------------------
+  ec2_ami_id = var.ec2_ami_id == "" ? data.aws_ami.ec2.id : var.ec2_ami_id
+
+  stack_name_default        = local.service_name
+  stack_name_prefix_default = "${local.stack_name_default}-${var.environment}"
+  stack_fullname_default    = "${local.stack_name_default}-stack"
+
+  stack_secrets_default = var.create_ecs_cluster_default ? jsondecode(data.vault_generic_secret.stack_secrets_default[0].data_json) : {}
+
+  stack_application_subnet_pattern_default  = var.create_ecs_cluster_default ? local.stack_secrets_default["application_subnet_pattern"] : ""
+  stack_application_subnet_ids_default      = var.create_ecs_cluster_default ? join(",", data.aws_subnets.stack_application_default[0].ids) : ""
+  stack_kms_key_alias_default               = var.create_ecs_cluster_default ? local.stack_secrets_default["kms_key_alias"] : ""
+  stack_kms_key_id                          = var.create_ecs_cluster_default ? data.aws_kms_key.stack_kms_default[0].id : ""
+  stack_notify_topic_slack_endpoint_default = var.create_ecs_cluster_default ? local.stack_secrets_default["notify_topic_slack_endpoint"] : ""
+  stack_vpc_name_default                    = var.create_ecs_cluster_default ? local.stack_secrets_default["vpc_name"] : ""
+  stack_vpc_id_default                      = var.create_ecs_cluster_default ? data.aws_vpc.stack_vpc_default[0].id : ""
+
+  stack_parameter_store_secrets_default = var.create_ecs_cluster_default ? {
+    "web-oauth2-client-id"     = local.stack_secrets_default["web-oauth2-client-id"],
+    "web-oauth2-client-secret" = local.stack_secrets_default["web-oauth2-client-secret"],
+    "web-oauth2-cookie-secret" = local.stack_secrets_default["web-oauth2-cookie-secret"],
+    "web-oauth2-request-key"   = local.stack_secrets_default["web-oauth2-request-key"]
+  } : {}
+
+  asg_desired_instance_count_default = var.desired_task_count
+  asg_max_instance_count_default     = var.max_task_count * 2
+  asg_min_instance_count_default     = var.min_task_count
+
 }

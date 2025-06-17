@@ -121,7 +121,19 @@ variable "required_memory_search" {
 
 variable "use_fargate" {
   default     = true
-  description = "If true, sets the required capabilities for all containers in the task definition to use FARGATE, false uses EC2"
+  description = "If true, sets the required capabilities for all containers in the default service task definition to use FARGATE, false uses EC2"
+  type        = bool
+}
+
+variable "use_fargate_officers" {
+  default     = true
+  description = "If true, sets the required capabilities for all containers in the Officers service task definition to use FARGATE, false uses EC2"
+  type        = bool
+}
+
+variable "use_fargate_search" {
+  default     = true
+  description = "If true, sets the required capabilities for all containers in the Search service task definition to use FARGATE, false uses EC2"
   type        = bool
 }
 
@@ -274,4 +286,75 @@ variable "create_service_dashboard_search" {
   default     = true
   description = "Defines whether a CloudWatch dashboard is created for the search ECS service (true) or not (false)"
   type        = bool
+}
+
+# ------------------------------------------------------------------------------
+# Common EC2 variables
+# ------------------------------------------------------------------------------
+variable "ec2_ami_id" {
+  default     = ""
+  description = "The AMI id to use when launching instances in the ASG; when set, will be used over the result of an AMI lookup"
+  type        = string
+}
+
+variable "ec2_ami_name_regex" {
+  default     = "^al2023-ami-ecs-hvm-2023.*-kernel-6.1-x86_64"
+  description = "The regex pattern to use to lookup an AMI when ec2_ami_id is empty"
+  type        = string
+}
+
+variable "ec2_ami_owners" {
+  default     = ["amazon"]
+  description = "A list of AWS marketplace AMI owners used to filter the AMI lookup when ec2_ami_id is empty"
+  type        = list(string)
+}
+
+variable "ec2_key_pair_name" {
+  description = "The keypair name to use when deploying EC2 instances"
+  type        = string
+}
+
+# ------------------------------------------------------------------------------
+# Default service EC2 variables
+# ------------------------------------------------------------------------------
+variable "create_ecs_cluster_default" {
+  default     = false
+  description = "Defines whether a dedicated ECS cluster should be created fo rthe default service (true) or not (false)"
+  type        = bool
+}
+
+variable "ec2_instance_type_default" {
+  default     = "t3a.small"
+  description = "The EC2 instance type to use for the default service"
+  type        = string
+}
+
+variable "asg_scaledown_schedule_default" {
+  default     = ""
+  type        = string
+  description = "The schedule to use when scaling down the number of EC2 instances to zero for the default service ASG"
+}
+
+variable "asg_scaleup_schedule_default" {
+  default     = ""
+  type        = string
+  description = "The schedule to use when scaling up the number of EC2 instances to their normal desired level for the default service ASG"
+}
+
+# ------------------------------------------------------------------------------
+# Officers service EC2 variables
+# ------------------------------------------------------------------------------
+variable "ec2_instance_type_officers" {
+  default     = "t3a.small"
+  description = "The EC2 instance type to use for the Officers service"
+  type        = string
+}
+
+# ------------------------------------------------------------------------------
+# Search service EC2 variables
+# ------------------------------------------------------------------------------
+variable "ec2_instance_type_search" {
+  default     = "t3a.small"
+  description = "The EC2 instance type to use for the Search service"
+  type        = string
 }
