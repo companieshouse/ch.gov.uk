@@ -95,12 +95,12 @@ locals {
   eric_environment_filename = "eric-web.env"
 
   # ------------------------------------------------------------------------------
-  # ECS cluster common locals
+  # Common ECS cluster locals
   # ------------------------------------------------------------------------------
   ec2_ami_id = var.ec2_ami_id == "" ? data.aws_ami.ec2.id : var.ec2_ami_id
 
   # ------------------------------------------------------------------------------
-  # ECS cluster default service locals
+  # Default service ECS cluster locals
   # ------------------------------------------------------------------------------
   stack_name_default        = local.service_name
   stack_name_prefix_default = "${local.stack_name_default}-${var.environment}"
