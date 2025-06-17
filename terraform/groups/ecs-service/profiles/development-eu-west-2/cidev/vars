@@ -6,6 +6,7 @@ enable_listener = true
 desired_task_count = 2
 min_task_count = 2
 max_task_count = 6
+use_fargate = true
 
 # scaling configs search
 enable_listener_search = true
@@ -18,3 +19,9 @@ enable_listener_officers = true
 desired_task_count_officers = 2
 min_task_count_officers = 2
 max_task_count_officers = 6
+
+# ------------------------------------------------------------------------------
+# ECS cluster variables
+# ------------------------------------------------------------------------------
+create_ecs_cluster_default = false
+ec2_key_pair_name = "chs-cidev"

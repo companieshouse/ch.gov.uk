@@ -17,6 +17,47 @@ terraform {
   backend "s3" {}
 }
 
+# ------------------------------------------------------------------------------
+# ECS cluster modules
+# ------------------------------------------------------------------------------
+module "ecs_cluster_default" {
+  count  = var.create_ecs_cluster_default ? 1 : 0
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.304"
+
+  aws_profile = var.aws_profile
+  environment = var.environment
+  name_prefix = local.stack_name_prefix_default
+  stack_name  = local.stack_name_default
+  subnet_ids  = local.stack_application_subnet_ids_default
+  vpc_id      = local.stack_vpc_id_default
+
+  asg_desired_instance_count  = local.asg_desired_instance_count_default
+  asg_max_instance_count      = local.asg_max_instance_count_default
+  asg_min_instance_count      = local.asg_min_instance_count_default
+  ec2_image_id                = local.ec2_ami_id
+  ec2_instance_type           = var.ec2_instance_type_default
+  ec2_key_pair_name           = var.ec2_key_pair_name
+  enable_asg_autoscaling      = true
+  scaledown_schedule          = var.asg_scaledown_schedule_default
+  scaleup_schedule            = var.asg_scaleup_schedule_default
+
+  enable_container_insights   = true
+  notify_topic_slack_endpoint = local.stack_notify_topic_slack_endpoint_default
+}
+
+module "cluster_secrets_default" {
+  count  = var.create_ecs_cluster_default ? 1 : 0
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.304"
+
+  environment = var.environment
+  name_prefix = local.stack_name_prefix_default
+  secrets     = local.stack_parameter_store_secrets_default
+  kms_key_id  = local.stack_kms_key_id
+}
+
+# ------------------------------------------------------------------------------
+# ECS service modules
+# ------------------------------------------------------------------------------
 module "ecs-service-search" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.304"
 
