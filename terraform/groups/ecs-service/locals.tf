@@ -117,10 +117,10 @@ locals {
   stack_vpc_id_default                      = var.create_ecs_cluster_default ? data.aws_vpc.stack_vpc_default[0].id : ""
 
   stack_parameter_store_secrets_default = var.create_ecs_cluster_default ? {
-    "web-oauth2-client-id"     = local.stack_secrets_default["web-oauth2-client-id"],
-    "web-oauth2-client-secret" = local.stack_secrets_default["web-oauth2-client-secret"],
-    "web-oauth2-cookie-secret" = local.stack_secrets_default["web-oauth2-cookie-secret"],
-    "web-oauth2-request-key"   = local.stack_secrets_default["web-oauth2-request-key"]
+    "web-oauth2-client-id"     = local.stack_secrets_default["web_oauth2_client_id"],
+    "web-oauth2-client-secret" = local.stack_secrets_default["web_oauth2_client_secret"],
+    "web-oauth2-cookie-secret" = local.stack_secrets_default["web_oauth2_cookie_secret"],
+    "web-oauth2-request-key"   = local.stack_secrets_default["web_oauth2_request_key"]
   } : {}
 
   asg_desired_instance_count_default = var.desired_task_count
