@@ -24,6 +24,13 @@ use_fargate_officers = true
 # ------------------------------------------------------------------------------
 # ECS cluster variables
 # ------------------------------------------------------------------------------
-create_ecs_cluster_default = false
+create_ecs_cluster_default = true
+ec2_instance_type_default = "t3a.micro"
+
 create_ecs_cluster_officers = false
+ec2_instance_type_officers = "t3a.micro"
+
+create_ecs_cluster_search = false
+ec2_instance_type_search = "t3a.micro"
+
 ec2_key_pair_name = "chs-cidev"

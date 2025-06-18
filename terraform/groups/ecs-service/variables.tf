@@ -371,8 +371,26 @@ variable "asg_scaleup_schedule_officers" {
 # ------------------------------------------------------------------------------
 # Search service EC2 variables
 # ------------------------------------------------------------------------------
+variable "create_ecs_cluster_search" {
+  default     = false
+  description = "Defines whether a dedicated ECS cluster should be created for the Search service (true) or not (false)"
+  type        = bool
+}
+
 variable "ec2_instance_type_search" {
   default     = "t3a.small"
   description = "The EC2 instance type to use for the Search service"
   type        = string
+}
+
+variable "asg_scaledown_schedule_search" {
+  default     = ""
+  type        = string
+  description = "The schedule to use when scaling down the number of EC2 instances to zero for the Search service ASG"
+}
+
+variable "asg_scaleup_schedule_search" {
+  default     = ""
+  type        = string
+  description = "The schedule to use when scaling up the number of EC2 instances to their normal desired level for the Search service ASG"
 }

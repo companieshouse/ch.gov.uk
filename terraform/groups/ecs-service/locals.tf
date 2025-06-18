@@ -155,4 +155,31 @@ locals {
   asg_max_instance_count_officers     = var.max_task_count_officers * 2
   asg_min_instance_count_officers     = var.min_task_count_officers
 
+  # ------------------------------------------------------------------------------
+  # Search service ECS cluster locals
+  # ------------------------------------------------------------------------------
+  stack_name_search        = local.service_name_search
+  stack_name_prefix_search = "${local.stack_name_search}-${var.environment}"
+  stack_fullname_search    = "${local.stack_name_search}-stack"
+
+  stack_secrets_search = var.create_ecs_cluster_search ? jsondecode(data.vault_generic_secret.stack_secrets_search[0].data_json) : {}
+
+  stack_application_subnet_pattern_search  = var.create_ecs_cluster_search ? local.stack_secrets_search["application_subnet_pattern"] : ""
+  stack_application_subnet_ids_search      = var.create_ecs_cluster_search ? join(",", data.aws_subnets.stack_application_search[0].ids) : ""
+  stack_kms_key_alias_search               = var.create_ecs_cluster_search ? local.stack_secrets_search["kms_key_alias"] : ""
+  stack_kms_key_id_search                  = var.create_ecs_cluster_search ? data.aws_kms_key.stack_kms_search[0].id : ""
+  stack_notify_topic_slack_endpoint_search = var.create_ecs_cluster_search ? local.stack_secrets_search["notify_topic_slack_endpoint"] : ""
+  stack_vpc_name_search                    = var.create_ecs_cluster_search ? local.stack_secrets_search["vpc_name"] : ""
+  stack_vpc_id_search                      = var.create_ecs_cluster_search ? data.aws_vpc.stack_vpc_search[0].id : ""
+
+  stack_parameter_store_secrets_search = var.create_ecs_cluster_search ? {
+    "web-oauth2-client-id"     = local.stack_secrets_search["web_oauth2_client_id"],
+    "web-oauth2-client-secret" = local.stack_secrets_search["web_oauth2_client_secret"],
+    "web-oauth2-cookie-secret" = local.stack_secrets_search["web_oauth2_cookie_secret"],
+    "web-oauth2-request-key"   = local.stack_secrets_search["web_oauth2_request_key"]
+  } : {}
+
+  asg_desired_instance_count_search = var.desired_task_count_search
+  asg_max_instance_count_search     = var.max_task_count_search * 2
+  asg_min_instance_count_search     = var.min_task_count_search
 }
