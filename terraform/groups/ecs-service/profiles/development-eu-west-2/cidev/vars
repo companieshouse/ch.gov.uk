@@ -19,9 +19,11 @@ enable_listener_officers = true
 desired_task_count_officers = 2
 min_task_count_officers = 2
 max_task_count_officers = 6
+use_fargate_officers = true
 
 # ------------------------------------------------------------------------------
 # ECS cluster variables
 # ------------------------------------------------------------------------------
 create_ecs_cluster_default = false
+create_ecs_cluster_officers = false
 ec2_key_pair_name = "chs-cidev"

@@ -69,6 +69,9 @@ data "aws_ami" "ec2" {
   owners      = var.ec2_ami_owners
 }
 
+# ------------------------------------------------------------------------------
+# Default service ECS cluster data
+# ------------------------------------------------------------------------------
 data "vault_generic_secret" "stack_secrets_default" {
   count = var.create_ecs_cluster_default ? 1 : 0
 
@@ -101,4 +104,41 @@ data "aws_kms_key" "stack_kms_default" {
   count = var.create_ecs_cluster_default ? 1 : 0
 
   key_id = "alias/${var.aws_profile}/${local.stack_kms_key_alias_default}"
+}
+
+# ------------------------------------------------------------------------------
+# Officers service ECS cluster data
+# ------------------------------------------------------------------------------
+data "vault_generic_secret" "stack_secrets_officers" {
+  count = var.create_ecs_cluster_officers ? 1 : 0
+
+  path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_officers}"
+}
+
+data "aws_subnets" "stack_application_officers" {
+  count = var.create_ecs_cluster_officers ? 1 : 0
+
+  filter {
+    name   = "tag:Name"
+    values = [local.stack_application_subnet_pattern_officers]
+  }
+  filter {
+    name   = "tag:NetworkType"
+    values = ["private"]
+  }
+}
+
+data "aws_vpc" "stack_vpc_officers" {
+  count = var.create_ecs_cluster_officers ? 1 : 0
+
+  filter {
+    name   = "tag:Name"
+    values = [local.stack_vpc_name_officers]
+  }
+}
+
+data "aws_kms_key" "stack_kms_officers" {
+  count = var.create_ecs_cluster_officers ? 1 : 0
+
+  key_id = "alias/${var.aws_profile}/${local.stack_kms_key_alias_officers}"
 }

@@ -319,7 +319,7 @@ variable "ec2_key_pair_name" {
 # ------------------------------------------------------------------------------
 variable "create_ecs_cluster_default" {
   default     = false
-  description = "Defines whether a dedicated ECS cluster should be created fo rthe default service (true) or not (false)"
+  description = "Defines whether a dedicated ECS cluster should be created for the default service (true) or not (false)"
   type        = bool
 }
 
@@ -344,10 +344,28 @@ variable "asg_scaleup_schedule_default" {
 # ------------------------------------------------------------------------------
 # Officers service EC2 variables
 # ------------------------------------------------------------------------------
+variable "create_ecs_cluster_officers" {
+  default     = false
+  description = "Defines whether a dedicated ECS cluster should be created for the Officers service (true) or not (false)"
+  type        = bool
+}
+
 variable "ec2_instance_type_officers" {
   default     = "t3a.small"
   description = "The EC2 instance type to use for the Officers service"
   type        = string
+}
+
+variable "asg_scaledown_schedule_officers" {
+  default     = ""
+  type        = string
+  description = "The schedule to use when scaling down the number of EC2 instances to zero for the Officers service ASG"
+}
+
+variable "asg_scaleup_schedule_officers" {
+  default     = ""
+  type        = string
+  description = "The schedule to use when scaling up the number of EC2 instances to their normal desired level for the Officers service ASG"
 }
 
 # ------------------------------------------------------------------------------
