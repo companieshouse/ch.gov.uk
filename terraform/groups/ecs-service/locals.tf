@@ -125,7 +125,7 @@ locals {
 
   asg_desired_instance_count_default = var.desired_task_count
   asg_max_instance_count_default     = var.max_task_count * 2
-  asg_min_instance_count_default     = var.min_task_count
+  asg_min_instance_count_default     = 0
 
   # ------------------------------------------------------------------------------
   # Officers service ECS cluster locals
@@ -153,7 +153,7 @@ locals {
 
   asg_desired_instance_count_officers = var.desired_task_count_officers
   asg_max_instance_count_officers     = var.max_task_count_officers * 2
-  asg_min_instance_count_officers     = var.min_task_count_officers
+  asg_min_instance_count_officers     = 0
 
   # ------------------------------------------------------------------------------
   # Search service ECS cluster locals
@@ -181,5 +181,5 @@ locals {
 
   asg_desired_instance_count_search = var.desired_task_count_search
   asg_max_instance_count_search     = var.max_task_count_search * 2
-  asg_min_instance_count_search     = var.min_task_count_search
+  asg_min_instance_count_search     = 0
 }
