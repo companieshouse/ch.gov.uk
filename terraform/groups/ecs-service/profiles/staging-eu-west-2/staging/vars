@@ -42,3 +42,12 @@ service_autoscale_scale_out_cooldown = 120
 # staging shutdown outside of office hours
 service_scaledown_schedule = "55 19 * * ? *"
 service_scaleup_schedule   = "5 6 * * ? *"
+
+# ------------------------------------------------------------------------------
+# ECS cluster variables
+# ------------------------------------------------------------------------------
+create_ecs_cluster_default = false
+create_ecs_cluster_officers = false
+create_ecs_cluster_search = false
+
+ec2_key_pair_name = "ch-aws-staging"
