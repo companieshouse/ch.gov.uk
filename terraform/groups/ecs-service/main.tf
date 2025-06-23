@@ -22,7 +22,7 @@ terraform {
 # ------------------------------------------------------------------------------
 module "ecs_cluster_default" {
   count  = var.create_ecs_cluster_default ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -47,7 +47,7 @@ module "ecs_cluster_default" {
 
 module "cluster_secrets_default" {
   count  = var.create_ecs_cluster_default ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
 
   environment = var.environment
   name_prefix = local.stack_name_prefix_default
@@ -57,7 +57,7 @@ module "cluster_secrets_default" {
 
 module "ecs_cluster_officers" {
   count  = var.create_ecs_cluster_officers ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -82,7 +82,7 @@ module "ecs_cluster_officers" {
 
 module "cluster_secrets_officers" {
   count  = var.create_ecs_cluster_officers ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
 
   environment = var.environment
   name_prefix = local.stack_name_prefix_officers
@@ -92,7 +92,7 @@ module "cluster_secrets_officers" {
 
 module "ecs_cluster_search" {
   count  = var.create_ecs_cluster_search ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -117,7 +117,7 @@ module "ecs_cluster_search" {
 
 module "cluster_secrets_search" {
   count  = var.create_ecs_cluster_search ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
 
   environment = var.environment
   name_prefix = local.stack_name_prefix_search
@@ -339,7 +339,7 @@ module "ecs-service-default" {
 }
 
 module "secrets" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
 
   name_prefix = "${local.service_name}-${var.environment}"
   environment = var.environment
