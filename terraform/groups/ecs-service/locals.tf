@@ -183,15 +183,15 @@ locals {
   asg_max_instance_count_search     = var.max_task_count_search * 2
   asg_min_instance_count_search     = 0
 
-  ecs_cluster_id_default          = var.use_ecs_cluster_default ? module.ecs_cluster_default[0].ecs_cluster_id : data.aws_ecs_cluster.ecs_cluster.id
-  name_prefix_default             = var.use_ecs_cluster_default ? local.stack_name_prefix_default : local.name_prefix
-  task_execution_role_arn_default = var.use_ecs_cluster_default ? module.ecs_cluster_default[0].ecs_task_execution_role_arn : data.aws_iam_role.ecs_cluster_iam_role.arn
+  ecs_cluster_id_default          = var.use_ecs_cluster_default && var.create_ecs_cluster_default ? module.ecs_cluster_default[0].ecs_cluster_id : data.aws_ecs_cluster.ecs_cluster.id
+  name_prefix_default             = var.use_ecs_cluster_default && var.create_ecs_cluster_default ? local.stack_name_prefix_default : local.name_prefix
+  task_execution_role_arn_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default ? module.ecs_cluster_default[0].ecs_task_execution_role_arn : data.aws_iam_role.ecs_cluster_iam_role.arn
 
-  ecs_cluster_id_officers          = var.use_ecs_cluster_officers ? module.ecs_cluster_officers[0].ecs_cluster_id : data.aws_ecs_cluster.ecs_cluster.id
-  name_prefix_officers             = var.use_ecs_cluster_officers ? local.stack_name_prefix_officers : local.name_prefix
-  task_execution_role_arn_officers = var.use_ecs_cluster_officers ? module.ecs_cluster_officers[0].ecs_task_execution_role_arn : data.aws_iam_role.ecs_cluster_iam_role.arn
+  ecs_cluster_id_officers          = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? module.ecs_cluster_officers[0].ecs_cluster_id : data.aws_ecs_cluster.ecs_cluster.id
+  name_prefix_officers             = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? local.stack_name_prefix_officers : local.name_prefix
+  task_execution_role_arn_officers = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? module.ecs_cluster_officers[0].ecs_task_execution_role_arn : data.aws_iam_role.ecs_cluster_iam_role.arn
 
-  ecs_cluster_id_search          = var.use_ecs_cluster_search ? module.ecs_cluster_search[0].ecs_cluster_id : data.aws_ecs_cluster.ecs_cluster.id
-  name_prefix_search             = var.use_ecs_cluster_search ? local.stack_name_prefix_search : local.name_prefix
-  task_execution_role_arn_search = var.use_ecs_cluster_search ? module.ecs_cluster_search[0].ecs_task_execution_role_arn : data.aws_iam_role.ecs_cluster_iam_role.arn
+  ecs_cluster_id_search          = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? module.ecs_cluster_search[0].ecs_cluster_id : data.aws_ecs_cluster.ecs_cluster.id
+  name_prefix_search             = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? local.stack_name_prefix_search : local.name_prefix
+  task_execution_role_arn_search = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? module.ecs_cluster_search[0].ecs_task_execution_role_arn : data.aws_iam_role.ecs_cluster_iam_role.arn
 }
