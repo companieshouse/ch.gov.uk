@@ -206,8 +206,8 @@ module "ecs-service-officers" {
   aws_region              = var.aws_region
   aws_profile             = var.aws_profile
   vpc_id                  = data.aws_vpc.vpc.id
-  ecs_cluster_id          = data.aws_ecs_cluster.ecs_cluster.id
-  task_execution_role_arn = data.aws_iam_role.ecs_cluster_iam_role.arn
+  ecs_cluster_id          = module.ecs_cluster_officers[0].ecs_cluster_id
+  task_execution_role_arn = module.ecs_cluster_officers[0].ecs_task_execution_role_arn
 
   # Load balancer configuration
   lb_listener_arn           = data.aws_lb_listener.chgovuk_lb_listener.arn
@@ -227,7 +227,7 @@ module "ecs-service-officers" {
 
   # Service configuration
   service_name = local.service_name_officers
-  name_prefix  = local.name_prefix
+  name_prefix  = local.stack_name_prefix_officers
 
   # Service performance and scaling configs
   desired_task_count                   = var.desired_task_count_officers
