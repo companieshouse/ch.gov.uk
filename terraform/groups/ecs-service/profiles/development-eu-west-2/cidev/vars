@@ -14,18 +14,18 @@ desired_task_count_search = 2
 min_task_count_search = 2
 max_task_count_search = 6
 
-# scaling configs officers
-enable_listener_officers = true
-desired_task_count_officers = 2
-min_task_count_officers = 2
-max_task_count_officers = 6
-use_fargate_officers = false
-
-# officers allocation: t3a.small - 2vCPU, 2GiB RAM (-512MiB for OS)
+# Officers service configuration
 required_cpus_officers = 1536
 required_memory_officers = 1024
 eric_cpus_officers = 256
 eric_memory_officers = 512
+desired_task_count_officers = 2
+min_task_count_officers = 2
+max_task_count_officers = 6
+
+enable_listener_officers = true
+use_ecs_cluster_officers = true
+use_fargate_officers = false
 
 # ------------------------------------------------------------------------------
 # ECS cluster variables
