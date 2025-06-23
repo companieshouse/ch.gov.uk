@@ -15,10 +15,6 @@ min_task_count_search = 2
 max_task_count_search = 6
 
 # Officers service configuration
-# required_cpus_officers = 1536
-# required_memory_officers = 1024
-# eric_cpus_officers = 256
-# eric_memory_officers = 512
 desired_task_count_officers = 2
 min_task_count_officers = 2
 max_task_count_officers = 6
