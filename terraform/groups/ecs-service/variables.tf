@@ -323,6 +323,12 @@ variable "create_ecs_cluster_default" {
   type        = bool
 }
 
+variable "use_ecs_cluster_default" {
+  default     = false
+  description = "Defines whether the dedicated ECS cluster should be used for the default service (true) or not (false)"
+  type        = bool
+}
+
 variable "ec2_instance_type_default" {
   default     = "t3a.small"
   description = "The EC2 instance type to use for the default service"
@@ -350,6 +356,12 @@ variable "create_ecs_cluster_officers" {
   type        = bool
 }
 
+variable "use_ecs_cluster_officers" {
+  default     = false
+  description = "Defines whether the dedicated ECS cluster should be used for the Officers service (true) or not (false)"
+  type        = bool
+}
+
 variable "ec2_instance_type_officers" {
   default     = "t3a.small"
   description = "The EC2 instance type to use for the Officers service"
@@ -374,6 +386,12 @@ variable "asg_scaleup_schedule_officers" {
 variable "create_ecs_cluster_search" {
   default     = false
   description = "Defines whether a dedicated ECS cluster should be created for the Search service (true) or not (false)"
+  type        = bool
+}
+
+variable "use_ecs_cluster_search" {
+  default     = false
+  description = "Defines whether the dedicated ECS cluster should be used for the Search service (true) or not (false)"
   type        = bool
 }
 

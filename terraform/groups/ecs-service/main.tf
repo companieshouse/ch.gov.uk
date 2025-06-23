@@ -22,7 +22,7 @@ terraform {
 # ------------------------------------------------------------------------------
 module "ecs_cluster_default" {
   count  = var.create_ecs_cluster_default ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -47,7 +47,7 @@ module "ecs_cluster_default" {
 
 module "cluster_secrets_default" {
   count  = var.create_ecs_cluster_default ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
 
   environment = var.environment
   name_prefix = local.stack_name_prefix_default
@@ -57,7 +57,7 @@ module "cluster_secrets_default" {
 
 module "ecs_cluster_officers" {
   count  = var.create_ecs_cluster_officers ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -82,7 +82,7 @@ module "ecs_cluster_officers" {
 
 module "cluster_secrets_officers" {
   count  = var.create_ecs_cluster_officers ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
 
   environment = var.environment
   name_prefix = local.stack_name_prefix_officers
@@ -92,7 +92,7 @@ module "cluster_secrets_officers" {
 
 module "ecs_cluster_search" {
   count  = var.create_ecs_cluster_search ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -117,7 +117,7 @@ module "ecs_cluster_search" {
 
 module "cluster_secrets_search" {
   count  = var.create_ecs_cluster_search ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
 
   environment = var.environment
   name_prefix = local.stack_name_prefix_search
@@ -136,8 +136,8 @@ module "ecs-service-search" {
   aws_region              = var.aws_region
   aws_profile             = var.aws_profile
   vpc_id                  = data.aws_vpc.vpc.id
-  ecs_cluster_id          = data.aws_ecs_cluster.ecs_cluster.id
-  task_execution_role_arn = data.aws_iam_role.ecs_cluster_iam_role.arn
+  ecs_cluster_id          = local.ecs_cluster_id_search
+  task_execution_role_arn = local.task_execution_role_arn_search
 
   # Load balancer configuration
   lb_listener_arn           = data.aws_lb_listener.chgovuk_lb_listener.arn
@@ -157,7 +157,7 @@ module "ecs-service-search" {
 
   # Service configuration
   service_name = local.service_name_search
-  name_prefix  = local.name_prefix
+  name_prefix  = local.name_prefix_search
 
   # Service performance and scaling configs
   desired_task_count                   = var.desired_task_count_search
@@ -206,8 +206,8 @@ module "ecs-service-officers" {
   aws_region              = var.aws_region
   aws_profile             = var.aws_profile
   vpc_id                  = data.aws_vpc.vpc.id
-  ecs_cluster_id          = data.aws_ecs_cluster.ecs_cluster.id
-  task_execution_role_arn = data.aws_iam_role.ecs_cluster_iam_role.arn
+  ecs_cluster_id          = local.ecs_cluster_id_officers
+  task_execution_role_arn = local.task_execution_role_arn_officers
 
   # Load balancer configuration
   lb_listener_arn           = data.aws_lb_listener.chgovuk_lb_listener.arn
@@ -227,7 +227,7 @@ module "ecs-service-officers" {
 
   # Service configuration
   service_name = local.service_name_officers
-  name_prefix  = local.name_prefix
+  name_prefix  = local.name_prefix_officers
 
   # Service performance and scaling configs
   desired_task_count                   = var.desired_task_count_officers
@@ -276,8 +276,8 @@ module "ecs-service-default" {
   aws_region              = var.aws_region
   aws_profile             = var.aws_profile
   vpc_id                  = data.aws_vpc.vpc.id
-  ecs_cluster_id          = data.aws_ecs_cluster.ecs_cluster.id
-  task_execution_role_arn = data.aws_iam_role.ecs_cluster_iam_role.arn
+  ecs_cluster_id          = local.ecs_cluster_id_default
+  task_execution_role_arn = local.task_execution_role_arn_default
 
   # Load balancer configuration
   lb_listener_arn           = data.aws_lb_listener.chgovuk_lb_listener.arn
@@ -297,7 +297,7 @@ module "ecs-service-default" {
 
   # Service configuration
   service_name = local.service_name
-  name_prefix  = local.name_prefix
+  name_prefix  = local.name_prefix_default
 
   # Service performance and scaling configs
   desired_task_count                   = var.desired_task_count
@@ -339,7 +339,7 @@ module "ecs-service-default" {
 }
 
 module "secrets" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.304"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
 
   name_prefix = "${local.service_name}-${var.environment}"
   environment = var.environment
