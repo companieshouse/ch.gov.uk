@@ -78,6 +78,10 @@ data "vault_generic_secret" "stack_secrets_default" {
   path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_default}"
 }
 
+data "aws_ec2_instance_type" "default" {
+  instance_type = var.ec2_instance_type_default
+}
+
 data "aws_subnets" "stack_application_default" {
   count = var.create_ecs_cluster_default ? 1 : 0
 
@@ -115,6 +119,10 @@ data "vault_generic_secret" "stack_secrets_officers" {
   path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_officers}"
 }
 
+data "aws_ec2_instance_type" "officers" {
+  instance_type = var.ec2_instance_type_officers
+}
+
 data "aws_subnets" "stack_application_officers" {
   count = var.create_ecs_cluster_officers ? 1 : 0
 
@@ -150,6 +158,10 @@ data "vault_generic_secret" "stack_secrets_search" {
   count = var.create_ecs_cluster_search ? 1 : 0
 
   path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_search}"
+}
+
+data "aws_ec2_instance_type" "search" {
+  instance_type = var.ec2_instance_type_search
 }
 
 data "aws_subnets" "stack_application_search" {
