@@ -19,7 +19,7 @@ sub register {
         trace "Setting up transaction routing for endpoint '%s'", $endpoint [APP];
 
         # Create transaction (creates submission, redirects to transaction URL)
-        $company->route($endpoint)->via(['POST','GET'])->to('company-transactions#create');
+        $company->any($endpoint)->via(['POST','GET'])->to('company-transactions#create');
 
         # Setup GET/POST routes for expanded form view
         $transactions->get ($endpoint)->to($form->{controller} . '#get');

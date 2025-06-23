@@ -20,8 +20,6 @@ sub register {
     # 'root' is the root route... matches '/'
     my $root = $app->routes->find('root');
 
-    # $root->route('/cookies')->via('GET')->to( template => 'help/cookies' );
-
     # Get the bridges
     my $user         = $root->bridge->name('user_auth')->to( cb => \&CH::MojoX::SignIn::Bridge::OAuth2::bridge );
     my $company      = $root->find('company_auth');
@@ -31,17 +29,17 @@ sub register {
     $root->get('/')->to('static_pages#home')->name('root');
 
     # AZ Listing
-    $root->route->get('/register-of-disqualifications/:letter' => [ letter => qr/[A-Z]{1}/ ])->name('register_of_disqualifications')->to('register_of_disqualifications#list');
+    $root->any->get('/register-of-disqualifications/:letter' => [ letter => qr/[A-Z]{1}/ ])->name('register_of_disqualifications')->to('register_of_disqualifications#list');
 
     # Search
-    $root->route('/search')->get->name('search')->to('search#results');
-    $root->route('/search/:search_type')->get->name('search_facet')->to('search#results');
+    $root->any('/search')->get->name('search')->to('search#results');
+    $root->any('/search/:search_type')->get->name('search_facet')->to('search#results');
 
     # Post user feedback
-    $root->route('/customer-feedback')->to('CustomerFeedback#record_feedback');
+    $root->any('/customer-feedback')->to('CustomerFeedback#record_feedback');
 
     # Company name availability search
-    $root->route('/company-name-availability')->to('Search::CompanyNameAvailability#company_name_availability');
+    $root->any('/company-name-availability')->to('Search::CompanyNameAvailability#company_name_availability');
 
     # Static help pages
     $root->get('/help/:filepath')->to('StaticPages#render_filepath');

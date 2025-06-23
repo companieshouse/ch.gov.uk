@@ -55,7 +55,7 @@ sub BUILD {
     # Get the current route (URL from map - e.g. /:char/:char2/:num/:num2)
     my $route = $self->controller->app->routes->find($self->controller->current_route)->pattern->pattern;
     $route = substr($route, 1) if substr($route, 0, 1) eq '/';
-    $self->route($route);
+    $self->any($route);
     trace "Got transaction route [%s]", $route [ROUTING];
 
     # Get metadata
@@ -64,7 +64,7 @@ sub BUILD {
 
     if($self->endpoint ne 'confirmation' && !$self->metadata) {
         ($route) = $route =~ /(.*)\/([^\/]+)$/;
-        $self->route($route);
+        $self->any($route);
         trace "Got transaction endpoint [%s]", $self->endpoint [ROUTING];
         trace "Got transaction route [%s]", $route [ROUTING];
 

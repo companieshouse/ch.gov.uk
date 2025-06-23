@@ -22,7 +22,7 @@ sub register {
     });
     $admin_route = $admin_route->bridge->name('has_route_permission')->to(cb => \&CH::MojoX::UserPermissions::Bridge::bridge);
 
-    my $transaction = $admin_route->route('/transactions/:transaction_number');
+    my $transaction = $admin_route->any('/transactions/:transaction_number');
 
     $admin_route->get('/user/:user_id/transactions')->to('user-filings#list');
     $admin_route->get('/transactions/:transaction_number')->to('admin-transaction#filing');
@@ -31,7 +31,7 @@ sub register {
     $transaction->get('/details')->name('admin_transaction_details')->to('admin-transaction#transaction_json');
     $transaction->post('/reprocess')->name('admin_transaction_reprocess')->to('admin-transaction#transaction_reprocess');
 
-    my $filing = $transaction->route('/:barcode');
+    my $filing = $transaction->any('/:barcode');
     $filing->get ('/email')->name('admin_email_view')->to('admin-transaction#email_confirm');
     $filing->post('/email')->name('admin_email_post')->to('admin-transaction#email');
     $filing->get ('/resubmit')->name('admin_filing_confirm')->to('admin-transaction#resubmit_confirm');
