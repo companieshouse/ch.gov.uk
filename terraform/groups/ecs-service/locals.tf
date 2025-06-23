@@ -71,8 +71,8 @@ locals {
 
   task_secrets = concat(local.global_secret_list, local.service_secret_list, [])
 
-  task_required_cpu_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default && var.use_fargate ? local.ec2_task_cpu_default : var.required_cpus
-  task_required_mem_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default && var.use_fargate ? local.ec2_task_mem_default : var.required_memory
+  task_required_cpu_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default && !var.use_fargate ? local.ec2_task_cpu_default : var.required_cpus
+  task_required_mem_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default && !var.use_fargate ? local.ec2_task_mem_default : var.required_memory
   task_required_memory_kb   = var.required_memory * 1024
   task_environment          = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb}" },
@@ -80,8 +80,8 @@ locals {
     { "name" : "SHARED_MEMORY_PERCENTAGE", "value" : "100" }
   ])
 
-  task_required_cpu_officers       = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers && var.use_fargate_officers ? local.ec2_task_cpu_officers : var.required_cpus_officers
-  task_required_mem_officers       = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers && var.use_fargate_officers ? local.ec2_task_mem_officers : var.required_memory_officers
+  task_required_cpu_officers       = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers && !var.use_fargate_officers ? local.ec2_task_cpu_officers : var.required_cpus_officers
+  task_required_mem_officers       = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers && !var.use_fargate_officers ? local.ec2_task_mem_officers : var.required_memory_officers
   task_required_memory_kb_officers = var.required_memory_officers * 1024
   task_environment_officers        = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb_officers}" },
@@ -89,8 +89,8 @@ locals {
     { "name" : "SHARED_MEMORY_PERCENTAGE", "value" : "100" }
   ])
 
-  task_required_cpu_search       = var.use_ecs_cluster_search && var.create_ecs_cluster_search && var.use_fargate_search ? local.ec2_task_cpu_search : var.required_cpus_search
-  task_required_mem_search       = var.use_ecs_cluster_search && var.create_ecs_cluster_search && var.use_fargate_search ? local.ec2_task_mem_search : var.required_memory_search
+  task_required_cpu_search       = var.use_ecs_cluster_search && var.create_ecs_cluster_search && !var.use_fargate_search ? local.ec2_task_cpu_search : var.required_cpus_search
+  task_required_mem_search       = var.use_ecs_cluster_search && var.create_ecs_cluster_search && !var.use_fargate_search ? local.ec2_task_mem_search : var.required_memory_search
   task_required_memory_kb_search = var.required_memory_search * 1024
   task_environment_search        = concat(local.ssm_global_version_map, local.ssm_service_version_map, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb_search}" },
