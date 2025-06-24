@@ -126,7 +126,7 @@ module "cluster_secrets_search" {
 }
 
 # ------------------------------------------------------------------------------
-# ECS service modules
+# Search ECS service modules
 # ------------------------------------------------------------------------------
 module "ecs-service-search" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.304"
@@ -180,7 +180,7 @@ module "ecs-service-search" {
 
   # Service environment variable and secret configs
   task_environment          = local.task_environment_search
-  task_secrets              = local.task_secrets
+  task_secrets              = local.task_secrets_search
   app_environment_filename  = local.app_environment_filename
   use_set_environment_files = local.use_set_environment_files
   read_only_root_filesystem = false
@@ -198,6 +198,19 @@ module "ecs-service-search" {
   create_service_dashboard = var.create_service_dashboard_search
 }
 
+module "secrets_search" {
+  count  = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? 1 : 0
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
+
+  name_prefix = "${local.service_name_search}-${var.environment}"
+  environment = var.environment
+  kms_key_id  = data.aws_kms_key.kms_key.id
+  secrets     = nonsensitive(local.service_secrets_search)
+}
+
+# ------------------------------------------------------------------------------
+# Officers ECS service modules
+# ------------------------------------------------------------------------------
 module "ecs-service-officers" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.304"
 
@@ -250,7 +263,7 @@ module "ecs-service-officers" {
 
   # Service environment variable and secret configs
   task_environment          = local.task_environment_officers
-  task_secrets              = local.task_secrets
+  task_secrets              = local.task_secrets_officers
   app_environment_filename  = local.app_environment_filename
   use_set_environment_files = local.use_set_environment_files
   read_only_root_filesystem = false
@@ -268,6 +281,19 @@ module "ecs-service-officers" {
   create_service_dashboard = var.create_service_dashboard_officers
 }
 
+module "secrets_officers" {
+  count  = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? 1 : 0
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
+
+  name_prefix = "${local.service_name_officers}-${var.environment}"
+  environment = var.environment
+  kms_key_id  = data.aws_kms_key.kms_key.id
+  secrets     = nonsensitive(local.service_secrets_officers)
+}
+
+# ------------------------------------------------------------------------------
+# Default ECS service modules
+# ------------------------------------------------------------------------------
 module "ecs-service-default" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.304"
 
@@ -320,7 +346,7 @@ module "ecs-service-default" {
 
   # Service environment variable and secret configs
   task_environment          = local.task_environment
-  task_secrets              = local.task_secrets
+  task_secrets              = local.task_secrets_default
   app_environment_filename  = local.app_environment_filename
   use_set_environment_files = local.use_set_environment_files
   read_only_root_filesystem = false
@@ -338,6 +364,19 @@ module "ecs-service-default" {
   create_service_dashboard = var.create_service_dashboard
 }
 
+module "secrets_default" {
+  count  = var.use_ecs_cluster_default && var.create_ecs_cluster_default ? 1 : 0
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
+
+  name_prefix = "${local.service_name}-${var.environment}"
+  environment = var.environment
+  kms_key_id  = data.aws_kms_key.kms_key.id
+  secrets     = nonsensitive(local.service_secrets_default)
+}
+
+# ------------------------------------------------------------------------------
+# Shared service modules
+# ------------------------------------------------------------------------------
 module "secrets" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
 
