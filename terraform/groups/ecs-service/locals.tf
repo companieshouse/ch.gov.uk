@@ -106,7 +106,7 @@ locals {
   service_secrets_officers         = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? jsondecode(data.vault_generic_secret.service_secrets_officers[0].data_json) : local.service_secrets
   service_secrets_arn_map_officers = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? {
     for sec in module.secrets_officers[0].secrets :
-    trimprefix(sec.name, "/${local.service_name}-${var.environment}/") => sec.arn
+    trimprefix(sec.name, "/${local.service_name_officers}-${var.environment}/") => sec.arn
   } : local.service_secrets_arn_map
 
   service_secret_list_officers = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? flatten(
@@ -120,7 +120,7 @@ locals {
 
   ssm_service_version_map_officers = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? [
     for sec in module.secrets_officers[0].secrets : {
-      name = "${replace(upper(local.service_name), "-", "_")}_${var.ssm_version_prefix}${replace(upper(basename(sec.name)), "-", "_")}", value = sec.version
+      name = "${replace(upper(local.service_name_officers), "-", "_")}_${var.ssm_version_prefix}${replace(upper(basename(sec.name)), "-", "_")}", value = sec.version
     }
   ] : local.ssm_service_version_map
 
@@ -141,7 +141,7 @@ locals {
   service_secrets_search         = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? jsondecode(data.vault_generic_secret.service_secrets_search[0].data_json) : local.service_secrets
   service_secrets_arn_map_search = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? {
     for sec in module.secrets_search[0].secrets :
-    trimprefix(sec.name, "/${local.service_name}-${var.environment}/") => sec.arn
+    trimprefix(sec.name, "/${local.service_name_search}-${var.environment}/") => sec.arn
   } : local.service_secrets_arn_map
 
   service_secret_list_search = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? flatten(
@@ -155,7 +155,7 @@ locals {
 
   ssm_service_version_map_search = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? [
     for sec in module.secrets_search[0].secrets : {
-      name = "${replace(upper(local.service_name), "-", "_")}_${var.ssm_version_prefix}${replace(upper(basename(sec.name)), "-", "_")}", value = sec.version
+      name = "${replace(upper(local.service_name_search), "-", "_")}_${var.ssm_version_prefix}${replace(upper(basename(sec.name)), "-", "_")}", value = sec.version
     }
   ] : local.ssm_service_version_map
 
