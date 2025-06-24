@@ -126,7 +126,7 @@ module "cluster_secrets_search" {
 }
 
 # ------------------------------------------------------------------------------
-# ECS service modules
+# Search ECS service modules
 # ------------------------------------------------------------------------------
 module "ecs-service-search" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.304"
@@ -208,6 +208,9 @@ module "secrets_search" {
   secrets     = nonsensitive(local.service_secrets_search)
 }
 
+# ------------------------------------------------------------------------------
+# Officers ECS service modules
+# ------------------------------------------------------------------------------
 module "ecs-service-officers" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.304"
 
@@ -288,6 +291,9 @@ module "secrets_officers" {
   secrets     = nonsensitive(local.service_secrets_officers)
 }
 
+# ------------------------------------------------------------------------------
+# Default ECS service modules
+# ------------------------------------------------------------------------------
 module "ecs-service-default" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.304"
 
@@ -368,6 +374,9 @@ module "secrets_default" {
   secrets     = nonsensitive(local.service_secrets_default)
 }
 
+# ------------------------------------------------------------------------------
+# Shared service modules
+# ------------------------------------------------------------------------------
 module "secrets" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
 
