@@ -78,6 +78,22 @@ data "vault_generic_secret" "stack_secrets_default" {
   path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_default}"
 }
 
+data "vault_generic_secret" "service_secrets_default" {
+  count = var.use_ecs_cluster_default && var.create_ecs_cluster_default ? 1 : 0
+
+  path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_default}/${local.service_name}"
+}
+
+data "aws_ssm_parameters_by_path" "secrets_default" {
+  path = "/${local.name_prefix_default}"
+}
+
+data "aws_ssm_parameter" "secrets_default" {
+  for_each = toset(data.aws_ssm_parameters_by_path.secrets_default.names)
+
+  name = each.key
+}
+
 data "aws_ec2_instance_type" "default" {
   instance_type = var.ec2_instance_type_default
 }
@@ -119,6 +135,16 @@ data "vault_generic_secret" "stack_secrets_officers" {
   path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_officers}"
 }
 
+data "vault_generic_secret" "service_secrets_officers" {
+  count = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? 1 : 0
+
+  path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_officers}/${local.service_name}"
+}
+
+data "aws_ssm_parameters_by_path" "secrets_officers" {
+  path = "/${local.name_prefix_officers}"
+}
+
 data "aws_ec2_instance_type" "officers" {
   instance_type = var.ec2_instance_type_officers
 }
@@ -158,6 +184,16 @@ data "vault_generic_secret" "stack_secrets_search" {
   count = var.create_ecs_cluster_search ? 1 : 0
 
   path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_search}"
+}
+
+data "vault_generic_secret" "service_secrets_search" {
+  count = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? 1 : 0
+
+  path = "applications/${var.aws_profile}/${var.environment}/${local.stack_fullname_search}/${local.service_name}"
+}
+
+data "aws_ssm_parameters_by_path" "secrets_search" {
+  path = "/${local.name_prefix_search}"
 }
 
 data "aws_ec2_instance_type" "search" {
