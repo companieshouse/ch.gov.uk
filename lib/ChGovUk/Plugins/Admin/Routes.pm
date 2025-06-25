@@ -12,7 +12,7 @@ sub register {
 
     push @{ $app->routes->namespaces }, 'ChGovUk::Controllers::Admin';
 
-    my $admin_route = $app->routes->find('user_auth')->bridge('/admin')->name('has_admin_permission')->to(cb => sub {
+    my $admin_route = $app->routes->find('user_auth')->under('/admin')->name('has_admin_permission')->to(cb => sub {
         my ($controller) = @_;
 
         return 1 if CH::MojoX::Administration::Bridge::ValidateAdmin::web($controller);
@@ -20,7 +20,7 @@ sub register {
         $controller->render_not_found;
         return undef;
     });
-    $admin_route = $admin_route->bridge->name('has_route_permission')->to(cb => \&CH::MojoX::UserPermissions::Bridge::bridge);
+    $admin_route = $admin_route->under->name('has_route_permission')->to(cb => \&CH::MojoX::UserPermissions::Bridge::bridge);
 
     my $transaction = $admin_route->any('/transactions/:transaction_number');
 
