@@ -18,10 +18,10 @@ sub register {
 
     trace "Setup the bridge that every request passes through" [ROUTING];
 
-    my $hijack = $app->routes->bridge->name('hijack_protect')->to( cb => \&CH::MojoX::SignIn::Bridge::HijackProtect::bridge );
+    my $hijack = $app->routes->under->name('hijack_protect')->to( cb => \&CH::MojoX::SignIn::Bridge::HijackProtect::bridge );
 
     # Setup the bridge that every request passes through
-    my $r = $hijack->bridge('/')->name('root')->to( cb => sub {
+    my $r = $hijack->under('/')->name('root')->to( cb => sub {
         my ($self) = @_;
 
         $self->stash( route_name => $self->current_route);
@@ -138,7 +138,7 @@ sub register {
 
     # Setup user authentication bridge
     # Any routes off this bridge require a valid user session
-    $r->bridge('/')->name('user_auth')->to( cb => sub {
+    $r->under('/')->name('user_auth')->to( cb => sub {
         my ($self) = @_;
 
         if( ! $self->is_signed_in ) {
@@ -153,12 +153,16 @@ sub register {
         return 1;
     } );
 
-    my $company = $r->bridge('/company/:company_number')->name('company')->to('bridge-company#company');
+    my $company = $r->under('/company/:company_number')->name('company')->to('bridge-company#company');
 
     # Setup company authentication bridge
     # Any routes off this bridge require a valid company session
+<<<<<<< HEAD
     my $start = [Time::HiRes::gettimeofday()];
     my $company_auth = $company->bridge('/')->name('company_auth')->to( cb => sub {
+=======
+    my $company_auth = $company->under('/')->name('company_auth')->to( cb => sub {
+>>>>>>> 0083a8e (Replace deprecated Mojolicious::Routes::Route::bridge method calls)
         my ($self) = @_;
         debug "After company auth bridge '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
         trace 'company authentication bridge' [ROUTING];
@@ -186,7 +190,7 @@ sub register {
 
     # Setup transaction bridge
     # Any routes off this bridge must include a form header from transaction#create handler
-    my $transaction = $company_auth->bridge('transactions/:transaction_number')->name('transactions')->to( cb => \&_transaction_bridge );
+    my $transaction = $company_auth->under('transactions/:transaction_number')->name('transactions')->to( cb => \&_transaction_bridge );
     return;
 }
 

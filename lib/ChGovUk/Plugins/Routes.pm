@@ -21,7 +21,7 @@ sub register {
     my $root = $app->routes->find('root');
 
     # Get the bridges
-    my $user         = $root->bridge->name('user_auth')->to( cb => \&CH::MojoX::SignIn::Bridge::OAuth2::bridge );
+    my $user         = $root->under->name('user_auth')->to( cb => \&CH::MojoX::SignIn::Bridge::OAuth2::bridge );
     my $company      = $root->find('company_auth');
     my $transactions = $root->find('transactions');
 
@@ -92,7 +92,7 @@ sub register {
     #$company->get('/charges')->name('charges')->to('charges#list');
 
     # Admin
-    my $admin = $root->bridge('/admin')->to(cb => \&CH::MojoX::UserPermissions::Bridge::bridge);
+    my $admin = $root->under('/admin')->to(cb => \&CH::MojoX::UserPermissions::Bridge::bridge);
 
     # Route to development only page displaying examples of form elements.
 
