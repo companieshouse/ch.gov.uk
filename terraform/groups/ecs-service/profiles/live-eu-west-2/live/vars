@@ -42,8 +42,8 @@ service_autoscale_scale_out_cooldown = 120
 # ------------------------------------------------------------------------------
 # ECS cluster variables
 # ------------------------------------------------------------------------------
-create_ecs_cluster_default = false
-create_ecs_cluster_officers = false
-create_ecs_cluster_search = false
+create_ecs_cluster_default = true
+create_ecs_cluster_officers = true
+create_ecs_cluster_search = true
 
 ec2_key_pair_name = "ch-aws-live"
