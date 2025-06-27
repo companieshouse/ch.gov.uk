@@ -181,7 +181,7 @@
               <ul class="govuk-service-navigation__list" id="navigation">
                 <li class="govuk-service-navigation__item">
                   % if !$certified_copies {
-                    <a class="govuk-service-navigation__link" href="/ title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
+                    <a class="govuk-service-navigation__link" href="/" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
                       Find and update company information
                     </a>
                   % } else {
@@ -295,7 +295,9 @@
   </div>
   % }
 
-  <div class="blue-footer-border"></div>
+  % if ! $c.config.feature.govuk_rebrand {
+    <div class="blue-footer-border"></div>
+  % }
 
   <footer id="footer" class="govuk-footer " role="contentinfo">
         <div class="govuk-width-container ">
