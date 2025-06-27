@@ -3,6 +3,7 @@ package ChGovUk::Plugins::CVConstants;
 use CH::Perl;
 use Mojo::Base 'Mojolicious::Plugin';
 use CH::Util::CVConstants;
+use CH::Util::CVConstants::Value;
 use YAML::XS;
 
 # ------------------------------------------------------------------------------
