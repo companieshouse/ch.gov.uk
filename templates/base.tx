@@ -170,31 +170,24 @@
   % }
 
   % if $c.config.feature.govuk_rebrand {
-      <div class="govuk-service-navigation"
+      <section aria-label="Service information" class="govuk-service-navigation"
         data-module="govuk-service-navigation">
         <div class="govuk-width-container">
           <div class="govuk-service-navigation__container">
-            <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
-              <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden>
-                Menu
-              </button>
-              <ul class="govuk-service-navigation__list" id="navigation">
-                <li class="govuk-service-navigation__item">
-                  % if !$certified_copies {
-                    <a class="govuk-service-navigation__link" href="/" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
-                      Find and update company information
-                    </a>
-                  % } else {
-                    <a class="govuk-service-navigation__link" href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo">
-                      Order a certified document
-                    </a>
-                  % }
-                </li>
-              </ul>
-            </nav>
+            <span class="govuk-service-navigation__service-name">
+              % if !$certified_copies {
+                <a class="govuk-service-navigation__link" href="/" title="Go to the Companies House homepage"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'CHLogo', 'Homepage']);"<% } %> id="logo">
+                  Find and update company information
+                </a>
+              % } else {
+                <a class="govuk-service-navigation__link" href="/company/<% $company.company_number %>/orderable/certified-copies" title="Go to the Certified copies start page"<% if $c.config.piwik.embed { %> onClick="javascript:_paq.push(['trackEvent', 'Order a certified document', 'Certified copies']);"<% } %> id="service-logo">
+                  Order a certified document
+                </a>
+              % }
+            </span>
           </div>
         </div>
-      </div>
+      </section>
   % }
 
   % if $feedback_banner {
