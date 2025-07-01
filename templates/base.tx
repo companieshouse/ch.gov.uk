@@ -191,19 +191,11 @@
   % }
 
   % if $feedback_banner {
-    % if ! $c.config.feature.govuk_rebrand {
-      <div class="govuk-body" id="chs-customer-insights-top">
-        <div class="govuk-width-container">
-          <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
-        </div>
+    <div class="govuk-body" id="chs-customer-insights-top">
+      <div class="govuk-width-container">
+        <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
       </div>
-    % } else {
-      <div class="govuk-body" id="chs-customer-insights-top-rebrand">
-        <div class="govuk-width-container">
-          <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/csat-companieshouseservice/">Tell us what you think of Companies House</a>
-        </div>
-      </div>
-    % }
+    </div>
 % }
 
     <main id="page-container" class="search <% $classes %> govuk-width-container" role="main">
@@ -280,7 +272,7 @@
   </div> <!-- end of entire-wrapper -->
 
   % if $insights_bar != false {
-  <div id="<% (! $c.config.feature.govuk_rebrand) ? 'chs-customer-insights' : 'chs-customer-insights-rebrand' %>">
+  <div id="chs-customer-insights">
     <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/getcompanyinformation/" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="govuk-visually-hidden">(link opens a new window)</span></a>
     % if $c.config.show_feedback_page {
         <a id="feedback-link" class="govuk-link secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="govuk-visually-hidden">(link opens a new window)</span></a>
