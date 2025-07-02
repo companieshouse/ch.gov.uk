@@ -40,8 +40,7 @@
   % } else {
       <meta name="theme-color" content="#1d70b8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <link href="//<% $cdn_url %>/stylesheets/govuk-frontend/v5.10.0/govuk-frontend-5.10.0.min.css" rel="stylesheet" />
-      <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/favicon.ico" type="image/x-icon">
+      <link rel="stylesheet".          href="//<% $cdn_url %>/stylesheets/govuk-frontend/v5.10.0/govuk-frontend-5.10.0.min.css"  />
       <link rel="icon" sizes="48x48"   href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/favicon.ico" type="image/x-icon">
       <link rel="icon" sizes="any"     href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/favicon.svg" type="image/svg+xml">
       <link rel="mask-icon"            href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-icon-mask.svg" color="#1d70b8">
