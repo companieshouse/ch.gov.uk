@@ -34,7 +34,7 @@ sub build_filings_list_and_render() {
     my $query = {
         #  start_index    => $pager->first,
         #  items_per_page => $pager->entries_per_page,
-        user_id        => $self->param('user_id')
+        user_id        => $self->param('user_id')//undef
     };
 
     $self->ch_api->user->user_transactions($query)->get->on(
