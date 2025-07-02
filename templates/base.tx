@@ -25,15 +25,14 @@
       (function(){if(navigator.userAgent.match(/IEMobile\/10\.0/)){var d=document,c="appendChild",a=d.createElement("style");a[c](d.createTextNode("@-ms-viewport{width:auto!important}"));d.getElementsByTagName("head")[0][c](a);}})();
     </script>
 
-    <!-- For third-generation iPad with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="144x144" href="//<% $cdn_url %>/images/apple-touch-icon-144x144.png">
-    <!-- For iPhone with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="114x114" href="//<% $cdn_url %>/images/apple-touch-icon-114x114.png">
-    <!-- For first- and second-generation iPad: --><link rel="apple-touch-icon-precomposed" sizes="72x72" href="//<% $cdn_url %>/images/apple-touch-icon-72x72.png">
-    <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: --><link rel="apple-touch-icon-precomposed" href="//<% $cdn_url %>/images/apple-touch-icon-57x57.png">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
   % if ! $c.config.feature.govuk_rebrand {
     <link href="//<% $cdn_url %>/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css" rel="stylesheet" />
+    <!-- For third-generation iPad with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="144x144" href="//<% $cdn_url %>/images/apple-touch-icon-144x144.png">
+    <!-- For iPhone with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="114x114" href="//<% $cdn_url %>/images/apple-touch-icon-114x114.png">
+    <!-- For first- and second-generation iPad: --><link rel="apple-touch-icon-precomposed" sizes="72x72" href="//<% $cdn_url %>/images/apple-touch-icon-72x72.png">
+    <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: --><link rel="apple-touch-icon-precomposed" href="//<% $cdn_url %>/images/apple-touch-icon-57x57.png">
     <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v3.5.0/images/favicon.ico" type="image/x-icon">
 
     <meta property="og:image" content="//<% $cdn_url %>/images/opengraph-image.jpg">
