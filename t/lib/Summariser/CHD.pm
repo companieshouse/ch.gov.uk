@@ -51,7 +51,7 @@ sub summary {
         } );
     }
     else { # blocking
-        my $tx = $self->_ua->post( 
+        my $tx = $self->_ua->post(
             $url => form => $form
         );
         $self->_summarise_company( $company_number, $summary, $tx, undef, );
@@ -156,14 +156,14 @@ sub _summarise_company {
         # if the company menu is present there was a single match and the company was displayed
         # if the company search results frame is present there were two matches and links were displayed ( eg dissolved and recently dissolved )
 
-        if ( @{ $tx_company_search->success->dom('frame[src="compmenu"]') } || 
+        if ( @{ $tx_company_search->success->dom('frame[src="compmenu"]') } ||
              @{ $tx_company_search->success->dom('frame[src^="companysearch"]') }
         ) {
             $self->_process_company_profile( $company_number, $summary, $end, );
         }
         else {
           $summary->{error} = join( ': ',
-              'Company menu not available in CHD for company ' . $company_number, 
+              'Company menu not available in CHD for company ' . $company_number,
               map { defined $_ ? $_->text : '' } @{ $tx_company_search->success->dom('table > tr > td > table > tr > td > span[class="error"]') },
           );
           # say $summary->{error};
@@ -182,15 +182,14 @@ sub _summarise_company_profile {
     my ( $self, $company_number, $summary, $menu_selection_tx, $end, ) = @_;
 
     my %side_menu_enabled;
-    @side_menu_enabled{qw(company_details filing_history appointments)} = 
-        map { $_->{class} eq 'sidemenu' } 
+    @side_menu_enabled{qw(company_details filing_history appointments)} =
+        map { $_->{class} eq 'sidemenu' }
         @{ $menu_selection_tx->res->dom('td[class="sidemenubg"] > a, span') }[0,1,6];
     $summary->{available} = \%side_menu_enabled;
 
-# say "NSDBG success[",$menu_selection_tx->success?1:0,"|",$menu_selection_tx->res->body,"]:",Dumper( [ map { $_->{class} } @{ $menu_selection_tx->res->dom('td[class="sidemenubg"] > a, span') }[0,1,6] ] );
     if ( $side_menu_enabled{company_details} ) {
         my $url = $self->_url->path( 'compdetails' );
-        if ( defined $end ) { 
+        if ( defined $end ) {
             $self->_ua->get( $url => sub {
                 my ( $ua, $tx ) = @_;
                 $self->_summarise_company_details( $company_number, $summary, $tx, $end, );
@@ -204,7 +203,7 @@ sub _summarise_company_profile {
         }
     } else {
         my $url = $self->_url->path( 'cosel' );
-        if ( defined $end ) { 
+        if ( defined $end ) {
             $self->_ua->get( $url => sub {
                 my ( $ua, $tx ) = @_;
                 $self->_summarise_company_selection( $company_number, $summary, $tx, $end, );
@@ -225,17 +224,17 @@ sub _summarise_company_details {
     my ( $self, $company_number, $summary, $res_profile ) = @_;
 
     if ( $company_number =~ /^RC/ ) { # Royal Charter
-        @$summary{qw(company_number company_name status)} = 
+        @$summary{qw(company_number company_name status)} =
             map { defined $_ ? $_->text : '' } @{ $res_profile->res->dom('table > tr > td > table > tr > td[class="sbtext"]') };
         ( $summary->{status} ) = $summary->{status} =~ /^(.*?) Company Incorporated by Royal Charter/;
     }
     else {
         my @text_span = @{ $res_profile->res->dom('table > tr > td > table > tr > td > span[class="text"]') };
-        @$summary{qw(company_name registered_office_address incorporation_date country_of_origin)} = 
+        @$summary{qw(company_name registered_office_address incorporation_date country_of_origin)} =
             map { defined $_ ? $_->text : '' } @text_span[0..3];
         $summary->{registered_office_address} =~ s{(?:c/o|PO Box) }{}g;
         $summary->{incorporation_date} =~ s/(\d+)\/(\d+)\/(\d+)/$3-$2-$1/;
-    
+
         @text_span = map { defined $_ ? $_->text : '' } @{ $res_profile->res->dom('body > table > tr > td > span[class="text"],span[class="scud"]') };
         @$summary{qw(company_number status type)} = splice @text_span,0,3;
         my $last_sic_index = 0; $last_sic_index++ while $text_span[$last_sic_index] =~ /^(?:\d+ - |None Supplied|\d+$)/;
@@ -243,7 +242,7 @@ sub _summarise_company_details {
         @$summary{qw(last_accounts_to next_accounts_due last_return_to next_return_to)} = map { m|(\d+)/(\d+)/(\d+)| ? "$3-$2-$1" : $_ } @text_span[1,3,4,5];
         @$summary{qw(accounting_reference_date accounts_type charges)} = @text_span[0,2,6];
     }
-    if ( $summary->{status} =~ m|^(Dissolved)\s(\d{2})/(\d{2})/(\d{4})$| ) { 
+    if ( $summary->{status} =~ m|^(Dissolved)\s(\d{2})/(\d{2})/(\d{4})$| ) {
         $summary->{status} = $1;
         $summary->{dissolution_date} = "$4-$3-$2";
     }
@@ -259,7 +258,7 @@ sub _summarise_filing_history {
     my $type_map = {
         'LATEST SOC' => 'SH01',
     };
-    
+
     if ( $tx_filing_history->success ) {
         my $hidden = $tx_filing_history->success->dom('input[type="hidden"]');
         my $more_pages = @{ $tx_filing_history->success->dom('input[name="morebut"]') };
@@ -272,7 +271,7 @@ sub _summarise_filing_history {
             my $date = $date_td->span->text||$date_td->span->i->text;
             $type = $type_map->{$type} if exists $type_map->{$type};
             my $year_month_day = $date =~ m|(?<day>\d{2})/(?<month>\d{2})/(?<year>\d{4})| ?
-                $+{year} . $+{month} . $+{day} : '00000000';         
+                $+{year} . $+{month} . $+{day} : '00000000';
             $self->increment_summary( $summary, $level, $type, $year_month_day );
         }
         if ( $more_pages ) {
