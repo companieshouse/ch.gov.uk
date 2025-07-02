@@ -38,16 +38,15 @@
     <meta property="og:image" content="//<% $cdn_url %>/images/opengraph-image.jpg">
   % } else {
       <meta name="theme-color" content="#1d70b8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <link rel="stylesheet"           href="//<% $cdn_url %>/stylesheets/govuk-frontend/v5.10.0/govuk-frontend-5.10.0.min.css"  />
-      <link rel="icon" sizes="48x48"   href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/favicon.ico" type="image/x-icon">
-      <link rel="icon" sizes="any"     href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/favicon.svg" type="image/svg+xml">
-      <link rel="mask-icon"            href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-icon-mask.svg" color="#1d70b8">
-      <link rel="apple-touch-icon"     href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-icon-180.png" type="image/png">
-      <link rel="icon" sizes="192x192" href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-icon-192.png" type="image/png">
-      <link rel="icon" sizes="512x512" href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-icon-512.png" type="image/png">
+      <link rel="stylesheet"           href="//<% $govuk_assets.stylesheets %>/govuk-frontend-<% $govuk_frontend_version %>.min.css"  />
+      <link rel="icon" sizes="48x48"   href="//<% $govuk_assets.images %>/favicon.ico" type="image/x-icon">
+      <link rel="icon" sizes="any"     href="//<% $govuk_assets.images %>/favicon.svg" type="image/svg+xml">
+      <link rel="mask-icon"            href="//<% $govuk_assets.images %>/govuk-icon-mask.svg" color="#1d70b8">
+      <link rel="apple-touch-icon"     href="//<% $govuk_assets.images %>/govuk-icon-180.png" type="image/png">
+      <link rel="icon" sizes="192x192" href="//<% $govuk_assets.images %>/govuk-icon-192.png" type="image/png">
+      <link rel="icon" sizes="512x512" href="//<% $govuk_assets.images %>/govuk-icon-512.png" type="image/png">
 
-      <meta property="og:image" content="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-opengraph-image.png">
+      <meta property="og:image" content="//<% $govuk_assets.images %>/govuk-opengraph-image.png">
   % }
 
     <!-- Companies House Styles and Scripts -->
@@ -374,6 +373,13 @@
       <script>
         document.getElementById("feedback-link").setAttribute("href", "/help/feedback?sourceurl=" +  window.location.href);
       </script>
+
+      % if $c.config.feature.govuk_rebrand {
+        <script type="module">
+              import { initAll } from '<% $govuk_assets.javascripts %>/govuk-frontend-<% $govuk_frontend_version %>.min.js'
+              initAll()
+        </script>
+      % }
     <!-- End of Companies House Scripts -->
   </body>
 </html>

@@ -11,6 +11,8 @@ api:
 cdn:
   url: <CDN_HOST>
   script_dir: <CDN_SCRIPT_DIR>
+  govuk_frontend_version: <GOVUK_FRONTEND_VERSION>
+
 
 cookie_signing_key: "<COOKIE_SECRET>"
 
