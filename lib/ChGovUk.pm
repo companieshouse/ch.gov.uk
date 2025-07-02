@@ -16,14 +16,14 @@ sub startup {
 
     # Set CH::Log as the default logger via this wrapper
     $self->log(MojoX::Log::Declare->new());
-    
+
     $self->plugin('CH::MojoX::Plugin::Config', { files => ['appconfig.yml','errors.yml'] } );
 
     # Fail fast if required private config variables are missing
     foreach my $var (qw(cookie_signing_key url_sign_salt)) {
         die "Missing " . $var . " in configuration" unless $self->config->{$var};
     }
-    
+
     $self->secrets([$self->config->{cookie_signing_key}]);
 
     l_dir( File::Spec->join($self->app->home, 'i18n') );
@@ -33,7 +33,7 @@ sub startup {
     $self->plugin('MojoX::JSON::XS');
 
     $self->plugin('CH::MojoX::Administration::Plugin');
-    
+
     # Configure web path to role name mappings
     $self->plugin('CH::MojoX::UserPermissions::Plugin', map => [
         {path => qr#^/admin/roles(/.*)?$#,  urn => '/admin/roles'},
@@ -92,12 +92,6 @@ sub startup {
         $self->plugin('MojoX::Plugin::PODRenderer');
     }
 
-    $self->plugin('MojoX::Plugin::Statsd', config => $self->config->{statsd}, namespace => sub {
-        my ($ctrl) = @_;
-
-        return $ctrl->app->moniker.".".$ctrl->current_route;
-    });
-
     # FIXME: Remove this when Doc API goes live
     $self->helper(can_view_images => sub {
         my ($c) = @_;
@@ -131,25 +125,15 @@ sub register_session_manager {
         hooks  => {
             before_load  => sub {
                 my ($self, $c, $id) = @_;
-                $c->stash->{'.statsd.session.started'} = [Time::HiRes::gettimeofday()];
             },
             before_store => sub {
                 my ($self, $c, $id) = @_;
-                $c->stash->{'.statsd.session.started'} = [Time::HiRes::gettimeofday()];
             },
             after_load   => sub {
                 my ($self, $c, $id) = @_;
-                $c->time_stats     ( "session.load.elapsed", Time::HiRes::tv_interval(
-                                      $c->stash->{'.statsd.session.started'}, [Time::HiRes::gettimeofday()] ),
-                                      namespace =>  $namespace );
-                $c->increment_stats( "session.load", namespace => $namespace );
             },
             after_store  => sub {
                 my ($self, $c, $id) = @_;
-                $c->time_stats     ( "session.store.elapsed", Time::HiRes::tv_interval(
-                                      $c->stash->{'.statsd.session.started'}, [Time::HiRes::gettimeofday()] ),
-                                      namespace => $namespace );
-                $c->increment_stats( "session.store", namespace => $namespace );
             },
         });
 }
