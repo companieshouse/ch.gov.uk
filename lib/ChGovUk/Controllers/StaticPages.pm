@@ -92,7 +92,7 @@ sub render_homepage {
 sub render_static_page {
     my ($self, $basket_items, $show_basket_link) = @_;
 
-    debug "render_static_page(%s, %s)", $basket_items, $show_basket_link [HOMEPAGE];
+    debug "render_static_page(%s, %s)", $basket_items, $show_basket_link//'undef' [HOMEPAGE];
 
     $self->stash(
         basket_items     => $basket_items,
@@ -118,6 +118,7 @@ sub log_error {
     my $error_code = $tx->error->{code} // 0;
     my $error_message = $tx->error->{message} // 0;
     my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
+    return if uc($error_type) eq 'FAILURE' && $error_code eq '404'; # don't log empty basket
     error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [HOMEPAGE];
 }
 
