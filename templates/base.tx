@@ -5,9 +5,6 @@
   <html lang="en" class="govuk-template govuk-template--rebranded">
   % }
   <head>
-    % if $c.config.feature.govuk_rebrand {
-      <meta name="theme-color" content="#1d70b8">
-    % }
 
     <% if $noindex { %>
       <meta name="robots" content="noindex" />
@@ -27,13 +24,6 @@
     <script>
       (function(){if(navigator.userAgent.match(/IEMobile\/10\.0/)){var d=document,c="appendChild",a=d.createElement("style");a[c](d.createTextNode("@-ms-viewport{width:auto!important}"));d.getElementsByTagName("head")[0][c](a);}})();
     </script>
-  % if ! $c.config.feature.govuk_rebrand {
-    <link href="//<% $cdn_url %>/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css" rel="stylesheet" />
-    <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v3.5.0/images/favicon.ico" type="image/x-icon">
-  % } else {
-    <link href="//<% $cdn_url %>/stylesheets/govuk-frontend/v5.10.0/govuk-frontend-5.10.0.min.css" rel="stylesheet" />
-    <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/favicon.ico" type="image/x-icon">
-  % }
 
     <!-- For third-generation iPad with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="144x144" href="//<% $cdn_url %>/images/apple-touch-icon-144x144.png">
     <!-- For iPhone with high-resolution Retina display: --><link rel="apple-touch-icon-precomposed" sizes="114x114" href="//<% $cdn_url %>/images/apple-touch-icon-114x114.png">
@@ -41,7 +31,26 @@
     <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: --><link rel="apple-touch-icon-precomposed" href="//<% $cdn_url %>/images/apple-touch-icon-57x57.png">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  % if ! $c.config.feature.govuk_rebrand {
+    <link href="//<% $cdn_url %>/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v3.5.0/images/favicon.ico" type="image/x-icon">
+
     <meta property="og:image" content="//<% $cdn_url %>/images/opengraph-image.jpg">
+  % } else {
+      <meta name="theme-color" content="#1d70b8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <link href="//<% $cdn_url %>/stylesheets/govuk-frontend/v5.10.0/govuk-frontend-5.10.0.min.css" rel="stylesheet" />
+      <link rel="shortcut icon" href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/favicon.ico" type="image/x-icon">
+      <link rel="icon" sizes="48x48"   href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/favicon.ico" type="image/x-icon">
+      <link rel="icon" sizes="any"     href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/favicon.svg" type="image/svg+xml">
+      <link rel="mask-icon"            href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-icon-mask.svg" color="#1d70b8">
+      <link rel="apple-touch-icon"     href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-icon-180.png" type="image/png">
+      <link rel="icon" sizes="192x192" href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-icon-192.png" type="image/png">
+      <link rel="icon" sizes="512x512" href="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-icon-512.png" type="image/png">
+
+      <meta property="og:image" content="//<% $cdn_url %>/images/govuk-frontend/v5.10.0/rebrand/govuk-opengraph-image.png">
+  % }
 
     <!-- Companies House Styles and Scripts -->
 
