@@ -36,13 +36,16 @@ sub setup_before_dispatch_hook {
 
         $self->stash( session => $self->session );
 
+        my $rebrand = $self->config->{feature}->{govuk_rebrand} // 0;
+        $self->stash(govuk_rebrand => $rebrand);
+
         my $cdn_url = $self->config->{cdn}->{url} // '';
         if($cdn_url) {
             $self->stash(cdn_url => $cdn_url);
 
             my $govuk_frontend_version = $self->config->{cdn}->{govuk_frontend_version} // '';
             if($govuk_frontend_version) {
-                my $rebrand = ($self->config->{feature}->{govuk_rebrand}) ? '/rebrand' : '';
+                $rebrand = $rebrand ? '/rebrand' : '';
                 my $govuk_pathname = "govuk-frontend/v${govuk_frontend_version}";
                 my %govuk_assets = (
                     "fonts"       => "${cdn_url}/fonts/${govuk_pathname}",
