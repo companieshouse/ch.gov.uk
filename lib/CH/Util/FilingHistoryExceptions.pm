@@ -5,11 +5,10 @@ use CH::Perl;
 # Stores data from filing_history_exceptions.yml on API (populated by ChGovUk::Plugins::FilingHistoryExceptions)
 our %lookup_data = ();
 
-# ------------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------------
 
 sub lookup {
     my ($app, $id) = @_;
-    # debug "LOOKUP ID [%s] [%s]", $id, $lookup_data{exception}->{$id} [NSDBG];
     return $lookup_data{exceptions}->{$id};
 }
 
