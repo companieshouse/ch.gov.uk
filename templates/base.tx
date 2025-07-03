@@ -46,7 +46,8 @@
       <link rel="icon" sizes="192x192" href="//<% $govuk_assets.images %>/govuk-icon-192.png" type="image/png">
       <link rel="icon" sizes="512x512" href="//<% $govuk_assets.images %>/govuk-icon-512.png" type="image/png">
 
-      <meta property="og:image" content="//<% $govuk_assets.images %>/govuk-opengraph-image.png">
+      <link rel="manifest"             href="//<% $govuk_assets.static %>/manifest.json">
+      <meta property="og:image"     content="//<% $govuk_assets.images %>/govuk-opengraph-image.png">
   % }
 
     <!-- Companies House Styles and Scripts -->
