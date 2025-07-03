@@ -28,7 +28,6 @@ else
 
     echo "Setting up log4perl.conf"
     mv "${APP_DIR}/log4perl.production.conf" "${APP_DIR}/log4perl.conf"
-    sed -i "s|<FLUENTD_TAG_PREFIX>|${APP_NAME}|g" "${APP_DIR}/log4perl.conf"
 
     export PATH
     export PATH="/opt/plenv/bin:${PATH}"
