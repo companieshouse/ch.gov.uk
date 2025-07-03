@@ -43,7 +43,7 @@ sub setup_before_dispatch_hook {
         if($cdn_url) {
             $self->stash(cdn_url => $cdn_url);
 
-            my $govuk_frontend_version = $self->config->{cdn}->{govuk_frontend_version} // '';
+            my $govuk_frontend_version = $self->config->{cdn}->{govuk_frontend_version} // '5.10.2';
             if($govuk_frontend_version) {
                 $rebrand = $rebrand ? '/rebrand' : '';
                 my $govuk_pathname = "govuk-frontend/v${govuk_frontend_version}";
