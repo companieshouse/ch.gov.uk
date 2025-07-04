@@ -9,6 +9,8 @@ use CH::Util::CompanyPrefixes;
 use ChGovUk::Transaction;
 
 use MIME::Base64 qw(encode_base64url decode_base64url);
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -57,9 +59,12 @@ sub confirmation {
 sub get_transaction {
     my ($self) = @_;
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING transactions (transactions) '" . refaddr(\$start) . "'";
     $self->ch_api->transactions($self->stash('transaction_number'))->get->on(
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING transactions (transactions) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my ($error_message, $error_code) = ($tx->error->{message}, $tx->error->{code});
                 my $message = 'Failed to fetch transaction '.$self->stash('transaction_number').': '.$error_code.' '.$error_message;
                 error "%s", $message [API];
@@ -67,12 +72,14 @@ sub get_transaction {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING transactions (transactions) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 my $message = 'Failed to fetch transaction '.$self->stash('transaction_number').': '.$error;
                 error "%s", $message [ROUTING];
                 $self->render_exception($message);
         },
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING transactions (transactions) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 my $transaction = $tx->success->json;
 
                 $self->stash(transaction => $transaction);

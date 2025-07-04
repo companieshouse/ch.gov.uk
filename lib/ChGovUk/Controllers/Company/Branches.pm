@@ -5,6 +5,8 @@ use Mojo::IOLoop;
 use Mojo::IOLoop::Delay;
 
 use CH::Perl;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -16,17 +18,20 @@ sub view {
     my $company_number = $self->param('company_number');
 
     # Get a list of branch companies for the requested company via the API
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.ukestablishments '" . refaddr(\$start) . "'";
     $self->ch_api->company($company_number)->ukestablishments()->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING company.ukestablishments success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $results = $tx->success->json;
             trace "related companies for %s: %s", $company_number, d:$results [COMPANY BRANCHES];
 
             # Add the number of branches to the stash
             $self->stash('number_of_branches' => scalar @{$results->{items}});
-            # Add the number of branches with status 'open' 
+            # Add the number of branches with status 'open'
             $self->stash('number_of_branches_open' => scalar(grep { $_->{company_status} =~ /open/i } @{$results->{items}}) || 0);
-            # Add the number of branches with status 'closed' 
+            # Add the number of branches with status 'closed'
             $self->stash('number_of_branches_closed' => scalar(grep { $_->{company_status} =~ /closed/i } @{$results->{items}}) || 0);
 
             trace "branches total %d open %d",
@@ -39,6 +44,7 @@ sub view {
         },
         failure => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING company.ukestablishments failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my ($error_code, $error_message) = (
                 $tx->error->{code} // 0,
@@ -50,6 +56,7 @@ sub view {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING company.ukestablishments error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             error "Error retrieving branches list for %s: %s", $company_number, $error;
             return $self->render_exception("Error retrieving company branches: $error");

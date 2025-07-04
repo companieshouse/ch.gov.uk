@@ -3,6 +3,8 @@ package ChGovUk::Controllers::Company::Registers;
 use Mojo::Base 'Mojolicious::Controller';
 
 use CH::Perl;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 # -----------------------------------------------------------------------------
 
@@ -16,9 +18,12 @@ sub list {
 
     my $delay = Mojo::IOLoop::Delay->new->data({ company_number => $company_number } );
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING registers list '" . refaddr(\$start) . "'";
     $delay->on(
         finish => sub {
             my ($delay) = @_;
+            debug "TIMING registers list finish '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             $self->populate_stash($delay->data->{company_registers}, $delay->data->{members_pdf});
             $self->render( );
@@ -28,6 +33,7 @@ sub list {
     $delay->on(
         error => sub {
             my ( $delay ) = @_;
+            debug "TIMING registers list error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             $delay->data->{error}->{errcode} == 404 ? $self->render_not_found : $self->render_exception($delay->data->{error}->{errmessage});
         }
     );
@@ -55,15 +61,19 @@ sub _get_company_registers {
 
     my $company_number = $delay->data('company_number');
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.registers '" . refaddr(\$start) . "'";
     $self->ch_api->company($company_number)->registers->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING registers success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             $delay->data->{company_registers} = $tx->success->json;
             $next->();
         },
         failure => sub {
           my ($api, $tx) = @_;
+            debug "TIMING company.registers failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
           my ($error_code, $error_message) = ($tx->error->{code} // 0, $tx->error->{message});
 
@@ -79,6 +89,7 @@ sub _get_company_registers {
        },
        error => sub {
            my ($api, $error) = @_;
+            debug "TIMING company.registers error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
            error "Error retrieving company register list for [%s]: [%s]", $company_number, $error [COMPANY REGISTER];
            $delay->data->{error} = { status => 'exception', errmessage => $error };
@@ -119,9 +130,12 @@ sub _get_image_location {
 
      trace "find transaction: [%s] for company [%s]", $item->{transaction_id}, $company_number [COMPANY REGISTER FILING];
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.filing_history_item (image) '" . refaddr(\$start) . "'";
      $self->ch_api->company($company_number)->filing_history_item($item->{transaction_id})->get->on(
          success => sub {
              my ( $api, $tx ) = @_;
+             debug "TIMING company.filing_history_item (image) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
              my $filing_doc = $tx->success->json;
 
              if (defined $filing_doc->{links}->{document_metadata}) {
@@ -135,6 +149,7 @@ sub _get_image_location {
           },
           failure => sub {
               my ( $api, $tx ) = @_;
+              debug "TIMING company.filing_history_item (image) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
               my ($error_code, $error_message) = ($tx->error->{code} // 0, $tx->error->{message});
               if ($error_code == 404) {
@@ -149,6 +164,7 @@ sub _get_image_location {
           },
           error => sub {
               my ($api, $error) = @_;
+              debug "TIMING company.filing_history_item (image) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
               error "Error retrieving company register list for [%s]: [%s]", $company_number, $error [COMPANY REGISTER];
               $delay->data->{error} = { status => 'exception', errmessage => $error };
@@ -169,9 +185,12 @@ sub has_metadata {
         my @parts = split( /\//, $results->{registers}->{members}->{items}[0]->{links}->{filing} );
         my $transaction_id = $parts[4];
 
+        my $start = [Time::HiRes::gettimeofday()];
+        debug "TIMING company.filing_history_item (metadata) '" . refaddr(\$start) . "'";
         $self->ch_api->company($company_number)->filing_history_item($transaction_id)->get->on(
             success => sub {
                 my ( $api, $tx ) = @_;
+                debug "TIMING company.filing_history_item (metadata) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 my $filing_doc = $tx->success->json;
 
                 if (defined $filing_doc->{links}->{document_metadata}) {
@@ -186,12 +205,14 @@ sub has_metadata {
              },
              failure => sub {
                  my ( $api, $tx ) = @_;
+                 debug "TIMING company.filing_history_item (metadata) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                  warn "Failure finding transaction_id: [%s], error [%s]", $transaction_id, d:$tx->error->{message};
                  $next->()
              },
              error => sub {
                  my ($api, $error) = @_;
+                 debug "TIMING company.filing_history_item (metadata) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                  warn "Error finding transaction_id: [%s], [%s]", $transaction_id, d:$error;
                  $next->();

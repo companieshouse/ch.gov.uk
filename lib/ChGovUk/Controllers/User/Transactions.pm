@@ -6,6 +6,8 @@ use CH::Perl;
 use CH::Util::Pager;
 use CH::Util::DateHelper;
 use POSIX qw(strftime);
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -30,9 +32,12 @@ sub list {
     # the selected categories as a hashref of category-name => true pairs. used from the template
     # to determine whether the corresponding category-filter checkbox should be checked
     # Get the filing history for the company from the API
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING user.user_transactions (transactions) '" . refaddr(\$start) . "'";
     $self->ch_api->user->user_transactions($query)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING user.user_transactions (transactions) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $rf_results = $tx->success->json;
 
             for my $doc (@{$rf_results->{items}}) {
@@ -60,6 +65,7 @@ sub list {
         },
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING user.user_transactions (transactions) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my $error_code = $tx->error->{code} // 0;
             if ($error_code == 404) {

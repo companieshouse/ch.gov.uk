@@ -142,7 +142,7 @@ sub to_date_time {
 
     }
     else {
-        error "Unable to parse invalid date '%s'", $date [VALIDATION];
+        error "Unable to parse invalid date '%s'", d:$date [VALIDATION];
         CH::Exception->throw('Unable to parse date - Cannot process [' . $date . ']');
     }
     return DateTime::Tiny->new(
@@ -178,7 +178,7 @@ sub as_local_string {
     return '' if !defined $date || length($date) == 0;
 
     if ($date !~ /^[0-9]*$/) {
-        error "Unable to parse invalid date [%s]", $date [VALIDATION];
+        error "Unable to parse invalid date [%s]", d:$date [VALIDATION];
         CH::Exception->throw('Unable to parse date - Cannot process [' . $date . ']');
     }
 
@@ -273,10 +273,14 @@ sub days_between {
 sub isodate_as_string {
     my ($class, $date, $format) = @_;
 
+    if ( ref $date eq 'HASH' && exists $date->{'$date'} ) {
+        $date = $date->{'$date'} // '';
+    }
     return '' if !defined $date || length($date) == 0;
 
     if ($date !~ /^(\d{4})-?(\d{2})-?(\d{2})T(\d{2}):?(\d{2}):?(\d{2})|(\d{4})-?(\d{2})-?(\d{2})$/) {
-        error "Unable to parse invalid date [%s]", $date [VALIDATION];
+        error "Unable to parse invalid date [%s]", d:$date [VALIDATION];
+
         CH::Exception->throw('Unable to parse date - Cannot process [' . $date . ']');
     }
 
@@ -300,7 +304,7 @@ sub isodatetime_as_string {
     return '' if !defined $date || length($date) == 0;
 
     if ($date !~ /^(\d{4})-?(\d{2})-?(\d{2})T(\d{2}):?(\d{2}):?(\d{2})$/) {
-        error "Unable to parse invalid date [%s]", $date [VALIDATION];
+        error "Unable to parse invalid date [%s]", d:$date [VALIDATION];
         CH::Exception->throw('Unable to parse date - Cannot process [' . $date . ']');
     }
 

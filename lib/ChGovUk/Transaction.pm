@@ -112,7 +112,7 @@ sub create {
     })->on(
         'success' => sub {
             my ($api, $tx) = @_;
-            
+
             debug "Transaction created %s", d:$tx->res->json [ROUTING];
             $transaction_data = $tx->res->json;
 
@@ -152,7 +152,7 @@ sub create {
             return $self->controller->render_exception($message);
         },
     )->execute;
-    
+
     return;
 }
 
@@ -161,7 +161,7 @@ sub create {
 sub get_start_url {
     my ($self) = @_;
 
-    my $url = $self->controller->base_url . join( '/', 
+    my $url = $self->controller->base_url . join( '/',
         'company',
         $self->controller->stash('company_number'),
         'transactions',
@@ -211,7 +211,7 @@ sub _prepare_form_model {
         if(!$self->model) {
             debug "Creating new instance of model" [ROUTING];
             $self->model($type->new( data_adapter => $self->controller->stash('data_adapter'),
-                                      %{ $self->controller->stash('model_args') // {} } )); 
+                                      %{ $self->controller->stash('model_args') // {} } ));
             my $class = camelize($self->metadata->{controller});
             $class = "ChGovUk::Controllers::".$class;
             $class->model_preload($self->model) if $class->can('model_preload');

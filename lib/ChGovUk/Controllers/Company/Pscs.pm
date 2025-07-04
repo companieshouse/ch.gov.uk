@@ -6,6 +6,8 @@ use CH::Perl;
 use CH::Util::Pager;
 use CH::Util::DateHelper;
 use Mojo::IOLoop::Delay;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -40,16 +42,19 @@ sub list {
     my $psc_delay = Mojo::IOLoop::Delay->new;
 
     my $psc_delay_end = $psc_delay->begin(0); # psc listing delay
-   
-   #---- PSC LIST ------- 
-    
+
+   #---- PSC LIST -------
+
     # Get the psc list for the company from the API
+    my $pscs_start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.pscs '" . refaddr(\$pscs_start) . "'";
     $self->ch_api->company($company_number)->pscs({
         start_index    => abs int $first_psc_number,
         items_per_page => $pager->entries_per_page,
     })->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.pscs success '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start);
 
             my $results = $tx->success->json;
 
@@ -76,6 +81,7 @@ sub list {
         },
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.pscs failure '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start);
 
             my ($error_code, $error_message) = (
                 $tx->error->{code} // 0,
@@ -92,6 +98,7 @@ sub list {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING company.pscs error '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start);
 
             $psc_delay_end->();
             error "Error retrieving company psc list for %s: %s", $company_number, $error;
@@ -100,17 +107,20 @@ sub list {
     )->execute;
 
 
-   #---- PSC STATEMENTS LIST ------ 
+   #---- PSC STATEMENTS LIST ------
 
     my $psc_statements_delay_end = $psc_delay->begin(0);
 
     # Get the psc statements list for the company from the API
+    my $statements_start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.psc_statements '" . refaddr(\$statements_start) . "'";
      $self->ch_api->company($company_number)->psc_statements({
         start_index    => abs int $first_psc_number,
         items_per_page => $pager->entries_per_page,
     })->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.psc_statements success '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start);
 
             my $results = $tx->success->json;
 
@@ -119,6 +129,7 @@ sub list {
         },
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.psc_statements failure '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start);
 
             my ($error_code, $error_message) = (
                 $tx->error->{code} // 0,
@@ -135,6 +146,7 @@ sub list {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING company.psc_statements error '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start);
 
             error "Error retrieving psc statements list for %s: %s", $company_number, $error;
             return $self->render_exception("Error retrieving company pscs: $error");
@@ -142,14 +154,17 @@ sub list {
     )->execute;
 
 
-        #Once both API calls come back with responses... 
+        #Once both API calls come back with responses...
 
+        my $start = [Time::HiRes::gettimeofday()];
+        debug "TIMING psc common '" . refaddr(\$start) . "'";
         $psc_delay->on(
                  finish => sub {
                      my ($delay, $pscs, $psc_statements) = @_;
+                     debug "TIMING psc common finish '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                      my $psc_list = $self->merge_pscs_and_statements($pscs->{items}, $psc_statements->{items});
-                         
+
                      my $total_results_combined = $psc_statements->{total_results} + $pscs->{total_results};
 
                      my $psc_results = $pscs->{total_results};
@@ -187,20 +202,20 @@ sub list {
                      my $exemption_delay = Mojo::IOLoop::Delay->new;
                      my $exemption_delay_end;
 
-                     if ( ( $pscs->{links}->{exemptions} || $psc_statements->{links}->{exemptions} ) ||  $total_results_combined == 0  ) 
+                     if ( ( $pscs->{links}->{exemptions} || $psc_statements->{links}->{exemptions} ) ||  $total_results_combined == 0  )
                      {
                         $exemption_delay_end = $exemption_delay->begin(0);
                         $self->get_exemptions_resource($exemption_delay_end);
                      } else {
                         $self->render;
                      }
-                     
+
             $exemption_delay->on(
                       finish => sub {
                           my ($delay, $exemptions) = @_;
 
                                 $self->stash(exemptions => $exemptions);
-                    
+
                                 $self->render;
                           },
                           error => sub {
@@ -212,6 +227,7 @@ sub list {
                  },
                  error => sub {
                      my ($delay, $err) = @_;
+                     debug "TIMING psc common error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                      error "Error getting psc listing : %s", $err [ PSC Listing ];
                      return $self->render_exception($err);
                  }
@@ -231,7 +247,7 @@ sub merge_pscs_and_statements {
     push @{ $pscs }, @{ $statements };
 
     for my $item (@{ $pscs }) {
-        $item->{statement_6_flag} = 1 if ( $item->{statement} eq "psc-has-failed-to-confirm-changed-details");
+        $item->{statement_6_flag} = 1 if ( $item->{statement}//'' eq "psc-has-failed-to-confirm-changed-details");
         if ( $item->{ceased_on} || $item->{ceased} ) {
             push @ceased_items, $item;
         } else {
@@ -252,42 +268,46 @@ sub get_exemptions_resource {
 
     my $company_number = $self->param('company_number');
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.exemptions '" . refaddr(\$start) . "'";
     $self->ch_api->company($self->stash('company_number'))->exemptions()->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING company.exemptions success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $results = $tx->success->json;
 
             my $exemptions = $results->{exemptions};
 
             foreach my $key (keys %$exemptions) {
-    
+
                 # Date conversion should take place in the template however it is not possible as that date is part of description string
                 $exemptions->{$key}->{items}->[0]->{exempt_from} = CH::Util::DateHelper->isodate_as_string($exemptions->{$key}->{items}->[0]->{exempt_from});
-                
+
                 # As it is PSC controller we're not interested in any other exemptions than these 4
                 if ( ( $key ne "psc_exempt_as_trading_on_regulated_market" &&
                        $key ne "psc_exempt_as_shares_admitted_on_market" &&
                        $key ne "psc_exempt_as_trading_on_uk_regulated_market" &&
-                       $key ne "psc_exempt_as_trading_on_eu_regulated_market" 
+                       $key ne "psc_exempt_as_trading_on_eu_regulated_market"
                     ) || $exemptions->{$key}->{items}->[0]->{exempt_to} ) {
                     delete $exemptions->{$key};
                 }
             }
-            
+
             trace "Exemptions for %s: %s", $self->stash('company_number'), d:$exemptions [EXEMPTIONS];
             if ( %$exemptions ) {
                 return $callback->($exemptions);
-            } 
+            }
             return $callback->();
         },
         failure => sub {
             my ( $api, $error ) = @_;
+            debug "TIMING company.exemptions failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my ($error_code, $error_message) = (
                 $error->error->{code} // 0,
                 $error->error->{message},
             );
-            if ($error_code == 404) { 
+            if ($error_code == 404) {
             trace "Psc exemptions not found for company [%s]", $company_number [EXEMPTIONS];
             return $callback->();
             }

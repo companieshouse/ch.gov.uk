@@ -4,6 +4,8 @@ use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Util::Pager;
 use URI::Escape;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 our $JSON_PAGE_SIZE = 20;
 our $DEFAULT_PAGE_SIZE = 20;
@@ -39,8 +41,8 @@ sub results {
     $query =~ s/\s+/ /sg;
 
     my $encoded_query = uri_escape_utf8($query);
-    
-    # use the search type, or the previous search type (pst) - otherwise default 
+
+    # use the search type, or the previous search type (pst) - otherwise default
     my $search_type = $self->param('search_type') || 'all';
 
     # If we are doing a search that inherites the 'type' that was used in the last search, then get that out of the session,
@@ -53,12 +55,12 @@ sub results {
     $self->session(
         'pst' => $search_type,
     );
-    
+
     # pass the search type to the template for a different form action
     $self->stash(
         'search_type'   => $search_type,
-        'title'         => ($query) 
-                        ? $query . ' - Find and update company information - GOV.UK' 
+        'title'         => ($query)
+                        ? $query . ' - Find and update company information - GOV.UK'
                         : 'Find and update company information - GOV.UK',
         'searchTerm' => $encoded_query  # Store the encoded query term
     );
@@ -87,9 +89,11 @@ sub results {
         'start_index'	=> ($page-1) * $page_size
     };
 
+    my $start;
     my $callbacks = {
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING search (search) failure '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
             my $error_code = $tx->error->{code} // 0;
             my $error_message = $tx->error->{message} // 0;
             my $message = 'Error '.(defined $error_code ? "[$error_code] " : '').'retrieving search results: '.$error_message;
@@ -104,6 +108,7 @@ sub results {
         success => sub {
             my ($api, $tx) = @_;
 
+            debug "TIMING search (search) success '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
             # do not index search results pages
             $self->stash(noindex => 1);
 
@@ -175,6 +180,7 @@ sub results {
 
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING search (search) error '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
             my $message = 'Error retrieving search results: '.$error;
             error "%s", $message [Search];
             $self->render_exception($message);
@@ -184,10 +190,12 @@ sub results {
     my $method = $search_method{$search_type} // '';
     trace "Executing query for search type: %s", d:$search_type;
 
+    $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING search (search) '" . refaddr(\$start) . "'";
     if ($method) {
         $self->ch_api->search->$method($args)->get->on( %$callbacks )->execute;
     } else {
-  	    $self->ch_api->search($args)->get->on( %$callbacks )->execute;
+  	$self->ch_api->search($args)->get->on( %$callbacks )->execute;
     }
 
     return $self->render_later;
@@ -197,9 +205,12 @@ sub results {
 sub get_basket_link {
     my ( $self ) = @_;
         if ($self->is_signed_in) {
+        my $start = [Time::HiRes::gettimeofday()];
+        debug "TIMING basket (search) '" . refaddr(\$start) . "'";
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (link) success '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
                 my $json = $tx->success->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
@@ -213,16 +224,19 @@ sub get_basket_link {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (link) not_authorised '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
                 warn "User not authenticated; not displaying basket link", [SEARCH];
                 $self->stash_basket_link(undef, 0);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (link) failure '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "failure");
                 $self->stash_basket_link(undef, 0);
             },
             error          => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (link) error '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "error");
                 $self->stash_basket_link(undef, 0);
             }
@@ -247,6 +261,7 @@ sub log_error {
     my $error_code = $tx->error->{code} // 0;
     my $error_message = $tx->error->{message} // 0;
     my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
+    return if uc($error_type) eq 'FAILURE' && $error_code eq '404'; # don't log empty basket
     error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [SEARCH];
 }
 
