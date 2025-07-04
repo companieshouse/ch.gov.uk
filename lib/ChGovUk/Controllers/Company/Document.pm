@@ -3,6 +3,8 @@ package ChGovUk::Controllers::Company::Document;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Perl;
 use Net::CompaniesHouse::DocumentEndpoint;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -23,11 +25,15 @@ sub document {
 
     $self->render_later;
 
+    my $doc_start = [Time::HiRes::gettimeofday()];
+    debug "TIMING document (company document) '" . refaddr(\$doc_start) . "'";
     $delay->steps(
         sub {
             my ($delay) = @_;
             my $next = $delay->begin(0);
 
+            my $start = [Time::HiRes::gettimeofday()];
+            debug "TIMING company.filing_history_item (company document) '" . refaddr(\$start) . "'";
             $self->ch_api
             ->company($self->stash->{company_number})
             ->filing_history_item($self->stash->{filing_history_id})
@@ -35,6 +41,7 @@ sub document {
             ->get->on(
                 failure => sub {
                     my ($api, $tx) = @_;
+                    debug "TIMING company.filing_history_item (company document) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                     my $code = $tx->error->{code} // 0;
 
                     if ($code == 404) {
@@ -55,6 +62,7 @@ sub document {
                 },
                 error => sub {
                     my ($api, $err) = @_;
+                    debug "TIMING company.filing_history_item (company document) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                     $delay->emit('error', sprintf(
                         'Error fetching filing history item for company_number [%s] filing_history_id [%s]: %s',
@@ -65,6 +73,7 @@ sub document {
                 },
                 success => sub {
                     my ($api, $tx) = @_;
+                    debug "TIMING company.filing_history_item (company document) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                     if (my $document_metadata_uri = $tx->res->json->{links}->{document_metadata}) {
                         $next->($document_metadata_uri);
@@ -79,9 +88,12 @@ sub document {
             my ($delay, $document_metadata_uri) = @_;
             my $next = $delay->begin(0);
 
+            my $start = [Time::HiRes::gettimeofday()];
+            debug "TIMING document (company document) '" . refaddr(\$start) . "'";
             $self->ch_api->document($document_metadata_uri)->is_download($is_download)->$format->get->on(
                 failure => sub {
                     my ($api, $tx) = @_;
+                    debug "TIMING document (company document) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                     my $code = $tx->error->{code} // 0;
 
                     if ($code == 404) {
@@ -99,6 +111,7 @@ sub document {
                 },
                 error => sub {
                     my ($api, $err) = @_;
+                    debug "TIMING document (company document) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                     $delay->emit('error', sprintf(
                         'Error fetching document for company_number [%s] filing_history_id [%s]: [%s]',
@@ -109,6 +122,7 @@ sub document {
                 },
                 success => sub {
                     my ($api, $tx) = @_;
+                    debug "TIMING document (company document) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                     trace "TRANSACTION: %s", d:$tx [DOCUMENT];
                     my $location = $tx->res->headers->location;
@@ -129,6 +143,7 @@ sub document {
 
     $delay->on(error => sub {
         my ($delay, $err) = @_;
+        debug "TIMING document (company document) error '" . refaddr(\$doc_start) . "' elapsed: " . Time::HiRes::tv_interval($doc_start);
 
         error $err [DOCUMENT];
         $self->reply->exception($err);
@@ -136,6 +151,7 @@ sub document {
 
     $delay->on(not_found => sub {
         my ($delay, $message) = @_;
+        debug "TIMING document (company document) not_found '" . refaddr(\$doc_start) . "' elapsed: " . Time::HiRes::tv_interval($doc_start);
 
         info "[%s]: not found", $message [DOCUMENT];
         $self->reply->not_found;
@@ -143,6 +159,7 @@ sub document {
 
     $delay->on(finish => sub {
         my ($delay, $location) = @_;
+        debug "TIMING document (company document) finish '" . refaddr(\$doc_start) . "' elapsed: " . Time::HiRes::tv_interval($doc_start);
 
         debug "Serving redirect to [%s]", $location [DOCUMENT];
         $self->redirect_to($location);

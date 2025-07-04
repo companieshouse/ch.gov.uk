@@ -4,6 +4,8 @@ use Mojo::Base 'Mojolicious::Controller';
 use CH::Perl;
 use JSON::XS;
 use List::Util qw/first/;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -17,9 +19,12 @@ sub search_by_company_number {
 
     $self->stash(search => $company_number);
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING private.company.transactions '" . refaddr(\$start) . "'";
     $self->ch_api->private->company($company_number)->transactions->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING private.company.transactions success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my $company_transactions = $tx->success->json;
             if (defined($company_transactions)) {
@@ -40,6 +45,7 @@ sub search_by_company_number {
         },
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING private.company.transactions failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $error_code = $tx->error->{code} // 0;
             my $error_message = $tx->error->{message};
 
@@ -54,6 +60,7 @@ sub search_by_company_number {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING private.company.transactions error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my $message = sprintf 'Error occured getting filings by company number [%s] as admin [%s]', $company_number, $error;
             error $message [ROUTING];
@@ -71,9 +78,12 @@ sub filing {
 
     my $transaction_id = $self->stash('transaction_number');
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING transactions (transaction) '" . refaddr(\$start) . "'";
     $self->ch_api->transactions($transaction_id)->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING transactions (transaction) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my $transaction = $tx->success->json;
             if (defined $transaction) {
@@ -92,6 +102,7 @@ sub filing {
         },
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING transactions (transaction) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $error_code = $tx->error->{code} // 0;
             my $error_message = $tx->error->{message};
 
@@ -106,6 +117,7 @@ sub filing {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING transactions (transaction) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my $message = sprintf 'Error occured getting transaction [%s] as admin [%s]', $transaction_id, $error;
             error $message [ROUTING];
@@ -245,30 +257,30 @@ sub transaction_json {
 
 sub transaction_reprocess {
     my ($self) = @_;
-    
+
     $self->render_later;
-    
+
     my $transaction_id = $self->stash('transaction_number');
-    
+
     $self->ch_api->private->transactions($transaction_id)->reprocess->create->on(
         success => sub {
             my ($api, $tx) = @_;
-            
+
             return $self->render;
         },
         failure => sub {
             my ($api, $tx) = @_;
             my $error_code = $tx->error->{code} // 0;
             my $error_message = $tx->error->{message};
-            
+
             my $message;
-            
+
             if (defined $error_code and $error_code == 403) {
                 $message = sprintf 'Transaction [%s] - Failed to reprocess non-closed transaction [%s]: [%s]', $transaction_id, $error_code, $error_message;
             } else {
                 $message = sprintf 'Transaction [%s] - Failure occurred reprocessing transaction [%s]: [%s]', $transaction_id, $error_code, $error_message;
             }
-            
+
             error $message [ADMIN TRANSACTION_REPROCESS];
             return $self->render_exception($message);
         },
@@ -276,7 +288,7 @@ sub transaction_reprocess {
             my ($api, $error) = @_;
 
             my $message = sprintf 'Transaction [%s] - Error occurred reprocessing transaction: [%s]', $transaction_id, $error;
-            
+
             error $message [ADMIN TRANSACTION_REPROCESS];
             return $self->render_exception($message);
         }
@@ -559,7 +571,7 @@ sub _get_new_transaction {
     $self->ch_api->uri($resource_link)->get->on(
         success => sub {
             my ($api, $tx) = @_;
-            
+
             trace "Transaction with id: " . $transaction_id . " retrieved";
             $delay->data->{transaction} = $tx->success->json;
             $next->();
@@ -591,7 +603,7 @@ sub _get_new_transaction {
             error 'Transaction [%s] - Error occurred getting transaction as admin [%s]', $transaction_id, $error;
             $delay->data->{error} = { status => 'exception', errmessage => $error };
             $delay->emit('error');
-            
+
             #my $message = sprintf 'Transaction [%s] - Error occurred getting transaction as admin [%s]', $transaction_id, $error;
             #error $message [ADMIN TRANSACTION_LOOKUP];
             #return $self->render_exception($message);
@@ -601,7 +613,7 @@ sub _get_new_transaction {
 
 #-------------------------------------------------------------------------------
 
-# Get resource by following link in transaction filing 
+# Get resource by following link in transaction filing
 sub _get_filing_resource {
     my ($self, $delay, $next) = @_;
 
@@ -662,13 +674,13 @@ sub _get_filing_resource {
 
 #-------------------------------------------------------------------------------
 
-# Get abridged accounts document from Accounts API for new 'Your Filings'/'Account-site' page 
+# Get abridged accounts document from Accounts API for new 'Your Filings'/'Account-site' page
 sub _get_accounts_submission_data {
     my ($self, $delay, $next) = @_;
-    
+
     my $accounts = $delay->data("resource");
     my $resource_link;
-    
+
     if ( defined $accounts->{links}->{abridged_accounts} ){
         $resource_link = $accounts->{links}->{abridged_accounts};
     } else {
@@ -677,14 +689,17 @@ sub _get_accounts_submission_data {
        $delay->emit('error');
     }
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING accounts submission '" . refaddr(\$start) . "'";
     $self->ch_api->uri($resource_link)->get->on(
              success => sub {
                  my ($api, $tx) = @_;
+                 debug "TIMING accounts submission success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                  my $abridged_accounts = $tx->success->json;
 
                  trace "Accounts document retrieved " . $resource_link;
-             
+
                  $delay->data->{resource} = $abridged_accounts;
                  $next->();
                  #$self->stash(data_json => JSON::XS->new->pretty(1)->encode( $tx->success->json ));
@@ -692,6 +707,7 @@ sub _get_accounts_submission_data {
              },
              failure => sub {
                  my ($api, $tx) = @_;
+                 debug "TIMING accounts submission failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                  my $error_code = $tx->error->{code} // 0;
                  my $error_message = $tx->error->{message};
@@ -708,6 +724,7 @@ sub _get_accounts_submission_data {
              },
              error => sub {
                  my ($api, $error) = @_;
+                 debug "TIMING accounts submission error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                  error 'Error occurred getting resource [%s]', $resource_link;
                  $delay->data->{error} = { status => 'exception', error => $error};

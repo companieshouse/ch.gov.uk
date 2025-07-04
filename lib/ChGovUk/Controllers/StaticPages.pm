@@ -3,6 +3,8 @@ package ChGovUk::Controllers::StaticPages;
 use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Util::CVConstants;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -26,9 +28,12 @@ sub get_basket {
     my ($self, $is_static_page) = @_;
 
     if ($self->is_signed_in) {
+	my $start = [Time::HiRes::gettimeofday()];
+	debug "TIMING basket (static pages) '" . refaddr(\$start) . "'";
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (static pages) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 my $json = $tx->res->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
@@ -42,16 +47,19 @@ sub get_basket {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (static pages) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 warn "User not authenticated; not displaying basket link", [HOMEPAGE];
                 $self->render_page(0, undef, $is_static_page);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (static pages) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "failure");
                 $self->render_page(0, undef, $is_static_page);
             },
             error          => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (static pages) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "error");
                 $self->render_page(0, undef, $is_static_page);
             }

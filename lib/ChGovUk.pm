@@ -6,6 +6,8 @@ use CH::Perl;
 use CH::Util::DateHelper;
 use Locale::Simple;
 use Time::HiRes qw(tv_interval gettimeofday);
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 # ------------------------------------------------------------------------------
 

@@ -6,6 +6,8 @@ use CH::Perl;
 use CH::Util::Pager;
 use CH::Util::DateHelper;
 use Mojo::IOLoop::Delay;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -39,10 +41,12 @@ sub list {
     my $psc_delay = Mojo::IOLoop::Delay->new;
 
     my $psc_delay_end = $psc_delay->begin(0); # psc listing delay
-   
-   #---- PSC LIST ------- 
-    
+
+   #---- PSC LIST -------
+
     # Get the psc list for the company from the API
+    my $pscs_start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.pscs (registers pscs) '" . refaddr(\$pscs_start) . "'";
     $self->ch_api->company($company_number)->pscs({
         start_index    => abs int $first_psc_number,
         items_per_page => $pager->entries_per_page,
@@ -50,6 +54,7 @@ sub list {
     })->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.pscs (registers pscs) success '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start);
 
             my $results = $tx->success->json;
 
@@ -76,6 +81,7 @@ sub list {
         },
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.pscs (registers pscs) failure '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start);
 
             my ($error_code, $error_message) = (
                 $tx->error->{code} // 0,
@@ -92,6 +98,7 @@ sub list {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING company.pscs (registers pscs) error '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start);
 
             $psc_delay_end->();
             error "Error retrieving company psc list for %s: %s", $company_number, $error;
@@ -100,11 +107,13 @@ sub list {
     )->execute;
 
 
-   #---- PSC STATEMENTS LIST ------ 
+   #---- PSC STATEMENTS LIST ------
 
     my $psc_statements_delay_end = $psc_delay->begin(0);
 
     # Get the psc statements list for the company from the API
+    my $statements_start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.psc_statements (registers pscs) '" . refaddr(\$statements_start) . "'";
      $self->ch_api->company($company_number)->psc_statements({
         start_index    => abs int $first_psc_number,
         items_per_page => $pager->entries_per_page,
@@ -112,6 +121,7 @@ sub list {
     })->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.psc_statements (registers pscs) success '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start);
 
             my $results = $tx->success->json;
 
@@ -120,6 +130,7 @@ sub list {
         },
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.psc_statements (registers pscs) failure '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start);
 
             my ($error_code, $error_message) = (
                 $tx->error->{code} // 0,
@@ -136,6 +147,7 @@ sub list {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING company.psc_statements (registers pscs) error '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start);
 
             error "Error retrieving psc statements list for %s: %s", $company_number, $error;
             return $self->render_exception("Error retrieving company pscs: $error");
@@ -143,15 +155,18 @@ sub list {
     )->execute;
 
 
-        #Once both API calls come back with responses... 
+        #Once both API calls come back with responses...
 
+        my $start = [Time::HiRes::gettimeofday()];
+        debug "TIMING register pscs common '" . refaddr(\$start) . "'";
         $psc_delay->on(
                  finish => sub {
                      my ($delay, $pscs, $psc_statements) = @_;
+                     debug "TIMING register pscs common finish '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
 
                      my $psc_list = $self->merge_pscs_and_statements($pscs->{items}, $psc_statements->{items});
-                         
+
                      my $total_results_combined = $psc_statements->{total_results} + $pscs->{total_results};
                      # PSC listing
                      $self->stash(pscs => {
@@ -170,6 +185,7 @@ sub list {
                  },
                  error => sub {
                      my ($delay, $err) = @_;
+                     debug "TIMING register pscs common error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                      error "Error getting psc listing : %s", $err [ PSC Listing ];
                      return $self->render_exception($err);
                  }

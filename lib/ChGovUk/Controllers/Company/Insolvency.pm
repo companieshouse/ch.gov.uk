@@ -6,6 +6,8 @@ use Mojo::IOLoop::Delay;
 
 use CH::Perl;
 use CH::Util::DateHelper;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -17,9 +19,12 @@ sub view {
     my $company_number = $self->param('company_number');
 
     # Get the insolvency data for the company from the API
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.insolvency '" . refaddr(\$start) . "'";
     $self->ch_api->company($self->stash('company_number'))->insolvency()->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING company.insolvency success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $results = $tx->success->json;
             trace "insolvency for %s: %s", $self->stash('company_number'), d:$results [INSOLVENCY];
 
@@ -43,6 +48,7 @@ sub view {
         },
         failure => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING company.insolvency failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             error "Failure retrieving company insolvency for %s: %s",
               $self->stash('company_number'), $tx->error->{message};

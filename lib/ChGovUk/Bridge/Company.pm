@@ -4,6 +4,8 @@ use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use DateTime::Tiny;
 use CH::Util::DateHelper qw(is_current_date_greater);
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -23,10 +25,12 @@ sub company {
     # Get the basket link for the user nav bar
     $self->get_basket_link;
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.profile (company) '" . refaddr(\$start) . "'";
     $api->get->on(
-    #$self->ch_api->company($company_number)->profile->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.profile (company) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             trace "company profile for: [%s]: [%s]", $company_number, d:$tx->success->json [COMPANY PROFILE];
             my $results = $tx->success->json;
             $self->stash(company => $results);
@@ -93,6 +97,7 @@ sub company {
 
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.profile (company) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $error_code = $tx->error->{code} // 0;
             my $error_message = $tx->error->{message};
 
@@ -108,6 +113,7 @@ sub company {
         },
 
         not_authorised => sub {
+            debug "TIMING company.profile (company) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $return_to = $self->req->url->to_string;
             # User is no longer considered authorised for ANYTHING!
             # TODO There should be a better way to nuke a users auth/identity values
@@ -122,6 +128,7 @@ sub company {
 
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING company.profile (company) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $message = "Error retrieving company $company_number:$error";
             error "[%s]", $message [COMPANY PROFILE];
             $self->render_exception($message);
@@ -134,9 +141,12 @@ sub company {
 sub get_basket_link {
     my ( $self ) = @_;
         if ($self->is_signed_in) {
+        my $start = [Time::HiRes::gettimeofday()];
+        debug "TIMING basket (company) '" . refaddr(\$start) . "'";
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (company) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 my $json = $tx->success->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
@@ -150,16 +160,19 @@ sub get_basket_link {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (company) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 warn "User not authenticated; not displaying basket link", [COMPANY_BRIDGE];
                 $self->stash_basket_link(undef, 0);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (company) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "failure");
                 $self->stash_basket_link(undef, 0);
             },
             error          => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (company) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "error");
                 $self->stash_basket_link(undef, 0);
             }

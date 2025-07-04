@@ -4,6 +4,8 @@ use Mojo::Base 'Mojolicious::Controller';
 
 use CH::Perl;
 use CH::Util::Pager;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 use constant AVAILABLE_CATEGORIES => {
     active => 'Current appointments',
@@ -44,6 +46,8 @@ sub get {
     # Get the basket link for the user nav bar
     $self->get_basket_link;
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING officers.appointments '" . refaddr(\$start) . "'";
     $self->ch_api->officers($officer_id)->appointments({
         filter         => $filter,
         items_per_page => $items_per_page,
@@ -51,6 +55,7 @@ sub get {
     })->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING officers.appointments success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my $results = $tx->success->json;
             trace 'Appointments for officer [%s]: %s', $officer_id, d:$results;
@@ -89,6 +94,7 @@ sub get {
         },
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING officers.appointments failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my ($error_code, $error_message) = @{ $tx->error }{qw(code message)};
 
@@ -102,6 +108,7 @@ sub get {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING officers.appointments error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             error 'Error retrieving appointments for officer [%s]: [%s]', $officer_id, $error;
             return $self->render_exception("Error retrieving officer appointments: $error");
@@ -114,9 +121,12 @@ sub get {
 sub get_basket_link {
     my ( $self ) = @_;
         if ($self->is_signed_in) {
+        my $start = [Time::HiRes::gettimeofday()];
+        debug "TIMING basket (personal appointments) '" . refaddr(\$start) . "'";
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (personal appointments) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 my $json = $tx->success->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
@@ -130,16 +140,19 @@ sub get_basket_link {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (personal appointments) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 warn "User not authenticated; not displaying basket link", [PERSONAL_APPOINTMENTS];
                 $self->stash_basket_link(undef, 0);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (personal appointments) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "failure");
                 $self->stash_basket_link(undef, 0);
             },
             error          => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (personal appointments) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "error");
                 $self->stash_basket_link(undef, 0);
             }

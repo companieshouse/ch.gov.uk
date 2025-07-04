@@ -20,7 +20,7 @@ sub register {
     # 'root' is the root route... matches '/'
     my $root = $app->routes->find('root');
 
-    $root->route('/cookies')->via('GET')->to( template => 'help/cookies' );
+    # $root->route('/cookies')->via('GET')->to( template => 'help/cookies' );
 
     # Get the bridges
     my $user         = $root->bridge->name('user_auth')->to( cb => \&CH::MojoX::SignIn::Bridge::OAuth2::bridge );

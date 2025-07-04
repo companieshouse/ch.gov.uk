@@ -3,6 +3,8 @@ package ChGovUk::Controllers::BasketLinkController;
 use Log::Declare;
 use Moose;
 extends 'MojoX::Moose::Controller';
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 # -----------------------------------------------------------------------------
 
@@ -10,9 +12,12 @@ sub get_basket_link {
     my ($self, $next) = @_;
 
     if ($self->is_signed_in) {
+        my $start = [Time::HiRes::gettimeofday()];
+        debug "TIMING basket (basket link controller) '" . refaddr(\$start) . "'";
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (basket link controller) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 my $json = $tx->success->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
@@ -27,18 +32,21 @@ sub get_basket_link {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (basket link controller) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 warn "User not authenticated; not displaying basket link.", [BASKET_LINK_CONTROLLER];
                 $self->hide_basket_link;
                 $next->();
             },
             failure        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (basket link controller) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "failure");
                 $self->hide_basket_link;
                 $next->();
             },
             error          => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (basket link controller) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "error");
                 $self->hide_basket_link;
                 $next->();
