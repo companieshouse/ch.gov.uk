@@ -96,20 +96,18 @@
   </head>
 
   <body class="govuk-template__body">
-    <script>
-      document.body.className += ' js-enabled';
-    </script>
+    % if ! $govuk_rebrand {
+      <script>  document.body.className += ' js-enabled';</script>
+    % } else {
+      <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
+    % }
 
     <div class="entire-wrapper">
     <% include 'includes/cookie-consent-banner.tx' %>
     <div id="skiplink-container">
         <div>
         <!--$alternative_skiplink provides a different ID as #content contains styling which can throw off certain screens-->
-        % if !$alternative_skiplink {
-          <a href="#content" class="govuk-skip-link">Skip to main content</a>
-        % } else {
-          <a href="#page-content" class="govuk-skip-link">Skip to main content</a>
-        % }
+        <a href="<% (! $alternative_skiplink) ? '#content' : '#page-content' %>"  class="govuk-skip-link" <% if $govuk_rebrand { %> data-module="govuk-skip-link" <% } %> >Skip to main content</a>
         </div>
     </div>
 

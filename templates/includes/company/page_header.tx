@@ -16,7 +16,7 @@
                 <div class="govuk-grid-column-two-thirds">
                     <div class="govuk-warning-text corporate-annotations-text govuk-!-margin-bottom-2">
                         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                        <span class="govuk-warning-text__assistive">Important</span>
+                        <span class="<% (! $govuk_rebrand) ? 'govuk-warning-text__assistive' : 'govuk-visually-hidden' %>">Important</span>
                         % for $company.corporate_annotation -> $ca {
                             % if $ca.type != "other" {
                                 <p class="govuk-warning-text__text"><% l($c.cv_lookup( 'corporate_annotation_type', $ca.type)) %></p>
@@ -55,7 +55,7 @@
                           % if $c.config.piwik.embed {
                               onclick="javascript:_paq.push(['trackEvent', 'RequestOEAuthcodeEmail', 'RequestOEAuthcodeEmail']);"
                           % }
-                      ><% l('Request authentication code') %> 
+                      ><% l('Request authentication code') %>
                       </a>
                 % }
             % }
