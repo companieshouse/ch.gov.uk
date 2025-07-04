@@ -24,6 +24,16 @@ sub setup_before_dispatch_hook {
     $app->hook( before_dispatch => sub {
         my ($self) = @_;
 
+        if ( $self->req->url->path =~ m{^/(opensearch\.xml|favicon\.ico|advanced-search|alphabetical-search|.*\bjquery.js)\b} ) {
+            # return error without creating a session
+            $self->app->log->debug("FILTER before_dispatch unsupported URL [" . $self->req->url->path . "] - return 404 Not Found");
+            $self->render_not_found;
+            # $self->render('error', status => 400, error => 'url_pattern_mismatch', description => "Bad request: URL pattern mismatch");
+            return;
+        } elsif ( $self->req->url->path !~ m{^/(|admin|signin|signout|oauth2|healthcheck|customer-feedback|company|company-name-availability|help|accounts|disqualified-officers|register-of-disqualifications|user|search|basket)(?:/|$)} ) {
+            # identify candidates for exclusion above
+            $self->app->log->debug("FILTER before_dispatch unexpected URL [" . $self->req->url->path . "] - candidate for filtering");
+        }
         $self->res->headers->server('Companies House');
         $self->res->headers->cache_control('no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
         $self->res->headers->header( 'Pragma' => 'no-cache');

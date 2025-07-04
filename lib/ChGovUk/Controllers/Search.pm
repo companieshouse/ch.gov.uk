@@ -89,11 +89,11 @@ sub results {
         'start_index'	=> ($page-1) * $page_size
     };
 
-    my $start = [Time::HiRes::gettimeofday()];
+    my $start;
     my $callbacks = {
         failure => sub {
             my ($api, $tx) = @_;
-            debug "After search failure '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
+            debug "TIMING search (search) failure '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
             my $error_code = $tx->error->{code} // 0;
             my $error_message = $tx->error->{message} // 0;
             my $message = 'Error '.(defined $error_code ? "[$error_code] " : '').'retrieving search results: '.$error_message;
@@ -108,7 +108,7 @@ sub results {
         success => sub {
             my ($api, $tx) = @_;
 
-            debug "After search success '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
+            debug "TIMING search (search) success '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
             # do not index search results pages
             $self->stash(noindex => 1);
 
@@ -180,7 +180,7 @@ sub results {
 
         error => sub {
             my ($api, $error) = @_;
-            debug "After search error '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
+            debug "TIMING search (search) error '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
             my $message = 'Error retrieving search results: '.$error;
             error "%s", $message [Search];
             $self->render_exception($message);
@@ -190,6 +190,8 @@ sub results {
     my $method = $search_method{$search_type} // '';
     trace "Executing query for search type: %s", d:$search_type;
 
+    $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING search (search) '" . refaddr(\$start) . "'";
     if ($method) {
         $self->ch_api->search->$method($args)->get->on( %$callbacks )->execute;
     } else {
@@ -203,9 +205,12 @@ sub results {
 sub get_basket_link {
     my ( $self ) = @_;
         if ($self->is_signed_in) {
+        my $start = [Time::HiRes::gettimeofday()];
+        debug "TIMING basket (search) '" . refaddr(\$start) . "'";
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (link) success '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
                 my $json = $tx->success->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
@@ -219,16 +224,19 @@ sub get_basket_link {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (link) not_authorised '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
                 warn "User not authenticated; not displaying basket link", [SEARCH];
                 $self->stash_basket_link(undef, 0);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (link) failure '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "failure");
                 $self->stash_basket_link(undef, 0);
             },
             error          => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (link) error '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "error");
                 $self->stash_basket_link(undef, 0);
             }

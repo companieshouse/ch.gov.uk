@@ -8,6 +8,8 @@ use CH::Util::Pager;
 use CH::Util::DateHelper;
 use POSIX qw(strftime);
 use MIME::Base64 qw(encode_base64url);
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -37,9 +39,12 @@ sub build_filings_list_and_render() {
         user_id        => $self->param('user_id')//undef
     };
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING user.user_transactions (filings) '" . refaddr(\$start) . "'";
     $self->ch_api->user->user_transactions($query)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING user.user_transactions (filings) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $rf_results = $tx->success->json;
 
             for my $doc (@{$rf_results->{items}}) {
@@ -73,6 +78,7 @@ sub build_filings_list_and_render() {
 
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING user.user_transactions (filings) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $error_code = $tx->error->{code} // 0;
             if ($error_code == 404) {
                 $self->stash(no_filings => 1);

@@ -4,6 +4,8 @@ use Mojo::Base 'Mojolicious::Controller';
 
 use CH::Perl;
 use CH::Util::Pager;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -24,6 +26,8 @@ sub list {
     my $first_officer_number = $page eq 1 ? 0 : ($page - 1) * $items_per_page;
 
     # Get the officer list of active directors for the company from the API
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.officers (registers directors) '" . refaddr(\$start) . "'";
     $self->ch_api->company($company_number)->officers({
         start_index    => abs int $first_officer_number,
         items_per_page => $pager->entries_per_page,
@@ -32,6 +36,7 @@ sub list {
     })->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.officers (registers directors) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my $results = $tx->success->json;
 
@@ -46,7 +51,7 @@ sub list {
                 if ($item->{date_of_birth}) {
                     $item->{date_of_birth} = sprintf("%04s-%02s-%02s",
                         $item->{date_of_birth}->{year},
-                        $item->{date_of_birth}->{month}, 
+                        $item->{date_of_birth}->{month},
                         $item->{date_of_birth}->{day} // '01');
                 }
             }
@@ -69,6 +74,7 @@ sub list {
         },
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING company.officers (registers directors) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my ($error_code, $error_message) = (
                 $tx->error->{code} // 0,
@@ -85,6 +91,7 @@ sub list {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING company.officers (registers directors) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             error "Error retrieving registered directors list for %s: %s", $company_number, $error;
             return $self->render_exception("Error retrieving registered directors: $error");
