@@ -41,8 +41,8 @@ identity_providers:
         client_id     : '<CHS_CH_CLIENT_ID>'
         client_secret : '<CHS_CH_CLIENT_SECRET>'
         authorize_url : '<ACCOUNT_URL>/oauth2/authorise'
-        token_url     : '<ACCOUNT_LOCAL_URL>/oauth2/token'
-        profile_url   : '<ACCOUNT_LOCAL_URL>/user/profile'
+        token_url     : '<ACCOUNT_PRIVATE_URL>/oauth2/token'
+        profile_url   : '<ACCOUNT_PRIVATE_URL>/user/profile'
         home_url      : '<CHS_URL>'
 
 external_url_for:
