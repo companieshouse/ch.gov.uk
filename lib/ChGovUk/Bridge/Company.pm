@@ -15,6 +15,12 @@ sub company {
     my $company_number = $self->stash('company_number') // '';
 
     trace "get company profile for: [%s]", $company_number [COMPANY PROFILE];
+    if ( $company_number !~ /^[A-Z0-9]{2}[0-9]{6}$/ ) {
+        error "Invalid company number format [%s] - return not found", $company_number [COMPANY PROFILE];
+        $self->render_not_found;
+        return undef;
+    }
+
 
     my $api = $self->ch_api->company($company_number)->profile;
     $api->force_api_key unless $self->authorised_company eq $company_number;
@@ -101,9 +107,9 @@ sub company {
             my $error_message = $tx->error->{message};
 
             if ($error_code == 404) {
-				trace "Company [%s] not found", $company_number [COMPANY PROFILE];
-				# Should do more than this:
-				return $self->render_not_found;
+                trace "Company [%s] not found", $company_number [COMPANY PROFILE];
+                # Should do more than this:
+                return $self->render_not_found;
             } else {
                 my $message = "Error ($error_code) retrieving company $company_number:$error_message";
                 error "[%s]", $message [COMPANY PROFILE];
