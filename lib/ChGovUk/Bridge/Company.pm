@@ -12,8 +12,7 @@ use Scalar::Util qw(refaddr);
 # Company profile page
 sub company {
     my ($self) = @_;
-    # Get the company number from the URL
-    my (undef, $slash_company, $company_number) = split '/', $self->tx->req->url->path;
+    my $company_number = $self->stash('company_number') // '';
 
     trace "get company profile for: [%s]", $company_number [COMPANY PROFILE];
 
