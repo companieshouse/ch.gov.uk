@@ -1,6 +1,7 @@
 package ChGovUk::Controllers::Company::BasketClient;
 
 use Moose;
+use CH::Perl;
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
 
