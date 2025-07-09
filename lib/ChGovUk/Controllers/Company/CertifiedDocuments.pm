@@ -11,6 +11,8 @@ use POSIX qw/ceil/;
 use JSON::XS;
 use ChGovUk::Plugins::FilterHelper;
 use DateTime;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 # all categories (that can be filtered by)
 use constant AVAILABLE_CATEGORIES => {
@@ -102,9 +104,12 @@ sub view {
     my $xhtml_available_date = $self->config->{xhtml_available_date} || '2015-06-01';
 
     # Get the filing history for the company from the API
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.filing_history (certified documents) '" . refaddr(\$start) . "'";
     $self->ch_api->company($self->stash('company_number'))->filing_history($query)->force_api_key(1)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING company.filing_history (certified documents) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $fh_results = $tx->success->json;
             trace "filing history for %s: %s", $self->stash('company_number'), d:$fh_results [FILING_HISTORY];
             for my $doc (@{$fh_results->{items}}) {
@@ -156,6 +161,7 @@ sub view {
         },
         failure => sub {
             my ( $api, $error ) = @_;
+            debug "TIMING company.filing_history (certified documents) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             error "Error retrieving company filing history for %s: %s",
                 $self->stash('company_number'), $error;
             $self->render_exception("Error retrieving company: $error");
@@ -187,21 +193,26 @@ sub post {
         push($body->{item_options}->{filing_history_documents}, {filing_history_id => $self->req->params->to_hash->{'transaction'}});
     };
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING orderable.certified_copies (certified documents) '" . refaddr(\$start) . "'";
     $self->ch_api->orderable->certified_copies->create($body)->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING orderable.certified_copies (certified documents) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $certifiedCopy = $tx->success->json;
             my $certifiedCopyId = $certifiedCopy->{'id'};
             $self->redirect_to("/orderable/certified-copies/${certifiedCopyId}/delivery-options");
         },
         error   => sub {
             my ($api, $error) = @_;
+            debug "TIMING orderable.certified_copies (certified documents) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             error 'Error creating certified copy';
             $self->render_exception($error);
         },
         failure => sub {
             my ($api, $error) = @_;
+            debug "TIMING orderable.certified_copies (certified documents) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             error 'Failure creating certified copy';
             $self->render_exception($error);

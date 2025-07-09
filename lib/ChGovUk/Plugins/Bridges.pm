@@ -8,6 +8,8 @@ use ChGovUk::Models::DataAdapter;
 use ChGovUk::Transaction;
 use ChGovUk::Models::Address;
 use CH::MojoX::SignIn::Bridge::HijackProtect;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 # =============================================================================
 
@@ -37,14 +39,16 @@ sub register {
 
                 my $address_model = ChGovUk::Models::Address->new();
                 my $maxlength = $address_model->rules->{postcode}->{maxlength};
-                
+
                 if (not length $postcode =~ s/\s//gr or length $postcode =~ s/\s//gr > $maxlength) {
                     trace "Value set for postcode is more than [%s] or not set", $maxlength [ROUTING];
                     $self->stash(postcode_lookup_failure => $field."[postcode]");
                     return 1;
                 }
 
+                my $start = [Time::HiRes::gettimeofday()];
                 $self->app->postcode_lookup($postcode, sub {
+                    debug "After postcode lookup '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
                     my ($address) = @_;
                     trace "Got result for postcode lookup:\n%s", d:$address [ROUTING];
 
@@ -153,9 +157,11 @@ sub register {
 
     # Setup company authentication bridge
     # Any routes off this bridge require a valid company session
+    my $start = [Time::HiRes::gettimeofday()];
     my $company_auth = $company->bridge('/')->name('company_auth')->to( cb => sub {
         my ($self) = @_;
-        trace 'company  authentication bridge' [ROUTING];
+        debug "After company auth bridge '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
+        trace 'company authentication bridge' [ROUTING];
         my $company_number = $self->stash('company_number');
 
         # If user is signing out and we've hit an "you must be authorised" company page

@@ -11,6 +11,8 @@ use POSIX qw/ceil/;
 use JSON::XS;
 use ChGovUk::Plugins::FilterHelper;
 use DateTime;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 # all categories (that can be filtered by)
 # XXX temp: need decision on what categories we're going to display and where the
@@ -95,7 +97,7 @@ sub view {
     if ($selected_category_count) {
         $query->{category} = join(',', map { $_->{id} } grep($_->{checked}, @$categories));
     }
- 
+
     my $xhtml_available_date = $self->config->{xhtml_available_date} || '2015-06-01';
     my $formatted_xhtml_available_date = date_convert($xhtml_available_date);
 
@@ -105,9 +107,12 @@ sub view {
     my $delay = Mojo::IOLoop->delay;
 
     # Get the filing history for the company from the API
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.filing_history (company filing history) '" . refaddr(\$start) . "'";
     $self->ch_api->company($self->stash('company_number'))->filing_history($query)->force_api_key(1)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING company.filing_history (company filing history) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $fh_results = $tx->success->json;
             trace "filing history for %s: %s", $self->stash('company_number'), d:$fh_results [FILING_HISTORY];
 
@@ -191,6 +196,7 @@ sub view {
         },
         failure => sub {
             my ( $api, $error ) = @_;
+            debug "TIMING company.filing_history (company filing history) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             error "Error retrieving company filing history for %s: %s",
             $self->stash('company_number'), $error;
             $self->render_exception("Error retrieving company: $error");
@@ -208,9 +214,12 @@ sub view {
 sub _get_content_type_application_zip {
     my ( $self, $document_metadata_uri, $doc, $callback ) = @_;
 
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING document.metadata (company filing history) '" . refaddr(\$start) . "'";
     $self->ch_api->document($document_metadata_uri)->metadata->get->on(
         failure => sub {
             my ($api, $tx) = @_;
+            debug "TIMING document.metadata (company filing history) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $code = $tx->error->{code} // 0;
             $doc->{content_type} = 'unknown';
             if ($code == 404) {
@@ -224,12 +233,14 @@ sub _get_content_type_application_zip {
         },
         error => sub {
             my ($api, $err) = @_;
+            debug "TIMING document.metadata (company filing history) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             $doc->{content_type} = 'unknown';
             error "Error fetching Content Type for %s: %s. Setting content_type to unknown", $document_metadata_uri, $err;
             return $callback->(0);
         },
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING document.metadata (company filing history) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $resources = $tx->res->json->{resources};
             if ($resources) {
                 foreach my $content_type (keys $resources) {

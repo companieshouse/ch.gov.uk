@@ -3,6 +3,8 @@ package ChGovUk::Controllers::StaticPages;
 use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Util::CVConstants;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 #-------------------------------------------------------------------------------
 
@@ -26,9 +28,12 @@ sub get_basket {
     my ($self, $is_static_page) = @_;
 
     if ($self->is_signed_in) {
+	my $start = [Time::HiRes::gettimeofday()];
+	debug "TIMING basket (static pages) '" . refaddr(\$start) . "'";
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (static pages) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 my $json = $tx->res->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
@@ -42,16 +47,19 @@ sub get_basket {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (static pages) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 warn "User not authenticated; not displaying basket link", [HOMEPAGE];
                 $self->render_page(0, undef, $is_static_page);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (static pages) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "failure");
                 $self->render_page(0, undef, $is_static_page);
             },
             error          => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (static pages) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "error");
                 $self->render_page(0, undef, $is_static_page);
             }
@@ -92,7 +100,7 @@ sub render_homepage {
 sub render_static_page {
     my ($self, $basket_items, $show_basket_link) = @_;
 
-    debug "render_static_page(%s, %s)", $basket_items, $show_basket_link [HOMEPAGE];
+    debug "render_static_page(%s, %s)", $basket_items, $show_basket_link//'undef' [HOMEPAGE];
 
     $self->stash(
         basket_items     => $basket_items,
@@ -118,6 +126,7 @@ sub log_error {
     my $error_code = $tx->error->{code} // 0;
     my $error_message = $tx->error->{message} // 0;
     my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
+    return if uc($error_type) eq 'FAILURE' && $error_code eq '404'; # don't log empty basket
     error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [HOMEPAGE];
 }
 

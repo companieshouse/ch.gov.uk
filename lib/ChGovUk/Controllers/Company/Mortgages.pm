@@ -10,6 +10,8 @@ use POSIX qw/ceil/;
 use Readonly;
 use CH::Util::Pager;
 use ChGovUk::Plugins::FilterHelper;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 Readonly my $PARTICULARS_SHORT_STRING_LENGTH => 60;
 Readonly my $LARGE_HEADING_MAX_LENGTH        => 140;
@@ -82,9 +84,12 @@ sub view {
     $query->{items_per_page} = $pager->entries_per_page;
 
     # Get the mortgage data for the company from the API
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.charges (company mortgages) '" . refaddr(\$start) . "'";
     $self->ch_api->company($self->stash('company_number'))->charges($query)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING company.charges (company mortgages) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $results = $tx->success->json;
             trace "mortgages for %s: %s", $self->stash('company_number'), d:$results [MORTGAGES];
 
@@ -141,6 +146,7 @@ sub view {
         },
         failure => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING company.charges (company mortgages) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my ($error_code, $error_message) = (
                 $tx->error->{code} // 0,
@@ -167,6 +173,7 @@ sub view {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING company.charges (company mortgages) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             error "Error retrieving charges list for %s: %s", $company_number, $error;
             return $self->render_exception("Error retrieving company charges: $error");
@@ -196,9 +203,12 @@ sub view_details {
     my $result;
 
     # Get the insolvency data for the company from the API
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING company.charge_details (company mortgages) '" . refaddr(\$start) . "'";
     $self->ch_api->company($self->stash('company_number'))->charge_details($charge_id)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
+            debug "TIMING company.charge_details (company mortgages) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             $result = $tx->success->json;
             trace "mortgage for %s with mortgage id %s: %s", $self->stash('company_number'), $charge_id, d:$result [MORTGAGE_DETAILS];
 
@@ -250,6 +260,7 @@ sub view_details {
        },
         failure => sub {
             my ( $api, $error ) = @_;
+            debug "TIMING company.charge_details (company mortgages) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my ($error_code, $error_message) = (
                 $error->error->{code} // 0,
@@ -271,6 +282,7 @@ sub view_details {
     $filing_delay->on(
                  finish => sub {
                      my ($delay, $response) = @_;
+                     debug "TIMING company.charge_details (company mortgages) d.finish '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                      trace "Mortgage document after transformation: %s", d:$result [MORTGAGE_DETAILS];
 
                      $self->stash(charge => $result );
@@ -281,6 +293,7 @@ sub view_details {
                      },
                  error => sub {
                      my ($delay, $err) = @_;
+                     debug "TIMING company.charge_details (company mortgages) d.error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                      error "Error getting mortgage details : %s", $err [ MORTGAGE_DETAILS ];
                      return $self->render_exception($err);
                  },
@@ -298,9 +311,12 @@ sub _get_image_location {
         my @parts = split( /\//, $mortgage_data->{links}->{filing} ); # FIXME Temporarily continue to use transaction_id until we can use the whole filing-history url
         $mortgage_data->{transaction_id} = $parts[4]; # splits into 4 parts because of the leading slash
 
+        my $start = [Time::HiRes::gettimeofday()];
+        debug "TIMING company.filing_history_item (company mortgages) '" . refaddr(\$start) . "'";
         $self->ch_api->company($self->param('company_number'))->filing_history_item($mortgage_data->{transaction_id})->get->on(
                success => sub {
                    my ( $api, $tx ) = @_;
+                   debug "TIMING company.filing_history_item (company mortgages) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                    my $filing_doc = $tx->success->json;
 
                    if (defined $filing_doc->{links}->{document_metadata}) {
@@ -315,6 +331,7 @@ sub _get_image_location {
              },
                failure => sub {
                    my ( $api, $tx ) = @_;
+                   debug "TIMING company.filing_history_item (company mortgages) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
                    error "Failure retrieving company filing for %s: %s", $self->stash('company_number'), $tx->error->{message};
                    return $callback->($mortgage_data);

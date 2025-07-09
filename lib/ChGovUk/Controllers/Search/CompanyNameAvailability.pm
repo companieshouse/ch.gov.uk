@@ -4,6 +4,8 @@ use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::Util;
 use Data::Dumper;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 use constant DEFAULT_ITEMS_PER_PAGE => 50;
 
@@ -30,6 +32,8 @@ sub perform_search() {
     my ($self, $company_name) = @_;
 
     debug "About to execute search", [COMPANY_NAME_AVAILABILITY];
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING search.companies (company name availability) '" . refaddr(\$start) . "'";
     $self->ch_api->search->companies({
         'q'              => $company_name,
         'items_per_page' => DEFAULT_ITEMS_PER_PAGE,
@@ -39,6 +43,7 @@ sub perform_search() {
     })->get->on(
         success => sub {
             my ($api, $tx) = @_;
+            debug "TIMING search.companies (company name availability) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my $json  = $tx->res->json;
 
@@ -61,6 +66,7 @@ sub perform_search() {
         failure => sub {
             my ($api, $tx) = @_;
 
+            debug "TIMING search.companies (company name availability) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             my $error_code = $tx->error->{code}       // 0;
             my $error_message = $tx->error->{message} // 0;
 
@@ -78,6 +84,7 @@ sub perform_search() {
         },
         error => sub {
             my ($api, $error) = @_;
+            debug "TIMING search.companies (company name availability) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             my $message = "Error retrieving search results: $error";
             error '%s', $message;
@@ -93,9 +100,12 @@ sub get_basket() {
     my ($self, $company_name) = @_;
     if ($self->is_signed_in) {
         debug "Signed in, calling basket API", [COMPANY_NAME_AVAILABILITY];
+        my $start = [Time::HiRes::gettimeofday()];
+        debug "TIMING basket (company name availability) '" . refaddr(\$start) . "'";
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (company name availability) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 debug "success", [COMPANY_NAME_AVAILABILITY];
                 my $json = $tx->res->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
@@ -111,6 +121,7 @@ sub get_basket() {
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (company name availability) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 debug "GET basket not_authorised", [COMPANY_NAME_AVAILABILITY];
                 warn "User not authenticated; not displaying basket link", [COMPANY_NAME_AVAILABILITY];
                 $self->stash_basket_link(0, undef);
@@ -118,12 +129,14 @@ sub get_basket() {
             },
             failure        => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (company name availability) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "failure");
                 $self->stash_basket_link(0, undef);
                 $self->search_or_render($company_name, "failure");
             },
             error          => sub {
                 my ($api, $tx) = @_;
+                debug "TIMING basket (company name availability) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                 log_error($tx, "error");
                 $self->stash_basket_link(0, undef);
                 $self->search_or_render($company_name, "error");
@@ -151,6 +164,7 @@ sub log_error {
     my $error_code = $tx->error->{code} // 0;
     my $error_message = $tx->error->{message} // 0;
     my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
+    return if uc($error_type) eq 'FAILURE' && $error_code eq '404'; # don't log empty basket
     error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [COMPANY_NAME_AVAILABILITY];
 }
 

@@ -7,6 +7,8 @@ use Try::Tiny;
 use CH::Util::AddressFieldValidate;
 use Mojo::Util qw/ url_escape /;
 use Mojo::UserAgent;
+use Time::HiRes qw(tv_interval gettimeofday);
+use Scalar::Util qw(refaddr);
 
 has 'app';
 
@@ -36,15 +38,18 @@ sub lookup {
     trace "Looking up postcode: $postcode";
 
     $postcode =~ s/\s*//g;
-    
+
     my $url = $self->app->config->{postcode}->{url} . '/' . url_escape($postcode);
     trace "Postcode URL=$url";
 
     # FIXME Use Admin::Net::CompaniesHouse so that the call is authenticated
     my $pcua = Mojo::UserAgent->new();
+    my $start = [Time::HiRes::gettimeofday()];
+    debug "TIMING lookup (postcode) '" . refaddr(\$start) . "'";
     $pcua->get($url => sub {
         my ($ua, $tx) = @_;
-        
+
+        debug "TIMING lookup (postcode) " . ( $tx->success ? 'success' : 'failure' ) . " '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
         my $keep_scope = $pcua; # Stop pcua going out of scope. FIXME Not needed when using Admin::NET::Companieshouse
 
         if ($tx->success) {
@@ -60,7 +65,7 @@ sub lookup {
     });
 }
 
-# ============================================================================== 
+# ==============================================================================
 
 1;
 
@@ -98,7 +103,7 @@ L<lookup|/"lookup_postcode"> helper.
 
 Attempts to lookup address for the given postcode.
 
-    @param   postcode [string]  postcode to lookup address for 
+    @param   postcode [string]  postcode to lookup address for
     @returns the address associated with the postcode which will contain
              fields for post_code, address_line1, address_line2, county and
              country.
