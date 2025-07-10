@@ -24,7 +24,8 @@ sub setup_before_dispatch_hook {
     $app->hook( before_dispatch => sub {
         my ($self) = @_;
 
-        if ( $self->req->url->path =~ m{^/(opensearch\.xml|.*\bfavicon\.ico|advanced-search|alphabetical-search|.*\bjquery.js)\b} ) {
+        if ( $self->req->url->path =~ m{^/(opensearch\.xml|.*\bfavicon\.ico|advanced-search|alphabetical-search|.*\bjquery\.js)\b} ) {
+            # consider adding \.png \.js \.woff[2]?
             # return error without creating a session
             $self->app->log->debug("FILTER before_dispatch unsupported URL [" . $self->req->url->path . "] - return 404 Not Found");
             $self->render_not_found;
