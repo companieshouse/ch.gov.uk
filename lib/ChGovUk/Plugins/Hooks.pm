@@ -30,7 +30,7 @@ sub setup_before_dispatch_hook {
             $self->render_not_found;
             # $self->render('error', status => 400, error => 'url_pattern_mismatch', description => "Bad request: URL pattern mismatch");
             return;
-        } elsif ( $self->req->url->path !~ m{^/(|admin|signin|signout|oauth2|healthcheck|customer-feedback|company|company-name-availability|help|accounts|disqualified-officers|register-of-disqualifications|user|search|basket)(?:/|$)} ) {
+        } elsif ( $self->req->url->path !~ m{^/(|admin|signin|signout|oauth2|healthcheck|customer-feedback|company|company-name-availability|help|accounts|disqualified-officers|officers|register-of-disqualifications|user|search|basket)(?:/|$)} ) {
             # identify candidates for exclusion above
             $self->app->log->debug("FILTER before_dispatch unexpected URL [" . $self->req->url->path . "] - candidate for filtering");
         }
