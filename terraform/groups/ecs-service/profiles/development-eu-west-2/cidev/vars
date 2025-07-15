@@ -13,7 +13,7 @@ use_fargate = false
 desired_task_count_search = 2
 min_task_count_search = 2
 max_task_count_search = 6
-enable_listener_search = false
+enable_listener_search = true
 use_ecs_cluster_search = true
 use_fargate_search = false
 
