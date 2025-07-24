@@ -5,7 +5,7 @@ aws_profile = "staging-eu-west-2"
 desired_task_count = 8
 min_task_count = 8
 max_task_count = 48
-enable_listener = false
+enable_listener = true
 use_ecs_cluster_default = true
 use_fargate = false
 
@@ -13,7 +13,7 @@ use_fargate = false
 desired_task_count_search = 8
 min_task_count_search = 8
 max_task_count_search = 32
-enable_listener_search = false
+enable_listener_search = true
 use_ecs_cluster_search = true
 use_fargate_search = false
 
@@ -21,7 +21,7 @@ use_fargate_search = false
 desired_task_count_officers = 8
 min_task_count_officers = 8
 max_task_count_officers = 32
-enable_listener_officers = false
+enable_listener_officers = true
 use_ecs_cluster_officers = true
 use_fargate_officers = false
 
