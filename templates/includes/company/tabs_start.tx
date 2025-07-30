@@ -1,5 +1,5 @@
 <!-- START govuk-tabs -->
-<div class="govuk-tabs" data-module="govuk-tabs">
+<div class="govuk-tabs">
     <ul class="govuk-tabs__list">
         % include "/includes/company/tab.tx" { tabid => 'company-overview-tab', page => '', title => '<span class="govuk-visually-hidden">Company </span>Overview' }
 
