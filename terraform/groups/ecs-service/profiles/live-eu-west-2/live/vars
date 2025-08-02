@@ -2,30 +2,31 @@ environment = "live"
 aws_profile = "live-eu-west-2"
 
 # scaling configs default
-desired_task_count = 24
-min_task_count = 24
+desired_task_count = 48
+min_task_count = 48
 max_task_count = 48
 enable_listener = false
 use_ecs_cluster_default = true
 use_fargate = false
 
 # scaling configs search
-desired_task_count_search = 16
-min_task_count_search = 16
+desired_task_count_search = 32
+min_task_count_search = 32
 max_task_count_search = 32
 enable_listener_search = true
 use_ecs_cluster_search = true
 use_fargate_search = false
 
 # scaling configs officers
-desired_task_count_officers = 16
-min_task_count_officers = 16
+desired_task_count_officers = 32
+min_task_count_officers = 32
 max_task_count_officers = 32
 enable_listener_officers = true
 use_ecs_cluster_officers = true
 use_fargate_officers = false
 
 service_autoscale_scale_out_cooldown = 120
+service_autoscale_enabled = false
 
 # ------------------------------------------------------------------------------
 # ECS cluster variables
