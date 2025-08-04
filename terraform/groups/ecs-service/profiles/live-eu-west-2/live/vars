@@ -13,7 +13,7 @@ use_fargate = false
 desired_task_count_search = 32
 min_task_count_search = 32
 max_task_count_search = 32
-enable_listener_search = true
+enable_listener_search = false 
 use_ecs_cluster_search = true
 use_fargate_search = false
 
@@ -21,7 +21,7 @@ use_fargate_search = false
 desired_task_count_officers = 32
 min_task_count_officers = 32
 max_task_count_officers = 32
-enable_listener_officers = true
+enable_listener_officers = false
 use_ecs_cluster_officers = true
 use_fargate_officers = false
 
