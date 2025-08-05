@@ -15,7 +15,7 @@ sub company {
     my $company_number = $self->stash('company_number') // '';
 
     trace "get company profile for: [%s]", $company_number [COMPANY PROFILE];
-    if ( $company_number !~ /^[A-Z0-9]{2}[0-9]{4}[A-Z0-9]{2}$/ ) {
+    if ( $company_number !~ /^[A-Z0-9]{8}$/ ) {
         error "Invalid company number format [%s] - return not found", $company_number [COMPANY PROFILE];
         $self->render_not_found;
         return undef;
