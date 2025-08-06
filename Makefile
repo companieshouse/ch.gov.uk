@@ -2,6 +2,7 @@ SERVICE_NAME         ?= ch.gov.uk
 
 PERL_DEPS_VERSION    ?= 1.1.17
 PERL_DEPS_SERVER_URL ?= s3://release.ch.gov.uk/$(SERVICE_NAME)-deps
+
 PERL_DEPS_PACKAGE    ?= $(SERVICE_NAME)-deps-$(PERL_DEPS_VERSION).zip
 PERL_DEPS_URL        ?= $(PERL_DEPS_SERVER_URL)/$(PERL_DEPS_PACKAGE)
 
@@ -9,6 +10,11 @@ PERL_DEPS_ECS_VERSION    ?= 2.0.3
 PERL_DEPS_ECS_SERVER_URL ?= s3://shared-services.eu-west-2.releases.ch.gov.uk/$(SERVICE_NAME)-deps-ecs
 PERL_DEPS_ECS_PACKAGE    ?= $(SERVICE_NAME)-deps-ecs-$(PERL_DEPS_ECS_VERSION).zip
 PERL_DEPS_ECS_URL        ?= $(PERL_DEPS_ECS_SERVER_URL)/$(PERL_DEPS_ECS_PACKAGE)
+
+PERL_DEPS_ECS_UPGRADE_VERSION    ?= 1.0.0
+PERL_DEPS_ECS_UPGRADE_SERVER_URL ?= s3://shared-services.eu-west-2.releases.ch.gov.uk/$(SERVICE_NAME)-deps-ecs-upgrade
+PERL_DEPS_ECS_UPGRADE_PACKAGE    ?= $(SERVICE_NAME)-deps-ecs-upgrade-$(PERL_DEPS_ECS_UPGRADE_VERSION).zip
+PERL_DEPS_ECS_UPGRADE_URL        ?= $(PERL_DEPS_ECS_UPGRADE_SERVER_URL)/$(PERL_DEPS_ECS_UPGRADE_PACKAGE)
 
 LOCAL           ?= ./local
 
@@ -38,6 +44,10 @@ deps:
 deps-ecs:
 	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_ECS_URL) . && unzip $(PERL_DEPS_ECS_PACKAGE) -d $(CURDIR)/local; }
 	rm -f $(PERL_DEPS_ECS_PACKAGE)
+
+deps-upgrade:
+	test -d $(CURDIR)/local || { aws s3 cp $(PERL_DEPS_ECS_UPGRADE_URL) . && unzip $(PERL_DEPS_ECS_UPGRADE_PACKAGE) -d $(CURDIR)/local; }
+	rm -f $(PERL_DEPS_ECS_UPGRADE_PACKAGE)
 
 clean:
 	rm -rf $(LOCAL)
