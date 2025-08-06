@@ -45,11 +45,12 @@ RUN unlink /etc/localtime && ln -s /usr/share/zoneinfo/Europe/London /etc/localt
 
 WORKDIR /app
 
-CMD [ "sh", "-c", "PERL5LIB=local/lib/perl5 perl script/start_app daemon" ]
-
-ONBUILD COPY . .
+COPY . .
 
 ENV MOJO_LISTEN=http://*:2000
 
 EXPOSE 2000
+
+CMD [ "sh", "-c", "PERL5LIB=local/lib/perl5 perl script/start_app daemon" ]
+
 
