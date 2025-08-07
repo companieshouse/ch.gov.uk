@@ -13,6 +13,7 @@ use ChGovUk::Plugins::FilterHelper;
 use DateTime;
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
+use Data::Dumper;
 
 # all categories (that can be filtered by)
 # XXX temp: need decision on what categories we're going to display and where the
@@ -60,13 +61,15 @@ sub view {
     }
     # FIXME remove this when confirmation-statement goes live - also in template
 
-    trace "Get company filing history for %s, page %s, filter=[%s]", $self->stash('company_number'), $page, $category_filter [FILING_HISTORY];
+    #trace "Get company filing history for %s, page %s, filter=[%s]", $self->stash('company_number'), $page, $category_filter [FILING_HISTORY];
+    $self->app->log->trace("Get company filing history for " . $self->stash('company_number') . ", page $page, filter=[$category_filter] [FILING_HISTORY]");
     my $pager = CH::Util::Pager->new(entries_per_page => $items_per_page, current_page => $page);
 
     my $first = $pager->first;   # Get first filing history for this page
 
-    trace "Call filing history api for company %s, start_index %s, items_per_page %s", $self->stash('company_number'),
-        $first, $pager->entries_per_page [FILING_HISTORY];
+    #trace "Call filing history api for company %s, start_index %s, items_per_page %s", $self->stash('company_number'),
+    #$pager->total_entries, $pager->entries_per_page() [FILING_HISTORY];
+    $self->app->log->trace("Call filing history api for company " . $self->stash('company_number') . ", start_index $first, items_per_page " . $pager->entries_per_page() . " [FILING_HISTORY]");
 
     # Generate an arrayref containing hashrefs of category id's/name's, sorted by name
     my $categories = [
@@ -104,17 +107,18 @@ sub view {
     my $zip_available_date = $self->config->{zip_available_date} || '2021-03-01';
     my $formatted_zip_available_date = date_convert($zip_available_date);
 
-    my $delay = Mojo::IOLoop->delay;
+    my $delay = Mojo::IOLoop::Delay->new;
 
     # Get the filing history for the company from the API
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING company.filing_history (company filing history) '" . refaddr(\$start) . "'";
+    $self->app->log->debug "TIMING company.filing_history (company filing history) '" . refaddr(\$start) . "'";
     $self->ch_api->company($self->stash('company_number'))->filing_history($query)->force_api_key(1)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
-            debug "TIMING company.filing_history (company filing history) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-            my $fh_results = $tx->success->json;
-            trace "filing history for %s: %s", $self->stash('company_number'), d:$fh_results [FILING_HISTORY];
+            $self->app->log->debug("TIMING company.filing_history (company filing history) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+            my $fh_results = $tx->res->json;
+            #trace "filing history for %s: %s", $self->stash('company_number'), d:$fh_results [FILING_HISTORY];
+            $self->app->log->trace("filing history for " . $self->stash('company_number') . ": " . Dumper($fh_results) . " [FILING_HISTORY]");
 
             $delay->steps(
                 sub {
@@ -130,7 +134,8 @@ sub view {
                             $formatted_transaction_date > $formatted_zip_available_date) {
 
                             my $delay_end = $delay->begin(0);
-                            trace "Calling document API to retrieve content_type for possible zip filing [%s]", $doc->{links}->{document_metadata};
+                            #trace "Calling document API to retrieve content_type for possible zip filing [%s]", $doc->{links}->{document_metadata};
+                            $self->app->log->trace("Calling document API to retrieve content_type for possible zip filing [" . $doc->{links}->{document_metadata} . "]");
                             $self->_get_content_type_application_zip( $doc->{links}->{document_metadata}, $doc, $delay_end);
                         }
 
@@ -163,8 +168,9 @@ sub view {
 
             # Work out the paging numbers
             $pager->total_entries( $fh_results->{total_count} // 0 );
-            trace "filing history total_count %d entries per page %d",
-            $pager->total_entries, $pager->entries_per_page() [FILING_HISTORY];
+            #trace "filing history total_count %d entries per page %d",
+            #$pager->total_entries, $pager->entries_per_page() [FILING_HISTORY];
+            $self->app->log->trace("filing history total_count " . $pager->total_entries . " entries per page " . $pager->entries_per_page() . " [FILING_HISTORY]");
 
             $delay->on(
                 # Must wait for delay to finish before stashing data,
@@ -196,9 +202,10 @@ sub view {
         },
         failure => sub {
             my ( $api, $error ) = @_;
-            debug "TIMING company.filing_history (company filing history) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-            error "Error retrieving company filing history for %s: %s",
-            $self->stash('company_number'), $error;
+            $self->app->log->debug("TIMING company.filing_history (company filing history) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+            #error "Error retrieving company filing history for %s: %s",
+            #$self->stash('company_number'), $error;
+            $self->app->log->error("Error retrieving company filing history for " . $self->stash('company_number') . ": $error");
             $self->render_exception("Error retrieving company: $error");
         }
     )->execute;
@@ -215,43 +222,48 @@ sub _get_content_type_application_zip {
     my ( $self, $document_metadata_uri, $doc, $callback ) = @_;
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING document.metadata (company filing history) '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING document.metadata (company filing history) '" . refaddr(\$start) . "'");
     $self->ch_api->document($document_metadata_uri)->metadata->get->on(
         failure => sub {
             my ($api, $tx) = @_;
-            debug "TIMING document.metadata (company filing history) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING document.metadata (company filing history) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             my $code = $tx->error->{code} // 0;
             $doc->{content_type} = 'unknown';
             if ($code == 404) {
-                error "Content Type not found for %s: %s. Setting content_type to unknown", $document_metadata_uri, $code;
+                #error "Content Type not found for %s: %s. Setting content_type to unknown", $document_metadata_uri, $code;
+                $self->app->log->error("Content Type not found for $document_metadata_uri: $code. Setting content_type to unknown");
                 return $callback->(0);
             }
             else {
-                error "Error fetching Content Type for %s: %s. Setting content_type to unknown", $document_metadata_uri, $tx->error->{message};
+                #error "Error fetching Content Type for %s: %s. Setting content_type to unknown", $document_metadata_uri, $tx->error->{message};
+                $self->app->log->error("Error fetching Content Type for $document_metadata_uri: " . $tx->error->{message} . ". Setting content_type to unknown");
                 return $callback->(0);
             }
         },
         error => sub {
             my ($api, $err) = @_;
-            debug "TIMING document.metadata (company filing history) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING document.metadata (company filing history) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             $doc->{content_type} = 'unknown';
-            error "Error fetching Content Type for %s: %s. Setting content_type to unknown", $document_metadata_uri, $err;
+            #error "Error fetching Content Type for %s: %s. Setting content_type to unknown", $document_metadata_uri, $err;
+            $self->app->log->error("Error fetching Content Type for $document_metadata_uri: $err. Setting content_type to unknown");
             return $callback->(0);
         },
         success => sub {
             my ($api, $tx) = @_;
-            debug "TIMING document.metadata (company filing history) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING document.metadata (company filing history) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             my $resources = $tx->res->json->{resources};
             if ($resources) {
-                foreach my $content_type (keys $resources) {
+                foreach my $content_type (keys %{ $resources }) {
                     if ($content_type eq 'application/zip') {
-                        trace "ZIP filing found. Setting content_type on doc to application/zip [%s]", $document_metadata_uri;
+                        #trace "ZIP filing found. Setting content_type on doc to application/zip [%s]", $document_metadata_uri;
+                        $self->app->log->trace("ZIP filing found. Setting content_type on doc to application/zip [" . $document_metadata_uri . "]");
                         $doc->{content_type} = $content_type;
                         last;
                     }
                 }
             } else {
-                trace "No content_type found for %s. Setting content_type to unknown", $document_metadata_uri;
+                #trace "No content_type found for %s. Setting content_type to unknown", $document_metadata_uri;
+                $self->app->log->trace("No content_type found for $document_metadata_uri. Setting content_type to unknown");
                 $doc->{content_type} = 'unknown';
             }
             return $callback->(0);

@@ -11,12 +11,14 @@ use CH::Util::CompanyPrefixes;
 sub register {
     my ($self, $app) = @_;
 
-    trace "Registering %s::company_is_llp helper", __PACKAGE__ [APP];
+    #trace "Registering %s::company_is_llp helper", __PACKAGE__ [APP];
+    $app->log->trace("Registering " . __PACKAGE__ . "::company_is_llp helper [APP]");
     $app->helper(company_is_llp => sub {
         my ($c, $company_number) = @_;
         return CH::Util::CompanyPrefixes::coIsLLP($company_number);
     });
-    trace "Registering %s::company_has_no_sic helper", __PACKAGE__ [APP];
+    #trace "Registering %s::company_has_no_sic helper", __PACKAGE__ [APP];
+    $app->log->trace("Registering " . __PACKAGE__ . "::company_has_no_sic helper [APP]");
     $app->helper(company_has_no_sic => sub {
         my ($c, $company_number) = @_;
         return CH::Util::CompanyPrefixes::coHasNoSic($company_number);

@@ -25,7 +25,7 @@ sub load_mortgage_descriptions {
     my ($self, $app) = @_;
 
     %CH::Util::MortgageDescriptions::lookup_data = %{
-        YAML::XS::LoadFile($app->home->rel_dir . '/api-enumerations/mortgage_descriptions.yml')
+        YAML::XS::LoadFile($app->home->rel_file . '/api-enumerations/mortgage_descriptions.yml')
     };
 }
 

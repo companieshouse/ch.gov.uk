@@ -6,6 +6,7 @@ use DateTime::Tiny;
 use CH::Util::DateHelper qw(is_current_date_greater);
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
+use Data::Dumper;
 
 #-------------------------------------------------------------------------------
 
@@ -14,13 +15,13 @@ sub company {
     my ($self) = @_;
     my $company_number = $self->stash('company_number') // '';
 
-    trace "get company profile for: [%s]", $company_number [COMPANY PROFILE];
+    #trace "get company profile for: [%s]", $company_number [COMPANY PROFILE];
+    $self->app->log->trace("get company profile for: [$company_number] [COMPANY PROFILE]");
     if ( $company_number !~ /^[A-Z0-9]{8}$/ ) {
         error "Invalid company number format [%s] - return not found", $company_number [COMPANY PROFILE];
         $self->render_not_found;
         return undef;
     }
-
 
     my $api = $self->ch_api->company($company_number)->profile;
     $api->force_api_key unless $self->authorised_company eq $company_number;
@@ -35,9 +36,10 @@ sub company {
     $api->get->on(
         success => sub {
             my ($api, $tx) = @_;
-            debug "TIMING company.profile (company) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-            trace "company profile for: [%s]: [%s]", $company_number, d:$tx->success->json [COMPANY PROFILE];
-            my $results = $tx->success->json;
+            $self->app->log->debug("TIMING company.profile (company) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+            #trace "company profile for: [%s]: [%s]", $company_number, d:$tx->success->json [COMPANY PROFILE];
+            $self->app->log->trace("company profile for: [$company_number]: [" . Dumper($tx->res->json) . "] [COMPANY PROFILE]");
+            my $results = $tx->res->json;
             $self->stash(company => $results);
             if ($results->{officer_summary}) {
                 $results->{show_officer_summary} = 1;
@@ -76,11 +78,13 @@ sub company {
             }
 
             if (not $self->session->{signin_info}->{signed_in}) {
-                trace 'user not signed in - not fetching monitor status';
+                #trace 'user not signed in - not fetching monitor status';
+                $self->app->log->trace('user not signed in - not fetching monitor status');
                 return $self->continue;
             }
 
-            trace 'user signed in - fetching monitor status';
+            #trace 'user signed in - fetching monitor status';
+            $self->app->log->trace('user signed in - fetching monitor status');
 
             if ( $self->config->{web_proxy}->{monitor_api} ) {
                 $self->ua->proxy->http( $self->config->{web_proxy}->{monitor_api} );
@@ -102,23 +106,25 @@ sub company {
 
         failure => sub {
             my ($api, $tx) = @_;
-            debug "TIMING company.profile (company) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING company.profile (company) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             my $error_code = $tx->error->{code} // 0;
             my $error_message = $tx->error->{message};
 
             if ($error_code == 404) {
-                trace "Company [%s] not found", $company_number [COMPANY PROFILE];
+                #trace "Company [%s] not found", $company_number [COMPANY PROFILE];
+                $self->app->log->trace("Company [$company_number] not found [COMPANY PROFILE]");
                 # Should do more than this:
                 return $self->render_not_found;
             } else {
                 my $message = "Error ($error_code) retrieving company $company_number:$error_message";
-                error "[%s]", $message [COMPANY PROFILE];
+                #error "[%s]", $message [COMPANY PROFILE];
+                $self->app->log->error("[$message] [COMPANY PROFILE]");
                 return $self->render_exception($message);
             }
         },
 
         not_authorised => sub {
-            debug "TIMING company.profile (company) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING company.profile (company) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             my $return_to = $self->req->url->to_string;
             # User is no longer considered authorised for ANYTHING!
             # TODO There should be a better way to nuke a users auth/identity values
@@ -126,16 +132,18 @@ sub company {
             $self->access_token({});
             $self->user_profile({});
             $self->authorised_company('');
-            trace "Company [%s] unauthorised. Redirecting to company login, with return_to: [%s]", $company_number, $return_to [COMPANY PROFILE];
+            #trace "Company [%s] unauthorised. Redirecting to company login, with return_to: [%s]", $company_number, $return_to [COMPANY PROFILE];
+            $self->app->log->trace("Company [$company_number] unauthorised. Redirecting to company login, with return_to: [$return_to] [COMPANY PROFILE]");
             $self->redirect_to( $self->url_for('company_authorise')->query( return_to => $return_to ));
             return 0;
         },
 
         error => sub {
             my ($api, $error) = @_;
-            debug "TIMING company.profile (company) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->$self->app->log->debug("TIMING(company.profile (company) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start)));
             my $message = "Error retrieving company $company_number:$error";
-            error "[%s]", $message [COMPANY PROFILE];
+            #error "[%s]", $message [COMPANY PROFILE];
+            $self->app->log->error("[$message] [COMPANY PROFILE]");
             $self->render_exception($message);
         }
     )->execute;
@@ -147,37 +155,40 @@ sub get_basket_link {
     my ( $self ) = @_;
         if ($self->is_signed_in) {
         my $start = [Time::HiRes::gettimeofday()];
-        debug "TIMING basket (company) '" . refaddr(\$start) . "'";
+        $self->app->log->debug("TIMING basket (company) '" . refaddr(\$start) . "'");
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
-                debug "TIMING basket (company) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-                my $json = $tx->success->json;
+                $self->app->log->debug("TIMING basket (company) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+                my $json = $tx->res->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
                 if ($show_basket_link) {
-                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [COMPANY_BRIDGE];
+                    #debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [COMPANY_BRIDGE];
+                    $self->app->log->debug("User [" . $self->user_id . "] enrolled for multi-item basket; displaying basket link [COMPANY_BRIDGE]");
                 }
                 else {
-                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [COMPANY_BRIDGE];
+                    #debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [COMPANY_BRIDGE];
+                    $self->app->log->debug("User [" . $self->user_id . "] not enrolled for multi-item basket; not displaying basket link [COMPANY_BRIDGE]");
                 }
                 $self->stash_basket_link($show_basket_link, $items);
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
-                debug "TIMING basket (company) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-                warn "User not authenticated; not displaying basket link", [COMPANY_BRIDGE];
+                $self->app->log->debug("TIMING basket (company) not_authorised '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+                #warn "User not authenticated; not displaying basket link", [COMPANY_BRIDGE];
+                $self->app->log->warn("User not authenticated; not displaying basket link [COMPANY_BRIDGE]");
                 $self->stash_basket_link(undef, 0);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
-                debug "TIMING basket (company) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+                $self->app->log->debug("TIMING basket (company) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
                 log_error($tx, "failure");
                 $self->stash_basket_link(undef, 0);
             },
             error          => sub {
                 my ($api, $tx) = @_;
-                debug "TIMING basket (company) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+                $self->app->log->debug("TIMING basket (company) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
                 log_error($tx, "error");
                 $self->stash_basket_link(undef, 0);
             }
@@ -203,7 +214,8 @@ sub log_error {
     my $error_message = $tx->error->{message} // 0;
     my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
     return if uc($error_type) eq 'FAILURE' && $error_code eq '404'; # don't log empty basket
-    error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [COMPANY_BRIDGE];
+    # TODO log
+    #error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [COMPANY_BRIDGE];
 }
 
 # ------------------------------------------------------------------------------

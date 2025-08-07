@@ -10,7 +10,8 @@ use Mojo::Util qw( url_unescape url_escape );
 sub register {
     my ($self, $app) = @_;
 
-    trace "Registering %s::get_filter helper", __PACKAGE__ [APP];
+    #trace "Registering %s::get_filter helper", __PACKAGE__ [APP];
+    $app->log->trace("Registering " . __PACKAGE__ . "::get_filter helper [APP]");
     $app->helper(get_filter => sub {
         my ($c, $filter_name) = @_;
         

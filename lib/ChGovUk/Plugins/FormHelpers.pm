@@ -40,7 +40,8 @@ sub errors_count {
     my ($self) = @_;
 
     my $count = scalar @{ $self->errors };
-    trace "There are %s errors", $count [VALIDATION];
+    #trace "There are %s errors", $count [VALIDATION];
+    $self->app->log->trace("There are $count errors [VALIDATION]");
     return $count;
 }
 
@@ -50,7 +51,8 @@ sub warnings_count {
     my ($self) = @_;
 
     my $count = scalar @{ $self->warnings };
-    trace "There are %s warnings", $count [VALIDATION];
+    #trace "There are %s warnings", $count [VALIDATION];
+    $self->app->log->trace("There are $count warnings [VALIDATION]");
     return $count;
 }
 
@@ -178,7 +180,8 @@ sub date_field {
 sub country_for_code {
     my ($self, $country_code) = @_;
     my $country = CH::Util::CountryCodes->new->country_for_code( $country_code );
-    debug "Country for code [%s] is [%s]", $country_code, $country [VALIDATION];
+    #debug "Country for code [%s] is [%s]", $country_code, $country [VALIDATION];
+    $self->app->log->debug("Country for code [$country_code] is [$country] [VALIDATION]");
     return $country;
 }
 
@@ -418,7 +421,8 @@ sub file_field {
             $filesize = sprintf("%.2f", $filesize / (1024 * 1024));
             $units = "MB";
         }
-        debug "File size: %s %s", $filesize, $units [FILE];
+        #debug "File size: %s %s", $filesize, $units [FILE];
+        $self->app->log->debug("File size: $filesize $units [FILE]");
     }
     my $id = $self->_field_name_to_id($field);
 
@@ -441,7 +445,7 @@ sub file_field {
 sub start {
     my ($self, %args) = @_;
 
-    push $self->blocks, $self->_render_template({ template => 'includes/forms/end' });;
+    push @{$self->blocks}, $self->_render_template({ template => 'includes/forms/end' });;
     return $self->_render_template({ template => 'includes/forms/start', %args, action => $self->controller->url_for });
 }
 
@@ -449,7 +453,7 @@ sub start {
 
 sub end {
     my ($self, %args) = @_;
-    return pop $self->blocks;
+    return pop @{$self->blocks};
 }
 
 # -----------------------------------------------------------------------------
@@ -482,7 +486,8 @@ sub _get_errors_for_field {
                     $error = $error_config->{$rule};
                 }
                 else {
-                    error "Missing error message text for rule [%s]", $rule [VALIDATION];
+                    #error "Missing error message text for rule [%s]", $rule [VALIDATION];
+                    $self->app->log->error("Missing error message text for rule [$rule] [VALIDATION]");
                     $error = "Field has an error - no description available [$rule]";
                 }
             }
@@ -563,7 +568,7 @@ sub _get_errors_for_postcode_lookup {
             $error_hash{name} = $field;
             $error_hash{text} = $error;
             $error_hash{id}   = $error_id;
-            push $self->errors, \%error_hash;
+            push @{$self->errors}, \%error_hash;
     }
 
     return @errors;
@@ -601,7 +606,7 @@ sub _get_errors_for_file_upload {
             $error_hash{name} = $field;
             $error_hash{text} = $error;
             $error_hash{id}   = $error_id;
-            push $self->errors, \%error_hash;
+            push @{$self->errors}, \%error_hash;
     }
 
     return @errors;
@@ -618,7 +623,8 @@ sub _get_error_config_for_field {
 
     my @error_nodes = (@model_name_parts, $self->_field_name_parts($field));
 
-    debug "Looking for errors: %s", join ('.', @error_nodes) [VALIDATION];
+    #debug "Looking for errors: %s", join ('.', @error_nodes) [VALIDATION];
+    $self->app->log->debug("Looking for errors:" . join ('.', @error_nodes) . " [VALIDATION]");
 
     my $error_config = $self->app->config->{errors};
 

@@ -5,6 +5,8 @@ use Mojo::Base 'Mojolicious::Controller';
 use CH::Perl;
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
+use Mojo::IOLoop::Delay;
+use Data::Dumper;
 
 # -----------------------------------------------------------------------------
 
@@ -19,11 +21,11 @@ sub list {
     my $delay = Mojo::IOLoop::Delay->new->data({ company_number => $company_number } );
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING registers list '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING registers list '" . refaddr(\$start) . "'");
     $delay->on(
         finish => sub {
             my ($delay) = @_;
-            debug "TIMING registers list finish '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING registers list finish '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
             $self->populate_stash($delay->data->{company_registers}, $delay->data->{members_pdf});
             $self->render( );
@@ -33,7 +35,7 @@ sub list {
     $delay->on(
         error => sub {
             my ( $delay ) = @_;
-            debug "TIMING registers list error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING registers list error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             $delay->data->{error}->{errcode} == 404 ? $self->render_not_found : $self->render_exception($delay->data->{error}->{errmessage});
         }
     );
@@ -62,36 +64,39 @@ sub _get_company_registers {
     my $company_number = $delay->data('company_number');
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING company.registers '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING company.registers '" . refaddr(\$start) . "'");
     $self->ch_api->company($company_number)->registers->get->on(
         success => sub {
             my ($api, $tx) = @_;
-            debug "TIMING registers success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING registers success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
-            $delay->data->{company_registers} = $tx->success->json;
+            $delay->data->{company_registers} = $tx->res->json;
             $next->();
         },
         failure => sub {
           my ($api, $tx) = @_;
-            debug "TIMING company.registers failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+          $self->app->log->debug("TIMING company.registers failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
           my ($error_code, $error_message) = ($tx->error->{code} // 0, $tx->error->{message});
 
           if ($error_code == 404) {
-              trace "Register listing not found for company [%s]", $company_number [COMPANY REGISTER];
+              #trace "Register listing not found for company [%s]", $company_number [COMPANY REGISTER];
+              $self->app->log->trace("Register listing not found for company [$company_number] [COMPANY REGISTER]");
               $delay->data->{error} = { status => 'not_found', errcode => $error_code };
           }
           else {
-              error "Failed to retrieve company register list for [%s]: [%s]", $company_number, $error_message [COMPANY REGISTER];
+              #error "Failed to retrieve company register list for [%s]: [%s]", $company_number, $error_message [COMPANY REGISTER];
+              $self->app->log->error("Failed to retrieve company register list for [$company_number]: [$error_message] [COMPANY REGISTER]");
               $delay->data->{error} = { status => 'exception', errcode => $error_code, errmessage => $error_message };
           }
           $delay->emit('error');
        },
        error => sub {
            my ($api, $error) = @_;
-            debug "TIMING company.registers error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+           $self->app->log->debug("TIMING company.registers error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
-           error "Error retrieving company register list for [%s]: [%s]", $company_number, $error [COMPANY REGISTER];
+           #error "Error retrieving company register list for [%s]: [%s]", $company_number, $error [COMPANY REGISTER];
+           $self->app->log->error("Error retrieving company register list for [$company_number]: [$error] [COMPANY REGISTER]");
            $delay->data->{error} = { status => 'exception', errmessage => $error };
            $delay->emit('error');
        }
@@ -107,7 +112,7 @@ sub _get_image_locations {
     my $registers      = $delay->data('company_registers');
 
     # Each $register represents a register type
-    for my $register ( keys $registers->{registers} ) {
+    for my $register ( keys %{ $registers->{registers} } ) {
         for my $item ( @{ $registers->{registers}->{$register}->{items} } ) {
             next if !exists $item->{links} or !defined $item->{links}->{filing};
             $self->_get_image_location($item, $delay, $delay->begin(0));
@@ -128,45 +133,51 @@ sub _get_image_location {
      my @parts = split( /\//, $item->{links}->{filing} );
      $item->{transaction_id} = $parts[4]; # splits into 4 parts because of the leading slash
 
-     trace "find transaction: [%s] for company [%s]", $item->{transaction_id}, $company_number [COMPANY REGISTER FILING];
+     #trace "find transaction: [%s] for company [%s]", $item->{transaction_id}, $company_number [COMPANY REGISTER FILING];
+     $self->app->log->trace("find transaction: [" . $item->{transaction_id} . "] for company [$company_number] [COMPANY REGISTER FILING]");
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING company.filing_history_item (image) '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING company.filing_history_item (image) '" . refaddr(\$start) . "'");
      $self->ch_api->company($company_number)->filing_history_item($item->{transaction_id})->get->on(
          success => sub {
              my ( $api, $tx ) = @_;
-             debug "TIMING company.filing_history_item (image) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-             my $filing_doc = $tx->success->json;
+             $self->app->log->debug("TIMING company.filing_history_item (image) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+             my $filing_doc = $tx->res->json;
 
              if (defined $filing_doc->{links}->{document_metadata}) {
-                 trace "Successfully returned image location";
+                 #trace "Successfully returned image location";
+                 $self->app->log->trace("Successfully returned image location");
                  $item->{resource_url}   = $filing_doc->{links}->{document_metadata};
                  $item->{pages}          = $filing_doc->{pages};
              } else {
-                 warn "Resource does not have an image associated with transaction_id: [%s]", $item->{transaction_id} [COMPANY REGISTER FILING];
+                 #warn "Resource does not have an image associated with transaction_id: [%s]", $item->{transaction_id} [COMPANY REGISTER FILING];
+                 $self->app->log->warn("Resource does not have an image associated with transaction_id: [" . $item->{transaction_id} . "] [COMPANY REGISTER FILING]");
              }
              $next->();
           },
           failure => sub {
               my ( $api, $tx ) = @_;
-              debug "TIMING company.filing_history_item (image) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+              $self->app->log->debug("TIMING company.filing_history_item (image) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
               my ($error_code, $error_message) = ($tx->error->{code} // 0, $tx->error->{message});
               if ($error_code == 404) {
-                  warn "Filing history item not found for id [%s]", $item->{transaction_id} [COMPANY REGISTER FILING];
+                  #warn "Filing history item not found for id [%s]", $item->{transaction_id} [COMPANY REGISTER FILING];
+                  $self->app->log->warn("Filing history item not found for id [" . $item->{transaction_id} . "] [COMPANY REGISTER FILING]");
                   $next->();
               }
               else {
-                  error "Error retrieving company filing for [%s]: [%s]", $self->stash('company_number'), $error_message [COMPANY REGISTER FILING];
+                  #error "Error retrieving company filing for [%s]: [%s]", $self->stash('company_number'), $error_message [COMPANY REGISTER FILING];
+                  $self->app->log->error("Error retrieving company filing for [" . $self->stash('company_number') . "]: [$error_message] [COMPANY REGISTER FILING]");
                   $delay->data->{error} = { status => 'exception', errcode => $error_code, errmessage => $error_message };
                   $delay->emit('error');
               }
           },
           error => sub {
               my ($api, $error) = @_;
-              debug "TIMING company.filing_history_item (image) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+              $self->app->log->debug("TIMING company.filing_history_item (image) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
-              error "Error retrieving company register list for [%s]: [%s]", $company_number, $error [COMPANY REGISTER];
+              #error "Error retrieving company register list for [%s]: [%s]", $company_number, $error [COMPANY REGISTER];
+              $self->app->log->error("Error retrieving company register list for [$company_number]: [$error] [COMPANY REGISTER]");
               $delay->data->{error} = { status => 'exception', errmessage => $error };
               $delay->emit('error');
           }
@@ -186,35 +197,39 @@ sub has_metadata {
         my $transaction_id = $parts[4];
 
         my $start = [Time::HiRes::gettimeofday()];
-        debug "TIMING company.filing_history_item (metadata) '" . refaddr(\$start) . "'";
+        $self->app->log->debug("TIMING company.filing_history_item (metadata) '" . refaddr(\$start) . "'");
         $self->ch_api->company($company_number)->filing_history_item($transaction_id)->get->on(
             success => sub {
                 my ( $api, $tx ) = @_;
-                debug "TIMING company.filing_history_item (metadata) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-                my $filing_doc = $tx->success->json;
+                $self->app->log->debug("TIMING company.filing_history_item (metadata) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+                my $filing_doc = $tx->res->json;
 
                 if (defined $filing_doc->{links}->{document_metadata}) {
-                    trace "Metadata exists for transaction_id: [%s]", $transaction_id;
+                    #trace "Metadata exists for transaction_id: [%s]", $transaction_id;
+                    $self->app->log->trace("Metadata exists for transaction_id: [$transaction_id]");
 
                     $delay->data->{members_pdf} = 1;
                     $next->();
                 } else {
-                    trace "Metadata does not exist for transaction_id: [%s]", $transaction_id;
+                    #trace "Metadata does not exist for transaction_id: [%s]", $transaction_id;
+                    $self->app->log->trace("Metadata does not exist for transaction_id: [$transaction_id]");
                     $next->();
                 }
              },
              failure => sub {
                  my ( $api, $tx ) = @_;
-                 debug "TIMING company.filing_history_item (metadata) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+                 $self->app->log->debug("TIMING company.filing_history_item (metadata) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
-                 warn "Failure finding transaction_id: [%s], error [%s]", $transaction_id, d:$tx->error->{message};
+                 #warn "Failure finding transaction_id: [%s], error [%s]", $transaction_id, d:$tx->error->{message};
+                 $self->app->log->warn("Failure finding transaction_id: [$transaction_id], error [" . Dumper($tx->error->{message}) . "]");
                  $next->()
              },
              error => sub {
                  my ($api, $error) = @_;
-                 debug "TIMING company.filing_history_item (metadata) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+                 $self->app->log->debug("TIMING company.filing_history_item (metadata) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
-                 warn "Error finding transaction_id: [%s], [%s]", $transaction_id, d:$error;
+                 #warn "Error finding transaction_id: [%s], [%s]", $transaction_id, d:$error;
+                 $self->app->log->warn("Error finding transaction_id: [$transaction_id], [$error]");
                  $next->();
              }
         )->execute;
@@ -228,7 +243,7 @@ sub has_metadata {
 sub populate_stash {
     my ( $self, $results, $members_pdf ) = @_;
 
-    for my $key ( keys $results->{registers} ) {
+    for my $key ( keys %{ $results->{registers} } ) {
 
         # If register type is members and is currently stored at the public register, we want to display the filing image
         # as part of the members link.
