@@ -52,7 +52,8 @@ sub _external_url_for {
     my $url;
 
     unless (exists($app->config->{external_url_for}{$name})) {
-        error "Cannot find external_url_for [%s] in config", $name [HELPERS];
+        #error "Cannot find external_url_for [%s] in config", $name [HELPERS];
+        $app->log->error("Cannot find external_url_for [$name] in config [HELPERS]");
         return;
     }
 

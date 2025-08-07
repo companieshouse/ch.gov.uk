@@ -3,6 +3,7 @@ package ChGovUk::Controllers::Company::Insolvency;
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::IOLoop;
 use Mojo::IOLoop::Delay;
+use Data::Dumper;
 
 use CH::Perl;
 use CH::Util::DateHelper;
@@ -20,13 +21,14 @@ sub view {
 
     # Get the insolvency data for the company from the API
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING company.insolvency '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING company.insolvency '" . refaddr(\$start) . "'");
     $self->ch_api->company($self->stash('company_number'))->insolvency()->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
-            debug "TIMING company.insolvency success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-            my $results = $tx->success->json;
-            trace "insolvency for %s: %s", $self->stash('company_number'), d:$results [INSOLVENCY];
+            $self->app->log->debug("TIMING company.insolvency success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+            my $results = $tx->res->json;
+            #trace "insolvency for %s: %s", $self->stash('company_number'), d:$results [INSOLVENCY];
+            $self->app->log->trace("insolvency for " . $self->stash('company_number') . " : " . Dumper($results) . " [INSOLVENCY]");
 
             # Format date fields in the form of '01 Jan 2004'
             for my $case (@{$results->{cases}}) {
@@ -48,10 +50,10 @@ sub view {
         },
         failure => sub {
             my ( $api, $tx ) = @_;
-            debug "TIMING company.insolvency failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING company.insolvency failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
-            error "Failure retrieving company insolvency for %s: %s",
-              $self->stash('company_number'), $tx->error->{message};
+            $self->app->log->error("Failure retrieving company insolvency for %s: %s",
+              $self->stash('company_number'), $tx->error->{message});
             $self->render_exception("Error retrieving company:" . $tx->error->{message});
         }
       )->execute;

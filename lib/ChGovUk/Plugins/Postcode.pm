@@ -20,7 +20,8 @@ sub register {
 
     $self->app($app);
 
-    trace "Registering %s::lookup as postcode_lookup helper", __PACKAGE__ [APP];
+    #trace "Registering %s::lookup as postcode_lookup helper", __PACKAGE__ [APP];
+    $app->log->trace("Registering " . __PACKAGE__ . "::lookup as postcode_lookup helper [APP]");
     $app->helper(postcode_lookup => sub{
             my $controller = shift;
             return $self->lookup(@_)
@@ -35,12 +36,14 @@ sub register {
 sub lookup {
     my ($self, $postcode, $callback) = @_;
 
-    trace "Looking up postcode: $postcode";
+    #trace "Looking up postcode: $postcode";
+    $self->app->log->trace("Looking up postcode: $postcode");
 
     $postcode =~ s/\s*//g;
 
     my $url = $self->app->config->{postcode}->{url} . '/' . url_escape($postcode);
-    trace "Postcode URL=$url";
+    #trace "Postcode URL=$url";
+    $self->app->log->trace("Postcode URL=$url");
 
     # FIXME Use Admin::Net::CompaniesHouse so that the call is authenticated
     my $pcua = Mojo::UserAgent->new();
@@ -53,13 +56,16 @@ sub lookup {
         my $keep_scope = $pcua; # Stop pcua going out of scope. FIXME Not needed when using Admin::NET::Companieshouse
 
         if ($tx->success) {
-            trace "Postcode lookup complete: %s", d:$tx->res->json [POSTCODE];
+            #trace "Postcode lookup complete: %s", d:$tx->res->json [POSTCODE];
+            $self->app->log->trace("Postcode lookup complete: " . $tx->res->json . " [POSTCODE]");
             $callback->($tx->res->json);
         } elsif (defined $tx->res->code and $tx->res->code == 404) {
-            trace "Postcode service failed to find postcode %s", $postcode [POSTCODE];
+            #trace "Postcode service failed to find postcode %s", $postcode [POSTCODE];
+            $self->app->log->trace("Postcode service failed to find postcode $postcode [POSTCODE]");
             $callback->({ invalid_postcode => 1 });
         } else {
-            error "Unexpected response received from postcode service" [POSTCODE];
+            #error "Unexpected response received from postcode service" [POSTCODE];
+            $self->app->log->error("Unexpected response received from postcode service [POSTCODE]");
             $callback->({ postcode_error => 1 });
         }
     });

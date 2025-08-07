@@ -8,6 +8,7 @@ use CH::Util::DateHelper;
 use Mojo::IOLoop::Delay;
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
+use Data::Dumper;
 
 #-------------------------------------------------------------------------------
 
@@ -16,7 +17,8 @@ sub list {
     my ($self) = @_;
 
     if ($self->config->{feature}->{psc} != 1) {
-        warn "PSCs feature flat not set" [PSCs];
+        #warn "PSCs feature flat not set" [PSCs];
+        $self->app->log->warn("PSCs feature flat not set [PSCs]");
         $self->render('error', error => "page_unavailable", description => "You have requested a page that is currently unavailable.", status => 500 );
 
         return;
@@ -30,12 +32,14 @@ sub list {
 
     my $items_per_page = 35;
 
-    trace "Get company psc list for %s, page %s", $company_number, $page [PSC LIST];
+    #trace "Get company psc list for %s, page %s", $company_number, $page [PSC LIST];
+    $self->app->log->trace("Get company psc list for $company_number, page $page [PSC LIST]");
     my $pager = CH::Util::Pager->new(entries_per_page => $items_per_page, current_page => $page);
 
     my $first_psc_number = $pager->first;
 
-    trace "Call psc list api for company %s, items_per_page %s", $company_number, $items_per_page [PSC LIST];
+    #trace "Call psc list api for company %s, items_per_page %s", $company_number, $items_per_page [PSC LIST];
+    $self->app->log->trace("Call psc list api for company $company_number, items_per_page $items_per_page [PSC LIST]");
 
 
     # As we are making 2 API calls - 1 for pscs 1 for statements, a delay is needed to make sure both of them have time to come back with API response
@@ -47,7 +51,7 @@ sub list {
 
     # Get the psc list for the company from the API
     my $pscs_start = [Time::HiRes::gettimeofday()];
-    debug "TIMING company.pscs '" . refaddr(\$pscs_start) . "'";
+    $self->app->log->debug("TIMING company.pscs '" . refaddr(\$pscs_start) . "'");
     $self->ch_api->company($company_number)->pscs({
         start_index    => abs int $first_psc_number,
         items_per_page => $pager->entries_per_page,
@@ -56,7 +60,7 @@ sub list {
             my ($api, $tx) = @_;
             debug "TIMING company.pscs success '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start);
 
-            my $results = $tx->success->json;
+            my $results = $tx->res->json;
 
             # Decide if full DOB should be displayed
             for my $item (@{ $results->{items} }) {
@@ -80,13 +84,14 @@ sub list {
                 }
             }
 
-            trace "Psc list for %s: %s", $company_number, d:$results [PSC LIST];
+            #trace "Psc list for %s: %s", $company_number, d:$results [PSC LIST];
+            $self->app->log->trace("Psc list for $company_number: " . Dumper($results) . " [PSC LIST]");
 
             $psc_delay_end->($results);
         },
         failure => sub {
             my ($api, $tx) = @_;
-            debug "TIMING company.pscs failure '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start);
+            $self->app->log->debug("TIMING company.pscs failure '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start));
 
             my ($error_code, $error_message) = (
                 $tx->error->{code} // 0,
@@ -94,19 +99,22 @@ sub list {
             );
 
             if ($error_code == 404) {  # There might be no psc details but statements could still be there
-                trace "Psc listing not found for company [%s]", $company_number [PSC LIST];
+                #trace "Psc listing not found for company [%s]", $company_number [PSC LIST];
+                $self->app->log->trace("Psc listing not found for company [$company_number] [PSC LIST]");
                 return $psc_delay_end->({ total_results => 0, active_count => 0, items => [] });
             }
 
-            error "Failed to retrieve company psc list for %s: %s", $company_number, $error_message;
+            #error "Failed to retrieve company psc list for %s: %s", $company_number, $error_message;
+            $self->app->log->error("Failed to retrieve company psc list for $company_number: $error_message");
             return $self->render_exception("Failed to retrieve company pscs: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
-            debug "TIMING company.pscs error '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start);
+            $self->app->log->debug("TIMING company.pscs error '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start));
 
             $psc_delay_end->();
-            error "Error retrieving company psc list for %s: %s", $company_number, $error;
+            #error "Error retrieving company psc list for %s: %s", $company_number, $error;
+            $self->app->log->error("Error retrieving company psc list for $company_number: $error");
             return $self->render_exception("Error retrieving company pscs: $error");
         },
     )->execute;
@@ -118,23 +126,24 @@ sub list {
 
     # Get the psc statements list for the company from the API
     my $statements_start = [Time::HiRes::gettimeofday()];
-    debug "TIMING company.psc_statements '" . refaddr(\$statements_start) . "'";
+    $self->app->log->debug("TIMING company.psc_statements '" . refaddr(\$statements_start) . "'");
      $self->ch_api->company($company_number)->psc_statements({
         start_index    => abs int $first_psc_number,
         items_per_page => $pager->entries_per_page,
     })->get->on(
         success => sub {
             my ($api, $tx) = @_;
-            debug "TIMING company.psc_statements success '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start);
+            $self->app->log->debug("TIMING company.psc_statements success '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start));
 
-            my $results = $tx->success->json;
+            my $results = $tx->res->json;
 
-            trace "Psc statements list for %s: %s", $company_number, d:$results [PSC STATEMENTS LIST];
+            #trace "Psc statements list for %s: %s", $company_number, d:$results [PSC STATEMENTS LIST];
+            $self->app->log->trace("Psc statements list for $company_number: " . Dumper($results) . " [PSC STATEMENTS LIST]");
             $psc_statements_delay_end->($results);
         },
         failure => sub {
             my ($api, $tx) = @_;
-            debug "TIMING company.psc_statements failure '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start);
+            $self->app->log->debug("TIMING company.psc_statements failure '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start));
 
             my ($error_code, $error_message) = (
                 $tx->error->{code} // 0,
@@ -142,18 +151,21 @@ sub list {
             );
 
             if ($error_code == 404) {  # There might be no statements but psc details could still be there
-            trace "Psc statements listing not found for company [%s]", $company_number [PSC STATEMENTS LIST];
+            #trace "Psc statements listing not found for company [%s]", $company_number [PSC STATEMENTS LIST];
+            $self->app->log->trace("Psc statements listing not found for company [$company_number] [PSC STATEMENTS LIST]");
                 return $psc_statements_delay_end->({ total_results => 0, active_count => 0, items => [] });
             }
 
-            error "Failed to retrieve psc statements list for %s: %s", $company_number, $error_message;
+            #error "Failed to retrieve psc statements list for %s: %s", $company_number, $error_message;
+            $self->app->log->error("Failed to retrieve psc statements list for $company_number: $error_message");
             return $self->render_exception("Failed to retrieve pscs statements: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
-            debug "TIMING company.psc_statements error '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start);
+            $self->app->log->debug("TIMING company.psc_statements error '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start));
 
-            error "Error retrieving psc statements list for %s: %s", $company_number, $error;
+            #error "Error retrieving psc statements list for %s: %s", $company_number, $error;
+            $self->app->log->error("Error retrieving psc statements list for $company_number: $error");
             return $self->render_exception("Error retrieving company pscs: $error");
         },
     )->execute;
@@ -162,11 +174,11 @@ sub list {
         #Once both API calls come back with responses...
 
         my $start = [Time::HiRes::gettimeofday()];
-        debug "TIMING psc common '" . refaddr(\$start) . "'";
+        $self->app->log->debug("TIMING psc common '" . refaddr(\$start) . "'");
         $psc_delay->on(
                  finish => sub {
                      my ($delay, $pscs, $psc_statements) = @_;
-                     debug "TIMING psc common finish '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+                     $self->app->log->debug("TIMING psc common finish '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
                      my $psc_list = $self->merge_pscs_and_statements($pscs->{items}, $psc_statements->{items});
 
@@ -225,15 +237,17 @@ sub list {
                           },
                           error => sub {
                              my ($delay, $err) = @_;
-                             error "Error getting exemptions : %s", $err [ Exemptions ];
+                             #error "Error getting exemptions : %s", $err [ Exemptions ];
+                             $self->app->log->error("Error getting exemptions : $err [ Exemptions ]");
                              $self->render;
                          }
                     );
                  },
                  error => sub {
                      my ($delay, $err) = @_;
-                     debug "TIMING psc common error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-                     error "Error getting psc listing : %s", $err [ PSC Listing ];
+                     $self->app->log->debug("TIMING psc common error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+                     #error "Error getting psc listing : %s", $err [ PSC Listing ];
+                     $self->app->log->error("Error getting psc listing : $err [ PSC Listing ]");
                      return $self->render_exception($err);
                  }
              );
@@ -274,12 +288,12 @@ sub get_exemptions_resource {
     my $company_number = $self->param('company_number');
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING company.exemptions '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING company.exemptions '" . refaddr(\$start) . "'");
     $self->ch_api->company($self->stash('company_number'))->exemptions()->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
-            debug "TIMING company.exemptions success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-            my $results = $tx->success->json;
+            $self->app->log->debug("TIMING company.exemptions success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+            my $results = $tx->res->json;
 
             my $exemptions = $results->{exemptions};
 
@@ -298,7 +312,8 @@ sub get_exemptions_resource {
                 }
             }
 
-            trace "Exemptions for %s: %s", $self->stash('company_number'), d:$exemptions [EXEMPTIONS];
+            #trace "Exemptions for %s: %s", $self->stash('company_number'), d:$exemptions [EXEMPTIONS];
+            $self->app->log->trace("Exemptions for " . $self->stash('company_number') . " : " . Dumper($exemptions) . " [EXEMPTIONS]");
             if ( %$exemptions ) {
                 return $callback->($exemptions);
             }
@@ -313,12 +328,14 @@ sub get_exemptions_resource {
                 $error->error->{message},
             );
             if ($error_code == 404) {
-            trace "Psc exemptions not found for company [%s]", $company_number [EXEMPTIONS];
+            #trace "Psc exemptions not found for company [%s]", $company_number [EXEMPTIONS];
+            $self->app->log->trace("Psc exemptions not found for company [$company_number] [EXEMPTIONS]");
             return $callback->();
             }
 
-            error "Error retrieving company exemptions for %s: %s",
-              $self->stash('company_number'), $error;
+            #error "Error retrieving company exemptions for %s: %s",
+            #  $self->stash('company_number'), $error;
+            $self->app->log->error("Error retrieving company exemptions for " .  $self->stash('company_number') . ": $error");
             $self->render_exception("Error retrieving company: $error");
         }
       )->execute;
@@ -341,7 +358,8 @@ sub move_all_active_statements_to_top_for_roe {
     my @active_statements = $self->get_all_active_statements($items);
 
     if (@active_statements and $self->get_company_is_active()) {
-        debug "ROE, active statements come first before the PSCs, the other items follow after.";
+        #debug "ROE, active statements come first before the PSCs, the other items follow after.";
+        $self->app->log->debug("ROE, active statements come first before the PSCs, the other items follow after.");
 
         # Sort the active statements by index to maintain their order
         @active_statements = sort { $a->{index} <=> $b->{index} } @active_statements;
@@ -370,10 +388,12 @@ sub get_all_active_statements {
     }
 
     if (@active_statements) {
-        debug "ACTIVE statements found.";
+        #debug "ACTIVE statements found.";
+        $self->app->log->debug("ACTIVE statements found.");
         return @active_statements;
     } else {
-        debug "No active statements found.";
+        #debug "No active statements found.";
+        $self->app->log->debug("No active statements found.");
         return ();
     }
 }
@@ -384,7 +404,7 @@ sub get_all_active_statements {
 sub is_active_statement {
     my ($item, $active_statements) = @_;
 
-    return $item->{statement} and !$item->{ceased_on} and any { $_->{index} == $item->{index} } @$active_statements;
+    return $item->{statement} && !$item->{ceased_on} && any { $_->{index} == $item->{index} } @$active_statements;
 }
 
 #-------------------------------------------------------------------------------

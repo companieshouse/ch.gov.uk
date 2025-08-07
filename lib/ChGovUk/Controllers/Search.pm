@@ -6,6 +6,7 @@ use CH::Util::Pager;
 use URI::Escape;
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
+use Data::Dumper;
 
 our $JSON_PAGE_SIZE = 20;
 our $DEFAULT_PAGE_SIZE = 20;
@@ -80,8 +81,10 @@ sub results {
         scroll_flag => 0
     );
 
-    trace "Query term [%s]", $query [Search];
-    trace "Page [%s], page size [%s]", $page, $page_size [Search];
+    #trace "Query term [%s]", $query [Search];
+    #trace "Page [%s], page size [%s]", $page, $page_size [Search];
+    $self->app->log->trace("Query term [$query] [Search]");
+    $self->app->log->trace("Page [$page], page size [$page_size] [Search]");
 
     my $args = {
         'q'				=> $query,
@@ -93,11 +96,12 @@ sub results {
     my $callbacks = {
         failure => sub {
             my ($api, $tx) = @_;
-            debug "TIMING search (search) failure '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING search (search) failure '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start));
             my $error_code = $tx->error->{code} // 0;
             my $error_message = $tx->error->{message} // 0;
             my $message = 'Error '.(defined $error_code ? "[$error_code] " : '').'retrieving search results: '.$error_message;
-            error "Failure: $message" [Search];
+            #error "Failure: $message" [Search];
+            $self->log->error("Failure: $message [Search]");
             if ( $error_code eq '416' ){
                 $self->render('error', error => "outside_result_set", description => "You have requested a page outside of the available result set", status => 416  ) if $self->accepts('html');
             } else {
@@ -108,12 +112,14 @@ sub results {
         success => sub {
             my ($api, $tx) = @_;
 
-            debug "TIMING search (search) success '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING search (search) success '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start));
             # do not index search results pages
             $self->stash(noindex => 1);
 
             my $json_results = $tx->res->json;
-            trace "Response json is: %s", d:$json_results;
+
+            #trace "Response json is: %s", d:$json_results;
+            $self->app->log->trace("Response json is: " . Dumper($json_results));
 
             # FIXME Feels hacky that we need to format the date of birth here so that
             # it effects both server side and client side template rendering.
@@ -134,8 +140,10 @@ sub results {
 
             if ($wants_json) {
                 # Proxy ES for speed
-                debug "Rendering JSON" [SEARCH];
-                trace "JSON content: %s", d:$json_results [Search];
+                #debug "Rendering JSON" [SEARCH];
+                $self->app->log->debug("Rendering JSON [SEARCH]");
+                #trace "JSON content: %s", d:$json_results [Search];
+                $self->app->log->trace("JSON content: " . Dumper($json_results) . " [Search]");
                 $self->render(json => $json_results );
             }
             else {
@@ -144,12 +152,14 @@ sub results {
                 $self->stash(results => $json_results);
 
 	            if (not defined $json_results->{total_results} or $json_results->{total_results} == 0) {
-	                trace "render no results page" [Search];
+	                #trace "render no results page" [Search];
+	                $self->app->log->trace("render no results page [Search]");
 	                $self->render(template => 'search/noresults');
                     return;
 	            }
 	            else {
-	                trace "render results page" [Search];
+	                #trace "render results page" [Search];
+	                $self->app->log->trace("render results page [Search]");
 	                $pager->total_entries( $json_results->{total_results} > $results_limit ? $results_limit : $json_results->{total_results} );
 	                my $total_pages = $json_results->{total_results} / $pager->{entries_per_page};
 
@@ -180,18 +190,20 @@ sub results {
 
         error => sub {
             my ($api, $error) = @_;
-            debug "TIMING search (search) error '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING search (search) error '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start));
             my $message = 'Error retrieving search results: '.$error;
-            error "%s", $message [Search];
+            # TODO log
+            #error "%s", $message [Search];
             $self->render_exception($message);
         },
     };
 
     my $method = $search_method{$search_type} // '';
-    trace "Executing query for search type: %s", d:$search_type;
+    #trace "Executing query for search type: %s", d:$search_type;
+    $self->app->log->trace("Executing query for search type: " . Dumper($search_type));
 
     $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING search (search) '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING search (search) '" . refaddr(\$start) . "'");
     if ($method) {
         $self->ch_api->search->$method($args)->get->on( %$callbacks )->execute;
     } else {
@@ -206,37 +218,40 @@ sub get_basket_link {
     my ( $self ) = @_;
         if ($self->is_signed_in) {
         my $start = [Time::HiRes::gettimeofday()];
-        debug "TIMING basket (search) '" . refaddr(\$start) . "'";
+        $self->app->log->debug("TIMING basket (search) '" . refaddr(\$start) . "'");
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
-                debug "TIMING basket (link) success '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
+                $self->app->log->debug("TIMING basket (link) success '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start));
                 my $json = $tx->success->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
                 if ($show_basket_link) {
-                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [SEARCH];
+                    #debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [SEARCH];
+                    $self->app->log->debug("User [" . $self->user_id . "] enrolled for multi-item basket; displaying basket link [SEARCH]");
                 }
                 else {
-                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [SEARCH];
+                    #debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [SEARCH];
+                    $self->app->log->debug("User [" . $self->user_id . "] not enrolled for multi-item basket; not displaying basket link [SEARCH]");
                 }
                 $self->stash_basket_link($show_basket_link, $items);
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
-                debug "TIMING basket (link) not_authorised '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
-                warn "User not authenticated; not displaying basket link", [SEARCH];
+                $self->app->log->debug("TIMING basket (link) not_authorised '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start));
+                #warn "User not authenticated; not displaying basket link", [SEARCH];
+                $self->app->log->warn("User not authenticated; not displaying basket link [SEARCH]");
                 $self->stash_basket_link(undef, 0);
             },
             failure        => sub {
                 my ($api, $tx) = @_;
-                debug "TIMING basket (link) failure '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
+                $self->app->log->debug("TIMING basket (link) failure '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start));
                 log_error($tx, "failure");
                 $self->stash_basket_link(undef, 0);
             },
             error          => sub {
                 my ($api, $tx) = @_;
-                debug "TIMING basket (link) error '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start);
+                $self->app->log->debug("TIMING basket (link) error '" . refaddr(\$start) . "' duration: " . Time::HiRes::tv_interval($start));
                 log_error($tx, "error");
                 $self->stash_basket_link(undef, 0);
             }
@@ -262,7 +277,8 @@ sub log_error {
     my $error_message = $tx->error->{message} // 0;
     my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
     return if uc($error_type) eq 'FAILURE' && $error_code eq '404'; # don't log empty basket
-    error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [SEARCH];
+    # TODO log
+    #error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [SEARCH];
 }
 
 # ---------------------------------------------------------------------------------------------------
