@@ -6,18 +6,17 @@ use CH::Perl;
 use CH::Util::DateHelper;
 use Locale::Simple;
 use Time::HiRes qw(tv_interval gettimeofday);
-use Time::HiRes qw(tv_interval gettimeofday);
-use Scalar::Util qw(refaddr);
 
 # ------------------------------------------------------------------------------
 
 # Called once at server start
 sub startup {
     my $self = shift;
-    debug "Starting application" [APP];
+    #debug "Starting application" [APP];
+    $self->log->debug("Starting application [APP]");
 
     # Set CH::Log as the default logger via this wrapper
-    $self->log(MojoX::Log::Declare->new());
+    #$self->log(MojoX::Log::Declare->new());
 
     $self->plugin('CH::MojoX::Plugin::Config', { files => ['appconfig.yml','errors.yml'] } );
 
@@ -93,6 +92,12 @@ sub startup {
     if($self->mode eq 'development') {
         $self->plugin('MojoX::Plugin::PODRenderer');
     }
+
+    $self->plugin('MojoX::Plugin::Statsd', config => $self->config->{statsd}, namespace => sub {
+        my ($ctrl) = @_;
+
+        return $ctrl->app->moniker.".".$ctrl->current_route;
+    });
 
     # FIXME: Remove this when Doc API goes live
     $self->helper(can_view_images => sub {

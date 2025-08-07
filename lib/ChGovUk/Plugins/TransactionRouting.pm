@@ -16,7 +16,8 @@ sub register {
     my $map = $app->get_transaction_map;
     for my $endpoint (keys %$map) {
         my $form = $map->{$endpoint};
-        trace "Setting up transaction routing for endpoint '%s'", $endpoint [APP];
+        #trace "Setting up transaction routing for endpoint '%s'", $endpoint [APP];
+        $app->log->trace("Setting up transaction routing for endpoint '$endpoint' [APP]");
 
         # Create transaction (creates submission, redirects to transaction URL)
         $company->any($endpoint)->methods('POST', 'GET')->to('company-transactions#create');

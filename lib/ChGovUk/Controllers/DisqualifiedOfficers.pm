@@ -33,7 +33,8 @@ sub get_disqualification {
     my $officer_id           = $self->param('officer_id');
     my $is_corporate_officer = $disqualification_type eq 'corporate' ? 1 : 0;
 
-    trace 'Fetching disqualification for officer: [%s]', $officer_id;
+    #trace 'Fetching disqualification for officer: [%s]', $officer_id;
+    $self->app->log->trace("Fetching disqualification for officer: [$officer_id]");
 
     my $start = [Time::HiRes::gettimeofday()];
     debug "TIMING disqualified_officer '" . refaddr(\$start) . "'";
@@ -42,7 +43,7 @@ sub get_disqualification {
             my ($api, $tx) = @_;
             debug "TIMING disqualified_officer success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
-            my $results = $tx->success->json;
+            my $results = $tx->res->json;
 
             my $officer_data = $is_corporate_officer ? _get_corporate_data($results) : _get_natural_data($results);
 
@@ -62,18 +63,21 @@ sub get_disqualification {
             my ($error_code, $error_message) = @{ $tx->error }{qw(code message)};
 
             if ($error_code and $error_code == 404) {
-                trace 'Disqualified_officer officer not found. Officer ID: [%s]', $officer_id;
+                #trace 'Disqualified_officer officer not found. Officer ID: [%s]', $officer_id;
+                $self->app->log->trace("Disqualified_officer officer not found. Officer ID: [$officer_id]");
                 return $self->render_not_found;
             }
 
-            error 'Failed to retrieve disqualified_officer with officer_id: [%s]: [%s]', $officer_id, $error_message;
+            #error 'Failed to retrieve disqualified_officer with officer_id: [%s]: [%s]', $officer_id, $error_message;
+            $self->app->log->error("Failed to retrieve disqualified_officer with officer_id: [$officer_id]: [$error_message]");
             return $self->render_exception("Failed to retrieve disqualified_officer: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
             debug "TIMING disqualified_officer error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
-            error 'Error retrieving disqualified_officer with officer_id [%s]: [%s]', $officer_id, $error;
+            #error 'Error retrieving disqualified_officer with officer_id [%s]: [%s]', $officer_id, $error;
+            $self->app->log->error("Error retrieving disqualified_officer with officer_id [$officer_id]: [$error]");
             return $self->render_exception("Error retrieving disqualified_officer: $error");
         },
     )->execute;

@@ -11,7 +11,8 @@ use CH::Util::CountryCodes;
 sub register {
     my ($self, $app) = @_;
 
-    trace "Registering %s::country_codes helper", __PACKAGE__ [APP];
+    #trace "Registering %s::country_codes helper", __PACKAGE__ [APP];
+    $app->log->trace("Registering " . __PACKAGE__ . "::country_codes helper [APP]");
 
     $app->helper(code_for_country => sub {
         my ($c, $country, $language, $filter,) = @_;

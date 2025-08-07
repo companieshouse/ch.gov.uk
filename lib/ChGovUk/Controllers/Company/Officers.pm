@@ -8,6 +8,7 @@ use CH::Util::DateHelper;
 use Locale::Simple;
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
+use Data::Dumper;
 
 use constant AVAILABLE_CATEGORIES => {
     active => 'Current officers'
@@ -28,10 +29,12 @@ sub list {
 
     my $items_per_page = $self->config->{officer_list}->{items_per_page} || 35;
 
-    trace "Get company officer list for %s, page %s", $company_number, $page [OFFICER LIST];
+    #trace "Get company officer list for %s, page %s", $company_number, $page [OFFICER LIST];
+    $self->app->log->trace("Get company officer list for $company_number, page $page [OFFICER LIST]");
     my $pager = CH::Util::Pager->new(entries_per_page => $items_per_page, current_page => $page);
 
-    trace "Call officer list api for company %s, items_per_page %s", $company_number, $items_per_page [OFFICER LIST];
+    #trace "Call officer list api for company %s, items_per_page %s", $company_number, $items_per_page [OFFICER LIST];
+    $self->app->log->trace("Call officer list api for company $company_number, items_per_page " . $items_per_page . " [OFFICER LIST]");
     my $first_officer_number = $page eq 1 ? 0 : ($page - 1) * $items_per_page;
 
     # Generate an arrayref containing hashrefs of category id's/name's, sorted by name
@@ -66,8 +69,8 @@ sub list {
         success => sub {
             my ($api, $tx) = @_;
 
-            debug "TIMING company.officers (company officers) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-            my $results = $tx->success->json;
+            $self->app->log->debug("TIMING company.officers (company officers) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+            my $results = $tx->res->json;
 
             # If the filter string contains 'active' we are assuming
             # the active filter is set. If is_active_filter_set then we
@@ -115,11 +118,13 @@ sub list {
                 }
             }
 
-            trace "Officer list for %s: %s", $company_number, d:$results [OFFICER LIST];
+            #trace "Officer list for %s: %s", $company_number, d:$results [OFFICER LIST];
+            $self->app->log->trace("Officer list for $company_number: " . Dumper($results) . " [OFFICER LIST]");
 
             # Work out the paging numbers
             $pager->total_entries($results->{total_results});
-            trace "Officer listing total_count %d entries per page %d", $pager->total_entries, $pager->entries_per_page [OFFICER LIST];
+            #trace "Officer listing total_count %d entries per page %d", $pager->total_entries, $pager->entries_per_page [OFFICER LIST];
+            $self->app->log->trace("Officer listing total_count " . $pager->total_entries . " entries per page " . $pager->entries_per_page . " [OFFICER LIST]");
 
             $self->stash(paging => {
                 current_page_number => $pager->current_page,
@@ -133,7 +138,7 @@ sub list {
         },
         failure => sub {
             my ($api, $tx) = @_;
-            debug "TIMING company.officers (company officers) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING company.officers (company officers) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
             my ($error_code, $error_message) = (
                 $tx->error->{code} // 0,
@@ -141,7 +146,8 @@ sub list {
             );
 
             if ($error_code == 404) {
-                trace "Officer listing not found for company [%s]", $company_number [COMPANY PROFILE];
+                #trace "Officer listing not found for company [%s]", $company_number [COMPANY PROFILE];
+                $self->app->log->trace("Officer listing not found for company [$company_number] [COMPANY PROFILE]");
 
                 # render the regular list template to display message saying no officers for this company
                 my $results = {
@@ -162,14 +168,16 @@ sub list {
                 return $self->render;
             }
 
-            error "Failed to retrieve company officer list for %s: %s", $company_number, $error_message;
+            #error "Failed to retrieve company officer list for %s: %s", $company_number, $error_message;
+            $self->app->log->error("Failed to retrieve company officer list for $company_number: $error_message");
             return $self->render_exception("Failed to retrieve company officers: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
             debug "TIMING company.officers (company officers) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
-            error "Error retrieving company officer list for %s: %s", $company_number, $error;
+            #error "Error retrieving company officer list for %s: %s", $company_number, $error;
+            $self->app->log->error("Error retrieving company officer list for $company_number: $error");
             return $self->render_exception("Error retrieving company officers: $error");
         },
     )->execute;
