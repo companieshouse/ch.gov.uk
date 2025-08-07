@@ -5,7 +5,7 @@ use CH::Util::CVConstants::Value;
 use Mojo::Base 'Mojolicious::Plugin';
 use Readonly;
 
-has 'app' => ( is => 'rw' );
+has 'app';
 our $compiled = 0;
 
 # Stores data from cvconstants.yml on API (populated by ChGovUk::Plugins::CVConstants)

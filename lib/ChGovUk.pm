@@ -12,10 +12,11 @@ use Time::HiRes qw(tv_interval gettimeofday);
 # Called once at server start
 sub startup {
     my $self = shift;
-    debug "Starting application" [APP];
+    #debug "Starting application" [APP];
+    $self->log->debug("Starting application [APP]");
 
     # Set CH::Log as the default logger via this wrapper
-    $self->log(MojoX::Log::Declare->new());
+    #$self->log(MojoX::Log::Declare->new());
     
     $self->plugin('CH::MojoX::Plugin::Config', { files => ['appconfig.yml','errors.yml'] } );
 

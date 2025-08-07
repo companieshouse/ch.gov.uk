@@ -3,6 +3,7 @@ package ChGovUk::Controllers::Company::Branches;
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::IOLoop;
 use Mojo::IOLoop::Delay;
+use Data::Dumper;
 
 use CH::Perl;
 
@@ -19,8 +20,9 @@ sub view {
     $self->ch_api->company($company_number)->ukestablishments()->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
-            my $results = $tx->success->json;
-            trace "related companies for %s: %s", $company_number, d:$results [COMPANY BRANCHES];
+            my $results = $tx->res->json;
+            #trace "related companies for %s: %s", $company_number, d:$results [company branches];
+            $self->app->log->trace("related companies for $company_number: " . Dumper($results) . " [company branches]");
 
             # Add the number of branches to the stash
             $self->stash('number_of_branches' => scalar @{$results->{items}});
@@ -29,8 +31,9 @@ sub view {
             # Add the number of branches with status 'closed' 
             $self->stash('number_of_branches_closed' => scalar(grep { $_->{company_status} =~ /closed/i } @{$results->{items}}) || 0);
 
-            trace "branches total %d open %d",
-                $self->stash('number_of_branches'), $self->stash('number_of_branches_open') [COMPANY BRANCHES];
+            #trace "branches total %d open %d",
+            #    $self->stash('number_of_branches'), $self->stash('number_of_branches_open') [COMPANY BRANCHES];
+            $self->app->log->trace("branches total " . $self->stash('number_of_branches') . " open " . $self->stash('number_of_branches_open') . " [COMPANY BRANCHES]");
 
             $self->stash(branches => $results);
             $self->stash(company_number => $company_number);
@@ -45,13 +48,15 @@ sub view {
                 $tx->error->{message},
             );
 
-            error "Failed to retrieve branches for %s: %s", $company_number, $error_message;
+            #error "Failed to retrieve branches for %s: %s", $company_number, $error_message;
+            $self->app->log->error("Failed to retrieve branches for $company_number: $error_message");
             return $self->render_exception("Failed to retrieve branches for company [$company_number]: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
 
-            error "Error retrieving branches list for %s: %s", $company_number, $error;
+            #error "Error retrieving branches list for %s: %s", $company_number, $error;
+            $self->app->log->error("Error retrieving branches list for $company_number: $error");
             return $self->render_exception("Error retrieving company branches: $error");
         }
     )->execute;

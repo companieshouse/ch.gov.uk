@@ -10,11 +10,12 @@ use POSIX qw/ceil/;
 use Readonly;
 use CH::Util::Pager;
 use ChGovUk::Plugins::FilterHelper;
+use Data::Dumper;
 
 Readonly my $PARTICULARS_SHORT_STRING_LENGTH => 60;
 Readonly my $LARGE_HEADING_MAX_LENGTH        => 140;
 Readonly my $BREADCRUMB_SHORT_STRING_LENGTH  => 55;
-Readonly my @ALTERATIONS_FILING_TYPES = qw( alter-charge alter-charge-limited-liability-partnership alter-floating-charge alter-floating-charge-limited-liability-partnership );
+Readonly my @ALTERATIONS_FILING_TYPES => qw( alter-charge alter-charge-limited-liability-partnership alter-floating-charge alter-floating-charge-limited-liability-partnership );
 
 # all filters (that can be used)
 # XXX temp: need decision on what categories we're going to display and where the
@@ -31,7 +32,8 @@ sub view {
     my ($self) = @_;
 
     if (!$self->config->{feature}->{mortgage} && !$self->can_do('/admin/mortgages')) {
-        warn "mortgage index feature is not available to non admin users" [MORTGAGES];
+        #warn "mortgage index feature is not available to non admin users" [MORTGAGES];
+        $self->app->log->warn("mortgage index feature is not available to non admin users [MORTGAGES]");
         $self->render('error', error => "page_unavailable", description => "You have requested a page that is currently unavailable.", status => 500 );
 
         return ;
@@ -75,8 +77,8 @@ sub view {
     my $pager = CH::Util::Pager->new(entries_per_page => $items_per_page, current_page => $page);
 
     my $first = $pager->first;   # Get first mortgage for this page
-    debug "Call mortgage api for company %s, start_index %s, items_per_page %s, filter=[%s]", $self->stash('company_number'),
-        $first, $pager->entries_per_page, $filter_val [MORTGAGES];
+    #debug "Call mortgage api for company %s, start_index %s, items_per_page %s, filter=[%s]", $self->stash('company_number'),
+    $self->app->log->debug("Call mortgage api for company " . $self->stash('company_number') . ", start_index $first, items_per_page " . $pager->entries_per_page . ", filter=[$filter_val] [MORTGAGES]");
 
     $query->{start_index} = $first;
     $query->{items_per_page} = $pager->entries_per_page;
@@ -85,8 +87,9 @@ sub view {
     $self->ch_api->company($self->stash('company_number'))->charges($query)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
-            my $results = $tx->success->json;
-            trace "mortgages for %s: %s", $self->stash('company_number'), d:$results [MORTGAGES];
+            my $results = $tx->res->json;
+            #trace "mortgages for %s: %s", $self->stash('company_number'), d:$results [MORTGAGES];
+            $self->app->log->trace("mortgages for " . $self->stash('company_number') . ": " . Dumper($results) . " [MORTGAGES]");
 
             # Calculate the outstanding mortgage count
             $results->{outstanding_count} = $results->{unfiltered_count} - $results->{satisfied_count} - $results->{part_satisfied_count};
@@ -120,8 +123,9 @@ sub view {
             # Work out the paging numbers
             $pager->total_entries( $results->{total_count} // 0 );
 
-            trace "mortgage total_count %d entries per page %d",
-                $pager->total_entries, $pager->entries_per_page() [MORTGAGE];
+            #trace "mortgage total_count %d entries per page %d",
+            #    $pager->total_entries, $pager->entries_per_page() [MORTGAGE];
+            $self->app->log->trace("mortgage total_count " . $pager->total_entries . " entries per page " . $pager->entries_per_page() . " [MORTGAGE]");
 
             $self->stash(current_page_number     => $pager->current_page);
             $self->stash(page_set                => $pager->pages_in_set());
@@ -148,7 +152,8 @@ sub view {
             );
 
             if ($error_code == 404) {
-                trace "Charges not found for company [%s]", $company_number [MORTGAGES];
+                #trace "Charges not found for company [%s]", $company_number [MORTGAGES];
+                $self->app->log->trace("Charges not found for company [$company_number] [MORTGAGES]");
                 $self->stash(no_mortgages_found => 1);
                 $self->stash(filters => $filters);
 
@@ -162,13 +167,15 @@ sub view {
                 }
             }
 
-            error "Failed to retrieve charges for %s: %s", $company_number, $error_message;
+            #error "Failed to retrieve charges for %s: %s", $company_number, $error_message;
+            $self->app->log->error("Failed to retrieve charges for $company_number: $error_message");
             return $self->render_exception("Failed to retrieve charges for company [$company_number]: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
 
-            error "Error retrieving charges list for %s: %s", $company_number, $error;
+            #error "Error retrieving charges list for %s: %s", $company_number, $error;
+            $self->app->log->error("Error retrieving charges list for %s$company_number: $error");
             return $self->render_exception("Error retrieving company charges: $error");
         }
       )->execute;
@@ -183,7 +190,8 @@ sub view_details {
     my ($self) = @_;
 
     if (!$self->config->{feature}->{mortgage} && !$self->can_do('/admin/mortgages')) {
-        warn "mortgage details feature is not available to non admin users" [MORTGAGE_DETAILS];
+        #warn "mortgage details feature is not available to non admin users" [MORTGAGE_DETAILS];
+        $self->app->log->warn("mortgage details feature is not available to non admin users [MORTGAGE_DETAILS]");
         $self->render('error', error => "page_unavailable", description => "You have requested a page that is currently unavailable.", status => 500 );
         return ;
     }
@@ -199,8 +207,9 @@ sub view_details {
     $self->ch_api->company($self->stash('company_number'))->charge_details($charge_id)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
-            $result = $tx->success->json;
-            trace "mortgage for %s with mortgage id %s: %s", $self->stash('company_number'), $charge_id, d:$result [MORTGAGE_DETAILS];
+            $result = $tx->res->json;
+            #trace "mortgage for %s with mortgage id %s: %s", $self->stash('company_number'), $charge_id, d:$result [MORTGAGE_DETAILS];
+            $self->app->log->trace("mortgage for " . $self->stash('company_number') . " with mortgage id $charge_id: " . Dumper($result) . " [MORTGAGE_DETAILS]");
 
             # shift earliest transaction as the creation transaction
             $result->{creation_transaction} = shift @{ $result->{transactions} };
@@ -257,12 +266,14 @@ sub view_details {
             );
 
             if ($error_code == 404) {
-                trace "Mortgage [%s] not found for company [%s]", $charge_id, $company_number [MORTGAGE_DETAILS];
+                #trace "Mortgage [%s] not found for company [%s]", $charge_id, $company_number [MORTGAGE_DETAILS];
+                $self->app->log->trace("Mortgage [$charge_id] not found for company [$company_number] [MORTGAGE_DETAILS]");
                 return $self->render_not_found;
             }
 
-            error "Error retrieving company mortgages for %s: %s",
-            $self->stash('company_number'), $error [MORTGAGE_DETAILS];
+            #error "Error retrieving company mortgages for %s: %s",
+            #$self->stash('company_number'), $error [MORTGAGE_DETAILS];
+            $self->app->log->error("Error retrieving company mortgages for " . $self->stash('company_number') . " $error [MORTGAGE_DETAILS]");
             $self->render_exception("Error retrieving company: $error");
         }
       )->execute;
@@ -271,7 +282,8 @@ sub view_details {
     $filing_delay->on(
                  finish => sub {
                      my ($delay, $response) = @_;
-                     trace "Mortgage document after transformation: %s", d:$result [MORTGAGE_DETAILS];
+                     #trace "Mortgage document after transformation: %s", d:$result [MORTGAGE_DETAILS];
+                     $self->app->log->trace("Mortgage document after transformation: " . Dumper($result) . " [MORTGAGE_DETAILS]");
 
                      $self->stash(charge => $result );
                      $self->stash(company_number => $self->param('company_number'));
@@ -281,7 +293,8 @@ sub view_details {
                      },
                  error => sub {
                      my ($delay, $err) = @_;
-                     error "Error getting mortgage details : %s", $err [ MORTGAGE_DETAILS ];
+                     #error "Error getting mortgage details : %s", $err [ MORTGAGE_DETAILS ];
+                     $self->app->log->error("Error getting mortgage details : $err [ MORTGAGE_DETAILS ]");
                      return $self->render_exception($err);
                  },
              );
@@ -301,14 +314,16 @@ sub _get_image_location {
         $self->ch_api->company($self->param('company_number'))->filing_history_item($mortgage_data->{transaction_id})->get->on(
                success => sub {
                    my ( $api, $tx ) = @_;
-                   my $filing_doc = $tx->success->json;
+                   my $filing_doc = $tx->res->json;
 
                    if (defined $filing_doc->{links}->{document_metadata}) {
-                       trace "Successfully returned image location";
+                       #trace "Successfully returned image location";
+                       $self->app->log->trace("Successfully returned image location");
                        $mortgage_data->{resource_url}   = $filing_doc->{links}->{document_metadata};
                        $mortgage_data->{pages} = $filing_doc->{pages};
                    } else {
-                       trace "Resource does not have an image associated with transaction_id: %s", $mortgage_data->{transaction_id};
+                       #trace "Resource does not have an image associated with transaction_id: %s", $mortgage_data->{transaction_id};
+                       $self->app->log->trace("Resource does not have an image associated with transaction_id: " . $mortgage_data->{transaction_id});
                    }
 
                    return $callback->($mortgage_data);
@@ -316,7 +331,8 @@ sub _get_image_location {
                failure => sub {
                    my ( $api, $tx ) = @_;
 
-                   error "Failure retrieving company filing for %s: %s", $self->stash('company_number'), $tx->error->{message};
+                   #error "Failure retrieving company filing for %s: %s", $self->stash('company_number'), $tx->error->{message};
+                   $self->app->log->error("Failure retrieving company filing for " . $self->stash('company_number') . ": " . $tx->error->{message});
                    return $callback->($mortgage_data);
                },
              )->execute;

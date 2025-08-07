@@ -21,7 +21,8 @@ sub list {
     my $page           = (abs int $self->param('page')) || 1;
     my $items_per_page = DEFAULT_ITEMS_PER_PAGE;
 
-    trace 'Page [%s] with [%s] items per page - query term: [%s]', $page, $items_per_page, $query;
+    #trace 'Page [%s] with [%s] items per page - query term: [%s]', $page, $items_per_page, $query;
+    $self->app->log->trace("Page [$page] with [$items_per_page] items per page - query term: [$query]");
 
     $self->ch_api->search->disqualified_officers({
         q              => "$query*",
@@ -67,7 +68,8 @@ sub list {
             my $error_code = $tx->error->{code}       // 0;
             my $error_message = $tx->error->{message} // 0;
 
-            error 'Failed to retrieve search results: [%s] [%s]', $error_code, $error_message;
+            #error 'Failed to retrieve search results: [%s] [%s]', $error_code, $error_message;
+            $self->app->log->error("Failed to retrieve search results: [$error_code] [$error_message]");
 
             return $error_code == 416
                 ? $self->render('error', error => 'outside_result_set', description => 'You have requested a page outside of the available result set', status => 416)
@@ -77,7 +79,8 @@ sub list {
             my ($api, $error) = @_;
 
             my $message = "Error retrieving search results: $error";
-            error '%s', $message;
+            #error '%s', $message;
+            $self->app->log->error("$message");
 
             return $self->render_exception($message);
         },

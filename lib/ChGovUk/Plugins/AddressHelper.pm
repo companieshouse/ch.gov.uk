@@ -8,7 +8,8 @@ use Mojo::Base 'Mojolicious::Plugin';
 sub register {
     my ($self, $app) = @_;
 
-    trace "Registering %s::address_as_string helper", __PACKAGE__ [APP];
+    #trace "Registering %s::address_as_string helper", __PACKAGE__ [APP];
+    $app->log->trace("Registering " . __PACKAGE__ . "::address_as_string helper [APP]");
 
     $app->helper(address_as_string => \&as_string);
 

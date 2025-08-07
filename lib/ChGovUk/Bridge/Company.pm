@@ -4,6 +4,7 @@ use CH::Perl;
 use Mojo::Base 'Mojolicious::Controller';
 use DateTime::Tiny;
 use CH::Util::DateHelper qw(is_current_date_greater);
+use Data::Dumper;
 
 #-------------------------------------------------------------------------------
 
@@ -13,7 +14,8 @@ sub company {
     # Get the company number from the URL
     my (undef, $slash_company, $company_number) = split '/', $self->tx->req->url->path;
 
-    trace "get company profile for: [%s]", $company_number [COMPANY PROFILE];
+    #trace "get company profile for: [%s]", $company_number [COMPANY PROFILE];
+    $self->app->log->trace("get company profile for: [$company_number] [COMPANY PROFILE]");
 
     my $api = $self->ch_api->company($company_number)->profile;
     $api->force_api_key unless $self->authorised_company eq $company_number;
@@ -27,8 +29,9 @@ sub company {
     #$self->ch_api->company($company_number)->profile->get->on(
         success => sub {
             my ($api, $tx) = @_;
-            trace "company profile for: [%s]: [%s]", $company_number, d:$tx->success->json [COMPANY PROFILE];
-            my $results = $tx->success->json;
+            #trace "company profile for: [%s]: [%s]", $company_number, d:$tx->success->json [COMPANY PROFILE];
+            $self->app->log->trace("company profile for: [$company_number]: [" . Dumper($tx->res->json) . "] [COMPANY PROFILE]");
+            my $results = $tx->res->json;
             $self->stash(company => $results);
             if ($results->{officer_summary}) {
                 $results->{show_officer_summary} = 1;
@@ -67,11 +70,13 @@ sub company {
             }
 
             if (not $self->session->{signin_info}->{signed_in}) {
-                trace 'user not signed in - not fetching monitor status';
+                #trace 'user not signed in - not fetching monitor status';
+                $self->app->log->trace('user not signed in - not fetching monitor status');
                 return $self->continue;
             }
 
-            trace 'user signed in - fetching monitor status';
+            #trace 'user signed in - fetching monitor status';
+            $self->app->log->trace('user signed in - fetching monitor status');
 
             if ( $self->config->{web_proxy}->{monitor_api} ) {
                 $self->ua->proxy->http( $self->config->{web_proxy}->{monitor_api} );
@@ -97,12 +102,14 @@ sub company {
             my $error_message = $tx->error->{message};
 
             if ($error_code == 404) {
-				trace "Company [%s] not found", $company_number [COMPANY PROFILE];
+				#trace "Company [%s] not found", $company_number [COMPANY PROFILE];
+				$self->app->log->trace("Company [$company_number] not found [COMPANY PROFILE]");
 				# Should do more than this:
 				return $self->render_not_found;
             } else {
                 my $message = "Error ($error_code) retrieving company $company_number:$error_message";
-                error "[%s]", $message [COMPANY PROFILE];
+                #error "[%s]", $message [COMPANY PROFILE];
+                $self->app->log->error("[$message] [COMPANY PROFILE]");
                 return $self->render_exception($message);
             }
         },
@@ -115,7 +122,8 @@ sub company {
             $self->access_token({});
             $self->user_profile({});
             $self->authorised_company('');
-            trace "Company [%s] unauthorised. Redirecting to company login, with return_to: [%s]", $company_number, $return_to [COMPANY PROFILE];
+            #trace "Company [%s] unauthorised. Redirecting to company login, with return_to: [%s]", $company_number, $return_to [COMPANY PROFILE];
+            $self->app->log->trace("Company [$company_number] unauthorised. Redirecting to company login, with return_to: [$return_to] [COMPANY PROFILE]");
             $self->redirect_to( $self->url_for('company_authorise')->query( return_to => $return_to ));
             return 0;
         },
@@ -123,7 +131,8 @@ sub company {
         error => sub {
             my ($api, $error) = @_;
             my $message = "Error retrieving company $company_number:$error";
-            error "[%s]", $message [COMPANY PROFILE];
+            #error "[%s]", $message [COMPANY PROFILE];
+            $self->app->log->error("[$message] [COMPANY PROFILE]");
             $self->render_exception($message);
         }
     )->execute;
@@ -137,20 +146,23 @@ sub get_basket_link {
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
-                my $json = $tx->success->json;
+                my $json = $tx->res->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
                 if ($show_basket_link) {
-                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [COMPANY_BRIDGE];
+                    #debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [COMPANY_BRIDGE];
+                    $self->app->log->debug("User [" . $self->user_id . "] enrolled for multi-item basket; displaying basket link [COMPANY_BRIDGE]");
                 }
                 else {
-                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [COMPANY_BRIDGE];
+                    #debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [COMPANY_BRIDGE];
+                    $self->app->log->debug("User [" . $self->user_id . "] not enrolled for multi-item basket; not displaying basket link [COMPANY_BRIDGE]");
                 }
                 $self->stash_basket_link($show_basket_link, $items);
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
-                warn "User not authenticated; not displaying basket link", [COMPANY_BRIDGE];
+                #warn "User not authenticated; not displaying basket link", [COMPANY_BRIDGE];
+                $self->app->log->warn("User not authenticated; not displaying basket link [COMPANY_BRIDGE]");
                 $self->stash_basket_link(undef, 0);
             },
             failure        => sub {
@@ -184,7 +196,8 @@ sub log_error {
     my $error_code = $tx->error->{code} // 0;
     my $error_message = $tx->error->{message} // 0;
     my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
-    error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [COMPANY_BRIDGE];
+    # TODO log
+    #error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [COMPANY_BRIDGE];
 }
 
 # ------------------------------------------------------------------------------

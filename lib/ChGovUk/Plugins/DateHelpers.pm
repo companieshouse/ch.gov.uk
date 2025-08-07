@@ -10,7 +10,7 @@ use CH::Util::DateHelper;
 sub register {
     my ($self, $app) = @_;
 
-    trace "Registering %s::date_as_string helper", __PACKAGE__ [APP];
+    $app->log->trace("Registering " . __PACKAGE__ . "::date_as_string helper [APP]");
     $app->helper(date_as_string => sub {
         my ($c, $date, $optional_format) = @_;
         return CH::Util::DateHelper->as_string($date, $optional_format);

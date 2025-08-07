@@ -8,13 +8,19 @@ use ChGovUk::Models::DataAdapter;
 use ChGovUk::Transaction;
 use ChGovUk::Models::Address;
 use CH::MojoX::SignIn::Bridge::HijackProtect;
+use Data::Dumper;
+
+has 'app';
 
 # =============================================================================
 
 sub register {
     my ($self, $app) = @_;
 
-    trace "Setup the bridge that every request passes through" [ROUTING];
+    $self->app($app);
+
+    #trace "Setup the bridge that every request passes through" [ROUTING];
+    $app->log->trace("Setup the bridge that every request passes through [ROUTING]");
 
     my $hijack = $app->routes->under->name('hijack_protect')->to( cb => \&CH::MojoX::SignIn::Bridge::HijackProtect::bridge );
 
@@ -25,7 +31,8 @@ sub register {
         $self->stash( route_name => $self->current_route);
 
         # TODO: get session may be removed once we solve redirection loop (github issue #87)
-        trace 'session is %s', d:$self->session [ROUTING];
+        #trace 'session is %s', d:$self->session [ROUTING];
+        $app->log->trace("Session is " . Dumper($self->session));
 
         if ( $self->param('postcode_hint') ){
             my @keys = grep { $_ if /^postcode_lookup\[(.*)\]$/ } @{$self->req->params};
@@ -33,20 +40,23 @@ sub register {
                 # postcode_lookup[field[postcode]]
                 my ($field) = $key =~ /^postcode_lookup\[([\w\[\]]+)\[postcode\]\]$/;
                 my $postcode = $self->param($field .'[postcode]');
-                debug "Postcode lookup for field [%s], postcode [%s]", $field, $postcode [ROUTING];
+                #debug "Postcode lookup for field [%s], postcode [%s]", $field, $postcode [ROUTING];
+                $app->log->debug("Postcode lookup for field [$field], postcode [$postcode] [ROUTING]");
 
                 my $address_model = ChGovUk::Models::Address->new();
                 my $maxlength = $address_model->rules->{postcode}->{maxlength};
                 
                 if (not length $postcode =~ s/\s//gr or length $postcode =~ s/\s//gr > $maxlength) {
-                    trace "Value set for postcode is more than [%s] or not set", $maxlength [ROUTING];
+                    #trace "Value set for postcode is more than [%s] or not set", $maxlength [ROUTING];
+                    $app->log->trace("Value set for postcode is more than [$maxlength] or not set [ROUTING]");
                     $self->stash(postcode_lookup_failure => $field."[postcode]");
                     return 1;
                 }
 
                 $self->app->postcode_lookup($postcode, sub {
                     my ($address) = @_;
-                    trace "Got result for postcode lookup:\n%s", d:$address [ROUTING];
+                    #trace "Got result for postcode lookup:\n%s", d:$address [ROUTING];
+                    $app->log->trace("Got result for postcode lookup:\n" . Dumper($address) . "[ROUTING]");
 
                     if ($address->{invalid_postcode}){
                         $self->stash( postcode_lookup_nomatch => $field."[postcode]" );
@@ -74,7 +84,8 @@ sub register {
             return 1;
         }
         elsif ( $self->param('file_upload_hint') ){
-            debug "Inside file upload hint" [FILE];
+            #debug "Inside file upload hint" [FILE];
+            $app->log->debug("Inside file upload hint [FILE]");
             my @keys = grep { $_ if /^file_(upload|delete)\[(.*)\]$/ } @{$self->req->params};
             if ( my $key = $keys[0] ){
 
@@ -91,7 +102,8 @@ sub register {
                     my $size = $file->size;
                     my $tmp_file_name = tmpnam();
                     my $tmp_file_location = $self->app->home . $tmp_file_name;
-                    debug "file=[%s] temp-file=[%s]", $file->filename, $tmp_file_location [FILE];
+                    #debug "file=[%s] temp-file=[%s]", $file->filename, $tmp_file_location [FILE];
+                    $app->log->debug("file=[" . $file->filename . "] temp-file=[" . $tmp_file_location ."] [FILE]");
 
                     $file->move_to($tmp_file_location);
 
@@ -100,7 +112,7 @@ sub register {
                     # param is evaluated as false instead of 0 value in formHelper.
                     my $index = scalar @{$self->session('file_upload')};
                     $index++;
-                    push $self->session('file_upload'),  {
+                    push @{$self->session('file_upload')},  {
                         filename => $file->filename,
                         tmpfile  => $tmp_file_name,
                         filesize => $size,
@@ -120,7 +132,7 @@ sub register {
 
                     my $tmp_file = $file_info{tmpfile};
                     my $tmp_file_location = $self->app->home . $tmp_file;
-                    unlink $tmp_file_location or error "Could not delete [%s]", $tmp_file [FILE];
+                    unlink $tmp_file_location or $app->log->error("Could not delete [$tmp_file] [FILE]");
 
                     $self->session->{file_upload}->[$index - 1] = undef;
                     $self->param($field => 0);
@@ -140,12 +152,14 @@ sub register {
         if( ! $self->is_signed_in ) {
             # TODO should use named route
             my $return_to = $self->req->headers->referrer . ',' . scalar $self->req->url;
-            debug "User authentication bridge - user not logged in, redirecting to login with return_to[%s]", $return_to [ROUTING];
+            #debug "User authentication bridge - user not logged in, redirecting to login with return_to[%s]", $return_to [ROUTING];
+            $app->log->debug("User authentication bridge - user not logged in, redirecting to login with return_to[$return_to] [ROUTING]");
             $self->redirect_to( $self->url_for('user_sign_in')->query( return_to => $return_to) );
             return 0;
         }
 
-        trace "User authentication bridge - user logged in, continuing route" [ROUTING];
+        #trace "User authentication bridge - user logged in, continuing route" [ROUTING];
+        $app->log->trace("User authentication bridge - user logged in, continuing route [ROUTING]");
         return 1;
     } );
 
@@ -155,26 +169,30 @@ sub register {
     # Any routes off this bridge require a valid company session
     my $company_auth = $company->under('/')->name('company_auth')->to( cb => sub {
         my ($self) = @_;
-        trace 'company  authentication bridge' [ROUTING];
+        #trace 'company  authentication bridge' [ROUTING];
+        $app->log->trace("company authentication bridge [ROUTING]");
         my $company_number = $self->stash('company_number');
 
         # If user is signing out and we've hit an "you must be authorised" company page
         # redirect to the company profile
         if( $self->flash('signing_out') )
         {
-            trace "Signing out of company $company_number, directing to company profile";
+            #trace "Signing out of company $company_number, directing to company profile";
+            $app->log->trace("Signing out of company $company_number, directing to company profile");
             $self->redirect_to( $self->url_for('company_profile', company_number => $company_number) );
             return 0;
         }
 
         if ( !$self->user_id || $company_number ne $self->authorised_company) {
             my $return_to = $self->url_for('current')->to_abs;
-            debug "Company authentication bridge - company not logged in, redirecting to login with return_to[%s]", $return_to [ROUTING];
+            #debug "Company authentication bridge - company not logged in, redirecting to login with return_to[%s]", $return_to [ROUTING];
+            $app->log->debug("Company authentication bridge - company not logged in, redirecting to login with return_to[$return_to] [ROUTING]");
             $self->redirect_to( $self->url_for('company_authorise')->query( return_to => $return_to) );
             return 0;
         }
 
-        trace "Company authentication bridge - company logged in, continuing route" [ROUTING];
+        #trace "Company authentication bridge - company logged in, continuing route" [ROUTING];
+        $app->log->trace("Company authentication bridge - company logged in, continuing route [ROUTING]");
         return 1;
     } );
 
@@ -201,7 +219,8 @@ sub _transaction_bridge{
                 my $transaction = $tx->res->json;
 
                 if ($company_number ne $transaction->{company_number}){
-                    trace "Transaction bridge - authenticated for company_number : [%s], transaction for company_number : [%s]", $company_number, $transaction->{company_number};
+                    #trace "Transaction bridge - authenticated for company_number : [%s], transaction for company_number : [%s]", $company_number, $transaction->{company_number};
+                    $self->app->log->trace("Transaction bridge - authenticated for company_number : [$company_number], transaction for company_number : [" . $transaction->{company_number} ."]");
                     return $self->render_not_found;
                 }
 
@@ -210,29 +229,35 @@ sub _transaction_bridge{
 
                 if ( $destination eq 'change-registered-office-address' && ($self->stash('company'))->{registered_office_is_in_dispute} ){
                     #TODO: An empty transaction is created before this redirect will occur. It feels as though there should be a better way to do this.
-                    trace "ROA for company: [%s] is in dispute. Redirecting to help page. ", $company_number;
+                    #trace "ROA for company: [%s] is in dispute. Redirecting to help page. ", $company_number;
+                    $self->app->log->trace("ROA for company: [$company_number] is in dispute. Redirecting to help page.");
                     return $self->redirect_to( '/help/replaced-address-help.html' );
                 } elsif ( $status eq 'open' && $destination eq 'change-registered-office-address'){
-                    trace "Transaction bridge - Status [%s] matches destination [%s], continuing", $status, $destination;
+                    #trace "Transaction bridge - Status [%s] matches destination [%s], continuing", $status, $destination;
+                    $self->app->log->trace("Transaction bridge - Status [$status] matches destination [$destination], continuing");
                     return $self->continue;
                 } elsif ( $status && $destination eq 'confirmation') {
-                    trace "Transaction bridge - Status [%s] matches destination [%s], continuing", $status, $destination;
+                    #trace "Transaction bridge - Status [%s] matches destination [%s], continuing", $status, $destination;
+                    $self->app->log->trace("Transaction bridge - Status [$status] matches destination [$destination], continuing");
                     return $self->continue;
                 }
 
-                error "Transaction bridge - transaction closed: [%s]", $self->stash('transaction_number');
+                #error "Transaction bridge - transaction closed: [%s]", $self->stash('transaction_number');
+                $self->app->log->error("Transaction bridge - transaction closed: [" . $self->stash('transaction_number') . "]");
                 return $self->render( 'error', status => 403, error => 'transaction_not_open' );
 
             },
             error => sub {
                 my ($api, $error) = @_;
                 my $message = "Error finding transaction: $error";
-                error "%s", $message [ROUTING];
+                #error "%s", $message [ROUTING];
+                $self->app->log->error($message . " [ROUTING]");
                 return $self->render_exception($message);
             },
             not_authorised => sub {
                 my $return_to = $self->req->url->to_string;
-                trace "Company unauthorised. Redirecting to company login, with return_to: [%s]", $return_to [ROUTING];
+                #trace "Company unauthorised. Redirecting to company login, with return_to: [%s]", $return_to [ROUTING];
+                $self->app->log->trace("Company unauthorised. Redirecting to company login, with return_to: [$return_to] [ROUTING]");
                 return $self->redirect_to( $self->url_for('company_authorise') . '?return_to=' . $return_to );
             },
             failure => sub {
@@ -241,16 +266,19 @@ sub _transaction_bridge{
 
                 if(!$code or $code =~ /^5\d\d/) {
                     my $message = 'Status '.$tx->res->code.'. Failed to load transaction ['.$self->stash('transaction_number').']. Unexpected response from API: '.$tx->error->{message};
-                    error "%s", $message [ROUTING];
+                    #error "%s", $message [ROUTING];
+                    $self->app->log->error($message . " [ROUTING]");
                     return $self->render_exception($message);
                 }
 
                 if ($code == 404) {
-                    error "Transaction [%s] does not exist. Continuing.", $self->stash('transaction_number');
+                    #error "Transaction [%s] does not exist. Continuing.", $self->stash('transaction_number');
+                    $self->app->log->error("Transaction [" . $self->stash('transaction_number') . "] does not exist. Continuing.");
                     return $self->render('error', error => "transaction_not_exist", description => "This transaction does not exist for this company", status => 404 );
                 }
 
-                error "Failure fetching transaction: [%s] . Error: [%s].", $self->stash('transaction_number'), $tx->error->{message};
+                #error "Failure fetching transaction: [%s] . Error: [%s].", $self->stash('transaction_number'), $tx->error->{message};
+                $self->app->log->error("Failure fetching transaction: [". $self->stash('transaction_number') ."] . Error: [" . $tx->error->{message} . "].");
                 return $self->render( 'error', status => $code, error => 'transaction_not_exist' );
             },
         )->execute;

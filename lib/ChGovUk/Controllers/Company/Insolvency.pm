@@ -3,6 +3,7 @@ package ChGovUk::Controllers::Company::Insolvency;
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::IOLoop;
 use Mojo::IOLoop::Delay;
+use Data::Dumper;
 
 use CH::Perl;
 use CH::Util::DateHelper;
@@ -20,8 +21,9 @@ sub view {
     $self->ch_api->company($self->stash('company_number'))->insolvency()->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
-            my $results = $tx->success->json;
-            trace "insolvency for %s: %s", $self->stash('company_number'), d:$results [INSOLVENCY];
+            my $results = $tx->res->json;
+            #trace "insolvency for %s: %s", $self->stash('company_number'), d:$results [INSOLVENCY];
+            $self->app->log->trace("insolvency for " . $self->stash('company_number') . " : " . Dumper($results) . " [INSOLVENCY]");
 
             # Format date fields in the form of '01 Jan 2004'
             for my $case (@{$results->{cases}}) {

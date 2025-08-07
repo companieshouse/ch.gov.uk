@@ -12,7 +12,8 @@ sub view {
     my $company_number = $self->stash('company_number');
     my $company        = $self->stash('company');
 
-    trace "display company profile for: %s", $company_number [COMPANY PROFILE];
+    #trace "display company profile for: %s", $company_number [COMPANY PROFILE];
+    $self->app->log->trace("display company profile for: $company_number [COMPANY PROFILE]");
 
     $self->stash_view_company_event();
 
@@ -31,7 +32,8 @@ sub authorise {
 
     my $return = $self->param('return_to') // $self->req->headers->referrer // $self->base_url;
 
-    trace "Sign in: CPL Set state for authorize_url to: %s", $return [ACCOUNT];
+    #trace "Sign in: CPL Set state for authorize_url to: %s", $return [ACCOUNT];
+    $self->app->log->trace("Sign in: CPL Set state for authorize_url to: $return [ACCOUNT]");
 
     my $scope = 'https://api.companieshouse.gov.uk/company/' . $self->stash('company_number');
 

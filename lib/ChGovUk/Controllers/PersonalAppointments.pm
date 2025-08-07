@@ -4,6 +4,7 @@ use Mojo::Base 'Mojolicious::Controller';
 
 use CH::Perl;
 use CH::Util::Pager;
+use Data::Dumper;
 
 use constant AVAILABLE_CATEGORIES => {
     active => 'Current appointments',
@@ -39,7 +40,8 @@ sub get {
 
     my $filter = join ',', map { $_->{id} } grep { $_->{checked} } @categories;
 
-    trace 'Fetching appointments page [%s] for officer [%s]', $page, $officer_id;
+    #trace 'Fetching appointments page [%s] for officer [%s]', $page, $officer_id;
+    $self->app->log->trace("Fetching appointments page [$page] for officer [$officer_id]");
 
     # Get the basket link for the user nav bar
     $self->get_basket_link;
@@ -52,8 +54,9 @@ sub get {
         success => sub {
             my ($api, $tx) = @_;
 
-            my $results = $tx->success->json;
-            trace 'Appointments for officer [%s]: %s', $officer_id, d:$results;
+            my $results = $tx->res->json;
+            #trace 'Appointments for officer [%s]: %s', $officer_id, d:$results;
+            $self->app->log->trace("Appointments for officer [$officer_id]: " . Dumper($results));
 
             my $officer = {
                 appointments    => $results->{items},
@@ -63,7 +66,8 @@ sub get {
             };
 
             $pager->total_entries($results->{total_results});
-            trace 'Total appointments [%d] with [%d] entries per page', $pager->total_entries, $pager->entries_per_page;
+            #trace 'Total appointments [%d] with [%d] entries per page', $pager->total_entries, $pager->entries_per_page;
+            $self->app->log->trace("Total appointments [" . $pager->total_entries . "] with [" . $pager->entries_per_page . "]");
 
             my $paging = {
                 current_page_number => $pager->current_page,
@@ -93,17 +97,20 @@ sub get {
             my ($error_code, $error_message) = @{ $tx->error }{qw(code message)};
 
             if ($error_code and $error_code == 404) {
-                trace 'Appointments not found for officer [%s]', $officer_id;
+                #trace 'Appointments not found for officer [%s]', $officer_id;
+                $self->app->log->trace("Appointments not found for officer [$officer_id]");
                 return $self->render_not_found;
             }
 
-            error 'Failed to retrieve appointments for officer [%s]: [%s]', $officer_id, $error_message;
+            #error 'Failed to retrieve appointments for officer [%s]: [%s]', $officer_id, $error_message;
+            $self->app->log->error("Failed to retrieve appointments for officer [$officer_id]: [$error_message]");
             return $self->render_exception("Failed to retrieve officer appointments: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
 
-            error 'Error retrieving appointments for officer [%s]: [%s]', $officer_id, $error;
+            #error 'Error retrieving appointments for officer [%s]: [%s]', $officer_id, $error;
+            $self->app->log->error("Error retrieving appointments for officer [$officer_id]: [$error]");
             return $self->render_exception("Error retrieving officer appointments: $error");
         },
     )->execute;
@@ -117,20 +124,23 @@ sub get_basket_link {
         $self->ch_api->basket->get->on(
             success        => sub {
                 my ($api, $tx) = @_;
-                my $json = $tx->success->json;
+                my $json = $tx->res->json;
                 my $show_basket_link = $json->{data}{enrolled} || undef;
                 my $items = scalar @{$json->{data}{items} || []};
                 if ($show_basket_link) {
-                    debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [PERSONAL_APPOINTMENTS];
+                    #debug "User [%s] enrolled for multi-item basket; displaying basket link", $self->user_id, [PERSONAL_APPOINTMENTS];
+                    $self->app->log->debug("User [" . $self->user_id . "] enrolled for multi-item basket; displaying basket link [PERSONAL_APPOINTMENTS]");
                 }
                 else {
-                    debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [PERSONAL_APPOINTMENTS];
+                    #debug "User [%s] not enrolled for multi-item basket; not displaying basket link", $self->user_id, [PERSONAL_APPOINTMENTS];
+                    $self->app->log->debug("User [" . $self->user_id . "] not enrolled for multi-item basket; not displaying basket link [PERSONAL_APPOINTMENTS]");
                 }
                 $self->stash_basket_link($show_basket_link, $items);
             },
             not_authorised => sub {
                 my ($api, $tx) = @_;
-                warn "User not authenticated; not displaying basket link", [PERSONAL_APPOINTMENTS];
+                #warn "User not authenticated; not displaying basket link", [PERSONAL_APPOINTMENTS];
+                $self->app->log->warn("User not authenticated; not displaying basket link [PERSONAL_APPOINTMENTS]");
                 $self->stash_basket_link(undef, 0);
             },
             failure        => sub {
@@ -168,7 +178,8 @@ sub log_error {
     my $error_code = $tx->error->{code} // 0;
     my $error_message = $tx->error->{message} // 0;
     my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
-    error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [PERSONAL_APPOINTMENTS];
+    # TODO log
+    #error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [PERSONAL_APPOINTMENTS];
 }
 
 # ------------------------------------------------------------------------------

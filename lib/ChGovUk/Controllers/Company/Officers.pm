@@ -6,6 +6,7 @@ use CH::Perl;
 use CH::Util::Pager;
 use CH::Util::DateHelper;
 use Locale::Simple;
+use Data::Dumper;
 
 use constant AVAILABLE_CATEGORIES => {
     active => 'Current officers'
@@ -26,10 +27,12 @@ sub list {
 
     my $items_per_page = $self->config->{officer_list}->{items_per_page} || 35;
 
-    trace "Get company officer list for %s, page %s", $company_number, $page [OFFICER LIST];
+    #trace "Get company officer list for %s, page %s", $company_number, $page [OFFICER LIST];
+    $self->app->log->trace("Get company officer list for $company_number, page $page [OFFICER LIST]");
     my $pager = CH::Util::Pager->new(entries_per_page => $items_per_page, current_page => $page);
 
-    trace "Call officer list api for company %s, items_per_page %s", $company_number, $items_per_page [OFFICER LIST];
+    #trace "Call officer list api for company %s, items_per_page %s", $company_number, $items_per_page [OFFICER LIST];
+    $self->app->log->trace("Call officer list api for company $company_number, items_per_page " . $items_per_page . " [OFFICER LIST]");
     my $first_officer_number = $page eq 1 ? 0 : ($page - 1) * $items_per_page;
 
     # Generate an arrayref containing hashrefs of category id's/name's, sorted by name
@@ -62,7 +65,7 @@ sub list {
         success => sub {
             my ($api, $tx) = @_;
 
-            my $results = $tx->success->json;
+            my $results = $tx->res->json;
 
             # If the filter string contains 'active' we are assuming
             # the active filter is set. If is_active_filter_set then we
@@ -106,11 +109,13 @@ sub list {
                 }
             }
 
-            trace "Officer list for %s: %s", $company_number, d:$results [OFFICER LIST];
+            #trace "Officer list for %s: %s", $company_number, d:$results [OFFICER LIST];
+            $self->app->log->trace("Officer list for $company_number: " . Dumper($results) . " [OFFICER LIST]");
 
             # Work out the paging numbers
             $pager->total_entries($results->{total_results});
-            trace "Officer listing total_count %d entries per page %d", $pager->total_entries, $pager->entries_per_page [OFFICER LIST];
+            #trace "Officer listing total_count %d entries per page %d", $pager->total_entries, $pager->entries_per_page [OFFICER LIST];
+            $self->app->log->trace("Officer listing total_count " . $pager->total_entries . " entries per page " . $pager->entries_per_page . " [OFFICER LIST]");
 
             $self->stash(paging => {
                 current_page_number => $pager->current_page,
@@ -131,7 +136,8 @@ sub list {
             );
 
             if ($error_code == 404) {
-                trace "Officer listing not found for company [%s]", $company_number [COMPANY PROFILE];
+                #trace "Officer listing not found for company [%s]", $company_number [COMPANY PROFILE];
+                $self->app->log->trace("Officer listing not found for company [$company_number] [COMPANY PROFILE]");
 
                 # render the regular list template to display message saying no officers for this company
                 my $results = {
@@ -152,13 +158,15 @@ sub list {
                 return $self->render;
             }
 
-            error "Failed to retrieve company officer list for %s: %s", $company_number, $error_message;
+            #error "Failed to retrieve company officer list for %s: %s", $company_number, $error_message;
+            $self->app->log->error("Failed to retrieve company officer list for $company_number: $error_message");
             return $self->render_exception("Failed to retrieve company officers: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
 
-            error "Error retrieving company officer list for %s: %s", $company_number, $error;
+            #error "Error retrieving company officer list for %s: %s", $company_number, $error;
+            $self->app->log->error("Error retrieving company officer list for $company_number: $error");
             return $self->render_exception("Error retrieving company officers: $error");
         },
     )->execute;

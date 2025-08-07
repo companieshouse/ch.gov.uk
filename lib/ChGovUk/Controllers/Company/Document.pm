@@ -3,6 +3,8 @@ package ChGovUk::Controllers::Company::Document;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Perl;
 use Net::CompaniesHouse::DocumentEndpoint;
+use Data::Dumper;
+use Mojo::IOLoop::Delay;
 
 #-------------------------------------------------------------------------------
 
@@ -14,12 +16,13 @@ sub document {
     unless (Net::CompaniesHouse::DocumentEndpoint->can($format)) {
         my $err = sprintf('API document() method does not support document type [%s]', $format);
 
-        error $err [DOCUMENT];
+	#error $err [DOCUMENT];
+        $self->app->log->error("$err [DOCUMENT]");
         return $self->reply->exception($err);
     }
 
     my $is_download = !!$self->param('download');
-    my $delay = Mojo::IOLoop->delay;
+    my $delay = Mojo::IOLoop::Delay->new;
 
     $self->render_later;
 
@@ -82,7 +85,9 @@ sub document {
             $self->ch_api->document($document_metadata_uri)->is_download($is_download)->$format->get->on(
                 failure => sub {
                     my ($api, $tx) = @_;
+
                     my $code = $tx->error->{code} // 0;
+                    # TODO $tx here appears to be undef; why?
 
                     if ($code == 404) {
                         $delay->emit('not_found', $document_metadata_uri);
@@ -110,7 +115,8 @@ sub document {
                 success => sub {
                     my ($api, $tx) = @_;
 
-                    trace "TRANSACTION: %s", d:$tx [DOCUMENT];
+		    #trace "TRANSACTION: %s", d:$tx [DOCUMENT];
+                    $self->app->log->trace("TRANSACTION: " . Dumper($tx) . " [DOCUMENT]");
                     my $location = $tx->res->headers->location;
 
                     if ($location) {
@@ -130,21 +136,24 @@ sub document {
     $delay->on(error => sub {
         my ($delay, $err) = @_;
 
-        error $err [DOCUMENT];
+	#error $err [DOCUMENT];
+        $self->app->log->error("$err [DOCUMENT]");
         $self->reply->exception($err);
     });
 
     $delay->on(not_found => sub {
         my ($delay, $message) = @_;
 
-        info "[%s]: not found", $message [DOCUMENT];
+	#info "[%s]: not found", $message [DOCUMENT];
+        $self->app->log->info("[$message]: not found [DOCUMENT]");
         $self->reply->not_found;
     });
 
     $delay->on(finish => sub {
         my ($delay, $location) = @_;
 
-        debug "Serving redirect to [%s]", $location [DOCUMENT];
+	#debug "Serving redirect to [%s]", $location [DOCUMENT];
+        $self->app->log->debug("Serving redirect to [$location] [DOCUMENT]");
         $self->redirect_to($location);
     });
 }
