@@ -20,7 +20,7 @@ sub view {
 
     # Get a list of branch companies for the requested company via the API
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING company.ukestablishments '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING company.ukestablishments '" . refaddr(\$start) . "'");
     $self->ch_api->company($company_number)->ukestablishments()->get->on(
         success => sub {
             my ( $api, $tx ) = @_;

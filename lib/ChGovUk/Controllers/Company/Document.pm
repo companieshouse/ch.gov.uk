@@ -92,11 +92,11 @@ sub document {
             my $next = $delay->begin(0);
 
             my $start = [Time::HiRes::gettimeofday()];
-            $self->app->log->debug "TIMING document (company document) '" . refaddr(\$start) . "'";
+            $self->app->log->debug("TIMING document (company document) '" . refaddr(\$start) . "'");
             $self->ch_api->document($document_metadata_uri)->is_download($is_download)->$format->get->on(
                 failure => sub {
                     my ($api, $tx) = @_;
-                    $self->app->log->debug "TIMING document (company document) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+                    $self->app->log->debug("TIMING document (company document) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
                     my $code = $tx->error->{code} // 0;
                     # TODO $tx here appears to be undef; why?
 
