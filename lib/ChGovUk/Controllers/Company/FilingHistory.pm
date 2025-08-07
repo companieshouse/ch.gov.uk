@@ -111,7 +111,7 @@ sub view {
 
     # Get the filing history for the company from the API
     my $start = [Time::HiRes::gettimeofday()];
-    $self->app->log->debug "TIMING company.filing_history (company filing history) '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING company.filing_history (company filing history) '" . refaddr(\$start) . "'");
     $self->ch_api->company($self->stash('company_number'))->filing_history($query)->force_api_key(1)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;

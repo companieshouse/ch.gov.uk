@@ -27,7 +27,7 @@ sub list {
     $self->app->log->trace("Page [$page] with [$items_per_page] items per page - query term: [$query]");
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING search.disqualified_officers '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING search.disqualified_officers '" . refaddr(\$start) . "'");
     $self->ch_api->search->disqualified_officers({
         q              => "$query*",
         items_per_page => $items_per_page,
@@ -35,7 +35,7 @@ sub list {
     })->get->on(
         success => sub {
             my ($api, $tx) = @_;
-            debug "TIMING search.disqualified_officers success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING search.disqualified_officers success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
             # do not index query results pages for disqualified director register
             $self->stash(noindex => 1);
@@ -69,7 +69,7 @@ sub list {
         },
         failure => sub {
             my ($api, $tx) = @_;
-            debug "TIMING search.disqualified_officers failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING search.disqualified_officers failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
             my $error_code = $tx->error->{code}       // 0;
             my $error_message = $tx->error->{message} // 0;
@@ -83,7 +83,7 @@ sub list {
         },
         error => sub {
             my ($api, $error) = @_;
-            debug "TIMING search.disqualified_officers error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING search.disqualified_officers error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
             my $message = "Error retrieving search results: $error";
             #error '%s', $message;

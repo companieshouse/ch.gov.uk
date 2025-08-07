@@ -37,11 +37,11 @@ sub get_disqualification {
     $self->app->log->trace("Fetching disqualification for officer: [$officer_id]");
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING disqualified_officer '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING disqualified_officer '" . refaddr(\$start) . "'");
     $self->ch_api->disqualified_officer($officer_id)->$disqualification_type->get->on(
         success => sub {
             my ($api, $tx) = @_;
-            debug "TIMING disqualified_officer success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING disqualified_officer success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
             my $results = $tx->res->json;
 
@@ -58,7 +58,7 @@ sub get_disqualification {
         },
         failure => sub {
             my ($api, $tx) = @_;
-            debug "TIMING disqualified_officer failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING disqualified_officer failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
             my ($error_code, $error_message) = @{ $tx->error }{qw(code message)};
 
@@ -74,7 +74,7 @@ sub get_disqualification {
         },
         error => sub {
             my ($api, $error) = @_;
-            debug "TIMING disqualified_officer error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING disqualified_officer error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
             #error 'Error retrieving disqualified_officer with officer_id [%s]: [%s]', $officer_id, $error;
             $self->app->log->error("Error retrieving disqualified_officer with officer_id [$officer_id]: [$error]");

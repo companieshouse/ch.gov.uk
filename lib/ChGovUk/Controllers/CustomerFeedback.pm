@@ -46,21 +46,21 @@ sub record_feedback {
     debug 'Writing customer FEEDBACK to ['.$self->ch_api->admin->customer_feedback->path.']';
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING customer_feedback '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING customer_feedback '" . refaddr(\$start) . "'");
     $self->ch_api->admin->customer_feedback->create($feedback)->on(
         success => sub {
             my ( $api, $tx ) = @_;
-            debug "TIMING customer_feedback success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING customer_feedback success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             return $self->render(json => { message => 'Feedback saved OK' });
         },
         error => sub {
             my ($api, $error) = @_;
-            debug "TIMING customer_feedback error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING customer_feedback error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             return $self->_render_json_error('Invalid API response: ' . $error, 0);
         },
         failure => sub {
             my ($api, $error) = @_;
-            debug "TIMING customer_feedback failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING customer_feedback failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             return $self->_render_json_error('Failed to create customer feedback: ' . $error, 0);
         }
     )->execute;

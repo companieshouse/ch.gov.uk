@@ -60,7 +60,7 @@ sub list {
 
     # Get the officer list for the company from the API
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING company.officers (company officers) '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING company.officers (company officers) '" . refaddr(\$start) . "'");
     $self->ch_api->company($company_number)->officers({
         start_index    => abs int $first_officer_number,
         items_per_page => $pager->entries_per_page,
@@ -174,7 +174,7 @@ sub list {
         },
         error => sub {
             my ($api, $error) = @_;
-            debug "TIMING company.officers (company officers) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING company.officers (company officers) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
             #error "Error retrieving company officer list for %s: %s", $company_number, $error;
             $self->app->log->error("Error retrieving company officer list for $company_number: $error");

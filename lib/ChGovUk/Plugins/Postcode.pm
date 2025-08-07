@@ -48,11 +48,11 @@ sub lookup {
     # FIXME Use Admin::Net::CompaniesHouse so that the call is authenticated
     my $pcua = Mojo::UserAgent->new();
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING lookup (postcode) '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING lookup (postcode) '" . refaddr(\$start) . "'");
     $pcua->get($url => sub {
         my ($ua, $tx) = @_;
 
-        debug "TIMING lookup (postcode) " . ( $tx->success ? 'success' : 'failure' ) . " '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+        $self->app->log->debug("TIMING lookup (postcode) " . ( $tx->success ? 'success' : 'failure' ) . " '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
         my $keep_scope = $pcua; # Stop pcua going out of scope. FIXME Not needed when using Admin::NET::Companieshouse
 
         if ($tx->success) {

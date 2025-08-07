@@ -32,7 +32,7 @@ sub company {
     $self->get_basket_link;
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING company.profile (company) '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING company.profile (company) '" . refaddr(\$start) . "'");
     $api->get->on(
         success => sub {
             my ($api, $tx) = @_;

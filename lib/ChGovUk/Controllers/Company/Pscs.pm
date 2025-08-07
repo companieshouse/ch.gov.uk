@@ -58,7 +58,7 @@ sub list {
     })->get->on(
         success => sub {
             my ($api, $tx) = @_;
-            debug "TIMING company.pscs success '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start);
+            $self->app->log->debug("TIMING company.pscs success '" . refaddr(\$pscs_start) . "' elapsed: " . Time::HiRes::tv_interval($pscs_start));
 
             my $results = $tx->res->json;
 
@@ -321,7 +321,7 @@ sub get_exemptions_resource {
         },
         failure => sub {
             my ( $api, $error ) = @_;
-            debug "TIMING company.exemptions failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING company.exemptions failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
             my ($error_code, $error_message) = (
                 $error->error->{code} // 0,
