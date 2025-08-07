@@ -145,7 +145,7 @@ module "ecs-service-search" {
   lb_listener_paths         = local.lb_listener_paths_search
 
   # ECS Task container health check
-  use_task_container_healthcheck = true
+  use_task_container_healthcheck = var.use_task_container_healthcheck_search
   healthcheck_path               = local.healthcheck_path
   healthcheck_matcher            = local.healthcheck_matcher
 
@@ -228,7 +228,7 @@ module "ecs-service-officers" {
   lb_listener_paths         = local.lb_listener_paths_officers
 
   # ECS Task container health check
-  use_task_container_healthcheck = true
+  use_task_container_healthcheck = var.use_task_container_healthcheck_officers
   healthcheck_path               = local.healthcheck_path
   healthcheck_matcher            = local.healthcheck_matcher
 
@@ -311,7 +311,7 @@ module "ecs-service-default" {
   lb_listener_paths         = local.lb_listener_paths
 
   # ECS Task container health check
-  use_task_container_healthcheck = true
+  use_task_container_healthcheck = var.use_task_container_healthcheck
   healthcheck_path               = local.healthcheck_path
   healthcheck_matcher            = local.healthcheck_matcher
 
