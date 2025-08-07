@@ -179,6 +179,24 @@ variable "service_autoscale_scale_out_cooldown" {
   type        = number
 }
 
+variable "use_task_container_healthcheck" {
+  default     = true
+  description = "Defines whether task-level container healthchecks will be implemented for the default service (true) or not (false)"
+  type        = bool
+}
+
+variable "use_task_container_healthcheck_search" {
+  default     = true
+  description = "Defines whether task-level container healthchecks will be implemented for the search service (true) or not (false)"
+  type        = bool
+}
+
+variable "use_task_container_healthcheck_officers" {
+  default     = true
+  description = "Defines whether task-level container healthchecks will be implemented for the officers service (true) or not (false)"
+  type        = bool
+}
+
 # ----------------------------------------------------------------------
 # Cloudwatch alerts
 # ----------------------------------------------------------------------

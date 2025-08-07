@@ -31,15 +31,15 @@ module "ecs_cluster_default" {
   subnet_ids  = local.stack_application_subnet_ids_default
   vpc_id      = local.stack_vpc_id_default
 
-  asg_desired_instance_count  = local.asg_desired_instance_count_default
-  asg_max_instance_count      = local.asg_max_instance_count_default
-  asg_min_instance_count      = local.asg_min_instance_count_default
-  ec2_image_id                = local.ec2_ami_id
-  ec2_instance_type           = var.ec2_instance_type_default
-  ec2_key_pair_name           = var.ec2_key_pair_name
-  enable_asg_autoscaling      = true
-  scaledown_schedule          = var.asg_scaledown_schedule_default
-  scaleup_schedule            = var.asg_scaleup_schedule_default
+  asg_desired_instance_count = local.asg_desired_instance_count_default
+  asg_max_instance_count     = local.asg_max_instance_count_default
+  asg_min_instance_count     = local.asg_min_instance_count_default
+  ec2_image_id               = local.ec2_ami_id
+  ec2_instance_type          = var.ec2_instance_type_default
+  ec2_key_pair_name          = var.ec2_key_pair_name
+  enable_asg_autoscaling     = true
+  scaledown_schedule         = var.asg_scaledown_schedule_default
+  scaleup_schedule           = var.asg_scaleup_schedule_default
 
   enable_container_insights   = true
   notify_topic_slack_endpoint = local.stack_notify_topic_slack_endpoint_default
@@ -66,15 +66,15 @@ module "ecs_cluster_officers" {
   subnet_ids  = local.stack_application_subnet_ids_officers
   vpc_id      = local.stack_vpc_id_officers
 
-  asg_desired_instance_count  = local.asg_desired_instance_count_officers
-  asg_max_instance_count      = local.asg_max_instance_count_officers
-  asg_min_instance_count      = local.asg_min_instance_count_officers
-  ec2_image_id                = local.ec2_ami_id
-  ec2_instance_type           = var.ec2_instance_type_officers
-  ec2_key_pair_name           = var.ec2_key_pair_name
-  enable_asg_autoscaling      = true
-  scaledown_schedule          = var.asg_scaledown_schedule_officers
-  scaleup_schedule            = var.asg_scaleup_schedule_officers
+  asg_desired_instance_count = local.asg_desired_instance_count_officers
+  asg_max_instance_count     = local.asg_max_instance_count_officers
+  asg_min_instance_count     = local.asg_min_instance_count_officers
+  ec2_image_id               = local.ec2_ami_id
+  ec2_instance_type          = var.ec2_instance_type_officers
+  ec2_key_pair_name          = var.ec2_key_pair_name
+  enable_asg_autoscaling     = true
+  scaledown_schedule         = var.asg_scaledown_schedule_officers
+  scaleup_schedule           = var.asg_scaleup_schedule_officers
 
   enable_container_insights   = true
   notify_topic_slack_endpoint = local.stack_notify_topic_slack_endpoint_officers
@@ -101,15 +101,15 @@ module "ecs_cluster_search" {
   subnet_ids  = local.stack_application_subnet_ids_search
   vpc_id      = local.stack_vpc_id_search
 
-  asg_desired_instance_count  = local.asg_desired_instance_count_search
-  asg_max_instance_count      = local.asg_max_instance_count_search
-  asg_min_instance_count      = local.asg_min_instance_count_search
-  ec2_image_id                = local.ec2_ami_id
-  ec2_instance_type           = var.ec2_instance_type_search
-  ec2_key_pair_name           = var.ec2_key_pair_name
-  enable_asg_autoscaling      = true
-  scaledown_schedule          = var.asg_scaledown_schedule_search
-  scaleup_schedule            = var.asg_scaleup_schedule_search
+  asg_desired_instance_count = local.asg_desired_instance_count_search
+  asg_max_instance_count     = local.asg_max_instance_count_search
+  asg_min_instance_count     = local.asg_min_instance_count_search
+  ec2_image_id               = local.ec2_ami_id
+  ec2_instance_type          = var.ec2_instance_type_search
+  ec2_key_pair_name          = var.ec2_key_pair_name
+  enable_asg_autoscaling     = true
+  scaledown_schedule         = var.asg_scaledown_schedule_search
+  scaleup_schedule           = var.asg_scaleup_schedule_search
 
   enable_container_insights   = true
   notify_topic_slack_endpoint = local.stack_notify_topic_slack_endpoint_search
@@ -145,7 +145,7 @@ module "ecs-service-search" {
   lb_listener_paths         = local.lb_listener_paths_search
 
   # ECS Task container health check
-  use_task_container_healthcheck = true
+  use_task_container_healthcheck = var.use_task_container_healthcheck_search
   healthcheck_path               = local.healthcheck_path
   healthcheck_matcher            = local.healthcheck_matcher
 
@@ -228,7 +228,7 @@ module "ecs-service-officers" {
   lb_listener_paths         = local.lb_listener_paths_officers
 
   # ECS Task container health check
-  use_task_container_healthcheck = true
+  use_task_container_healthcheck = var.use_task_container_healthcheck_officers
   healthcheck_path               = local.healthcheck_path
   healthcheck_matcher            = local.healthcheck_matcher
 
@@ -311,7 +311,7 @@ module "ecs-service-default" {
   lb_listener_paths         = local.lb_listener_paths
 
   # ECS Task container health check
-  use_task_container_healthcheck = true
+  use_task_container_healthcheck = var.use_task_container_healthcheck
   healthcheck_path               = local.healthcheck_path
   healthcheck_matcher            = local.healthcheck_matcher
 

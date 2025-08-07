@@ -68,7 +68,7 @@ locals {
   # ------------------------------------------------------------------------------
   # Default service specific locals
   # ------------------------------------------------------------------------------
-  service_secrets_default         = var.use_ecs_cluster_default && var.create_ecs_cluster_default ? jsondecode(data.vault_generic_secret.service_secrets_default[0].data_json) : local.service_secrets
+  service_secrets_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default ? jsondecode(data.vault_generic_secret.service_secrets_default[0].data_json) : local.service_secrets
   service_secrets_arn_map_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default ? {
     for sec in module.secrets_default[0].secrets :
     trimprefix(sec.name, "/${local.service_name}-${var.environment}/") => sec.arn
@@ -77,7 +77,7 @@ locals {
   service_secret_list_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default ? flatten(
     [
       for key, value in local.service_secrets_arn_map_default : {
-        "name" = upper(key),
+        "name"      = upper(key),
         "valueFrom" = value
       }
     ]
@@ -94,7 +94,7 @@ locals {
   task_required_cpu_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default && !var.use_fargate ? local.ec2_task_cpu_default : var.required_cpus
   task_required_mem_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default && !var.use_fargate ? local.ec2_task_mem_default : var.required_memory
   task_required_memory_kb   = var.required_memory * 1024
-  task_environment          = concat(local.ssm_global_version_map, local.ssm_service_version_map_default, [
+  task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map_default, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb}" },
     { "name" : "PORT", "value" : "${local.container_port}" },
     { "name" : "SHARED_MEMORY_PERCENTAGE", "value" : "100" }
@@ -103,7 +103,7 @@ locals {
   # ------------------------------------------------------------------------------
   # Officers service specific locals
   # ------------------------------------------------------------------------------
-  service_secrets_officers         = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? jsondecode(data.vault_generic_secret.service_secrets_officers[0].data_json) : local.service_secrets
+  service_secrets_officers = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? jsondecode(data.vault_generic_secret.service_secrets_officers[0].data_json) : local.service_secrets
   service_secrets_arn_map_officers = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? {
     for sec in module.secrets_officers[0].secrets :
     trimprefix(sec.name, "/${local.service_name_officers}-${var.environment}/") => sec.arn
@@ -112,7 +112,7 @@ locals {
   service_secret_list_officers = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? flatten(
     [
       for key, value in local.service_secrets_arn_map_officers : {
-        "name" = upper(key),
+        "name"      = upper(key),
         "valueFrom" = value
       }
     ]
@@ -129,7 +129,7 @@ locals {
   task_required_cpu_officers       = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers && !var.use_fargate_officers ? local.ec2_task_cpu_officers : var.required_cpus_officers
   task_required_mem_officers       = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers && !var.use_fargate_officers ? local.ec2_task_mem_officers : var.required_memory_officers
   task_required_memory_kb_officers = var.required_memory_officers * 1024
-  task_environment_officers        = concat(local.ssm_global_version_map, local.ssm_service_version_map_officers, [
+  task_environment_officers = concat(local.ssm_global_version_map, local.ssm_service_version_map_officers, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb_officers}" },
     { "name" : "PORT", "value" : "${local.container_port}" },
     { "name" : "SHARED_MEMORY_PERCENTAGE", "value" : "100" }
@@ -138,7 +138,7 @@ locals {
   # ------------------------------------------------------------------------------
   # Search service specific locals
   # ------------------------------------------------------------------------------
-  service_secrets_search         = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? jsondecode(data.vault_generic_secret.service_secrets_search[0].data_json) : local.service_secrets
+  service_secrets_search = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? jsondecode(data.vault_generic_secret.service_secrets_search[0].data_json) : local.service_secrets
   service_secrets_arn_map_search = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? {
     for sec in module.secrets_search[0].secrets :
     trimprefix(sec.name, "/${local.service_name_search}-${var.environment}/") => sec.arn
@@ -147,7 +147,7 @@ locals {
   service_secret_list_search = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? flatten(
     [
       for key, value in local.service_secrets_arn_map_search : {
-        "name" = upper(key),
+        "name"      = upper(key),
         "valueFrom" = value
       }
     ]
@@ -164,7 +164,7 @@ locals {
   task_required_cpu_search       = var.use_ecs_cluster_search && var.create_ecs_cluster_search && !var.use_fargate_search ? local.ec2_task_cpu_search : var.required_cpus_search
   task_required_mem_search       = var.use_ecs_cluster_search && var.create_ecs_cluster_search && !var.use_fargate_search ? local.ec2_task_mem_search : var.required_memory_search
   task_required_memory_kb_search = var.required_memory_search * 1024
-  task_environment_search        = concat(local.ssm_global_version_map, local.ssm_service_version_map_search, [
+  task_environment_search = concat(local.ssm_global_version_map, local.ssm_service_version_map_search, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb_search}" },
     { "name" : "PORT", "value" : "${local.container_port}" },
     { "name" : "SHARED_MEMORY_PERCENTAGE", "value" : "100" }
