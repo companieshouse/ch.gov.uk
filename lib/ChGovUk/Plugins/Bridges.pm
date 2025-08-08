@@ -227,7 +227,7 @@ sub _transaction_bridge{
                 if ($company_number ne $transaction->{company_number}){
                     #trace "Transaction bridge - authenticated for company_number : [%s], transaction for company_number : [%s]", $company_number, $transaction->{company_number};
                     $self->app->log->trace("Transaction bridge - authenticated for company_number : [$company_number], transaction for company_number : [" . $transaction->{company_number} ."]");
-                    return $self->render_not_found;
+                    return $self->reply->not_found;
                 }
 
                 my $destination = $self->stash->{transaction}->{route};

@@ -19,7 +19,7 @@ sub company {
     $self->app->log->trace("get company profile for: [$company_number] [COMPANY PROFILE]");
     if ( $company_number !~ /^[A-Z0-9]{8}$/ ) {
         error "Invalid company number format [%s] - return not found", $company_number [COMPANY PROFILE];
-        $self->render_not_found;
+        $self->reply->not_found;
         return undef;
     }
 
@@ -114,7 +114,7 @@ sub company {
                 #trace "Company [%s] not found", $company_number [COMPANY PROFILE];
                 $self->app->log->trace("Company [$company_number] not found [COMPANY PROFILE]");
                 # Should do more than this:
-                return $self->render_not_found;
+                return $self->reply->not_found;
             } else {
                 my $message = "Error ($error_code) retrieving company $company_number:$error_message";
                 #error "[%s]", $message [COMPANY PROFILE];

@@ -84,7 +84,7 @@ sub list {
 
             if ($error_code == 404) {
                 trace "Registered members listing not found for company [%s]", $company_number [REGISTERS MEMBER LIST];
-                return $self->render_not_found;
+                return $self->reply->not_found;
             }
 
             error "Failed to retrieve registered members list for %s: %s", $company_number, $error_message;
