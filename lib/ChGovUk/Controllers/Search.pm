@@ -194,7 +194,7 @@ sub results {
             my $message = 'Error retrieving search results: '.$error;
             # TODO log
             #error "%s", $message [Search];
-            $self->render_exception($message);
+            $self->reply->exception($message);
         },
     };
 

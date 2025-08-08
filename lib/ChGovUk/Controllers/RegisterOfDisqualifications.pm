@@ -89,7 +89,7 @@ sub list {
             #error '%s', $message;
             $self->app->log->error("$message");
 
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         },
     )->execute;
 }

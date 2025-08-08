@@ -87,14 +87,14 @@ sub list {
             }
 
             error "Failed to retrieve registered directors list for %s: %s", $company_number, $error_message;
-            return $self->render_exception("Failed to retrieve registered directors: $error_message");
+            return $self->reply->exception("Failed to retrieve registered directors: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
             debug "TIMING company.officers (registers directors) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             error "Error retrieving registered directors list for %s: %s", $company_number, $error;
-            return $self->render_exception("Error retrieving registered directors: $error");
+            return $self->reply->exception("Error retrieving registered directors: $error");
         },
     )->execute;
 }

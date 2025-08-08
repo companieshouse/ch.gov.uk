@@ -70,7 +70,7 @@ sub get_disqualification {
 
             #error 'Failed to retrieve disqualified_officer with officer_id: [%s]: [%s]', $officer_id, $error_message;
             $self->app->log->error("Failed to retrieve disqualified_officer with officer_id: [$officer_id]: [$error_message]");
-            return $self->render_exception("Failed to retrieve disqualified_officer: $error_message");
+            return $self->reply->exception("Failed to retrieve disqualified_officer: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
@@ -78,7 +78,7 @@ sub get_disqualification {
 
             #error 'Error retrieving disqualified_officer with officer_id [%s]: [%s]', $officer_id, $error;
             $self->app->log->error("Error retrieving disqualified_officer with officer_id [$officer_id]: [$error]");
-            return $self->render_exception("Error retrieving disqualified_officer: $error");
+            return $self->reply->exception("Error retrieving disqualified_officer: $error");
         },
     )->execute;
 }

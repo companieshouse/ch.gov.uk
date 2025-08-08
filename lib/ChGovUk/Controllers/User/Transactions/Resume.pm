@@ -29,7 +29,7 @@ sub resume {
             if (encode_base64url($resume_link) ne $encoded_resume_link) {
                 my $message = "The transaction resume link does not match the encoded link url";
                 error "%s", $message;
-                $self->render_exception($message);
+                $self->reply->exception($message);
             }
             
             # TODO: When support is added for third party (i.e. external) resume links, a check will need
@@ -46,14 +46,14 @@ sub resume {
             my ($error_message, $error_code) = ($tx->error->{message}, $tx->error->{code});
                 my $message = 'Failed to fetch transaction ' . $self->stash('transaction_number') . ': ' . $error_code . ' ' . $error_message;
                 error "%s", $message [API];
-                $self->render_exception($message);
+                $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
             
             my $message = 'Error when fetching transaction ' . $self->stash('transaction_number') . ': ' . $error;
             error "%s", $message [ROUTING];
-            $self->render_exception($message);
+            $self->reply->exception($message);
         }
    )->execute;
 }

@@ -101,7 +101,7 @@ sub list {
 
             #error "Failed to retrieve company psc list for %s: %s", $company_number, $error_message;
             $self->app->log->error("Failed to retrieve company psc list for $company_number: $error_message");
-            return $self->render_exception("Failed to retrieve company pscs: $error_message");
+            return $self->reply->exception("Failed to retrieve company pscs: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
@@ -110,7 +110,7 @@ sub list {
             $psc_delay_end->();
             #error "Error retrieving company psc list for %s: %s", $company_number, $error;
             $self->app->log->error("Error retrieving company psc list for $company_number: $error");
-            return $self->render_exception("Error retrieving company pscs: $error");
+            return $self->reply->exception("Error retrieving company pscs: $error");
         },
     )->execute;
 
@@ -153,7 +153,7 @@ sub list {
 
             #error "Failed to retrieve psc statements list for %s: %s", $company_number, $error_message;
             $self->app->log->error("Failed to retrieve psc statements list for $company_number: $error_message");
-            return $self->render_exception("Failed to retrieve pscs statements: $error_message");
+            return $self->reply->exception("Failed to retrieve pscs statements: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
@@ -161,7 +161,7 @@ sub list {
 
             #error "Error retrieving psc statements list for %s: %s", $company_number, $error;
             $self->app->log->error("Error retrieving psc statements list for $company_number: $error");
-            return $self->render_exception("Error retrieving company pscs: $error");
+            return $self->reply->exception("Error retrieving company pscs: $error");
         },
     )->execute;
 
@@ -243,7 +243,7 @@ sub list {
                      $self->app->log->debug("TIMING psc common error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
                      #error "Error getting psc listing : %s", $err [ PSC Listing ];
                      $self->app->log->error("Error getting psc listing : $err [ PSC Listing ]");
-                     return $self->render_exception($err);
+                     return $self->reply->exception($err);
                  }
              );
 
@@ -331,7 +331,7 @@ sub get_exemptions_resource {
             #error "Error retrieving company exemptions for %s: %s",
             #  $self->stash('company_number'), $error;
             $self->app->log->error("Error retrieving company exemptions for " .  $self->stash('company_number') . ": $error");
-            $self->render_exception("Error retrieving company: $error");
+            $self->reply->exception("Error retrieving company: $error");
         }
       )->execute;
 

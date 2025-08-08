@@ -206,7 +206,7 @@ sub view {
             #error "Error retrieving company filing history for %s: %s",
             #$self->stash('company_number'), $error;
             $self->app->log->error("Error retrieving company filing history for " . $self->stash('company_number') . ": $error");
-            $self->render_exception("Error retrieving company: $error");
+            $self->reply->exception("Error retrieving company: $error");
         }
     )->execute;
 

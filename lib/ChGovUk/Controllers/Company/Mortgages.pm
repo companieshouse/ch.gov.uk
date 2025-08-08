@@ -175,7 +175,7 @@ sub view {
 
             #error "Failed to retrieve charges for %s: %s", $company_number, $error_message;
             $self->app->log->error("Failed to retrieve charges for $company_number: $error_message");
-            return $self->render_exception("Failed to retrieve charges for company [$company_number]: $error_message");
+            return $self->reply->exception("Failed to retrieve charges for company [$company_number]: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
@@ -183,7 +183,7 @@ sub view {
 
             #error "Error retrieving charges list for %s: %s", $company_number, $error;
             $self->app->log->error("Error retrieving charges list for %s$company_number: $error");
-            return $self->render_exception("Error retrieving company charges: $error");
+            return $self->reply->exception("Error retrieving company charges: $error");
         }
       )->execute;
 
@@ -285,7 +285,7 @@ sub view_details {
             #error "Error retrieving company mortgages for %s: %s",
             #$self->stash('company_number'), $error [MORTGAGE_DETAILS];
             $self->app->log->error("Error retrieving company mortgages for " . $self->stash('company_number') . " $error [MORTGAGE_DETAILS]");
-            $self->render_exception("Error retrieving company: $error");
+            $self->reply->exception("Error retrieving company: $error");
         }
       )->execute;
     $self->render_later;
@@ -308,7 +308,7 @@ sub view_details {
                      $self->app->log->debug("TIMING company.charge_details (company mortgages) d.error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
                      #error "Error getting mortgage details : %s", $err [ MORTGAGE_DETAILS ];
                      $self->app->log->error("Error getting mortgage details : $err [ MORTGAGE_DETAILS ]");
-                     return $self->render_exception($err);
+                     return $self->reply->exception($err);
                  },
              );
 
