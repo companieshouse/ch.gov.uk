@@ -40,7 +40,7 @@ sub search_by_company_number {
                 return $self->render;
             }
             else {
-                $self->render_not_found;
+                $self->reply->not_found;
             }
         },
         failure => sub {
@@ -97,7 +97,7 @@ sub filing {
                 return $self->render;
             }
             else {
-                $self->render_not_found;
+                $self->reply->not_found;
             }
         },
         failure => sub {
@@ -167,7 +167,7 @@ sub _get_transaction {
 
             if (defined $error_code and $error_code == 404) {
                 error "Transaction [%s] - API returned 404: Transaction does not exist", $transaction_id [ADMIN TRANSACTION_LOOKUP];
-                return $self->render_not_found;
+                return $self->reply->not_found;
             }
 
             my $message = sprintf 'Transaction [%s] - Failure occurred getting transaction as admin [%s]: [%s]', $transaction_id, $error_code, $error_message;
@@ -204,7 +204,7 @@ sub _remove_barcode_from_filing {
 
             if (defined $error_code and $error_code == 404) {
                 error "Barcode [%s] - API returned 404: Cannot update filing, barcode does not exist", $barcode [ADMIN TRANSACTION_RESUBMISSION];
-                return $self->render_not_found;
+                return $self->reply->not_found;
             }
 
             my $message = sprintf 'Filing with barcode [%s] - Failure occurred getting filing as admin [%s]: [%s]', $barcode, $error_code, $error_message;
@@ -246,7 +246,7 @@ sub transaction_json {
        $delay->on(
            error => sub {
                my ( $delay ) = @_;
-               $delay->data->{error}->{errcode} == 404 ? $self->render_not_found : $self->render_exception($delay->data->{error}->{errmessage});
+               $delay->data->{error}->{errcode} == 404 ? $self->reply->not_found : $self->render_exception($delay->data->{error}->{errmessage});
            }
        );
 
@@ -321,7 +321,7 @@ sub resource_json {
 
             if (defined $error_code and $error_code == 404) {
                 error "Transaction [%s] - Resource [%s] not found", $transaction_id, $resource_name [ADMIN TRANSACTION_LOOKUP];
-                return $self->render_not_found;
+                return $self->reply->not_found;
             }
 
             my $message = sprintf 'Transaction [%s] - Failure occurred getting resource [%s]: [%s]',
@@ -359,7 +359,7 @@ sub email_confirm {
             $self->render;
         }
         else {
-            $self->render_not_found;
+            $self->reply->not_found;
         }
 
     });
@@ -399,7 +399,7 @@ sub resubmit_confirm {
             $self->render;
         }
         else {
-            $self->render_not_found;
+            $self->reply->not_found;
         }
     });
 }
@@ -422,7 +422,7 @@ sub email {
         my $template       = $self->_get_filing_status_from_transaction($transaction, $barcode);
 
         if (! defined $template) {
-            return $self->render_not_found;
+            return $self->reply->not_found;
         }
 
         my $subject        = 'Change of Registered Office Address ' . $template . ' for <: $company_name :>';
@@ -544,7 +544,7 @@ sub submission_json {
     $delay->on(
         error => sub {
             my ( $delay ) = @_;
-            $delay->data->{error}->{errcode} == 404 ? $self->render_not_found : $self->render_exception($delay->data->{error}->{errmessage});
+            $delay->data->{error}->{errcode} == 404 ? $self->reply->not_found : $self->render_exception($delay->data->{error}->{errmessage});
         }
     );
 
@@ -583,7 +583,7 @@ sub _get_new_transaction {
 
             if (defined $error_code and $error_code == 404) {
                 #error "Transaction [%s] - API returned 404: Transaction does not exist", $transaction_id [ADMIN TRANSACTION_LOOKUP];
-                #return $self->render_not_found;
+                #return $self->reply->not_found;
                 trace "Transaction [%s] - API returned 404: Transaction does not exist", $transaction_id [ADMIN TRANSACTION_LOOKUP];
                 $delay->data->{error} = { status => 'not_found', errcode => $error_code };
                 $delay->emit('error');

@@ -36,7 +36,7 @@ sub list {
         error => sub {
             my ( $delay ) = @_;
             $self->app->log->debug("TIMING registers list error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
-            $delay->data->{error}->{errcode} == 404 ? $self->render_not_found : $self->render_exception($delay->data->{error}->{errmessage});
+            $delay->data->{error}->{errcode} == 404 ? $self->reply->not_found : $self->render_exception($delay->data->{error}->{errmessage});
         }
     );
 

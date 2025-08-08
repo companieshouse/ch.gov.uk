@@ -164,7 +164,7 @@ sub view {
                 $self->stash(filters => $filters);
 
                 if (!$selected_filter_count) {
-                    return $self->render_not_found;
+                    return $self->reply->not_found;
                 } elsif ($self->req->is_xhr) {
                     return $self->render(template => 'company/mortgages/view_content');
                 }
@@ -279,7 +279,7 @@ sub view_details {
             if ($error_code == 404) {
                 #trace "Mortgage [%s] not found for company [%s]", $charge_id, $company_number [MORTGAGE_DETAILS];
                 $self->app->log->trace("Mortgage [$charge_id] not found for company [$company_number] [MORTGAGE_DETAILS]");
-                return $self->render_not_found;
+                return $self->reply->not_found;
             }
 
             #error "Error retrieving company mortgages for %s: %s",

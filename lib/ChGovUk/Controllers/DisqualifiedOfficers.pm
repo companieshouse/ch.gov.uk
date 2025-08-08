@@ -65,7 +65,7 @@ sub get_disqualification {
             if ($error_code and $error_code == 404) {
                 #trace 'Disqualified_officer officer not found. Officer ID: [%s]', $officer_id;
                 $self->app->log->trace("Disqualified_officer officer not found. Officer ID: [$officer_id]");
-                return $self->render_not_found;
+                return $self->reply->not_found;
             }
 
             #error 'Failed to retrieve disqualified_officer with officer_id: [%s]: [%s]', $officer_id, $error_message;

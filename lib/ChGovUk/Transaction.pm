@@ -277,7 +277,7 @@ sub submit {
 
                     if ($code == 404) {
                         warn "Failed to close transaction %s: %s", $transaction->transaction_number, $tx->error->{message} [ROUTING];
-                        return $self->controller->render_not_found;
+                        return $self->controller->reply->not_found;
                     }
 
                     warn "Failed to update transaction %s: %s", $transaction->transaction_number, $tx->error->{message} [ROUTING];
@@ -303,7 +303,7 @@ sub submit {
 
             if ($code == 404) {
                 warn "Failed to update transaction %s: %s", $transaction->transaction_number, $tx->error->{message} [ROUTING];
-                return $self->controller->render_not_found;
+                return $self->controller->reply->not_found;
             }
 
             if ($code == 400) {

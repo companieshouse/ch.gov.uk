@@ -75,7 +75,7 @@ sub list {
 
             if ($error_code == 404) {
                 trace "Registered secretaries listing not found for company [%s]", $company_number [REGISTERS SECRETARY LIST];
-                return $self->render_not_found;
+                return $self->reply->not_found;
             }
 
             error "Failed to retrieve registered secretaries list for %s: %s", $company_number, $error_message;
