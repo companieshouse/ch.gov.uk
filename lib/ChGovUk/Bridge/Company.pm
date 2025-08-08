@@ -140,7 +140,7 @@ sub company {
 
         error => sub {
             my ($api, $error) = @_;
-            $self->app->log->$self->app->log->debug("TIMING(company.profile (company) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start)));
+            $self->app->log->debug("TIMING(company.profile (company) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             my $message = "Error retrieving company $company_number:$error";
             #error "[%s]", $message [COMPANY PROFILE];
             $self->app->log->error("[$message] [COMPANY PROFILE]");
