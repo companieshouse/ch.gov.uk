@@ -258,7 +258,7 @@ sub _transaction_bridge{
                 my $message = "Error finding transaction: $error";
                 #error "%s", $message [ROUTING];
                 $self->app->log->error($message . " [ROUTING]");
-                return $self->render_exception($message);
+                return $self->reply->exception($message);
             },
             not_authorised => sub {
                 my $return_to = $self->req->url->to_string;
@@ -274,7 +274,7 @@ sub _transaction_bridge{
                     my $message = 'Status '.$tx->res->code.'. Failed to load transaction ['.$self->stash('transaction_number').']. Unexpected response from API: '.$tx->error->{message};
                     #error "%s", $message [ROUTING];
                     $self->app->log->error($message . " [ROUTING]");
-                    return $self->render_exception($message);
+                    return $self->reply->exception($message);
                 }
 
                 if ($code == 404) {

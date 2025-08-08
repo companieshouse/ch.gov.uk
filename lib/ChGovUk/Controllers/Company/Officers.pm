@@ -170,7 +170,7 @@ sub list {
 
             #error "Failed to retrieve company officer list for %s: %s", $company_number, $error_message;
             $self->app->log->error("Failed to retrieve company officer list for $company_number: $error_message");
-            return $self->render_exception("Failed to retrieve company officers: $error_message");
+            return $self->reply->exception("Failed to retrieve company officers: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
@@ -178,7 +178,7 @@ sub list {
 
             #error "Error retrieving company officer list for %s: %s", $company_number, $error;
             $self->app->log->error("Error retrieving company officer list for $company_number: $error");
-            return $self->render_exception("Error retrieving company officers: $error");
+            return $self->reply->exception("Error retrieving company officers: $error");
         },
     )->execute;
 }

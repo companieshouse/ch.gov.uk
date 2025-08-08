@@ -94,7 +94,7 @@ sub list {
             }
 
             error "Failed to retrieve company psc list for %s: %s", $company_number, $error_message;
-            return $self->render_exception("Failed to retrieve company pscs: $error_message");
+            return $self->reply->exception("Failed to retrieve company pscs: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
@@ -102,7 +102,7 @@ sub list {
 
             $psc_delay_end->();
             error "Error retrieving company psc list for %s: %s", $company_number, $error;
-            return $self->render_exception("Error retrieving company pscs: $error");
+            return $self->reply->exception("Error retrieving company pscs: $error");
         },
     )->execute;
 
@@ -143,14 +143,14 @@ sub list {
             }
 
             error "Failed to retrieve psc statements list for %s: %s", $company_number, $error_message;
-            return $self->render_exception("Failed to retrieve pscs statements: $error_message");
+            return $self->reply->exception("Failed to retrieve pscs statements: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
             debug "TIMING company.psc_statements (registers pscs) error '" . refaddr(\$statements_start) . "' elapsed: " . Time::HiRes::tv_interval($statements_start);
 
             error "Error retrieving psc statements list for %s: %s", $company_number, $error;
-            return $self->render_exception("Error retrieving company pscs: $error");
+            return $self->reply->exception("Error retrieving company pscs: $error");
         },
     )->execute;
 
@@ -187,7 +187,7 @@ sub list {
                      my ($delay, $err) = @_;
                      debug "TIMING register pscs common error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
                      error "Error getting psc listing : %s", $err [ PSC Listing ];
-                     return $self->render_exception($err);
+                     return $self->reply->exception($err);
                  }
              );
 

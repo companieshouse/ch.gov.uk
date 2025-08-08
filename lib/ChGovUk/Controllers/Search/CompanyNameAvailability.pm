@@ -90,7 +90,7 @@ sub perform_search() {
             error '%s', $message;
 
             debug "search error, stash = %s", Dumper($self->stash), [COMPANY_NAME_AVAILABILITY];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         },
     )->execute;
 

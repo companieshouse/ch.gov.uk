@@ -92,7 +92,7 @@ sub _render_json_error {
         message     => $error_message
     };
 
-    return $self->render_exception(json => $error_record);
+    return $self->reply->exception(json => $error_record);
 }
 
 #-------------------------------------------------------------------------------

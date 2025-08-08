@@ -54,7 +54,7 @@ sub view {
 
             $self->app->log->error("Failure retrieving company insolvency for %s: %s",
               $self->stash('company_number'), $tx->error->{message});
-            $self->render_exception("Error retrieving company:" . $tx->error->{message});
+            $self->reply->exception("Error retrieving company:" . $tx->error->{message});
         }
       )->execute;
 

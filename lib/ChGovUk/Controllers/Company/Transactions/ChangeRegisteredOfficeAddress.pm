@@ -31,14 +31,14 @@ sub get {
             else {
                 my $message = 'Failed to fetch existing registered office address for company '.$self->stash('company_number').': '.$error_code.' '.$error_message;
                 error "%s", $message [API];
-                $self->render_exception($message);
+                $self->reply->exception($message);
             }
         },
         error => sub {
             my ($api, $error) = @_;
             my $message = 'Failed to fetch registered office address for company '.$self->stash('company_number').': '.$error;
             error "%s", $message [ROUTING];
-            $self->render_exception($message);
+            $self->reply->exception($message);
         },
         success => sub {
             my ($api, $tx) = @_;

@@ -119,7 +119,7 @@ sub company {
                 my $message = "Error ($error_code) retrieving company $company_number:$error_message";
                 #error "[%s]", $message [COMPANY PROFILE];
                 $self->app->log->error("[$message] [COMPANY PROFILE]");
-                return $self->render_exception($message);
+                return $self->reply->exception($message);
             }
         },
 
@@ -144,7 +144,7 @@ sub company {
             my $message = "Error retrieving company $company_number:$error";
             #error "[%s]", $message [COMPANY PROFILE];
             $self->app->log->error("[$message] [COMPANY PROFILE]");
-            $self->render_exception($message);
+            $self->reply->exception($message);
         }
     )->execute;
 

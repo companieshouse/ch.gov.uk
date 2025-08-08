@@ -56,7 +56,7 @@ sub view {
 
             #error "Failed to retrieve branches for %s: %s", $company_number, $error_message;
             $self->app->log->error("Failed to retrieve branches for $company_number: $error_message");
-            return $self->render_exception("Failed to retrieve branches for company [$company_number]: $error_message");
+            return $self->reply->exception("Failed to retrieve branches for company [$company_number]: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
@@ -64,7 +64,7 @@ sub view {
 
             #error "Error retrieving branches list for %s: %s", $company_number, $error;
             $self->app->log->error("Error retrieving branches list for $company_number: $error");
-            return $self->render_exception("Error retrieving company branches: $error");
+            return $self->reply->exception("Error retrieving company branches: $error");
         }
     )->execute;
 

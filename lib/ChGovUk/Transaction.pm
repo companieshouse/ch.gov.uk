@@ -97,7 +97,7 @@ sub create {
     if ($self->transaction_number) {
         my $message = 'Transaction has already been loaded';
         error "%s", $message [ROUTING];
-        return $self->controller->render_exception($message);
+        return $self->controller->reply->exception($message);
     }
 
     my $api = $self->controller->ch_api;
@@ -127,7 +127,7 @@ sub create {
             my ($api, $error) = @_;
             my $message = "Failed to create transaction: $error";
             error "%s", $message [ROUTING];
-            $self->controller->render_exception($message);
+            $self->controller->reply->exception($message);
         },
         failure => sub {
             my ($api, $tx) = @_;
@@ -136,7 +136,7 @@ sub create {
             if ( !$code or $code == 500) {
                 my $message = 'Status 500. Failed to create transaction: '.$tx->error->{message};
                 error "%s", $message [API];
-                return $self->controller->render_exception($message);
+                return $self->controller->reply->exception($message);
             }
 
             if ($code == 400) {
@@ -144,12 +144,12 @@ sub create {
                 # Render an exception if validation does fail, its our fault.
                 my $message = 'Status 400. Failed to create transaction: '.$tx->error->{message};
                 error "%s", $message [ROUTING];
-                return $self->controller->render_exception($message);
+                return $self->controller->reply->exception($message);
             }
 
             my $message = 'Status '.$code.'. Failed to create transaction. Unexpected response from API: '.$tx->error->{message};
             error "%s", $message [API];
-            return $self->controller->render_exception($message);
+            return $self->controller->reply->exception($message);
         },
     )->execute;
 
@@ -180,7 +180,7 @@ sub load {
     unless ($self->transaction_number) {
         my $message = 'Transaction number is undefined';
         error "%s", $message [ROUTING];
-        $self->controller->render_exception($message);
+        $self->controller->reply->exception($message);
         return undef;
     }
 
@@ -264,7 +264,7 @@ sub submit {
                     my ($api, $error) = @_;
                     my $message = 'Error closing transaction '.$transaction->transaction_number.': '.$error;
                     error "%s", $message [ROUTING];
-                    $self->controller->render_exception($message);
+                    $self->controller->reply->exception($message);
                 },
                 failure => sub {
                     my ($api, $tx) = @_;
@@ -272,7 +272,7 @@ sub submit {
 
                     if ( !$code or $code == 500 ) {
                         error "Failed to close transaction number [%s]:  %s", $transaction->transaction_number, $tx->error->{message} [API];
-                        return $self->controller->render_exception('Failed to close transaction [%d]', $transaction->transaction_number);
+                        return $self->controller->reply->exception('Failed to close transaction [%d]', $transaction->transaction_number);
                     }
 
                     if ($code == 404) {
@@ -289,7 +289,7 @@ sub submit {
             my ($api, $error) = @_;
             my $message = 'Failed to update transaction '.$transaction->transaction_number.': '.$error;
             error "%s", $message [ROUTING];
-            $self->controller->render_exception($message);
+            $self->controller->reply->exception($message);
         },
         'failure' => sub {
             my ($api, $tx) = @_;
@@ -298,7 +298,7 @@ sub submit {
             if ( !$code or $code == 500) {
                 my $message = 'Failed to update transaction '.$transaction->transaction_number.': '.$tx->error->{message};
                 error "%s", $message [API];
-                return $self->controller->render_exception($message);
+                return $self->controller->reply->exception($message);
             }
 
             if ($code == 404) {

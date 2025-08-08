@@ -164,7 +164,7 @@ sub view {
             debug "TIMING company.filing_history (certified documents) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
             error "Error retrieving company filing history for %s: %s",
                 $self->stash('company_number'), $error;
-            $self->render_exception("Error retrieving company: $error");
+            $self->reply->exception("Error retrieving company: $error");
         }
     )->execute;
 
@@ -208,14 +208,14 @@ sub post {
             debug "TIMING orderable.certified_copies (certified documents) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             error 'Error creating certified copy';
-            $self->render_exception($error);
+            $self->reply->exception($error);
         },
         failure => sub {
             my ($api, $error) = @_;
             debug "TIMING orderable.certified_copies (certified documents) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
 
             error 'Failure creating certified copy';
-            $self->render_exception($error);
+            $self->reply->exception($error);
         }
     )->execute;
 }

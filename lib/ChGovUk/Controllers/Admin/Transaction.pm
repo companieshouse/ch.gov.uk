@@ -13,7 +13,7 @@ sub search_by_company_number {
     my ($self) = @_;
     my $company_number = $self->stash->{company_number};
 
-    return $self->render_exception('company number missing') unless (defined($company_number) && $company_number ne '');
+    return $self->reply->exception('company number missing') unless (defined($company_number) && $company_number ne '');
 
     $self->render_later;
 
@@ -56,7 +56,7 @@ sub search_by_company_number {
 
             my $message = sprintf 'Failure occured getting filings by company number [%s] as admin [%s]', $company_number, $error_message;
             error $message [ROUTING];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
@@ -64,7 +64,7 @@ sub search_by_company_number {
 
             my $message = sprintf 'Error occured getting filings by company number [%s] as admin [%s]', $company_number, $error;
             error $message [ROUTING];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         }
     )->execute;
 }
@@ -113,7 +113,7 @@ sub filing {
 
             my $message = sprintf 'Failure occured getting transaction [%s] as admin [%s]', $transaction_id, $error_message;
             error $message [ROUTING];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
@@ -121,7 +121,7 @@ sub filing {
 
             my $message = sprintf 'Error occured getting transaction [%s] as admin [%s]', $transaction_id, $error;
             error $message [ROUTING];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         }
     )->execute;
 }
@@ -172,14 +172,14 @@ sub _get_transaction {
 
             my $message = sprintf 'Transaction [%s] - Failure occurred getting transaction as admin [%s]: [%s]', $transaction_id, $error_code, $error_message;
             error $message [ADMIN TRANSACTION_LOOKUP];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
 
             my $message = sprintf 'Transaction [%s] - Error occurred getting transaction as admin [%s]', $transaction_id, $error;
             error $message [ADMIN TRANSACTION_LOOKUP];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         }
     )->execute;
 }
@@ -209,14 +209,14 @@ sub _remove_barcode_from_filing {
 
             my $message = sprintf 'Filing with barcode [%s] - Failure occurred getting filing as admin [%s]: [%s]', $barcode, $error_code, $error_message;
             error $message [ADMIN TRANSACTION_RESUBMISSION];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
 
             my $message = sprintf 'Filing with barcode [%s] - Error occurred getting filing as admin [%s]', $barcode, $error;
             error $message [ADMIN TRANSACTION_RESUBMISSION];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         }
     )->execute;
 }
@@ -246,7 +246,7 @@ sub transaction_json {
        $delay->on(
            error => sub {
                my ( $delay ) = @_;
-               $delay->data->{error}->{errcode} == 404 ? $self->reply->not_found : $self->render_exception($delay->data->{error}->{errmessage});
+               $delay->data->{error}->{errcode} == 404 ? $self->reply->not_found : $self->reply->exception($delay->data->{error}->{errmessage});
            }
        );
 
@@ -282,7 +282,7 @@ sub transaction_reprocess {
             }
 
             error $message [ADMIN TRANSACTION_REPROCESS];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
@@ -290,7 +290,7 @@ sub transaction_reprocess {
             my $message = sprintf 'Transaction [%s] - Error occurred reprocessing transaction: [%s]', $transaction_id, $error;
 
             error $message [ADMIN TRANSACTION_REPROCESS];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         }
     )->execute;
 }
@@ -327,14 +327,14 @@ sub resource_json {
             my $message = sprintf 'Transaction [%s] - Failure occurred getting resource [%s]: [%s]',
                 $transaction_id, $resource_name, $error_message;
             error $message [ADMIN TRANSACTION_LOOKUP];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
 
             my $message = sprintf 'Transaction [%s] - Error occurred getting resource [%s]: [%s]', $transaction_id, $resource_name, $error;
             error $message [ADMIN TRANSACTION_LOOKUP];
-            return $self->render_exception($message);
+            return $self->reply->exception($message);
         }
     )->execute;
 
@@ -447,14 +447,14 @@ sub email {
 
                 my $message = sprintf "Transaction [%s] - Error queuing [%s] email to [%s]: %s", $transaction_id, $template, $to, $tx->error->{message};
                 error $message [ADMIN EMAIL_RESEND];
-                return $self->render_exception($message);
+                return $self->reply->exception($message);
             },
             failure => sub {
                 my ($api, $tx) = @_;
 
                 my $message = sprintf "Transaction [%s] - Failed to queue [%s] email to [%s]: %s", $transaction_id, $template, $to, $tx->error->{message};
                 error $message [ADMIN EMAIL_RESEND];
-                return $self->render_exception($message);
+                return $self->reply->exception($message);
             },
         )->execute;
     });
@@ -513,7 +513,7 @@ sub _fetch_transaction {
 
                     my $message = sprintf "Transaction [%s] - Failed to queue resubmitted transaction: %s", $transaction_id, $tx->error->{message};
                     error $message [ADMIN TRANSACTION_RESUBMISSION];
-                    return $self->render_exception($message);
+                    return $self->reply->exception($message);
                 },
             )->execute;
         });
@@ -544,7 +544,7 @@ sub submission_json {
     $delay->on(
         error => sub {
             my ( $delay ) = @_;
-            $delay->data->{error}->{errcode} == 404 ? $self->reply->not_found : $self->render_exception($delay->data->{error}->{errmessage});
+            $delay->data->{error}->{errcode} == 404 ? $self->reply->not_found : $self->reply->exception($delay->data->{error}->{errmessage});
         }
     );
 
@@ -595,7 +595,7 @@ sub _get_new_transaction {
 
             #my $message = sprintf 'Transaction [%s] - Failure occurred getting transaction as admin [%s]: [%s]', $transaction_id, $error_code, $error_message;
             #error $message [ADMIN TRANSACTION_LOOKUP];
-            #return $self->render_exception($message);
+            #return $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
@@ -606,7 +606,7 @@ sub _get_new_transaction {
 
             #my $message = sprintf 'Transaction [%s] - Error occurred getting transaction as admin [%s]', $transaction_id, $error;
             #error $message [ADMIN TRANSACTION_LOOKUP];
-            #return $self->render_exception($message);
+            #return $self->reply->exception($message);
         }
     )->execute;
 }
