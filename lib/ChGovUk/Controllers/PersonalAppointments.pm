@@ -111,7 +111,7 @@ sub get {
             if ($error_code and $error_code == 404) {
                 #trace 'Appointments not found for officer [%s]', $officer_id;
                 $self->app->log->trace("Appointments not found for officer [$officer_id]");
-                return $self->render_not_found;
+                return $self->reply->not_found;
             }
 
             #error 'Failed to retrieve appointments for officer [%s]: [%s]', $officer_id, $error_message;

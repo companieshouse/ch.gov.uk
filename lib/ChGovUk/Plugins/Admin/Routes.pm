@@ -17,7 +17,7 @@ sub register {
 
         return 1 if CH::MojoX::Administration::Bridge::ValidateAdmin::web($controller);
 
-        $controller->render_not_found;
+        $controller->reply->not_found;
         return undef;
     });
     $admin_route = $admin_route->under->name('has_route_permission')->to(cb => \&CH::MojoX::UserPermissions::Bridge::bridge);
