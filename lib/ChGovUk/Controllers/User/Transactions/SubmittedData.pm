@@ -18,14 +18,14 @@ sub show_registered_office_address {
             my ($error_message, $error_code) = ($tx->error->{message}, $tx->error->{code});
                 my $message = 'Failed to fetch existing registered office address for transaction '.$self->stash('transaction_number').': '.$error_code.' '.$error_message;
                 error "%s", $message [API];
-                $self->render_exception($message);
+                $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
 
                 my $message = 'Failed to fetch registered office address for transaction '.$self->stash('transaction_number').': '.$error;
                 error "%s", $message [ROUTING];
-                $self->render_exception($message);
+                $self->reply->exception($message);
         },
         success => sub {
             my ($api, $tx) = @_;
@@ -50,13 +50,13 @@ sub get_transaction {
             my ($error_message, $error_code) = ($tx->error->{message}, $tx->error->{code});
                 my $message = 'Failed to fetch transaction '.$self->stash('transaction_number').': '.$error_code.' '.$error_message;
                 error "%s", $message [API];
-                $self->render_exception($message);
+                $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
                 my $message = 'Failed to fetch transaction '.$self->stash('transaction_number').': '.$error;
                 error "%s", $message [ROUTING];
-                $self->render_exception($message);
+                $self->reply->exception($message);
         },
         success => sub {
             my ($api, $tx) = @_;

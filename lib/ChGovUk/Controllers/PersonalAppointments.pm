@@ -116,7 +116,7 @@ sub get {
 
             #error 'Failed to retrieve appointments for officer [%s]: [%s]', $officer_id, $error_message;
             $self->app->log->error("Failed to retrieve appointments for officer [$officer_id]: [$error_message]");
-            return $self->render_exception("Failed to retrieve officer appointments: $error_message");
+            return $self->reply->exception("Failed to retrieve officer appointments: $error_message");
         },
         error => sub {
             my ($api, $error) = @_;
@@ -124,7 +124,7 @@ sub get {
 
             #error 'Error retrieving appointments for officer [%s]: [%s]', $officer_id, $error;
             $self->app->log->error("Error retrieving appointments for officer [$officer_id]: [$error]");
-            return $self->render_exception("Error retrieving officer appointments: $error");
+            return $self->reply->exception("Error retrieving officer appointments: $error");
         },
     )->execute;
 }

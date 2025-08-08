@@ -123,7 +123,7 @@ sub render_error {
     my $error_code = $tx->error->{code} // 0;
     my $error_message = $tx->error->{message} // 0;
     my $message = (uc $error_type).' '.(defined $error_code ? "[$error_code] " : '').$action.': '.$error_message;
-    $self->render_exception($message);
+    $self->reply->exception($message);
 }
 
 sub log_error {
