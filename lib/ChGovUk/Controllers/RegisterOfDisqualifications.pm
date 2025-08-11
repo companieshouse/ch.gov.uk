@@ -20,7 +20,7 @@ sub list {
 
     my $query = $self->param('letter');
 
-    my $page           = (abs int $self->param('page')) || 1;
+    my $page           = abs(int($self->param('page')||1));
     my $items_per_page = DEFAULT_ITEMS_PER_PAGE;
 
     #trace 'Page [%s] with [%s] items per page - query term: [%s]', $page, $items_per_page, $query;
