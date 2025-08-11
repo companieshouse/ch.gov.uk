@@ -18,7 +18,7 @@ sub company {
     #trace "get company profile for: [%s]", $company_number [COMPANY PROFILE];
     $self->app->log->trace("get company profile for: [$company_number] [COMPANY PROFILE]");
     if ( $company_number !~ /^[A-Z0-9]{8}$/ ) {
-        error "Invalid company number format [%s] - return not found", $company_number [COMPANY PROFILE];
+        $self->app->log->error("Invalid company number format [$company_number] - return not found [COMPANY PROFILE]");
         $self->reply->not_found;
         return undef;
     }
