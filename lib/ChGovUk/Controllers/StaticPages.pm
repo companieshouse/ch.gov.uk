@@ -89,7 +89,7 @@ sub render_homepage {
     my ($self, $basket_items, $show_basket_link) = @_;
 
     #debug "render_homepage(%s, %s)", $basket_items, $show_basket_link//'undef' [HOMEPAGE];
-    $self->app->log->debug("render_homepage($basket_items, " . $show_basket_link//'undef' . ") [HOMEPAGE]");
+    $self->app->log->debug("render_homepage($basket_items, " . ($show_basket_link//'undef') . ") [HOMEPAGE]");
 
     my $search_type = 'all';
 
