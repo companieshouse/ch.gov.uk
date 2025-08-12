@@ -30,7 +30,7 @@ TEST_UNIT_ENV   ?= COOKIE_SECRET=abcdef123456 URL_SIGNING_SALT=abcdef123456
 DOCKER_IMAGE_TAG   ?= 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/ch.gov.uk:latest
 
 upgrade:
-	docker build -f Dockerfile_ci-perl-build-ecs_perl-upgrade --platform=linux/amd64 -t ch-gov-uk-upgrade .
+	docker build -f Dockerfile_ci-perl-build-ecs_perl-upgrade --platform=linux/amd64 -t ch-gov-uk-upgrade:latest .
 
 all: dist
 
