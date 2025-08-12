@@ -20,8 +20,7 @@ sub from_internal {
     my ($date, $time) = ($internal_formatted_date =~ /^(\d{8})(\d{6})?$/);
 
     unless ($date =~ /\d{8}/) {
-        error "Cannot convert [%s] to DateTime::Tiny object. Wrong format",
-              $internal_formatted_date||'' [VALIDATION];
+        error "Cannot convert [%s] to DateTime::Tiny object. Wrong format", $internal_formatted_date||'' [VALIDATION];
         CH::Exception->throw("Unable to parse date");
     }
 
