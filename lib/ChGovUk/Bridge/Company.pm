@@ -97,7 +97,7 @@ sub company {
             $self->ua->get($url => { Authorization => "Bearer $auth" } => sub {
                 my ($ua, $tx) = @_;
 
-                if ($tx->success && $tx->res->json) {
+                if ($tx->result->is_success && $tx->res->json) {
                     $self->stash(following_company => 1);
                 }
                 $self->continue;
