@@ -48,8 +48,7 @@ sub list {
 
     # Work out the paging numbers
             $pager->total_entries( $rf_results->{total_count} // 0 );
-            trace "recent filings total_count %d entries per page %d",
-                $pager->total_entries, $pager->entries_per_page() [RECENT_FILINGS];
+            trace "recent filings total_count %d entries per page %d", $pager->total_entries, $pager->entries_per_page() [RECENT_FILINGS];
 
            $self->stash(current_page_number    => $pager->current_page);
            $self->stash(page_set               => $pager->pages_in_set());

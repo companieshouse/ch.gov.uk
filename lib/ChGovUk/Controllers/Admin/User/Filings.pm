@@ -60,8 +60,7 @@ sub build_filings_list_and_render() {
 
             # Work out the paging numbers
             $pager->total_entries( $rf_results->{total_result} // 0 );
-            warn "recent filings total_count %d entries per page %d",
-                $pager->total_entries, $pager->entries_per_page() [RECENT_FILINGS];
+            warn "recent filings total_count %d entries per page %d", $pager->total_entries, $pager->entries_per_page() [RECENT_FILINGS];
 
             $self->stash(current_page_number    => $pager->current_page);
             $self->stash(page_set               => $pager->pages_in_set());
