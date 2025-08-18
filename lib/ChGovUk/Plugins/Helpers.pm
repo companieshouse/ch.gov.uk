@@ -58,7 +58,8 @@ sub _external_url_for {
     }
 
     $url = new Mojo::URL($app->config->{external_url_for}{$name});
-    debug "Got external_url_for [%s] in config", $name [HELPERS];
+    # debug "Got external_url_for [%s] in config", $name [HELPERS];
+    $app->log->debug("Got external_url_for [$name] in config [HELPERS]");
 
     my $pattern = new Mojolicious::Routes::Pattern($url->path);
     $url->path($pattern->render($arg));
