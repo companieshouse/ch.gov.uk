@@ -126,8 +126,6 @@ locals {
 
   task_secrets_officers = concat(local.global_secret_list, local.service_secret_list_officers)
 
-  task_required_cpu_officers       = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers && !var.use_fargate_officers ? local.ec2_task_cpu_officers : var.required_cpus_officers
-  task_required_mem_officers       = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers && !var.use_fargate_officers ? local.ec2_task_mem_officers : var.required_memory_officers
   task_required_memory_kb_officers = var.required_memory_officers * 1024
   task_environment_officers = concat(local.ssm_global_version_map, local.ssm_service_version_map_officers, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb_officers}" },
@@ -241,18 +239,13 @@ locals {
     "web-oauth2-request-key"   = local.stack_secrets_officers["web_oauth2_request_key"]
   } : {}
 
-  asg_desired_instance_count_officers = var.desired_task_count_officers
-  asg_max_instance_count_officers     = var.max_task_count_officers * 2
+  asg_desired_instance_count_officers = ceil(var.max_task_count_officers / 12)
+  asg_max_instance_count_officers     = local.asg_desired_instance_count_officers * 2
   asg_min_instance_count_officers     = 0
 
   ecs_cluster_id_officers          = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? module.ecs_cluster_officers[0].ecs_cluster_id : data.aws_ecs_cluster.ecs_cluster.id
   name_prefix_officers             = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? local.stack_name_prefix_officers : local.name_prefix
   task_execution_role_arn_officers = var.use_ecs_cluster_officers && var.create_ecs_cluster_officers ? module.ecs_cluster_officers[0].ecs_task_execution_role_arn : data.aws_iam_role.ecs_cluster_iam_role.arn
-
-  ec2_total_cpu_officers = data.aws_ec2_instance_type.officers.default_vcpus * 1024
-  ec2_task_cpu_officers  = local.ec2_total_cpu_officers - (local.ec2_os_reserved_cpu + var.eric_cpus_officers)
-  ec2_total_mem_officers = data.aws_ec2_instance_type.officers.memory_size
-  ec2_task_mem_officers  = local.ec2_total_mem_officers - (local.ec2_os_reserved_mem + var.eric_memory_officers)
 
   # ------------------------------------------------------------------------------
   # Search service ECS cluster locals

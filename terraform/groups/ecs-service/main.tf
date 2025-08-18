@@ -246,8 +246,8 @@ module "ecs-service-officers" {
   desired_task_count                   = var.desired_task_count_officers
   min_task_count                       = var.min_task_count_officers
   max_task_count                       = var.max_task_count_officers
-  required_cpus                        = local.task_required_cpu_officers
-  required_memory                      = local.task_required_mem_officers
+  required_cpus                        = var.required_cpus_officers
+  required_memory                      = var.required_memory_officers
   service_autoscale_enabled            = var.service_autoscale_enabled
   service_autoscale_target_value_cpu   = var.service_autoscale_target_value_cpu
   service_autoscale_scale_in_cooldown  = var.service_autoscale_scale_in_cooldown

@@ -21,6 +21,8 @@ use_fargate_search = false
 desired_task_count_officers = 8
 min_task_count_officers = 8
 max_task_count_officers = 32
+required_cpus_officers = 768
+required_memory_officers = 1024
 enable_listener_officers = false
 use_ecs_cluster_officers = true
 use_fargate_officers = false
@@ -36,6 +38,7 @@ service_scaleup_schedule   = "5 6 * * ? *"
 # ------------------------------------------------------------------------------
 create_ecs_cluster_default = true
 create_ecs_cluster_officers = true
+ec2_instance_type_officers = "c7i.4xlarge"
 create_ecs_cluster_search = true
 
 ec2_key_pair_name = "ch-aws-staging"
