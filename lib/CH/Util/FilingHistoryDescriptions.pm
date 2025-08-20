@@ -5,15 +5,15 @@ use CH::Perl;
 # Stores data from filing_history_descriptions.yml on API (populated by ChGovUk::Plugins::FilingHistoryDescriptions)
 our %lookup_data = ();
 
-# ------------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------------
 
 sub lookup {
     my ($app, $id) = @_;
-    if ( exists $lookup_data{description}->{$id} ) { 
-        trace "LOOKUP ID [%s] [%s]", $id, $lookup_data{description}->{$id} [FILING HISTORY DESCRIPTIONS];
+    if ( exists $lookup_data{description}->{$id} ) {
+        $app->log->trace("LOOKUP ID [$id] [" . $lookup_data{description}->{$id} . "] [FILING HISTORY DESCRIPTIONS]");
     }
     else {
-        error "No description found corresponding to ID [%s]", $id [FILING HISTORY DESCRIPTIONS];
+        $app->log->error("No description found corresponding to ID [$id] [FILING HISTORY DESCRIPTIONS]");
     }
     return $lookup_data{description}->{$id} // '';
 }
