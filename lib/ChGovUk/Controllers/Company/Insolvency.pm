@@ -52,8 +52,7 @@ sub view {
             my ( $api, $tx ) = @_;
             $self->app->log->debug("TIMING company.insolvency failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
 
-            $self->app->log->error("Failure retrieving company insolvency for %s: %s",
-              $self->stash('company_number'), $tx->error->{message});
+            $self->app->log->error("Failure retrieving company insolvency for " . $self->stash('company_number') . ": " . $tx->error->{message});
             $self->reply->exception("Error retrieving company:" . $tx->error->{message});
         }
       )->execute;

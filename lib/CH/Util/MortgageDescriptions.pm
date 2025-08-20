@@ -5,15 +5,15 @@ use CH::Perl;
 # Stores data from mortgage_descriptions.yml on API (populated by ChGovUk::Plugins::MortgageDescriptions)
 our %lookup_data = ();
 
-# ------------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------------
 
 sub lookup {
     my ($app, $class, $id) = @_;
-    if ( exists $lookup_data{$class}->{$id} ) { 
-        trace "LOOKUP CLASS [%s] ID [%s] [%s]", $class, $id, $lookup_data{$class}->{$id} [MORTGAGE DESCRIPTIONS];
+    if ( exists $lookup_data{$class}->{$id} ) {
+        $app->log->trace("LOOKUP CLASS [$class] ID [$id] [" . $lookup_data{$class}->{$id} . "] [MORTGAGE DESCRIPTIONS]");
     }
     else {
-        error "No description found corresponding to CLASS [%s] ID [%s]", $class, $id [MORTGAGE DESCRIPTIONS];
+        $app->log->error("No description found corresponding to CLASS [$class] ID [$id] [MORTGAGE DESCRIPTIONS]");
     }
     return $lookup_data{$class}->{$id} // '';
 }
