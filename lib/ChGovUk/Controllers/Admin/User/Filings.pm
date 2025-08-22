@@ -40,12 +40,12 @@ sub build_filings_list_and_render() {
     };
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING user.user_transactions (filings) '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING user.user_transactions (filings) '" . refaddr(\$start) . "'");
     $self->ch_api->user->user_transactions($query)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
-            debug "TIMING user.user_transactions (filings) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-            my $rf_results = $tx->success->json;
+            $self->app->log->debug("TIMING user.user_transactions (filings) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+            my $rf_results = $tx->res->json;
 
             for my $doc (@{$rf_results->{items}}) {
                 if ( defined $doc->{closed_at} ) {
@@ -77,7 +77,7 @@ sub build_filings_list_and_render() {
 
         failure => sub {
             my ($api, $tx) = @_;
-            debug "TIMING user.user_transactions (filings) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING user.user_transactions (filings) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             my $error_code = $tx->error->{code} // 0;
             if ($error_code == 404) {
                 $self->stash(no_filings => 1);

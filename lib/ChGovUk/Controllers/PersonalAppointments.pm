@@ -163,13 +163,13 @@ sub get_basket_link {
             failure        => sub {
                 my ($api, $tx) = @_;
                 $self->app->log->debug("TIMING basket (personal appointments) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
-                log_error($tx, "failure");
+                log_error($self->app->log, $tx, "FAILURE");
                 $self->stash_basket_link(undef, 0);
             },
             error          => sub {
                 my ($api, $tx) = @_;
                 $self->app->log->debug("TIMING basket (personal appointments) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
-                log_error($tx, "error");
+                log_error($self->app->log, $tx, "ERROR");
                 $self->stash_basket_link(undef, 0);
             }
         )->execute;
@@ -192,14 +192,13 @@ sub stash_basket_link {
 # ------------------------------------------------------------------------------
 
 sub log_error {
-    my($tx, $error_type) = @_;
+    my ($log, $tx, $error_type) = @_;
 
-    my $error_code = $tx->error->{code} // 0;
-    my $error_message = $tx->error->{message} // 0;
-    my $error = (defined $error_code ? "[$error_code] " : '').$error_message;
-    return if uc($error_type) eq 'FAILURE' && $error_code eq '404'; # don't log empty basket
-    # TODO log
-    #error "%s returned by getBasketLinks endpoint: '%s'. Not displaying basket link.", uc $error_type, $error, [PERSONAL_APPOINTMENTS];
+    my $error_code = $tx->error->{code} // '';
+    my $error_message = $tx->error->{message} // '';
+    my $error = ($error_code ? "[$error_code] " : '') . $error_message;
+    return if $error_type eq 'FAILURE' && $error_code eq '404'; # don't log empty basket
+    $log->error("$error_type returned by getBasketLinks endpoint: '$error'. Not displaying basket link. [PERSONAL_APPOINTMENTS]");
 }
 
 # ------------------------------------------------------------------------------
