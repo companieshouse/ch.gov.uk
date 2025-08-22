@@ -10,6 +10,7 @@ use POSIX qw(strftime);
 use MIME::Base64 qw(encode_base64url);
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
+use Data::Dumper;
 
 #-------------------------------------------------------------------------------
 
@@ -41,6 +42,7 @@ sub build_filings_list_and_render() {
 
     my $start = [Time::HiRes::gettimeofday()];
     $self->app->log->debug("TIMING user.user_transactions (filings) '" . refaddr(\$start) . "'");
+    $self->app->log->debug("NSDBG user transactions query: ".Dumper($query));
     $self->ch_api->user->user_transactions($query)->get->on(
         success => sub {
             my ( $api, $tx ) = @_;
@@ -60,7 +62,7 @@ sub build_filings_list_and_render() {
 
             # Work out the paging numbers
             $pager->total_entries( $rf_results->{total_result} // 0 );
-            warn "recent filings total_count %d entries per page %d", $pager->total_entries, $pager->entries_per_page() [RECENT_FILINGS];
+            $self->app->log->warn("recent filings total_count " . $pager->total_entries . " entries per page " . $pager->entries_per_page() . " [RECENT_FILINGS]");
 
             $self->stash(current_page_number    => $pager->current_page);
             $self->stash(page_set               => $pager->pages_in_set());
@@ -79,6 +81,7 @@ sub build_filings_list_and_render() {
             my ($api, $tx) = @_;
             $self->app->log->debug("TIMING user.user_transactions (filings) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             my $error_code = $tx->error->{code} // 0;
+             $self->app->log->debug("NSDBG user transactions failure code [".($tx->error->{code}//'undef')."] msg [".($tx->error->{message}//'undef')."]");
             if ($error_code == 404) {
                 $self->stash(no_filings => 1);
             }
