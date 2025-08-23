@@ -23,7 +23,7 @@ min_task_count_officers = 32
 max_task_count_officers = 32
 required_cpus_officers = 768
 required_memory_officers = 1024
-enable_listener_officers = false
+enable_listener_officers = true
 use_ecs_cluster_officers = true
 use_fargate_officers = false
 
