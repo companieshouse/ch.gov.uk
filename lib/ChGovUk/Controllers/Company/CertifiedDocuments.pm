@@ -110,7 +110,7 @@ sub view {
         success => sub {
             my ( $api, $tx ) = @_;
             $self->app->log->debug("TIMING company.filing_history (certified documents) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
-            my $fh_results = $tx->success->json;
+            my $fh_results = $tx->res->json;
             $self->app->log->trace("filing history for " . $self->stash('company_number') . ": " . Dumper($fh_results) . " [FILING_HISTORY]");
             for my $doc (@{$fh_results->{items}}) {
                 my $transaction_date = $doc->{date};
@@ -185,10 +185,10 @@ sub post {
 
     if (ref($self->req->params->to_hash->{'transaction'}) eq 'ARRAY') {
         foreach my $filing_history_id (@{$self->req->params->to_hash->{'transaction'}}) {
-            push($body->{item_options}->{filing_history_documents}, {filing_history_id => $filing_history_id});
+            push(@{$body->{item_options}{filing_history_documents}}, {filing_history_id => $filing_history_id});
         };
     } else {
-        push($body->{item_options}->{filing_history_documents}, {filing_history_id => $self->req->params->to_hash->{'transaction'}});
+        push(@{$body->{item_options}{filing_history_documents}}, {filing_history_id => $self->req->params->to_hash->{'transaction'}});
     };
 
     my $start = [Time::HiRes::gettimeofday()];
@@ -197,7 +197,7 @@ sub post {
         success => sub {
             my ($api, $tx) = @_;
             $self->app->log->debug("TIMING orderable.certified_copies (certified documents) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
-            my $certifiedCopy = $tx->success->json;
+            my $certifiedCopy = $tx->res->json;
             my $certifiedCopyId = $certifiedCopy->{'id'};
             $self->redirect_to("/orderable/certified-copies/${certifiedCopyId}/delivery-options");
         },
