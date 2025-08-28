@@ -12,7 +12,8 @@ use_fargate = false
 # Search service configuration
 desired_task_count_search = 2
 min_task_count_search = 2
-max_task_count_search = 6
+max_task_count_search = 2
+eric_memory_search = 256
 enable_listener_search = true
 use_ecs_cluster_search = true
 use_fargate_search = false
@@ -20,7 +21,7 @@ use_fargate_search = false
 # Officers service configuration
 desired_task_count_officers = 2
 min_task_count_officers = 2
-max_task_count_officers = 6
+max_task_count_officers = 2
 eric_memory_officers = 256
 enable_listener_officers = true
 use_ecs_cluster_officers = true
@@ -31,7 +32,8 @@ use_fargate_officers = false
 # ------------------------------------------------------------------------------
 create_ecs_cluster_default = true
 create_ecs_cluster_officers = true
-ec2_instance_type_officers = "c7i.2xlarge"
+ec2_instance_type_officers = "c7i.large"
 create_ecs_cluster_search = true
+ec2_instance_type_search = "c7i.large"
 
 ec2_key_pair_name = "chs-cidev"
