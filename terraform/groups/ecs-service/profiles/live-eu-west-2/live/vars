@@ -2,17 +2,19 @@ environment = "live"
 aws_profile = "live-eu-west-2"
 
 # scaling configs default
-desired_task_count = 48
-min_task_count = 48
-max_task_count = 48
+desired_task_count = 0
+min_task_count = 0
+max_task_count = 0
 enable_listener = false
 use_ecs_cluster_default = true
 use_fargate = false
 
 # scaling configs search
-desired_task_count_search = 32
-min_task_count_search = 32
-max_task_count_search = 32
+desired_task_count_search = 0
+min_task_count_search = 0
+max_task_count_search = 0
+required_cpus_search = 768
+required_memory_search = 1024
 enable_listener_search = false 
 use_ecs_cluster_search = true
 use_fargate_search = false
@@ -23,7 +25,7 @@ min_task_count_officers = 32
 max_task_count_officers = 32
 required_cpus_officers = 768
 required_memory_officers = 1024
-enable_listener_officers = false
+enable_listener_officers = true
 use_ecs_cluster_officers = true
 use_fargate_officers = false
 
@@ -37,5 +39,6 @@ create_ecs_cluster_default = true
 create_ecs_cluster_officers = true
 ec2_instance_type_officers = "c7i.4xlarge"
 create_ecs_cluster_search = true
+ec2_instance_type_search = "c7i.4xlarge"
 
 ec2_key_pair_name = "ch-aws-live"

@@ -159,8 +159,6 @@ locals {
 
   task_secrets_search = concat(local.global_secret_list, local.service_secret_list_search)
 
-  task_required_cpu_search       = var.use_ecs_cluster_search && var.create_ecs_cluster_search && !var.use_fargate_search ? local.ec2_task_cpu_search : var.required_cpus_search
-  task_required_mem_search       = var.use_ecs_cluster_search && var.create_ecs_cluster_search && !var.use_fargate_search ? local.ec2_task_mem_search : var.required_memory_search
   task_required_memory_kb_search = var.required_memory_search * 1024
   task_environment_search = concat(local.ssm_global_version_map, local.ssm_service_version_map_search, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb_search}" },
@@ -271,16 +269,11 @@ locals {
     "web-oauth2-request-key"   = local.stack_secrets_search["web_oauth2_request_key"]
   } : {}
 
-  asg_desired_instance_count_search = var.desired_task_count_search
-  asg_max_instance_count_search     = var.max_task_count_search * 2
+  asg_desired_instance_count_search = ceil(var.max_task_count_search / 12)
+  asg_max_instance_count_search     = local.asg_desired_instance_count_search * 2
   asg_min_instance_count_search     = 0
 
   ecs_cluster_id_search          = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? module.ecs_cluster_search[0].ecs_cluster_id : data.aws_ecs_cluster.ecs_cluster.id
   name_prefix_search             = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? local.stack_name_prefix_search : local.name_prefix
   task_execution_role_arn_search = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? module.ecs_cluster_search[0].ecs_task_execution_role_arn : data.aws_iam_role.ecs_cluster_iam_role.arn
-
-  ec2_total_cpu_search = data.aws_ec2_instance_type.search.default_vcpus * 1024
-  ec2_task_cpu_search  = local.ec2_total_cpu_search - (local.ec2_os_reserved_cpu + var.eric_cpus_search)
-  ec2_total_mem_search = data.aws_ec2_instance_type.search.memory_size
-  ec2_task_mem_search  = local.ec2_total_mem_search - (local.ec2_os_reserved_mem + var.eric_memory_search)
 }
