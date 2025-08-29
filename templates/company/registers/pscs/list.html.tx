@@ -89,11 +89,7 @@
                         <dl class="column-quarter">
                             <dt><% l('Date of birth') %></dt>
                             <dd id="psc-date-of-birth-<% $~psc.count %>" class="data">
-                            % if ($psc._authorised_dob) {
-                                <% $c.isodate_as_string( $psc.date_of_birth ) %>
-                            % } else {
                                 <% $c.isodate_as_string( $psc.date_of_birth, "%B %Y" ) %>
-                            % }
                             </dd>
                         </dl>
                     % }
