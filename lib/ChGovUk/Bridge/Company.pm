@@ -7,8 +7,6 @@ use CH::Util::DateHelper qw(is_current_date_greater);
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
 
-use Data::Dumper;
-
 #-------------------------------------------------------------------------------
 
 # Company profile page
@@ -97,8 +95,6 @@ sub company {
 
                 if ($tx->success && $tx->res->json) {
                     $self->stash(following_company => 1);
-                } else {
-                    warn "\nCai Loves Perl: \$tx => " . Dumper($tx) . "\n";
                 }
                 $self->continue;
             });
