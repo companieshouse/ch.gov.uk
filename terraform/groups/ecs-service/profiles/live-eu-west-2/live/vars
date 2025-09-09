@@ -10,9 +10,9 @@ use_ecs_cluster_default = true
 use_fargate = false
 
 # scaling configs search
-desired_task_count_search = 0
-min_task_count_search = 0
-max_task_count_search = 0
+desired_task_count_search = 32
+min_task_count_search = 32
+max_task_count_search = 32
 required_cpus_search = 768
 required_memory_search = 1024
 enable_listener_search = false 
