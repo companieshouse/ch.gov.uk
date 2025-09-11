@@ -1,6 +1,6 @@
 package CH::Util::DateHelper;
 
-$ENV{LOG_DECLARE_STARTUP_LEVEL} = 'INFO'; # TODO Add suppression to CH::Util::Test
+# $ENV{LOG_DECLARE_STARTUP_LEVEL} = 'INFO'; # TODO Add suppression to CH::Util::Test
 
 use CH::Perl;
 use DateTime::Tiny;
