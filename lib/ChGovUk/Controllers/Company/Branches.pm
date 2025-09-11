@@ -32,9 +32,9 @@ sub view {
             # Add the number of branches to the stash
             $self->stash('number_of_branches' => scalar @{$results->{items}});
             # Add the number of branches with status 'open'
-            $self->stash('number_of_branches_open' => scalar(grep { $_->{company_status} =~ /open/i } @{$results->{items}}) || 0);
+            $self->stash('number_of_branches_open' => scalar(grep { $_->{company_status}//'' =~ /open/i } @{$results->{items}}) || 0);
             # Add the number of branches with status 'closed'
-            $self->stash('number_of_branches_closed' => scalar(grep { $_->{company_status} =~ /closed/i } @{$results->{items}}) || 0);
+            $self->stash('number_of_branches_closed' => scalar(grep { $_->{company_status}//'' =~ /closed/i } @{$results->{items}}) || 0);
 
             #trace "branches total %d open %d",
             #    $self->stash('number_of_branches'), $self->stash('number_of_branches_open') [COMPANY BRANCHES];
