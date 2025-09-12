@@ -21,3 +21,4 @@ npm-debug.log
 t/output.xml
 ch.gov.uk-*.zip
 .idea/
+.vscode/
