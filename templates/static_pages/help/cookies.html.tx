@@ -35,11 +35,6 @@
           <td>5 years</td>
         </tr>
         <tr>
-          <td>__CAS</td>
-          <td>Used to remember choices you have made and to choose the correct information to show to you.</td>
-          <td>10 years</td>
-        </tr>
-        <tr>
           <td>__SID</td>
           <td>A session identifier. A unique random value that allows the site to recognise your movement around the site as being from one computer. Contains no personal information and cannot be used to identify a user.</td>
           <td>When you close your browser</td>
