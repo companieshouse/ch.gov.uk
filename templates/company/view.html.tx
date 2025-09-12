@@ -8,7 +8,8 @@
 
     % include '/includes/company/tabs_start.tx' { active => 'company-overview-tab' };
 
-    <dl>
+<div class="grid-row">
+    <dl class="column-half">
     % if $company.company_number == $c.authorised_company and $company.registered_office_is_in_dispute {
               <dt> <span id="roa-dispute" ><% l('Registered office address replaced') %></span> <a id="dispute-help-link"  href="/help/replaced-address-help.html"><% l("what's this?") %></a></dt>
               <dd class="text data">
@@ -57,6 +58,14 @@
     % }
     </dl>
 
+
+    <dl class="column-half">
+        <dt id="ppob-label"><% l('Principal place of business')%></dt>
+        <dd class="text data" id="ppob">1 Rose Street, Edinburgh, EH1 2EB</dd>
+    </dl>
+
+</div>
+
   %  if $company.type == "uk-establishment" {
     <div class="grid-row">
         <dl class="column-quarter">
@@ -103,7 +112,7 @@
 
     <div class="grid-row">
         % if $company.company_status {
-            <dl class="column-two-thirds">
+            <dl class="column-half">
                 <dt><% l('Company status')%></dt>
                 % my $company_status = $c.cv_lookup( 'company_status', $company.company_status);
                 % my $company_status_detail = $c.cv_lookup( 'company_status_detail', $company.company_status_detail);
@@ -112,6 +121,16 @@
                 % if $company_status_detail {
                     <span class="normal" id="company-status-detail">&mdash; <% l(' {status_detail}', { status_detail => $company_status_detail })%></span>
                 % }
+                </dd>
+            </dl>
+        % }
+
+        % if ($company.subtype == 'lp' || $company.subtype == 'slp') {
+            <dl class="column-half">
+                <dt id="term-label"><% l('Term of the partnership')%></dt>
+                % my $company_term = $c.cv_lookup('term', $company.term);
+                <dd class="text data" id="term">
+                    <% l('{term}', { term => $company_term })%>
                 </dd>
             </dl>
         % }
@@ -128,7 +147,7 @@
     </div>
 
     <div class="grid-row">
-        <dl class="column-two-thirds">
+        <dl class="column-half">
             <dt><% l('Company type')%></dt>
             <dd class="text data" id="company-type">
                 <% l($c.cv_lookup( 'company_summary', $company.type)) %>
@@ -146,7 +165,7 @@
             </dd>
         </dl>
 
-        <dl class="column-third">
+        <dl class="column-half">
             % if $company.date_of_creation {
                 <dt id="company-birth-type"><% l($c.cv_lookup( 'company_birth_type', $company.type)) %></dt>
                 <dd class="data" id="company-creation-date"><% $c.isodate_as_string($company.date_of_creation) %></dd>
