@@ -109,6 +109,10 @@ sub list {
                         $item->{date_of_birth} = $date;
                       }
                 }
+
+                if ( $item->{identity_verification_details} && $item->{identity_verification_details}{anti_money_laundering_supervisory_bodies} ) {
+                    $item->{identity_verification_details}{supervisory_bodies_string} = join ', ', @{ $item->{identity_verification_details}{anti_money_laundering_supervisory_bodies} // [] };
+                }
             }
 
             trace "Officer list for %s: %s", $company_number, d:$results [OFFICER LIST];
