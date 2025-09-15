@@ -110,14 +110,8 @@ sub list {
                       }
                 }
 
-                if ($item->{identity_verification_details} && $item->{identity_verification_details}->{anti_money_laundering_supervisory_bodies}) {
-                    my @bodies = @{ $item->{identity_verification_details}->{anti_money_laundering_supervisory_bodies} };
-                    my $joined = "";
-                    for (my $i = 0; $i < @bodies; $i++) {
-                        $joined .= $bodies[$i];
-                        $joined .= ", " if $i < $#bodies;
-                    }
-                    $item->{identity_verification_details}->{supervisory_bodies_string} = $joined;
+                if ( $item->{identity_verification_details} && $item->{identity_verification_details}{anti_money_laundering_supervisory_bodies} ) {
+                    $item->{identity_verification_details}{supervisory_bodies_string} = join ', ', @{ $item->{identity_verification_details}{anti_money_laundering_supervisory_bodies} // [] };
                 }
             }
 
