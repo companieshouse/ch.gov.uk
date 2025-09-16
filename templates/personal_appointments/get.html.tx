@@ -189,7 +189,7 @@
                                 % } else if ($appointment.identification.identification_type == 'eea'){
                                     Registered in an
                                 % }
-                                <% $c.cv_lookup( 'identification_type', $appointment.identification.identification_type ) %> <a href="/help/corporate-officer-identification-type">What's this?</a>
+                                <% $c.cv_lookup( 'identification_type', $appointment.identification.identification_type ) %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a>
                             </h3>
                         % }
                         <div class="grid-row">
