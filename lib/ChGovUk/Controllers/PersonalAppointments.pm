@@ -60,6 +60,12 @@ sub get {
             my $results = $tx->success->json;
             trace 'Appointments for officer [%s]: %s', $officer_id, d:$results;
 
+            foreach my $item(@{$results->{items} // []}) {
+                next if !$item->{identity_verification_details};
+                my @list = @{ $item->{identity_verification_details}{anti_money_laundering_supervisory_bodies} // []} or next;
+                $item->{identity_verification_details}{supervisory_bodies_string} = join ', ', @list;
+            }
+
             my $officer = {
                 appointments    => $results->{items},
                 date_of_birth   => $results->{date_of_birth},
