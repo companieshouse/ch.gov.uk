@@ -287,30 +287,30 @@
                      % }
                  </div> <%# /grid-row %>
 
-                % if $psc.identity_verification_details {
-                    % if $psc.identity_verification_details.anti_money_laundering_supervisory_bodies ||
-                    % $psc.identity_verification_details.authorised_corporate_service_provider_name ||
-                    % $psc.identity_verification_details.identity_verified_on ||
-                    % $psc.identity_verification_details.preferred_name
-                % {
-                    <div class="grid-row">
-                        <div class="column-full">
-                            <p>
-                                <span class="govuk-!-font-weight-bold"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></span><br />
-                                <span><% $psc.identity_verification_details.authorised_corporate_service_provider_name %></span> 
-                                <% l('has confirmed that they have verified the identity of') %>
-                                <span><% $psc.identity_verification_details.preferred_name %></span>
-                                <% l('to the standard set by Companies House and is satisfied that the required personal information is true.') %>
-                            </p>
-                            <p>
-                                <% l('The verification checks were completed on') ~ ' ' ~ $c.isodate_as_string( $psc.identity_verification_details.identity_verified_on ) ~ '.' %>
-                            </p>
-                            <p>
-                                <% $psc.identity_verification_details.authorised_corporate_service_provider_name ~ ' ' ~ l('is supervised by:') ~ ' ' ~ $psc.identity_verification_details.supervisory_bodies_string ~ '.' %>
-                            </p>
-                        </div>
-                    </div>
-                % } }
+                <div class="grid-row">
+                    % if $psc.identity_verification_details {
+                        % if $psc.identity_verification_details.anti_money_laundering_supervisory_bodies ||
+                        % $psc.identity_verification_details.authorised_corporate_service_provider_name ||
+                        % $psc.identity_verification_details.identity_verified_on ||
+                        % $psc.identity_verification_details.preferred_name
+                    % {
+                            <div class="column-full govuk-!-margin-bottom-6">
+                                <p>
+                                    <span class="govuk-!-font-weight-bold"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></span><br />
+                                    <span><% $psc.identity_verification_details.authorised_corporate_service_provider_name %></span> 
+                                    <% l('has confirmed that they have verified the identity of') %>
+                                    <span><% $psc.identity_verification_details.preferred_name %></span>
+                                    <% l('to the standard set by Companies House and is satisfied that the required personal information is true.') %>
+                                </p>
+                                <p>
+                                    <% l('The verification checks were completed on') ~ ' ' ~ $c.isodate_as_string( $psc.identity_verification_details.identity_verified_on ) ~ '.' %>
+                                </p>
+                                <p>
+                                    <% $psc.identity_verification_details.authorised_corporate_service_provider_name ~ ' ' ~ l('is supervised by:') ~ ' ' ~ $psc.identity_verification_details.supervisory_bodies_string ~ '.' %>
+                                </p>
+                            </div>
+                    % } }
+                </div> <%# /grid-row %>
 
                 <div class="grid-row">
                     % if $psc.natures_of_control {
