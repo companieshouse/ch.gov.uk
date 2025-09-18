@@ -29,9 +29,6 @@ TEST_UNIT_ENV   ?= COOKIE_SECRET=abcdef123456 URL_SIGNING_SALT=abcdef123456
 
 DOCKER_IMAGE_TAG   ?= 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/ch.gov.uk:latest
 
-upgrade:
-	docker build -f Dockerfile_ci-perl-build-ecs_perl-upgrade --platform=linux/amd64 -t ch-gov-uk-upgrade:latest .
-
 all: dist
 
 submodules: api-enumerations/.git
@@ -66,6 +63,27 @@ test: test-unit test-integration
 build: submodules deps
 
 build-ecs: submodules deps-ecs
+
+build-ecs-upgrade: submodules deps-upgrade
+	$(eval buildctx:=$(shell mktemp -d build-XXXXXXXXXX))
+	$(eval appdir=$(buildctx)/app)
+	$(info Temporary build directory: $(buildctx))
+	$(info Application directory: $(appdir))
+	mkdir -p $(buildctx)/app
+	cp -r $(LOCAL) $(appdir)
+	cp -r ./lib $(appdir)
+	cp -r ./script $(appdir)
+	cp -r ./templates $(appdir)
+	cp -r ./api-enumerations $(appdir)
+	cp -r ./t $(appdir)
+	cp ./appconfig.yml $(appdir)
+	cp ./routes.yaml $(appdir)
+	cp ./errors.yml $(appdir)
+	cp ./log4perl.production.conf $(appdir)
+	cp ./start.sh $(appdir)
+	cp ./ecs-image-build/* $(buildctx)
+	docker build -f $(buildctx)/Dockerfile --platform=linux/amd64 -t ch.gov.uk:upgrade $(buildctx)
+	rm -rf $(buildctx)
 
 package:
 ifndef version
