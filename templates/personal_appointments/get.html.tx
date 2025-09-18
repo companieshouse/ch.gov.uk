@@ -213,30 +213,30 @@
                         % }
                     </div> <%# /grid-row %>
 
-                    % if $appointment.identity_verification_details {
-                        % if $appointment.identity_verification_details.anti_money_laundering_supervisory_bodies ||
-                        % $appointment.identity_verification_details.authorised_corporate_service_provider_name ||
-                        % $appointment.identity_verification_details.identity_verified_on ||
-                        % $appointment.identity_verification_details.preferred_name
-                    % {
-                        <div class="grid-row">
-                            <div class="column-full">
-                                <p>
-                                    <span class="govuk-!-font-weight-bold"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></span><br />
-                                    <span><% $appointment.identity_verification_details.authorised_corporate_service_provider_name %></span> 
-                                    <% l('has confirmed that they have verified the identity of') %>
-                                    <span><% $appointment.identity_verification_details.preferred_name %></span>
-                                    <% l('to the standard set by Companies House and is satisfied that the required personal information is true.') %>
-                                </p>
-                                <p>
-                                    <% l('The verification checks were completed on') ~ ' ' ~ $c.isodate_as_string( $appointment.identity_verification_details.identity_verified_on ) ~ '.' %>
-                                </p>
-                                <p>
-                                    <% $appointment.identity_verification_details.authorised_corporate_service_provider_name ~ ' ' ~ l('is supervised by:') ~ ' ' ~ $appointment.identity_verification_details.supervisory_bodies_string ~ '.' %>
-                                </p>
-                            </div>
-                        </div>
-                    % } }
+                    <div class="grid-row">
+                        % if $appointment.identity_verification_details {
+                            % if $appointment.identity_verification_details.anti_money_laundering_supervisory_bodies ||
+                            % $appointment.identity_verification_details.authorised_corporate_service_provider_name ||
+                            % $appointment.identity_verification_details.identity_verified_on ||
+                            % $appointment.identity_verification_details.preferred_name
+                        % {
+                                <div class="column-full govuk-!-margin-bottom-6">
+                                    <p>
+                                        <span class="govuk-!-font-weight-bold"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></span><br />
+                                        <span><% $appointment.identity_verification_details.authorised_corporate_service_provider_name %></span> 
+                                        <% l('has confirmed that they have verified the identity of') %>
+                                        <span><% $appointment.identity_verification_details.preferred_name %></span>
+                                        <% l('to the standard set by Companies House and is satisfied that the required personal information is true.') %>
+                                    </p>
+                                    <p>
+                                        <% l('The verification checks were completed on') ~ ' ' ~ $c.isodate_as_string( $appointment.identity_verification_details.identity_verified_on ) ~ '.' %>
+                                    </p>
+                                    <p>
+                                        <% $appointment.identity_verification_details.authorised_corporate_service_provider_name ~ ' ' ~ l('is supervised by:') ~ ' ' ~ $appointment.identity_verification_details.supervisory_bodies_string ~ '.' %>
+                                    </p>
+                                </div>
+                        % } }
+                    </div> <%# /grid-row %>
 
                     % if $appointment.identification {
                         % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" {
