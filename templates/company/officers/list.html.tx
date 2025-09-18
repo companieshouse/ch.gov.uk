@@ -227,30 +227,30 @@
                     % }
                 </div> <%# /grid-row %>
 
-                % if $officer.identity_verification_details {
-                    % if $officer.identity_verification_details.anti_money_laundering_supervisory_bodies ||
-                    % $officer.identity_verification_details.authorised_corporate_service_provider_name ||
-                    % $officer.identity_verification_details.identity_verified_on ||
-                    % $officer.identity_verification_details.preferred_name
-                % {
-                    <div class="grid-row">
-                        <div class="column-full">
-                            <p>
-                                <span class="govuk-!-font-weight-bold"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></span><br />
-                                <span><% $officer.identity_verification_details.authorised_corporate_service_provider_name %></span> 
-                                <% l('has confirmed that they have verified the identity of') %>
-                                <span><% $officer.identity_verification_details.preferred_name %></span>
-                                <% l('to the standard set by Companies House and is satisfied that the required personal information is true.') %>
-                            </p>
-                            <p>
-                                <% l('The verification checks were completed on') ~ ' ' ~ $c.isodate_as_string( $officer.identity_verification_details.identity_verified_on ) ~ '.' %>
-                            </p>
-                            <p>
-                                <% $officer.identity_verification_details.authorised_corporate_service_provider_name ~ ' ' ~ l('is supervised by:') ~ ' ' ~ $officer.identity_verification_details.supervisory_bodies_string ~ '.' %>
-                            </p>
-                        </div>
-                    </div>
-                % } }
+                <div class="grid-row">
+                    % if $officer.identity_verification_details {
+                        % if $officer.identity_verification_details.anti_money_laundering_supervisory_bodies ||
+                        % $officer.identity_verification_details.authorised_corporate_service_provider_name ||
+                        % $officer.identity_verification_details.identity_verified_on ||
+                        % $officer.identity_verification_details.preferred_name
+                    % {
+                            <div class="column-full govuk-!-margin-bottom-6">
+                                <p>
+                                    <span class="govuk-!-font-weight-bold"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></span><br />
+                                    <span><% $officer.identity_verification_details.authorised_corporate_service_provider_name %></span> 
+                                    <% l('has confirmed that they have verified the identity of') %>
+                                    <span><% $officer.identity_verification_details.preferred_name %></span>
+                                    <% l('to the standard set by Companies House and is satisfied that the required personal information is true.') %>
+                                </p>
+                                <p>
+                                    <% l('The verification checks were completed on') ~ ' ' ~ $c.isodate_as_string( $officer.identity_verification_details.identity_verified_on ) ~ '.' %>
+                                </p>
+                                <p>
+                                    <% $officer.identity_verification_details.authorised_corporate_service_provider_name ~ ' ' ~ l('is supervised by:') ~ ' ' ~ $officer.identity_verification_details.supervisory_bodies_string ~ '.' %>
+                                </p>
+                            </div>
+                    % } }
+                </div> <%# /grid-row %>
 
                 % if $officer.identification.identification_type == 'non-eea' {
                     <h3 class=""><% l('Registered in a Non European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
