@@ -35,7 +35,7 @@ sub _base_url {
               . ($app->req->is_secure ? 's' : '')
               . '://'
               . $app->req->url->base->host
-              . ( $app->req->url->base->port != 80
+              . ( ($app->req->url->base->port//80) != 80
                             ? ':' . $app->req->url->base->port
                             : ''
                 )
