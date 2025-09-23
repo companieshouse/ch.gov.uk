@@ -9,6 +9,7 @@ use Mojo::Util qw/ url_escape /;
 use Mojo::UserAgent;
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
+use Data::Dumper;
 
 has 'app';
 
@@ -41,6 +42,12 @@ sub lookup {
 
     $postcode =~ s/\s*//g;
 
+    if ( ! $self->app->config->{postcode}->{url} ) {
+        $self->app->log->error("No postcode url is configured: ".Dumper({config=>$self->app->config}));
+        $callback->({ postcode_error => 1 });
+        return;
+    }
+
     my $url = $self->app->config->{postcode}->{url} . '/' . url_escape($postcode);
     #trace "Postcode URL=$url";
     $self->app->log->trace("Postcode URL=$url");
@@ -52,10 +59,10 @@ sub lookup {
     $pcua->get($url => sub {
         my ($ua, $tx) = @_;
 
-        $self->app->log->debug("TIMING lookup (postcode) " . ( $tx->success ? 'success' : 'failure' ) . " '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+        $self->app->log->debug("TIMING lookup (postcode) " . ( $tx->result->is_success ? 'success' : 'failure' ) . " '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
         my $keep_scope = $pcua; # Stop pcua going out of scope. FIXME Not needed when using Admin::NET::Companieshouse
 
-        if ($tx->success) {
+        if ($tx->result->is_success) {
             #trace "Postcode lookup complete: %s", d:$tx->res->json [POSTCODE];
             $self->app->log->trace("Postcode lookup complete: " . $tx->res->json . " [POSTCODE]");
             $callback->($tx->res->json);
