@@ -54,7 +54,7 @@ sub BUILD {
     $self->controller->app->log->debug("Got transaction endpoint [" . $self->endpoint . "] [ROUTING]");
 
     my $route = $self->controller->app->routes->find($self->controller->current_route)->pattern->unparsed;
-    $self->controller->app->log->debug("NSDBG route: ". $route);
+    # $self->controller->app->log->debug("NSDBG route: ". $route);
     $route = substr($route, 1) if substr($route, 0, 1) eq '/';
     $self->route($route);
     # Can't locate object method "any" via package "ChGovUk::Transaction" at
@@ -98,7 +98,7 @@ sub has_state {
 sub create {
     my ($self, %args) = @_;
 
-    $self->controller->app->log->debug("NSDBG create transaction".Dumper(\%args));
+    # $self->controller->app->log->debug("NSDBG create transaction".Dumper(\%args));
     if ($self->transaction_number) {
         my $message = 'Transaction has already been loaded';
         $self->controller->app->log->error("$message [ROUTING]");
@@ -112,8 +112,8 @@ sub create {
     my $transaction_data;
 
     # This call fails with a 404
-    $self->controller->app->log->debug("NSDBG company [$company_number] create transaction ref api ".ref($api)." api:".Dumper($api));
-    $self->controller->app->log->debug("NSDBG company [$company_number] ref transactions ".ref($api->transactions)." transactions:".Dumper($api->transactions));
+    # $self->controller->app->log->debug("NSDBG company [$company_number] create transaction ref api ".ref($api)." api:".Dumper($api));
+    # $self->controller->app->log->debug("NSDBG company [$company_number] ref transactions ".ref($api->transactions)." transactions:".Dumper($api->transactions));
     $api->transactions->create({
         company_number => $company_number,
         description => $self->controller->cv_lookup('filing_type', $self->metadata->{formtype}),
