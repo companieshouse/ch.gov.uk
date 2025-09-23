@@ -29,7 +29,7 @@ sub create {
             $show = 0 if $self->session('prescreen') && $self->session('prescreen')->{$transaction->endpoint} == 1;
             $self->session('prescreen' => {}) if !$self->session('prescreen');
             $self->session('prescreen')->{$transaction->endpoint} = 1;
-            trace "Prescreen for node %s is once-per-session, show = %s", $transaction->endpoint, $show [ROUTING];
+            $self->app->log->trace("Prescreen for node " . $transaction->endpoint . " is once-per-session, show = $show [ROUTING]");
         }
         if($show) {
             $self->render(template => $transaction->metadata->{prescreen}->{template});
@@ -60,30 +60,30 @@ sub get_transaction {
     my ($self) = @_;
 
     my $start = [Time::HiRes::gettimeofday()];
-    debug "TIMING transactions (transactions) '" . refaddr(\$start) . "'";
+    $self->app->log->debug("TIMING transactions (transactions) '" . refaddr(\$start) . "'");
     $self->ch_api->transactions($self->stash('transaction_number'))->get->on(
         failure => sub {
             my ($api, $tx) = @_;
-            debug "TIMING transactions (transactions) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
+            $self->app->log->debug("TIMING transactions (transactions) failure '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
             my ($error_message, $error_code) = ($tx->error->{message}, $tx->error->{code});
-                my $message = 'Failed to fetch transaction '.$self->stash('transaction_number').': '.$error_code.' '.$error_message;
-                error "%s", $message [API];
-                $self->reply->exception($message);
+            my $message = 'Failed to fetch transaction '.$self->stash('transaction_number').': '.$error_code.' '.$error_message;
+            $self->app->log->error("$message [API]");
+            $self->reply->exception($message);
         },
         error => sub {
             my ($api, $error) = @_;
-            debug "TIMING transactions (transactions) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-                my $message = 'Failed to fetch transaction '.$self->stash('transaction_number').': '.$error;
-                error "%s", $message [ROUTING];
-                $self->reply->exception($message);
+            $self->app->log->debug("TIMING transactions (transactions) error '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+            my $message = 'Failed to fetch transaction '.$self->stash('transaction_number').': '.$error;
+            $self->app->log->error("$message [ROUTING]");
+            $self->reply->exception($message);
         },
         success => sub {
             my ($api, $tx) = @_;
-            debug "TIMING transactions (transactions) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
-                my $transaction = $tx->success->json;
+            $self->app->log->debug("TIMING transactions (transactions) success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start));
+            my $transaction = $tx->res->json;
 
-                $self->stash(transaction => $transaction);
-                $self->render;
+            $self->stash(transaction => $transaction);
+            $self->render;
         }
     )->execute;
 };

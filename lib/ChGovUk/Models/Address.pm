@@ -172,13 +172,13 @@ sub get_country_name_list {
 
     my $list_type = $self->_country_list_type($options{list_type});
 
-    unless (defined $country_codes->{$list_type}->{mapped}) {
+    unless (defined $country_codes->{$list_type}{mapped}) {
         # XXX MooseX::Model::Role::Populate defines and exports a "values" attribute...
         my @countries = map { CORE::values(%$_) } @{ $self->get_country_list(list_type => $list_type) };
-        $country_codes->{$options{$list_type}}->{mapped} = [ map { { $_ => $_ } } @countries ];
+        $country_codes->{$list_type}{mapped} = [ map { { $_ => $_ } } @countries ];
     }
 
-    return $country_codes->{$options{$list_type}}->{mapped};
+    return $country_codes->{$list_type}{mapped};
 }
 
 # ------------------------------------------------------------------------------

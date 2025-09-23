@@ -5,13 +5,14 @@ extends 'MojoX::Moose::Controller';
 
 use CH::Perl;
 use Mojo::Util qw( camelize );
+use Data::Dumper;
 
 #-------------------------------------------------------------------------------
 
 sub get {
     my ($self) = @_;
 
-    debug "In FormBase#get" [GET];
+    $self->app->log->debug("In FormBase#get [GET]");
 
     # TODO need to get data from API
 
@@ -32,7 +33,7 @@ sub get {
 sub post {
     my ($self) = @_;
 
-    debug "In FormBase#post" [POST];
+    $self->app->log->debug("In FormBase#post [POST]");
 
     my $transaction = $self->stash('transaction');
 
@@ -66,7 +67,7 @@ sub _submit_transaction {
                 $self->session('file_upload')->[$index - 1] = undef;
                 delete $self->session('file_upload_keys')->{$transaction_number};
 
-                trace "File upload keys session variable looks like this after deletion:\n%s", d:$self->session('file_upload_keys') [FILE];
+                $self->app->log->trace("File upload keys session variable looks like this after deletion:\n" . Dumper($self->session('file_upload_keys')) . " [FILE]");
             }
 
             $self->redirect_to($self->url_for('confirmation'));

@@ -8,6 +8,7 @@ use Mojo::Util qw( camelize );
 use Mojo::IOLoop;
 
 use Moose;
+use Data::Dumper;
 
 has 'controller' => ( is => 'ro', isa => 'Mojolicious::Controller', required => 1 );
 
@@ -50,31 +51,33 @@ sub BUILD {
         my @parts = @{$self->controller->req->url->path->parts};
         $self->endpoint(join '/', @parts[2..$#parts]);
     }
-    debug "Got transaction endpoint [%s]", $self->endpoint [ROUTING];
+    $self->controller->app->log->debug("Got transaction endpoint [" . $self->endpoint . "] [ROUTING]");
 
-    # Get the current route (URL from map - e.g. /:char/:char2/:num/:num2)
-    my $route = $self->controller->app->routes->find($self->controller->current_route)->pattern->pattern;
+    my $route = $self->controller->app->routes->find($self->controller->current_route)->pattern->unparsed;
+    $self->controller->app->log->debug("NSDBG route: ". $route);
     $route = substr($route, 1) if substr($route, 0, 1) eq '/';
-    $self->any($route);
-    trace "Got transaction route [%s]", $route [ROUTING];
+    $self->route($route);
+    # Can't locate object method "any" via package "ChGovUk::Transaction" at
+    # Replace deprecated Mojolicious::Routes::Route::route method calls - MR
+    $self->controller->app->log->trace("Got transaction route [$route] [ROUTING]");
 
     # Get metadata
     $self->metadata($self->controller->get_transaction_metadata( endpoint => $self->route ));
-    trace "Got transaction metadata:\n%s", d:$self->metadata [ROUTING];
+    $self->controller->app->log->trace("Got transaction metadata:\n" . Dumper($self->metadata) . "[ROUTING]");
 
     if($self->endpoint ne 'confirmation' && !$self->metadata) {
         ($route) = $route =~ /(.*)\/([^\/]+)$/;
-        $self->any($route);
-        trace "Got transaction endpoint [%s]", $self->endpoint [ROUTING];
-        trace "Got transaction route [%s]", $route [ROUTING];
+        $self->route($route);
+        $self->controller->app->log->trace("Got transaction endpoint [" . $self->endpoint . "] [ROUTING]");
+        $self->controller->app->log->trace("Got transaction route [$route] [ROUTING]");
 
         $self->metadata($self->controller->get_transaction_metadata( endpoint => $self->route ));
     }
 
     if($self->has_state) {
-        debug "Transaction [%s] has state:\n%s", $self->transaction_number, d:$self->controller->session->{transaction}->{$self->transaction_number} [ROUTING];
+        $self->controller->app->log->debug("Transaction [" . ( $self->transaction_number // 'undef' ) . "] has state:\n" . Dumper($self->controller->session->{transaction}{$self->transaction_number}) . " [ROUTING]");
     } else {
-        warn "Transaction [%s] has no state", $self->transaction_number [ROUTING];
+        $self->controller->app->log->warn("Transaction [" . ( $self->transaction_number // 'undef' ) . "] has no state [ROUTING]");
     }
 }
 
@@ -83,8 +86,9 @@ sub BUILD {
 sub has_state {
     my ($self) = @_;
 
-    my $has_state = exists($self->controller->session->{transaction}->{$self->transaction_number}) ? 1 : 0;
-    debug "Transaction has_state [%s], state:\n%s", $has_state, d:$self->controller->session->{transaction}->{$self->transaction_number} [ROUTING];
+    my $has_state = $self->transaction_number && exists($self->controller->session->{transaction}{$self->transaction_number}) ? 1 : 0;
+    $self->controller->app->log->debug("Transaction has_state [" . $has_state . "] [ROUTING]");
+    $self->controller->app->log->debug("Transaction state:\n" . Dumper($self->controller->session->{transaction}{$self->transaction_number}) . " [ROUTING]") if $has_state;
 
     return $has_state;
 }
@@ -94,9 +98,10 @@ sub has_state {
 sub create {
     my ($self, %args) = @_;
 
+    $self->controller->app->log->debug("NSDBG create transaction".Dumper(\%args));
     if ($self->transaction_number) {
         my $message = 'Transaction has already been loaded';
-        error "%s", $message [ROUTING];
+        $self->controller->app->log->error("$message [ROUTING]");
         return $self->controller->reply->exception($message);
     }
 
@@ -106,6 +111,9 @@ sub create {
 
     my $transaction_data;
 
+    # This call fails with a 404
+    $self->controller->app->log->debug("NSDBG company [$company_number] create transaction ref api ".ref($api)." api:".Dumper($api));
+    $self->controller->app->log->debug("NSDBG company [$company_number] ref transactions ".ref($api->transactions)." transactions:".Dumper($api->transactions));
     $api->transactions->create({
         company_number => $company_number,
         description => $self->controller->cv_lookup('filing_type', $self->metadata->{formtype}),
@@ -113,7 +121,7 @@ sub create {
         'success' => sub {
             my ($api, $tx) = @_;
 
-            debug "Transaction created %s", d:$tx->res->json [ROUTING];
+            $self->controller->app->log->debug("Transaction created " . Dumper($tx->res->json) . " [ROUTING]");
             $transaction_data = $tx->res->json;
 
             # Create transaction number
@@ -126,7 +134,7 @@ sub create {
         error => sub {
             my ($api, $error) = @_;
             my $message = "Failed to create transaction: $error";
-            error "%s", $message [ROUTING];
+            $self->controller->app->log->error("$message [ROUTING]");
             $self->controller->reply->exception($message);
         },
         failure => sub {
@@ -135,7 +143,7 @@ sub create {
 
             if ( !$code or $code == 500) {
                 my $message = 'Status 500. Failed to create transaction: '.$tx->error->{message};
-                error "%s", $message [API];
+                $self->controller->app->log->error("$message [API]");
                 return $self->controller->reply->exception($message);
             }
 
@@ -143,12 +151,12 @@ sub create {
                 # If validation for the TransactionCreate model fails, we get a 400 back from the API.
                 # Render an exception if validation does fail, its our fault.
                 my $message = 'Status 400. Failed to create transaction: '.$tx->error->{message};
-                error "%s", $message [ROUTING];
+                $self->controller->app->log->error("$message [ROUTING]");
                 return $self->controller->reply->exception($message);
             }
 
             my $message = 'Status '.$code.'. Failed to create transaction. Unexpected response from API: '.$tx->error->{message};
-            error "%s", $message [API];
+            $self->controller->app->log->error("$message [API]");
             return $self->controller->reply->exception($message);
         },
     )->execute;
@@ -179,14 +187,14 @@ sub load {
 
     unless ($self->transaction_number) {
         my $message = 'Transaction number is undefined';
-        error "%s", $message [ROUTING];
+        $self->controller->app->log->error("$message [ROUTING]");
         $self->controller->reply->exception($message);
         return undef;
     }
 
     $self->_prepare_form_model unless $self->endpoint eq 'confirmation';
 
-    debug "Transaction endpoint hash is valid, continuing route to transaction" [ROUTING];
+    $self->controller->app->log->debug("Transaction endpoint hash is valid, continuing route to transaction [ROUTING]");
 
     return 1;
 }
@@ -198,7 +206,7 @@ sub _prepare_form_model {
 
     # Retrieve (or create) the model
     if(!$self->model) {
-        debug "Preparing model" [ROUTING];
+        $self->controller->app->log->debug("Preparing model [ROUTING]");
 
         my $type = $self->metadata->{model_class};
         eval "require $type" or CH::Exception->throw("Unable to load model $type");
@@ -209,7 +217,7 @@ sub _prepare_form_model {
 
         # If we didn't get anything back, create a new one
         if(!$self->model) {
-            debug "Creating new instance of model" [ROUTING];
+            $self->controller->app->log->debug("Creating new instance of model [ROUTING]");
             $self->model($type->new( data_adapter => $self->controller->stash('data_adapter'),
                                       %{ $self->controller->stash('model_args') // {} } ));
             my $class = camelize($self->metadata->{controller});
@@ -218,7 +226,7 @@ sub _prepare_form_model {
             $self->controller->stash( form_model_is_new => true );
             $self->controller->session( form_type_hack => $self->metadata->{formtype} );
         } else {
-            debug "Model retrieved from memcached" [ROUTING];
+            $self->controller->app->log->debug("Model retrieved from memcached [ROUTING]");
         }
     }
     else {
@@ -247,7 +255,7 @@ sub submit {
         'success' => sub {
             my ($api, $tx) = @_;
 
-            debug "Transaction updated %s", d:$tx->res->json [ROUTING];
+            $self->controller->app->log->debug("Transaction updated " . Dumper($tx->res->json) . " [ROUTING]");
 
             # TODO deal with payment
             if($self->has_state) {
@@ -257,13 +265,13 @@ sub submit {
             # now we've updated the model, we close the transaction
             $transaction->update( { status => 'closed' } )->on(
                 success => sub {
-                    debug "Successfully closed transaction %s", $transaction->transaction_number [ROUTING];
+                    $self->controller->app->log->debug("Successfully closed transaction " . $transaction->transaction_number . " [ROUTING]");
                     $args{on_success}->();
                 },
                 error => sub {
                     my ($api, $error) = @_;
                     my $message = 'Error closing transaction '.$transaction->transaction_number.': '.$error;
-                    error "%s", $message [ROUTING];
+                    $self->controller->app->log->error("$message [ROUTING]");
                     $self->controller->reply->exception($message);
                 },
                 failure => sub {
@@ -271,16 +279,16 @@ sub submit {
                     my $code = $tx->res->code // 0;
 
                     if ( !$code or $code == 500 ) {
-                        error "Failed to close transaction number [%s]:  %s", $transaction->transaction_number, $tx->error->{message} [API];
+                        $self->controller->app->log->error("Failed to close transaction number [" . $transaction->transaction_number . "]: " . $tx->error->{message} . " [API]");
                         return $self->controller->reply->exception('Failed to close transaction [%d]', $transaction->transaction_number);
                     }
 
                     if ($code == 404) {
-                        warn "Failed to close transaction %s: %s", $transaction->transaction_number, $tx->error->{message} [ROUTING];
+                        $self->controller->app->log->warn("Failed to close transaction " . $transaction->transaction_number . ": " . $tx->error->{message} . " [ROUTING]");
                         return $self->controller->reply->not_found;
                     }
 
-                    warn "Failed to update transaction %s: %s", $transaction->transaction_number, $tx->error->{message} [ROUTING];
+                    $self->controller->app->log->warn("Failed to update transaction " . $transaction->transaction_number . ": " . $tx->error->{message} . " [ROUTING]");
                     return $self->controller->render('error', status => $code, error => 'transaction_not_open', check_your_filings => 'true');
                 },
             )->execute;
@@ -288,7 +296,7 @@ sub submit {
         error => sub {
             my ($api, $error) = @_;
             my $message = 'Failed to update transaction '.$transaction->transaction_number.': '.$error;
-            error "%s", $message [ROUTING];
+            $self->controller->app->log->error("$message [ROUTING]");
             $self->controller->reply->exception($message);
         },
         'failure' => sub {
@@ -297,12 +305,12 @@ sub submit {
 
             if ( !$code or $code == 500) {
                 my $message = 'Failed to update transaction '.$transaction->transaction_number.': '.$tx->error->{message};
-                error "%s", $message [API];
+                $self->controller->app->log->error("$message [API]");
                 return $self->controller->reply->exception($message);
             }
 
             if ($code == 404) {
-                warn "Failed to update transaction %s: %s", $transaction->transaction_number, $tx->error->{message} [ROUTING];
+                $self->controller->app->log->warn("Failed to update transaction " . $transaction->transaction_number . ": " . $tx->error->{message} . " [ROUTING]");
                 return $self->controller->reply->not_found;
             }
 
@@ -314,7 +322,7 @@ sub submit {
                 return $args{on_failure}->();
             }
 
-            warn "Failed to update transaction %s: %s", $transaction->transaction_number, $tx->error->{message} [ROUTING];
+            $self->controller->app->log->warn("Failed to update transaction " . $transaction->transaction_number . ": " . $tx->error->{message} . " [ROUTING]");
             return $self->controller->render('error', status => $code, error => 'transaction_not_open', check_your_filings => 'true');
         },
     )->execute;
