@@ -110,12 +110,13 @@ sub list {
                       }
                 }
 
-                if ( $item->{identity_verification_details} && $item->{identity_verification_details}{anti_money_laundering_supervisory_bodies} ) {
-                    $item->{identity_verification_details}{supervisory_bodies_string} = join ', ', @{ $item->{identity_verification_details}{anti_money_laundering_supervisory_bodies} // [] };
-                }
-
-                # Check if identity verification expired
                 if (my $details = $item->{identity_verification_details}) {
+                    # Add supervisory_bodies_string to be displayed
+                    if (defined $details->{anti_money_laundering_supervisory_bodies}) {
+                        $details->{supervisory_bodies_string} = join ', ', @{ $details->{anti_money_laundering_supervisory_bodies} // [] };
+                    }
+
+                    # Check if identity verification expired
                     if (my $end_date = $details->{appointment_verification_end_on}) {
                         $details->{is_identity_verification_expired} = CH::Util::DateHelper->is_current_date_greater($end_date) ? 1 : 0;
                     }
