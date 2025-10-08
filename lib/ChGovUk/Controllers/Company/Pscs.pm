@@ -78,6 +78,13 @@ sub list {
                 if ( $item->{identity_verification_details} && $item->{identity_verification_details}{anti_money_laundering_supervisory_bodies} ) {
                     $item->{identity_verification_details}{supervisory_bodies_string} = join ', ', @{ $item->{identity_verification_details}{anti_money_laundering_supervisory_bodies} // [] };
                 }
+
+                # Check if identity verification expired
+                if (my $details = $item->{identity_verification_details}) {
+                    if (my $end_date = $details->{appointment_verification_end_on}) {
+                        $details->{is_identity_verification_expired} = CH::Util::DateHelper->is_current_date_greater($end_date) ? 1 : 0;
+                    }
+                }
             }
 
             trace "Psc list for %s: %s", $company_number, d:$results [PSC LIST];
