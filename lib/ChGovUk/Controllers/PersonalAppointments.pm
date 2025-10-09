@@ -60,10 +60,18 @@ sub get {
             my $results = $tx->success->json;
             trace 'Appointments for officer [%s]: %s', $officer_id, d:$results;
 
-            foreach my $item(@{$results->{items} // []}) {
-                next if !$item->{identity_verification_details};
-                my @list = @{ $item->{identity_verification_details}{anti_money_laundering_supervisory_bodies} // []} or next;
-                $item->{identity_verification_details}{supervisory_bodies_string} = join ', ', @list;
+            foreach my $item (@{ $results->{items} // [] }) {
+                # Skip if identity verification details are missing
+                my $details = $item->{identity_verification_details} or next;
+
+                # Check if identity verification expired
+                if (my $end_date = $details->{appointment_verification_end_on}) {
+                    $details->{is_identity_verification_expired} = CH::Util::DateHelper->is_current_date_greater($end_date) ? 1 : 0;
+                }
+
+                # Add supervisory_bodies_string to be displayed
+                my @list = @{ $details->{anti_money_laundering_supervisory_bodies} // [] } or next;
+                $details->{supervisory_bodies_string} = join ', ', @list;
             }
 
             my $officer = {
