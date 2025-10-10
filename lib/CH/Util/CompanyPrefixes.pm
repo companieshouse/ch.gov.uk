@@ -213,7 +213,12 @@ sub coHasNoSic
   # A subtype is not present for all companies and is not an error. If missing, the company has no SIC codes
 
   my $prefix = substr(uc $company_number,0,2);
-  return ((($prefix eq 'BR' || $prefix eq 'FC' || $prefix eq 'GS' || $prefix eq 'SF' || $prefix eq 'NF' || $prefix eq 'IC' || $prefix eq 'IP' || $prefix eq 'SF' || $prefix eq 'NF' || $prefix eq 'AC' || $prefix eq 'RC' || $prefix eq 'OC' || $prefix eq 'SP' || $prefix eq 'SA' || $prefix eq 'SR' || $prefix eq 'SI' || $prefix eq 'SO' || $prefix eq 'NO' || $prefix eq 'NA' || $prefix eq 'GE' || $prefix eq 'NR' || $prefix eq 'NF' || $prefix eq 'GN' || $prefix eq 'NV' || $prefix eq 'NC' || $prefix eq 'RO' || $prefix eq 'SG' || $prefix eq 'PC' || $prefix eq 'CE' || $prefix eq 'CS' || $prefix eq 'OE') || (($prefix eq 'LP' || $prefix eq 'SL' || $prefix eq 'NL') && !($subtype eq 'lp' || $subtype eq 'slp'))) ? 1 : 0);
+  return ((($prefix eq 'BR' || $prefix eq 'FC' || $prefix eq 'GS' || $prefix eq 'SF' || $prefix eq 'NF' || $prefix eq 'IC' || $prefix eq 'IP'
+      || $prefix eq 'SF' || $prefix eq 'NF' || $prefix eq 'AC' || $prefix eq 'RC' || $prefix eq 'OC' || $prefix eq 'SP'
+      || $prefix eq 'SA' || $prefix eq 'SR' || $prefix eq 'SI' || $prefix eq 'SO' || $prefix eq 'NO' || $prefix eq 'NA'
+      || $prefix eq 'GE' || $prefix eq 'NR' || $prefix eq 'NF' || $prefix eq 'GN' || $prefix eq 'NV' || $prefix eq 'NC'
+      || $prefix eq 'RO' || $prefix eq 'SG' || $prefix eq 'PC' || $prefix eq 'CE' || $prefix eq 'CS' || $prefix eq 'OE')
+          || (($prefix eq 'LP' || $prefix eq 'SL' || $prefix eq 'NL') && !($subtype eq 'lp' || $subtype eq 'slp'))) ? 1 : 0);
 }
 #   -----------------------------------------------------------------------------
 
