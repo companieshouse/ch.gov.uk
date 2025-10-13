@@ -152,7 +152,19 @@
                 <dd class="data" id="company-creation-date"><% $c.isodate_as_string($company.date_of_creation) %></dd>
             % }
         </dl>
-    </div>    
+    </div>
+
+    % if ($company.subtype == 'lp' || $company.subtype == 'slp') {
+        <div class="grid-row">
+            <dl class="column-full">
+                <dt id="term-label"><% l('Term of the partnership')%></dt>
+                % my $company_term = $c.cv_lookup('term', $company.term);
+                <dd class="text data" id="term">
+                    <% l('{term}', { term => $company_term })%>
+                </dd>
+            </dl>
+        </div>
+    % }
 
     % if $company.foreign_company_details.is_a_credit_financial_institution {
         <p>This company is a credit/financial institution</p>
