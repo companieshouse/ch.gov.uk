@@ -42,7 +42,7 @@
             % }
             % else {
                 % $c.address_as_string( $company.registered_office_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
-                % if $company.company_number == $c.authorised_company && !$c.config.disable_filing {
+                % if $company.company_number == $c.authorised_company && !$c.config.disable_filing && $company.type != "oversea-company" {
                     <br />
                     <a href="<% $c.url_for %><%
                        if $c.company_is_llp($company.company_number) {
