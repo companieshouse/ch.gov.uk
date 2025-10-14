@@ -158,9 +158,8 @@
         <div class="grid-row">
             <dl class="column-full">
                 <dt id="term-label"><% l('Term of the partnership')%></dt>
-                % my $company_term = $c.cv_lookup('term', $company.term);
                 <dd class="text data" id="term">
-                    <% l('{term}', { term => $company_term })%>
+                    <% l('{term}', { term => $c.cv_lookup('term', $company.term) })%>
                 </dd>
             </dl>
         </div>
