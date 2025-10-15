@@ -57,6 +57,17 @@
     % }
     </dl>
 
+    % if ($company.type == 'limited-partnership' && $company.service_address) {
+        <div class="grid-row">
+            <dl class="column-full">
+                <dt id="ppob-label"><% l('Principal place of business')%></dt>
+                <dd class="text data" id="ppob">
+                    % $c.address_as_string( $company.service_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
+                </dd>
+            </dl>
+        </div>
+    % }
+
   %  if $company.type == "uk-establishment" {
     <div class="grid-row">
         <dl class="column-quarter">
