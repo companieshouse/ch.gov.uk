@@ -373,7 +373,7 @@
         % }
     % }
 
-    % if $c.company_has_no_sic($company.company_number) == 0 {
+    % if $c.company_has_no_sic($company.company_number, $company.subtype) == 0 {
         <h2 id="sic-title" class="heading-medium">Nature of business (SIC)</h2>
     %   if $company.sic_codes.size() {
           <ul>

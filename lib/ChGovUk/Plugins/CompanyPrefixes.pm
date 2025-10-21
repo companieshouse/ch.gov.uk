@@ -18,8 +18,8 @@ sub register {
     });
     trace "Registering %s::company_has_no_sic helper", __PACKAGE__ [APP];
     $app->helper(company_has_no_sic => sub {
-        my ($c, $company_number) = @_;
-        return CH::Util::CompanyPrefixes::coHasNoSic($company_number);
+        my ($c, $company_number, $subtype) = @_;
+        return CH::Util::CompanyPrefixes::coHasNoSic($company_number, $subtype);
     });
     return;
 }

@@ -43,8 +43,16 @@ sub test_helper_company_is_llp {
 
 sub test_helper_company_has_no_sic {
     subtest "Test helper - company_has_no_sic" => sub {
-        is($app->controller->company_has_no_sic('OC123912'), 1, 'Company has no SIC');
-        is($app->controller->company_has_no_sic('05018589'), 0, 'Company has SIC');
+        is($app->controller->company_has_no_sic('OC123912', ''), 1, 'Company has no SIC');
+        is($app->controller->company_has_no_sic('05018589', ''), 0, 'Company has SIC');
+        is($app->controller->company_has_no_sic('NI071404', 'community-interest-company'), 0, 'Company has SIC');
+        is($app->controller->company_has_no_sic('LP111111', ''), 1, 'Company has no SIC'); # Filed with a paper LP5
+        is($app->controller->company_has_no_sic('LP222222', 'private-fund-limited-partnership'), 1, 'Company has no SIC'); # Filed with a paper LP7
+        is($app->controller->company_has_no_sic('LP333333', 'pflp'), 1, 'Company has no SIC'); # Filed with a digital LP7D
+        is($app->controller->company_has_no_sic('SL444444', 'spflp'), 1, 'Company has no SIC'); # Filed with a digital LP7D (Scottish)
+        is($app->controller->company_has_no_sic('LP555555', 'lp'), 0, 'Company has SIC'); # Filed with a digital LP5D
+        is($app->controller->company_has_no_sic('NL555555', 'lp'), 0, 'Company has SIC'); # Filed with a digital LP5D (Northern Irish)
+        is($app->controller->company_has_no_sic('SL666666', 'slp'), 0, 'Company has SIC'); # Filed with a digital LP5D (Scottish)
     };
     return;
 }
