@@ -178,7 +178,12 @@
            % else {
                % if $company.type != "registered-overseas-entity" {
                 % if $company.accounts.overdue == 1 and ($company.type != "oversea-company" and $company.type != "uk-establishment"){
-                    <div class="help-notice overdue"><h2 class="heading-medium">Accounts overdue</h2></div>
+                    <div class="help-notice overdue">
+                        <h2 class="heading-medium">
+                            <span class="govuk-visually-hidden">Warning</span>
+                            Accounts overdue
+                        </h2>
+                    </div>
                 % } else {
                     <h2 class="heading-medium"><strong>Accounts</strong></h2>
                 % }
@@ -283,7 +288,12 @@
         % else {
             <div class="column-half">
                 % if $company.confirmation_statement.overdue == 1 {
-                    <div class="help-notice overdue"><h2 class="heading-medium">Confirmation statement overdue</h2></div>
+                    <div class="help-notice overdue">
+                        <h2 class="heading-medium">
+                            <span class="govuk-visually-hidden">Warning</span>
+                            Confirmation statement overdue
+                        </h2>
+                    </div>
                 % } else {
                     <h2 class="heading-medium"><strong>Confirmation statement</strong></h2>
                 % }
