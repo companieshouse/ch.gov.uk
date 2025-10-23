@@ -262,7 +262,12 @@
             <dl class="column-two-thirds">
 
             % if $company.confirmation_statement.overdue == 1 {
-                <div class="help-notice overdue"><h2 class="heading-medium">Annual statement overdue</h2></div>
+                <div class="help-notice overdue">
+                    <h2 class="heading-medium">
+                        <span class="govuk-visually-hidden">Warning</span>
+                        Annual statement overdue
+                    </h2>
+                </div>
             % } else {
                 <h2 class="heading-medium"><strong>Annual statement</strong></h2>
             % }
@@ -321,7 +326,12 @@
       % if $company.annual_return.size() && ! $company.confirmation_statement.last_made_up_to {
             <div class="column-half">
             % if $company.annual_return.overdue == 1 {
-                <div class="help-notice overdue"><h2 class="heading-medium">Annual return overdue</h2></div>
+                <div class="help-notice overdue">
+                    <h2 class="heading-medium">
+                        <span class="govuk-visually-hidden">Warning</span>
+                        Annual return overdue
+                    </h2>
+                </div>
             % } else {
                 <h2 class="heading-medium"><strong>Annual return</strong></h2>
             % }
