@@ -3,7 +3,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes -->
 <script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script>  <!-- Needed for new GDS-style radio buttons and checkboxes -->
-<script src='//<% $cdn_url %>/javascripts/app/restore-focus-checkboxes.js'></script>  <!-- Needed for restoring focus to the last toggled checkbox -->
 
     <div id="content" class="content-override"></div>
     <header class="text">
@@ -11,13 +10,13 @@
     </header>
 
     <div class="js-only">
-        <form id="appointments-filter" class="form grid-row" data-restore-focus-scope>
+        <form id="appointments-filter" class="form grid-row">
             <div class="column-half">
                 <h2 class="heading-medium filter-appointments" id="officer-filter">
                         Filter appointments
                 </h2>
                 <fieldset>
-                <legend class="govuk-visually-hidden">Filter appointments</legend>
+                <legend class="govuk-visually-hidden">Filter appointments, selecting an input will reload the page.</legend>
                 % for $categories -> $category {
                     <label for="appointments-category-<% $category.id %>" class="block-label selection-button-checkbox">
                         <input id="appointments-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
@@ -28,8 +27,6 @@
                 <input class="button js-hidden" type="submit" value="Apply filter" />
             </div>
         </form>
-        <!-- 🔊 ARIA live region for screen reader focus announcement -->
-        <div class="govuk-visually-hidden" aria-live="assertive" data-restore-focus-live-region></div>
     </div>
 
     <div class="appointments">
