@@ -42,7 +42,7 @@
             % }
             % else {
                 % $c.address_as_string( $company.registered_office_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
-                % if $company.company_number == $c.authorised_company && !$c.config.disable_filing {
+                % if $company.company_number == $c.authorised_company && !$c.config.disable_filing && $company.type != "oversea-company" {
                     <br />
                     <a href="<% $c.url_for %><%
                        if $c.company_is_llp($company.company_number) {
@@ -152,7 +152,18 @@
                 <dd class="data" id="company-creation-date"><% $c.isodate_as_string($company.date_of_creation) %></dd>
             % }
         </dl>
-    </div>    
+    </div>
+
+    % if ($company.subtype == 'lp' || $company.subtype == 'slp') {
+        <div class="grid-row">
+            <dl class="column-full">
+                <dt id="term-label"><% l('Term of the partnership')%></dt>
+                <dd class="text data" id="term">
+                    <% l('{term}', { term => $c.cv_lookup('term', $company.term) })%>
+                </dd>
+            </dl>
+        </div>
+    % }
 
     % if $company.foreign_company_details.is_a_credit_financial_institution {
         <p>This company is a credit/financial institution</p>
@@ -178,7 +189,12 @@
            % else {
                % if $company.type != "registered-overseas-entity" {
                 % if $company.accounts.overdue == 1 and ($company.type != "oversea-company" and $company.type != "uk-establishment"){
-                    <div class="help-notice overdue"><h2 class="heading-medium">Accounts overdue</h2></div>
+                    <div class="help-notice overdue">
+                        <h2 class="heading-medium">
+                            <span class="govuk-visually-hidden">Warning</span>
+                            Accounts overdue
+                        </h2>
+                    </div>
                 % } else {
                     <h2 class="heading-medium"><strong>Accounts</strong></h2>
                 % }
@@ -257,7 +273,12 @@
             <dl class="column-two-thirds">
 
             % if $company.confirmation_statement.overdue == 1 {
-                <div class="help-notice overdue"><h2 class="heading-medium">Annual statement overdue</h2></div>
+                <div class="help-notice overdue">
+                    <h2 class="heading-medium">
+                        <span class="govuk-visually-hidden">Warning</span>
+                        Annual statement overdue
+                    </h2>
+                </div>
             % } else {
                 <h2 class="heading-medium"><strong>Annual statement</strong></h2>
             % }
@@ -283,7 +304,12 @@
         % else {
             <div class="column-half">
                 % if $company.confirmation_statement.overdue == 1 {
-                    <div class="help-notice overdue"><h2 class="heading-medium">Confirmation statement overdue</h2></div>
+                    <div class="help-notice overdue">
+                        <h2 class="heading-medium">
+                            <span class="govuk-visually-hidden">Warning</span>
+                            Confirmation statement overdue
+                        </h2>
+                    </div>
                 % } else {
                     <h2 class="heading-medium"><strong>Confirmation statement</strong></h2>
                 % }
@@ -311,7 +337,12 @@
       % if $company.annual_return.size() && ! $company.confirmation_statement.last_made_up_to {
             <div class="column-half">
             % if $company.annual_return.overdue == 1 {
-                <div class="help-notice overdue"><h2 class="heading-medium">Annual return overdue</h2></div>
+                <div class="help-notice overdue">
+                    <h2 class="heading-medium">
+                        <span class="govuk-visually-hidden">Warning</span>
+                        Annual return overdue
+                    </h2>
+                </div>
             % } else {
                 <h2 class="heading-medium"><strong>Annual return</strong></h2>
             % }
