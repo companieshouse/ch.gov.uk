@@ -16,7 +16,7 @@
                         Filter appointments
                 </h2>
                 <fieldset>
-                <legend class="govuk-visually-hidden">Filter appointments</legend>
+                <legend class="govuk-visually-hidden">Filter appointments, selecting an input will reload the page.</legend>
                 % for $categories -> $category {
                     <label for="appointments-category-<% $category.id %>" class="block-label selection-button-checkbox">
                         <input id="appointments-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
@@ -24,7 +24,7 @@
                     </label>
                 % }
                 </fieldset>
-                <input class="button js-hidden" type="submit" value="Apply filter">
+                <input class="button js-hidden" type="submit" value="Apply filter" />
             </div>
         </form>
     </div>
@@ -188,8 +188,8 @@
                                     <dl class="column-quarter">
                                         <dt><% l('Identity verification status') %></dt>
                                         <dd id="appointment-identity-verification-details-appointment-verification-end-on-<% $~appointment.count %>" class="data verified-status-data">
-                                            <span class="verified-status-icon" aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" version="1.1" viewBox="0 0 64 64">
+                                            <span class="verified-status-icon" aria-label="Verified">
+                                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" id="Layer_1" version="1.1" viewBox="0 0 64 64">
                                                 <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
                                                     <defs>
                                                         <style>
