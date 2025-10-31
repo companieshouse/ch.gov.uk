@@ -17,7 +17,7 @@
                         Filter officers
                 </h2>
                 <fieldset>
-                    <legend class="govuk-visually-hidden">Filter officers</legend>
+                    <legend class="govuk-visually-hidden">Filter officers, selecting an input will reload the page.</legend>
                     % for $categories -> $category {
                             <label for="officer-category-<% $category.id %>" class="block-label selection-button-checkbox">
                                 <input id="officer-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
