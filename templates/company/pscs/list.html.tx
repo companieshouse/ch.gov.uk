@@ -345,7 +345,7 @@
                                 % $psc.identity_verification_details.preferred_name
                             % {
                                     <div class="column-full govuk-!-margin-bottom-6">
-                                        <h3 class="heading-small"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></h3>
+                                        <h3 class="heading-small govuk-!-static-margin-0"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></h3>
                                         <p>
                                             <% $psc.identity_verification_details.authorised_corporate_service_provider_name %>
                                             <% l('has confirmed that they have verified the identity of') %>
