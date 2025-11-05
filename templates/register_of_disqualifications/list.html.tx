@@ -16,7 +16,7 @@
                                 href="/register-of-disqualifications/<%= $letter %>" 
                                 aria-label="Page <% $letter %>" 
                                 % if $active_letter == $letter {
-                                    aria-current="letter"
+                                    aria-current="page"
                                 % }
                                 ><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %>
                             </a>
