@@ -113,8 +113,11 @@
                                 % if $~category.count == $split_category_at {
                                     </div>
                                     <div class="column-half">
+                                        <fieldset>
+                                            <legend class="govuk-visually-hidden">Confirmation statement filters, selecting an input will reload the page.</legend>
                                 % }
                             % }
+                            </fieldset>
                         </fieldset>
                         <input id="submit-filter-by-category" class="button js-hidden" type="submit" value="<% l('Apply filter') %>"/>
                     </div>
