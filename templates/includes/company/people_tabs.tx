@@ -1,17 +1,17 @@
 	    <ul class="search-tabs">
 	        <% if $officers { %>
-	        	<li id='peoples-tab' class="active">
+	        	<li role="tab" id='peoples-tab' class="active" aria-selected="true">
 	                <a id='officers-link' class="govuk-link" href='#'>Officers</a>
 	        	</li>
 	        <% } else { %>
-	        	<li id='peoples-tab'>
+	        	<li role="tab" id='peoples-tab' aria-selected="false">
 	                <a id='officers-link' class="govuk-link" href="<% $c.url_for("company_officers") %>" >Officers</a>
 	        	</li>
 	        <% } %>
 
             <% if ($c.config.feature.psc == 1) { %>
                 <% if $pscs { %>
-	            	<li id='pscs-tab' class="active">
+	            	<li role="tab" id='pscs-tab' class="active" aria-selected="true">
 	                    <a id='pscs-link' class="govuk-link" href='#'>
 	                        <% if ($company.type != 'registered-overseas-entity') { %>
 	                            Persons with significant control</a>
@@ -20,7 +20,7 @@
                             <% } %>
 	            	</li>
 	            <% } else { %>
-	            	<li id='pscs-tab'>
+	            	<li role="tab" id='pscs-tab' aria-selected="false">
                         <% if ($company.type != 'registered-overseas-entity') { %>
                             <a id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" >
                             Persons with significant control</a>
