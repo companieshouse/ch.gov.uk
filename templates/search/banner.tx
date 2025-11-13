@@ -1,25 +1,47 @@
 % my $search_context = $search_type ? $search_type : $c.session('pst');
 % if $search_context == "officers" {
-    <label class="govuk-visually-hidden" for="site-search-text">Search for officers</label>
     <form id="search" action="/search/officers" method="get" accept-charset="utf-8" role="search"  class="<% $header_or_body=='header'? 'search-header' : 'search-header js-search-hash' %>">
+    <p>
+        <label for="site-search-text">Search for officers</label>
+    </p>
 % } elsif $search_context == 'disqualified-officers' || $search_context == 'disqualified_officers' {
-    <label class="govuk-visually-hidden" for="site-search-text">Search for disqualified officers</label>
     <form id="search" action="/search/disqualified-officers" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'search-header' : 'search-header js-search-hash' %>">
+    <p>
+        <label for="site-search-text">Search for disqualified officers</label>
+    </p>
 % } elsif $search_context == 'companies' {
-    <label class="govuk-visually-hidden" for="site-search-text">Search for companies</label>
     <form id="search" action="/search/companies" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header' ? 'search-header' : 'search-header js-search-hash' %>">
+    <p>
+        <label for="site-search-text">Search for companies</label>
+    </p>
 % } else {
-    <label class="govuk-visually-hidden" for="site-search-text">Search for a company or officer</label>
     <form id="search" action="/search" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header' ? 'search-header' : 'search-header js-search-hash' %>">
+    <p>
+        <label for="site-search-text">Search for a company or officer</label>
+    </p>
 % }
     <div class="search-bar-active">
         <div class="searchfield">
-            <input type="search" class="govuk-input" placeholder="Search for a company or officer" value="" title="Search for a company or officer" id="site-search-text" name="q" autocomplete="off">
+            <input type="search"
+                class="govuk-input"
+                % if $search_context == "officers" {
+                    title="Search for officers"
+                % } elsif $search_context == 'disqualified-officers' || $search_context == 'disqualified_officers' {
+                    title="Search for disqualified officers"
+                % } elsif $search_context == 'companies' {
+                    title="Search for companies"
+                % } else {
+                    title="Search for a company or officer"
+                % }
+                value=""
+                id="site-search-text"
+                name="q"
+                autocomplete="off">
             <button class="search-submit gem-c-search__submit" id="search-submit" type="submit">Search</button>
             <p style="display:none" class="slow-search-msg" id="slowsearch">Please press ENTER to search</p>
         </div>  <!--end searchfield-->
-    </form>
-</div>  <!--end search-bar-active-->
+    </div>  <!--end search-bar-active-->
+</form>
 
 % if $c.config.feature.advanced_search {
     <a class="govuk-link piwik-event" data-id="advanced-company-search" data-event-id="Advanced company search" href="/advanced-search" target="_blank">Advanced company search<span class="govuk-visually-hidden">Link opens in new window</span></a><br><br>
