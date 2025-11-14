@@ -7,7 +7,7 @@
                 <h1 class="heading-xlarge" id="page-content">Register of disqualifications</h1>
             </header>
 
-            <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-0 govuk-pagination" aria-label="Pagination">
+            <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-0 govuk-pagination" aria-label="A-Z Navigation">
                 <ul class="govuk-pagination__list govuk-section-break govuk-section-break--l govuk-section-break--visible" id="alphabetical-pager">
                     % for $alphabet -> $letter {
                         <li class="govuk-pagination__item govuk-!-display-block <% if $active_letter == $letter { %> govuk-pagination__item--current <% } %>">
