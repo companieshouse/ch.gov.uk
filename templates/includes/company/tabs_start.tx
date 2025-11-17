@@ -1,6 +1,6 @@
 <!-- START govuk-tabs -->
 <div class="govuk-tabs">
-    <ul class="govuk-tabs__list">
+    <ul class="govuk-tabs__list" role="tablist">
         % include "/includes/company/tab.tx" { tabid => 'company-overview-tab', page => '', title => '<span class="govuk-visually-hidden">Company </span>Overview' }
 
         % if $company.links.filing_history {
