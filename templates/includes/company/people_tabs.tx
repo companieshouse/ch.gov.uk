@@ -1,18 +1,18 @@
 	    <ul class="search-tabs">
 	        <% if $officers { %>
-	        	<li role="tab" id='peoples-tab' class="active" aria-selected="true">
-	                <a id='officers-link' class="govuk-link" href='#'>Officers</a>
+	        	<li role="presentation" id='peoples-tab' class="active">
+	                <a role="tab" id='officers-link' class="govuk-link" href='#' aria-selected="true">Officers</a>
 	        	</li>
 	        <% } else { %>
-	        	<li role="tab" id='peoples-tab' aria-selected="false">
-	                <a id='officers-link' class="govuk-link" href="<% $c.url_for("company_officers") %>" >Officers</a>
+	        	<li role="presentation" id='peoples-tab'>
+	                <a role="tab" id='officers-link' class="govuk-link" href="<% $c.url_for("company_officers") %>" aria-selected="false">Officers</a>
 	        	</li>
 	        <% } %>
 
             <% if ($c.config.feature.psc == 1) { %>
                 <% if $pscs { %>
-	            	<li role="tab" id='pscs-tab' class="active" aria-selected="true">
-	                    <a id='pscs-link' class="govuk-link" href='#'>
+	            	<li role="presentation" id='pscs-tab' class="active">
+	                    <a role="tab" id='pscs-link' class="govuk-link" href='#' aria-selected="true">
 	                        <% if ($company.type != 'registered-overseas-entity') { %>
 	                            Persons with significant control</a>
                             <% } else { %>
@@ -20,12 +20,12 @@
                             <% } %>
 	            	</li>
 	            <% } else { %>
-	            	<li role="tab" id='pscs-tab' aria-selected="false">
+	            	<li role="presentation" id='pscs-tab'>
                         <% if ($company.type != 'registered-overseas-entity') { %>
-                            <a id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" >
+                            <a role="tab" id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" aria-selected="false">
                             Persons with significant control</a>
                         <% } else { %>
-                            <a id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" >
+                            <a role="tab" id='pscs-link' class="govuk-link" href="<% $c.url_for("list_pscs") %>" aria-selected="false">
                             Beneficial owners</a>
                         <% } %>
 	            	</li>
