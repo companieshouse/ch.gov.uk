@@ -1,4 +1,4 @@
-	    <ul class="search-tabs">
+	    <ul class="search-tabs" role="tablist">
 	        <% if $officers { %>
 	        	<li role="presentation" id='peoples-tab' class="active">
 	                <a role="tab" id='officers-link' class="govuk-link" href='#' aria-selected="true">Officers</a>
