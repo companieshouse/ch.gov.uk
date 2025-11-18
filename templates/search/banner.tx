@@ -22,21 +22,7 @@
 % }
     <div class="search-bar-active">
         <div class="searchfield">
-            <input type="search"
-                class="govuk-input"
-                % if $search_context == "officers" {
-                    title="Search for officers"
-                % } elsif $search_context == 'disqualified-officers' || $search_context == 'disqualified_officers' {
-                    title="Search for disqualified officers"
-                % } elsif $search_context == 'companies' {
-                    title="Search for companies"
-                % } else {
-                    title="Search for a company or officer"
-                % }
-                value=""
-                id="site-search-text"
-                name="q"
-                autocomplete="off">
+            <input type="search" class="govuk-input" value="" id="site-search-text" name="q" autocomplete="off">
             <button class="search-submit gem-c-search__submit" id="search-submit" type="submit">Search</button>
             <p style="display:none" class="slow-search-msg" id="slowsearch">Please press ENTER to search</p>
         </div>  <!--end searchfield-->
