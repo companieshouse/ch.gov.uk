@@ -19,10 +19,12 @@
                 <fieldset>
                     <legend class="govuk-visually-hidden">Filter officers, selecting an input will reload the page.</legend>
                     % for $categories -> $category {
-                            <label for="officer-category-<% $category.id %>" class="block-label selection-button-checkbox">
-                                <input id="officer-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
-                                <% l($category.name) %>
-                            </label>
+                            <div class="govuk-checkboxes__item">
+                               <input id="officer-category-<% $category.id %>" class="govuk-checkboxes__input" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
+                               <label for="officer-category-<% $category.id %>" class="govuk-label govuk-checkboxes__label">
+                                  <% l($category.name) %>
+                                </label>
+                            </div>
                     % }
                 </fieldset>
                 <input class="button js-hidden" type="submit" value="Apply filter">
