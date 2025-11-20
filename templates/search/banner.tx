@@ -52,10 +52,11 @@
         </div>
         % if $results.kind == 'search#disqualified-officers' {
             <div class="column-third" id="disqualification-column">
-                <div class="quick-look font-xsmall" id="disqualification-info">
-                    <ul class="list-bullet">
-                        <li><a class="govuk-link" href="/register-of-disqualifications/A" rel="external" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Register of disqualifications<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
-                        <li><a rel="external" class="govuk-link" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="govuk-visually-hidden govuk-link">(link opens in a new window)</span></a></li>
+                <div class="related-content font-xsmall" id="disqualification-info">
+                    <h2 class="govuk-heading-s govuk-!-margin-top-3">Disqualified directors</h2>
+                    <ul class="list">
+                        <li class="govuk-!-margin-bottom-3"><a class="govuk-link" href="/register-of-disqualifications/A" rel="external" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Search for a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                        <li class="govuk-!-margin-bottom-3"><a rel="external" class="govuk-link" href="https://www.gov.uk/report-a-disqualified-director">Report a disqualified director<span class="govuk-visually-hidden govuk-link">(link opens in a new window)</span></a></li>
                     </ul>
                 </div>
             </div>
