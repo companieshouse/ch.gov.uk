@@ -165,7 +165,7 @@
         </dl>
     </div>
 
-    % if ($company.subtype == 'lp' || $company.subtype == 'slp') {
+    % if (($company.subtype == 'lp' || $company.subtype == 'slp') && $company.term) {
         <div class="grid-row">
             <dl class="column-full">
                 <dt id="term-label"><% l('Term of the partnership')%></dt>
