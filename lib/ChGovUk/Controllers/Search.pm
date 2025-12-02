@@ -57,11 +57,21 @@ sub results {
     );
 
     # pass the search type to the template for a different form action
+    my $title_prefix;
+
+    if ($search_type eq 'companies') {
+        $title_prefix = 'Company search results';
+    } elsif ($search_type eq 'officers') {
+        $title_prefix = 'Officer search results';
+    } elsif ($search_type eq 'disqualified-officers') {
+        $title_prefix = 'Disqualification search results';
+    } else {
+        $title_prefix = 'All search results';
+    }
+
     $self->stash(
         'search_type'   => $search_type,
-        'title'         => ($query)
-                        ? $query . ' - Find and update company information - GOV.UK'
-                        : 'Find and update company information - GOV.UK',
+        'title'         => $title_prefix . ' - Find and update company information - GOV.UK',
         'searchTerm' => $encoded_query  # Store the encoded query term
     );
 
