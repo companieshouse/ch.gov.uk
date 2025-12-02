@@ -58,6 +58,23 @@
     </dl>
 
     % if ($company.type == 'limited-partnership' && $company.service_address) {
+        % for $session.keys() -> $k {
+            <p><%= $k %> <%= $session[$k] %></p>
+        % }
+        <div class="grid-row">
+            <dl class="column-full">
+                <dt id="Session-label"><% l('Session Data')%></dt>
+                <dd class="text data" id="email_add">
+                    <%= $session.signin_info.user_profile.email %>
+                </dd>
+                <dd class="text data" id="locale">
+                    <%= $session.signin_info.user_profile.locale %>
+                </dd>
+                <dd class="text data" id="_id">
+                    <%= $session.signin_info.user_profile.id %>
+                </dd>
+            </dl>
+        </div>
         <div class="grid-row">
             <dl class="column-full">
                 <dt id="ppob-label"><% l('Principal place of business')%></dt>

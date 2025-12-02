@@ -3,6 +3,8 @@ package ChGovUk::Plugins::Hooks;
 use CH::Perl;
 use Mojo::Base 'Mojolicious::Plugin';
 use Locale::Simple;
+use Data::Dumper;
+use Mojo::JSON qw(encode_json);
 
 # =============================================================================
 
@@ -49,6 +51,8 @@ sub setup_before_dispatch_hook {
         }
 
         $self->stash( session => $self->session );
+        $self->app->log->debug("**** STASH ****: " . Dumper($self->stash));
+        $self->app->log->debug("**** SESSION ****: " . encode_json($self->session));
 
         my $rebrand = $self->config->{feature}->{govuk_rebrand} // 0;
         $self->stash(govuk_rebrand => $rebrand);
