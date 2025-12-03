@@ -94,7 +94,6 @@
         </div>
 
         % if $results.kind == 'search#disqualified-officers' {
-             <h2>Disqualification results</h2>
             <div class="column-third" id="disqualification-column">
                 <div class="related-content font-xsmall" id="disqualification-info">
                     <h2 class="govuk-heading-s govuk-!-margin-top-3">Disqualified directors</h2>
