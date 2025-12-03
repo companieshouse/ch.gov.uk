@@ -18,13 +18,13 @@
         <div class="column-two-thirds">
   % if $results.total_results {
                         % if $search_type == 'officers' {
-                           <h2 class="govuk-heading-s govuk-!-margin-bottom-0">Officer results</h2>
+                           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Officer results</h2>
                          % } elsif $search_type == 'disqualified-officers' { 
-                            <h2 class="govuk-heading-s govuk-!-margin-bottom-0">Disqualification results</h2>
+                            <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Disqualification results</h2>
                            % } elsif $search_type == 'all' {
-                           <h2 class="govuk-heading-s govuk-!-margin-bottom-0">All results </h2>
+                           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">All results </h2>
                            % } else {
-                            <h2 class="govuk-heading-s govuk-!-margin-bottom-0">Company results</h2>
+                            <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Company results</h2>
                         % }
    % }
             <article id="services-information-results">

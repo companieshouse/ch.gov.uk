@@ -43,7 +43,7 @@
 % }
 
 %if $results {
-<h1 class="govuk-heading-m govuk-!-margin-top-5 govuk-!-margin-bottom-0"> Search results </h1>
+<h1 class="govuk-heading-l govuk-!-margin-top-5 govuk-!-margin-bottom-0"> Search results </h1>
 % include "search/tabs.tx" { SHOW_TABS => $SHOW_TABS || 0 };
 %}
 % # For JS only -------------------------------------------------------
