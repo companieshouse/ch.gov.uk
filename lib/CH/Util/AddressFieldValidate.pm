@@ -179,4 +179,17 @@ sub country_jurisdiction_validate {
 
 # ------------------------------------------------------------------------------
 
+sub mandate_postcode {
+    my ( $postcode ) = @_;
+    my $result = undef;
+
+    if (!defined $postcode || !$postcode ne '') {
+        $result = 'required';
+    }
+
+    return $result;
+}
+
+# ------------------------------------------------------------------------------
+
 1;
