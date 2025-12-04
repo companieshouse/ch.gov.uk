@@ -5,7 +5,7 @@ aws_profile = "staging-eu-west-2"
 desired_task_count = 8
 min_task_count = 8
 max_task_count = 48
-enable_listener = false 
+enable_listener = false
 use_ecs_cluster_default = true
 use_fargate = false
 
