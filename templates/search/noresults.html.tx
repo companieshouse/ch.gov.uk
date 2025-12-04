@@ -1,5 +1,5 @@
 % cascade base {
-%	title => 'No search results - Find and update company information - GOV.UK',
+%	title => $title,
 %	require_js => 'search',
 %	classes => "search",
 %	disable_header_search => 1
@@ -10,9 +10,18 @@
 %       include 'search/form.tx'
         <div class="grid-row">
             <div class="column-two-thirds">
+                    % if $search_type == 'officers' {
+                           <h2 class="govuk-heading-m">Officer results</h2>
+                         % } elsif $search_type == 'disqualified-officers' { 
+                            <h2 class="govuk-heading-m">Disqualification results</h2>
+                           % } elsif $search_type == 'all' {
+                           <h2 class="govuk-heading-m">All results </h2>
+                           % } else {
+                            <h2 class="govuk-heading-m">Company results</h2>
+                        % }
                 <div id="no-results" role="status">
                     <% if $results.searchTerm { %>
-                        <h2 class="heading-large" id="no-results-heading" >No results found</h2>
+                        <h3 class="govuk-heading-s" id="no-results-heading" >No results found</h3>
                         <p>
                             There are no results that match your search. Try searching again using different search criteria.
                         </p>
@@ -21,10 +30,11 @@
             </div>
             % if $results.kind == 'search#disqualified-officers' {
                 <div class="column-third" id="disqualification-column">
-                    <div class="quick-look font-xsmall" id="disqualification-info">
-                        <ul class="list-bullet">
-                            <li><a class="govuk-link" href="/register-of-disqualifications/A" rel="external" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %> target="_blank">Register of disqualifications<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
-                            <li><a rel="external" class="govuk-link" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                    <div class="related-content font-xsmall" id="disqualification-info">
+                        <h2 class="govuk-heading-s govuk-!-margin-top-3">Disqualified directors</h2>
+                        <ul class="list">
+                            <li class="govuk-!-margin-bottom-3"><a class="govuk-link" href="/register-of-disqualifications/A" rel="external" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Search for a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                            <li class="govuk-!-margin-bottom-3"><a rel="external" class="govuk-link" href="https://www.gov.uk/report-a-disqualified-director">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
                         </ul>
                     </div>
                 </div>

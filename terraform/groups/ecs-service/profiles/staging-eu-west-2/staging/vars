@@ -15,7 +15,7 @@ min_task_count_search = 32
 max_task_count_search = 32
 required_cpus_search = 768
 required_memory_search = 1024
-enable_listener_search = false
+enable_listener_search = true
 use_ecs_cluster_search = true
 use_fargate_search = false
 
@@ -25,7 +25,7 @@ min_task_count_officers = 32
 max_task_count_officers = 32
 required_cpus_officers = 768
 required_memory_officers = 1024
-enable_listener_officers = false
+enable_listener_officers = true
 use_ecs_cluster_officers = true
 use_fargate_officers = false
 

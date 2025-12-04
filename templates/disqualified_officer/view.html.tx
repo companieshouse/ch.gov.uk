@@ -12,7 +12,7 @@
         <h2 class="heading-large">Disqualifications</h2>
         <div class="disqualification">
             % for $disqualifications -> $disqualification {
-                <h2 class="heading-medium">
+                <h3 class="heading-medium">
                     <% $c.disqualified_officer_description_lookup( 'disqualification_type', $disqualification.disqualification_type ) %>
                     % if ( $disqualification.disqualification_type != "sanction" ) {
                         % if $disqualification.heard_on {
@@ -22,7 +22,7 @@
                             (<% $c.isodate_as_string($disqualification.undertaken_on) %>)
                         % }
                     % }
-                </h2>
+                </h3>
                 % if ( $disqualification.disqualification_type != "sanction" || ( $disqualification.disqualification_type == "sanction" && $c.should_display_address( $disqualification.address ) )) {
                     <dl class="">
                         <dt>Address provided by the disqualifying authority</dt>

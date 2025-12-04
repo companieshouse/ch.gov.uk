@@ -78,7 +78,7 @@
                 % if $disable_confirmation_statement_filter {
                     <div class="column-third">
                         <fieldset>
-                            <legend class="govuk-visually-hidden">Confirmation statement filters</legend>
+                            <legend class="govuk-visually-hidden">Confirmation statement filters, selecting an input will reload the page.</legend>
                             % for $categories -> $category {
                                 % if $category.id == "confirmation-statement" {
                                     <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small">
@@ -103,9 +103,9 @@
                 % } else {
                     <div class="column-quarter">
                         <fieldset>
-                            <legend class="govuk-visually-hidden">Confirmation statement filters</legend>
+                            <legend class="govuk-visually-hidden">Confirmation statement filters, selecting an input will reload the page.</legend>
                             % for $categories -> $category {
-                                <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small">
+                                <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small govuk-!-margin-bottom-4">
                                     <input id="filter-category-<% $category.id %>" name="category" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
                                     <% l($category.name) %>
                                 </label>
@@ -113,8 +113,11 @@
                                 % if $~category.count == $split_category_at {
                                     </div>
                                     <div class="column-half">
+                                        <fieldset>
+                                            <legend class="govuk-visually-hidden">Confirmation statement filters, selecting an input will reload the page.</legend>
                                 % }
                             % }
+                            </fieldset>
                         </fieldset>
                         <input id="submit-filter-by-category" class="button js-hidden" type="submit" value="<% l('Apply filter') %>"/>
                     </div>

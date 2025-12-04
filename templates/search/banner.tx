@@ -1,25 +1,33 @@
 % my $search_context = $search_type ? $search_type : $c.session('pst');
 % if $search_context == "officers" {
-    <label class="govuk-visually-hidden" for="site-search-text">Search for officers</label>
     <form id="search" action="/search/officers" method="get" accept-charset="utf-8" role="search"  class="<% $header_or_body=='header'? 'search-header' : 'search-header js-search-hash' %>">
+    <p>
+        <label for="site-search-text">Search for officers</label>
+    </p>
 % } elsif $search_context == 'disqualified-officers' || $search_context == 'disqualified_officers' {
-    <label class="govuk-visually-hidden" for="site-search-text">Search for disqualified officers</label>
     <form id="search" action="/search/disqualified-officers" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'search-header' : 'search-header js-search-hash' %>">
+    <p>
+        <label for="site-search-text">Search for disqualified officers</label>
+    </p>
 % } elsif $search_context == 'companies' {
-    <label class="govuk-visually-hidden" for="site-search-text">Search for companies</label>
     <form id="search" action="/search/companies" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header' ? 'search-header' : 'search-header js-search-hash' %>">
+    <p>
+        <label for="site-search-text">Search for companies</label>
+    </p>
 % } else {
-    <label class="govuk-visually-hidden" for="site-search-text">Search for a company or officer</label>
     <form id="search" action="/search" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header' ? 'search-header' : 'search-header js-search-hash' %>">
+    <p>
+        <label for="site-search-text">Search for a company or officer</label>
+    </p>
 % }
     <div class="search-bar-active">
         <div class="searchfield">
-            <input type="search" class="govuk-input" placeholder="Search for a company or officer" value="" title="Search for a company or officer" id="site-search-text" name="q" autocomplete="off">
+            <input type="search" class="govuk-input" value="" id="site-search-text" name="q" autocomplete="off">
             <button class="search-submit gem-c-search__submit" id="search-submit" type="submit">Search</button>
             <p style="display:none" class="slow-search-msg" id="slowsearch">Please press ENTER to search</p>
         </div>  <!--end searchfield-->
-    </form>
-</div>  <!--end search-bar-active-->
+    </div>  <!--end search-bar-active-->
+</form>
 
 % if $c.config.feature.advanced_search {
     <a class="govuk-link piwik-event" data-id="advanced-company-search" data-event-id="Advanced company search" href="/advanced-search" target="_blank">Advanced company search<span class="govuk-visually-hidden">Link opens in new window</span></a><br><br>
@@ -44,10 +52,11 @@
         </div>
         % if $results.kind == 'search#disqualified-officers' {
             <div class="column-third" id="disqualification-column">
-                <div class="quick-look font-xsmall" id="disqualification-info">
-                    <ul class="list-bullet">
-                        <li><a class="govuk-link" href="/register-of-disqualifications/A" rel="external" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Register of disqualifications<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
-                        <li><a rel="external" class="govuk-link" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="govuk-visually-hidden govuk-link">(link opens in a new window)</span></a></li>
+                <div class="related-content font-xsmall" id="disqualification-info">
+                    <h2 class="govuk-heading-s govuk-!-margin-top-3">Disqualified directors</h2>
+                    <ul class="list">
+                        <li class="govuk-!-margin-bottom-3"><a class="govuk-link" href="/register-of-disqualifications/A" rel="external" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Search for a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                        <li class="govuk-!-margin-bottom-3"><a rel="external" class="govuk-link" href="https://www.gov.uk/report-a-disqualified-director">Report a disqualified director<span class="govuk-visually-hidden govuk-link">(link opens in a new window)</span></a></li>
                     </ul>
                 </div>
             </div>
