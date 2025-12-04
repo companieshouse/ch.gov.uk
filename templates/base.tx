@@ -106,8 +106,8 @@
     <% include 'includes/cookie-consent-banner.tx' %>
     <div id="skiplink-container">
         <div>
-        <!--$alternative_skiplink provides a different ID as #content-container contains styling which can throw off certain screens-->
-        <a href="<% (! $alternative_skiplink) ? '#content-container' : '#page-content' %>"  class="govuk-skip-link" <% if $govuk_rebrand { %> data-module="govuk-skip-link" <% } %> >Skip to main content</a>
+        <!--$alternative_skiplink provides a different ID as #content contains styling which can throw off certain screens-->
+        <a href="<% (! $alternative_skiplink) ? '#content' : '#page-content' %>"  class="govuk-skip-link" <% if $govuk_rebrand { %> data-module="govuk-skip-link" <% } %> >Skip to main content</a>
         </div>
     </div>
 
