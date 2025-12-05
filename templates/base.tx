@@ -107,7 +107,7 @@
     <div id="skiplink-container">
         <div>
         <!--$alternative_skiplink provides a different ID as #content contains styling which can throw off certain screens-->
-        <a href="<% (! $alternative_skiplink) ? '#content' : '#page-content' %>"  class="govuk-skip-link" <% if $govuk_rebrand { %> data-module="govuk-skip-link" <% } %> >Skip to main content</a>
+        <a href="<% $search_skiplink ? '#search' : ( ! $alternative_skiplink ? '#content' : '#page-content' ) %>" class="govuk-skip-link" <% if $govuk_rebrand { %> data-module="govuk-skip-link" <% } %> >Skip to main content</a>
         </div>
     </div>
 
