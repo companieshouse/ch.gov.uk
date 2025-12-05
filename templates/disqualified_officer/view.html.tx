@@ -1,4 +1,4 @@
-% cascade base { title => $name ~' - Disqualification Details - Find and update company information - GOV.UK)' }
+% cascade base { title => $name ~' - Disqualification Details - Find and update company information - GOV.UK)', search_skiplink => true }
 
 % around content -> {
 
