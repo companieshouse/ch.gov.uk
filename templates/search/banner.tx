@@ -1,4 +1,7 @@
 % my $search_context = $search_type ? $search_type : $c.session('pst');
+
+% # Do NOT change form id as it will break the skip link on the pages using this form
+
 % if $search_context == "officers" {
     <form id="search" action="/search/officers" method="get" accept-charset="utf-8" role="search"  class="<% $header_or_body=='header'? 'search-header' : 'search-header js-search-hash' %>">
     <p>
