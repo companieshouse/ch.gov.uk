@@ -320,7 +320,7 @@
               <ul class="govuk-footer__inline-list">
                 <li class="govuk-footer__inline-list-item">
                   <a class="govuk-footer__link" href="http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml" target="_blank">
-                    Policies
+                    Policies (opens in new tab)
                     <span class="visuallyhidden">
                       Link opens in new tab
                     </span>
@@ -333,7 +333,7 @@
                 </li>
                 <li class="govuk-footer__inline-list-item">
                   <a class="govuk-footer__link" href="https://www.gov.uk/government/organisations/companies-house#org-contacts" target="_blank">
-                    Contact us
+                    Contact us (opens in new tab)
                     <span class="visuallyhidden">
                       Link opens in new tab
                     </span>
@@ -346,7 +346,7 @@
                 </li>
                 <li class="govuk-footer__inline-list-item">
                   <a class="govuk-footer__link" href="https://developer.companieshouse.gov.uk/" target="_blank">
-                    Developers
+                    Developers (opens in new tab)
                     <span class="visuallyhidden">
                       Link opens in new tab
                     </span>
