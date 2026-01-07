@@ -8,6 +8,7 @@ max_task_count = 6
 enable_listener = true
 use_ecs_cluster_default = true
 use_fargate = false
+use_task_container_healthcheck = false
 
 # Search service configuration
 desired_task_count_search = 2
@@ -27,6 +28,7 @@ eric_memory_officers = 256
 enable_listener_officers = true
 use_ecs_cluster_officers = true
 use_fargate_officers = false
+use_task_container_healthcheck_officers = false
 
 # ------------------------------------------------------------------------------
 # ECS cluster variables
