@@ -95,6 +95,7 @@ web_proxy:
 elasticsearch:
   max_pages: <ELASTIC_SEARCH_MAX_PAGES>
   max_results: <ELASTIC_SEARCH_MAX_RESULTS>
+  disqualified_max_results: <ELASTIC_SEARCH_DISQUALIFIED_MAX_RESULTS>
 
 feature:
     mortgage: <MORTGAGE_FEATURE>
