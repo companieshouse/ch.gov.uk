@@ -216,7 +216,7 @@
       % }
 
   % if ! $certified_copies {
-    <div class="small-text"><a class="govuk-link" href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="govuk-visually-hidden">(link opens a new window)</span></a></div>
+    <div class="small-text"><a class="govuk-link" href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not check the accuracy of the information filed<span class="govuk-visually-hidden">(link opens a new window)</span></a></div>
   % }
       </div>
 
