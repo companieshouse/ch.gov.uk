@@ -18,6 +18,7 @@ required_memory_search = 1024
 enable_listener_search = true
 use_ecs_cluster_search = true
 use_fargate_search = false
+use_task_container_healthcheck_search = false
 
 # Officers service configuration
 desired_task_count_officers = 32
