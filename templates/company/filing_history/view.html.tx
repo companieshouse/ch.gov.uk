@@ -105,7 +105,7 @@
                         <fieldset>
                             <legend class="govuk-visually-hidden">Confirmation statement filters, selecting an input will reload the page.</legend>
                             % for $categories -> $category {
-                                <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small">
+                                <label for="filter-category-<% $category.id %>" class="block-label selection-button-checkbox selection-button-checkbox-small govuk-!-margin-bottom-4">
                                     <input id="filter-category-<% $category.id %>" name="category" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
                                     <% l($category.name) %>
                                 </label>

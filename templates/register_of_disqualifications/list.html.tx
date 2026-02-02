@@ -3,9 +3,7 @@
 % around content -> {
 
        <div class="active">
-            <header>
-                <h1 class="heading-xlarge" id="page-content">Register of disqualifications</h1>
-            </header>
+            <h1 class="heading-xlarge" id="page-content">Register of disqualifications</h1>
 
             <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-0 govuk-pagination" aria-label="A-Z Navigation">
                 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip A-Z navigation</a>
