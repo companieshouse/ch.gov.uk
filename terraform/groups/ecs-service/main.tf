@@ -92,7 +92,8 @@ module "cluster_secrets_officers" {
 
 module "ecs_cluster_search" {
   count  = var.create_ecs_cluster_search ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
+#  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=add-cluster-instance-refresh"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -123,6 +124,19 @@ module "cluster_secrets_search" {
   name_prefix = local.stack_name_prefix_search
   secrets     = local.stack_parameter_store_secrets_search
   kms_key_id  = local.stack_kms_key_id_search
+}
+
+module "cluster_instance_refresh" {
+  count  = var.create_ecs_cluster_search && var.use_ecs_cluster_search ? 1 : 0
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/refresh-instances-lambda?ref=add-cluster-instance-refresh"
+
+  environment = var.environment
+  service     = local.service_name_search
+
+  ecs_cluster_name                   = module.ecs_cluster_search[0].ecs_cluster_name
+  ecs_cluster_capacity_provider_name = module.ecs_cluster_search[0].ecs_cluster_capacity_provider_name
+
+  refresh_schedule_expression = "cron(0 */6 * * ? *)"
 }
 
 # ------------------------------------------------------------------------------
