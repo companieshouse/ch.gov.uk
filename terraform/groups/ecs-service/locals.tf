@@ -22,6 +22,7 @@ locals {
   healthcheck_path           = "/healthcheck"
   healthcheck_matcher        = "200"
   s3_config_bucket           = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
+  s3_release_bucket          = data.vault_generic_secret.shared_s3.data["release_bucket_name"]
   app_environment_filename   = "ch.gov.uk.env"
   use_set_environment_files  = var.use_set_environment_files
   application_subnet_ids     = data.aws_subnets.application.ids
@@ -276,4 +277,10 @@ locals {
   ecs_cluster_id_search          = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? module.ecs_cluster_search[0].ecs_cluster_id : data.aws_ecs_cluster.ecs_cluster.id
   name_prefix_search             = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? local.stack_name_prefix_search : local.name_prefix
   task_execution_role_arn_search = var.use_ecs_cluster_search && var.create_ecs_cluster_search ? module.ecs_cluster_search[0].ecs_task_execution_role_arn : data.aws_iam_role.ecs_cluster_iam_role.arn
+
+  enable_cluster_instance_refresh_search = (
+    var.create_ecs_cluster_search &&
+    var.enable_instance_refresh_search &&
+    var.instance_refresh_lambda_s3_key != "" ? true : false
+  )
 }
