@@ -36,5 +36,6 @@ create_ecs_cluster_officers = true
 ec2_instance_type_officers = "c7i.large"
 create_ecs_cluster_search = true
 ec2_instance_type_search = "c7i.large"
+enable_instance_refresh_search = true
 
 ec2_key_pair_name = "chs-cidev"
