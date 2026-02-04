@@ -315,6 +315,14 @@
                             </dd>
                         </dl>
                     % }
+                    % if $officer.identification.register_location {
+                    <dl class="column-quarter">
+                        <dt><% l('Country registered in') %></dt>
+                        <dd id="officer-country-registered-in-<% $~officer.count %>" class="data">
+                            <% $officer.identification.register_location %>
+                        </dd>
+                    </dl>
+                    % }
                 </div> <%# /grid-row %>
             </div>
         % }
