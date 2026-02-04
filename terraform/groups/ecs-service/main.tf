@@ -131,11 +131,10 @@ module "cluster_instance_refresh_search" {
 
   ecs_cluster_name                   = module.ecs_cluster_search[0].ecs_cluster_name
   ecs_cluster_capacity_provider_name = module.ecs_cluster_search[0].ecs_cluster_capacity_provider_name
+  refresh_schedule_expression        = var.instance_refresh_schedule_search
 
   lambda_s3_bucket_name = local.s3_release_bucket
   lambda_s3_key         = var.instance_refresh_lambda_s3_key
-
-  refresh_schedule_expression = var.instance_refresh_schedule_search
 }
 
 # ------------------------------------------------------------------------------
