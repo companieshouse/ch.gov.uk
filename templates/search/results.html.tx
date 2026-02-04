@@ -16,14 +16,21 @@
 
     <div class="grid-row">
         <div class="column-two-thirds">
-
+  % if $results.total_results {
+                        % if $search_type == 'officers' {
+                           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Officer results</h2>
+                         % } elsif $search_type == 'disqualified-officers' { 
+                            <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Disqualification results</h2>
+                           % } elsif $search_type == 'all' {
+                           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">All results </h2>
+                           % } else {
+                            <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Company results</h2>
+                        % }
+   % }
             <article id="services-information-results">
-
             % if $results.total_results {
-        			<h1 class="govuk-visually-hidden">Search the register – results</h1>
-                    <h2 class="govuk-visually-hidden">All results</h2>
-                    % if $search_type == 'officers' {
-                        <details class="govuk-details" role="group">
+                                    % if $search_type == 'officers' {
+                        <details class="govuk-details govuk-!-margin-top-4 govuk-!-margin-bottom-0" role="group">
                             <summary class="govuk-details__summary" role="button" aria-controls="details-content-0" aria-expanded="false">
                                 <span class="govuk-details__summary-text">
                                     Did you know you can search for officers by location?
@@ -88,10 +95,11 @@
 
         % if $results.kind == 'search#disqualified-officers' {
             <div class="column-third" id="disqualification-column">
-                <div class="quick-look font-xsmall" id="disqualification-info">
-                    <ul class="list-bullet">
-                        <li><a class="govuk-link" href="/register-of-disqualifications/A" rel="external" target="_blank" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Register of disqualifications<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
-                        <li><a rel="external" class="govuk-link" href="https://www.gov.uk/report-a-disqualified-director" target="_blank">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                <div class="related-content font-xsmall" id="disqualification-info">
+                    <h2 class="govuk-heading-s govuk-!-margin-top-3">Disqualified directors</h2>
+                    <ul class="list">
+                        <li class="govuk-!-margin-bottom-3"><a class="govuk-link" href="/register-of-disqualifications/A" rel="external" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Search for a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                        <li class="govuk-!-margin-bottom-3"><a rel="external" class="govuk-link" href="https://www.gov.uk/report-a-disqualified-director">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
                     </ul>
                 </div>
             </div>

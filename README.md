@@ -52,6 +52,15 @@ Run the service using the provided script:
 $ ./start.sh
 ```
 
+
+#### Running the tests
+
+Run the unit tests using the following command:
+
+```
+$ make docker-test
+```
+
 Configuration
 -------------
 

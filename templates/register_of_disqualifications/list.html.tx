@@ -1,13 +1,12 @@
-% cascade base { title => 'Register of disqualifications ' ~ $active_letter ~' - Find and update company information - GOV.UK', disable_header_search => 1, alternative_skiplink => true }
+% cascade base { title => 'Register of disqualifications ' ~ $active_letter ~ ' - page ' ~ $pager.current_page ~ ' of ' ~ $pager.total_pages ~ ' - Find and update company information - GOV.UK', disable_header_search => 1, alternative_skiplink => true }
 
 % around content -> {
 
        <div class="active">
-            <header>
-                <h1 class="heading-xlarge" id="page-content">Register of disqualifications</h1>
-            </header>
+            <h1 class="heading-xlarge" id="page-content">Register of disqualifications</h1>
 
-            <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-0 govuk-pagination" aria-label="Pagination">
+            <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-0 govuk-pagination" aria-label="A-Z Navigation">
+                <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip A-Z navigation</a>
                 <ul class="govuk-pagination__list govuk-section-break govuk-section-break--l govuk-section-break--visible" id="alphabetical-pager">
                     % for $alphabet -> $letter {
                         <li class="govuk-pagination__item govuk-!-display-block <% if $active_letter == $letter { %> govuk-pagination__item--current <% } %>">
@@ -16,17 +15,18 @@
                                 href="/register-of-disqualifications/<%= $letter %>" 
                                 aria-label="Page <% $letter %>" 
                                 % if $active_letter == $letter {
-                                    aria-current="letter"
+                                    aria-current="page"
                                 % }
                                 ><span class="govuk-visually-hidden">Only show surnames beginning with</span><%= $letter %>
                             </a>
                         </li>
                     % }
                 </ul>
+                <a href="#page-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip A-Z navigation</a>
             </nav>
 
             % if $disqualifications.total_results > 0 {
-                <table class="full-width-table">
+                <table class="full-width-table" id="main-content">
                     <caption class="govuk-visually-hidden">Register of disqualifications</caption>
                     <tr>
                         <th scope="col">
@@ -48,7 +48,7 @@
                     % }
                 </table>
             % } else {
-                <h2 class="heading-medium">There are no disqualified officer details available for surnames beginning with <%= $active_letter %></h2>
+                <h2 class="heading-medium" id="main-content">There are no disqualified officer details available for surnames beginning with <%= $active_letter %></h2>
             % }
         </div>
 

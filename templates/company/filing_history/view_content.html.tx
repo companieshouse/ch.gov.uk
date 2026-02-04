@@ -76,7 +76,7 @@
                         <div>
                             <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'zip', download => 1) %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 3]);"<% } %>>Download ZIP</a></div>
                      % } else {
-                    <div>
+                    <div class="govuk-!-padding-bottom-2">
                         <a href="<% $c.url_for('filing_history_document', filing_history_id => $item.transaction_id).query(format => 'pdf', download => 0) %>" target="_blank" class="download link-updater-js govuk-link" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 2]);"<% } %>>View PDF
                         <span class="govuk-visually-hidden"><% include "company/filing_history/transaction_description.html.tx" { item => $item } %> - link opens in a new window <% if ($item.pages) { %> - <% ln('%d page', '%d pages', $item.pages) } %></span></a>
                         <% if ($item.pages) { %> (<% ln('%d page', '%d pages', $item.pages) %>)<% } %></div>

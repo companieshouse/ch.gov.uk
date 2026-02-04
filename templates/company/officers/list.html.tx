@@ -17,7 +17,7 @@
                         Filter officers
                 </h2>
                 <fieldset>
-                    <legend class="govuk-visually-hidden">Filter officers</legend>
+                    <legend class="govuk-visually-hidden">Filter officers, selecting an input will reload the page.</legend>
                     % for $categories -> $category {
                             <label for="officer-category-<% $category.id %>" class="block-label selection-button-checkbox">
                                 <input id="officer-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
@@ -62,20 +62,22 @@
                     </dl>
                 % }
 
-                <dl>
-                    <dt id="officer-address-field-<% $~officer.count %>"><% l('Correspondence address') %></dt>
-                    <dd class="data" id="officer-address-value-<% $~officer.count %>">
-                        % $c.address_as_string( $officer.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
-                    </dd>
-                </dl>
+                % if $officer.address {
+                    <dl>
+                        <dt id="officer-address-field-<% $~officer.count %>"><% l('Correspondence address') %></dt>
+                        <dd class="data" id="officer-address-value-<% $~officer.count %>">
+                            % $c.address_as_string( $officer.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                        </dd>
+                    </dl>
+                % }
 
                 % if $officer.principal_office_address {
                     <dl>
                         <dt><% l('Principal office address') %></dt>
                         <dd id="officer-principal-office-address-<% $~officer.count %>" class="data">
-                        % $c.address_as_string( $officer.principal_office_address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
-                    </dd>
-                </dl>
+                            % $c.address_as_string( $officer.principal_office_address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                        </dd>
+                    </dl>
                 % }
 
                 <div class="grid-row">
@@ -196,73 +198,71 @@
                 </div> <%# /grid-row %>
 
                 <div class="grid-row">
-                    % if $c.config.feature.enable_idv_details_delta_updates {
-                        % if $officer.identity_verification_details.appointment_verification_end_on {
-                            % if not $officer.identity_verification_details.is_identity_verification_expired {
-                                <dl class="column-quarter">
-                                    <dt><% l('Identity verification status') %></dt>
-                                    <dd id="officer-identity-verification-details-appointment-verification-end-on-<% $~officer.count %>" class="data verified-status-data">
-                                        <span class="verified-status-icon" aria-hidden="true">
-                                            <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" version="1.1" viewBox="0 0 64 64">
-                                            <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
-                                                <defs>
-                                                    <style>
-                                                    .st0 {
-                                                        fill: #006435;
-                                                    }
-                                                    </style>
-                                                </defs>
-                                                <path class="st0" d="M32,2C15.4,2,2,15.4,2,32s13.4,30,30,30,30-13.4,30-30S48.6,2,32,2ZM25,50h0s0,0,0,0l-14-14.4,7-7.2,7,7.2,21-21.6,7,7.2-28,28.8Z"/>
-                                            </svg>
-                                        </span>
-                                        <span class="verified-status-text govuk-!-font-weight-bold govuk-!-margin-left-1"><% l('Verification requirements complete') %></span>
-                                    </dd>
-                                </dl>
-                            % } else {
-                                <dl class="column-quarter">
-                                    <dt></dt>
-                                    <dd>
-                                        <!-- Placeholder for alternative path -->
-                                    </dd>
-                                </dl>
-                            % }
-                        % }
-                        % else if $officer.identity_verification_details.appointment_verification_statement_due_on {
+                    % if $officer.identity_verification_details.appointment_verification_end_on {
+                        % if not $officer.identity_verification_details.is_identity_verification_expired {
                             <dl class="column-quarter">
-                                <dt><% l('Identity verification due') %></dt>
-                                <dd id="officer-identity-verification-details-appointment-verification-statement-due-on-<% $~officer.count %>" class="data">
-                                    <% $c.isodate_as_string( $officer.identity_verification_details.appointment_verification_statement_due_on ) %>
+                                <dt><% l('Identity verification status') %></dt>
+                                <dd id="officer-identity-verification-details-appointment-verification-end-on-<% $~officer.count %>" class="data verified-status-data">
+                                    <span class="govuk-visually-hidden">Verified</span>
+                                    <span class="verified-status-icon">
+                                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 64 64">
+                                        <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
+                                            <defs>
+                                                <style>
+                                                .st0 {
+                                                    fill: #006435;
+                                                }
+                                                </style>
+                                            </defs>
+                                            <path class="st0" d="M32,2C15.4,2,2,15.4,2,32s13.4,30,30,30,30-13.4,30-30S48.6,2,32,2ZM25,50h0s0,0,0,0l-14-14.4,7-7.2,7,7.2,21-21.6,7,7.2-28,28.8Z"/>
+                                        </svg>
+                                    </span>
+                                    <span class="verified-status-text govuk-!-font-weight-bold govuk-!-margin-left-1"><% l('Verification requirements complete') %></span>
+                                </dd>
+                            </dl>
+                        % } else {
+                            <dl class="column-quarter">
+                                <dt></dt>
+                                <dd>
+                                    <!-- Placeholder for alternative path -->
                                 </dd>
                             </dl>
                         % }
                     % }
+                    % else if $officer.identity_verification_details.appointment_verification_statement_due_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Identity verification due') %></dt>
+                            <dd id="officer-identity-verification-details-appointment-verification-statement-due-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.identity_verification_details.appointment_verification_statement_due_on ) %>
+                            </dd>
+                        </dl>
+                    % }
                 </div> <%# /grid-row %>
 
                 <div class="grid-row">
-                    % if $c.config.feature.enable_idv_details_delta_updates {
-                        % if $officer.identity_verification_details {
-                            % if not $officer.identity_verification_details.is_identity_verification_expired {
-                                % if $officer.identity_verification_details.anti_money_laundering_supervisory_bodies ||
-                                % $officer.identity_verification_details.authorised_corporate_service_provider_name ||
-                                % $officer.identity_verification_details.identity_verified_on ||
-                                % $officer.identity_verification_details.preferred_name
-                            % {
-                                    <div class="column-full govuk-!-margin-bottom-6">
-                                        <p>
-                                            <span class="govuk-!-font-weight-bold"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></span><br />
-                                            <span><% $officer.identity_verification_details.authorised_corporate_service_provider_name %></span> 
-                                            <% l('has confirmed that they have verified the identity of') %>
-                                            <span><% $officer.identity_verification_details.preferred_name %></span>
-                                            <% l('to the standard set by Companies House and is satisfied that the required personal information is true.') %>
-                                        </p>
-                                        <p>
-                                            <% l('The verification checks were completed on') ~ ' ' ~ $c.isodate_as_string( $officer.identity_verification_details.identity_verified_on ) ~ '.' %>
-                                        </p>
-                                        <p>
-                                            <% $officer.identity_verification_details.authorised_corporate_service_provider_name ~ ' ' ~ l('is supervised by:') ~ ' ' ~ $officer.identity_verification_details.supervisory_bodies_string ~ '.' %>
-                                        </p>
-                                    </div>
-                    % } } } }
+                    % if $officer.identity_verification_details {
+                        % if not $officer.identity_verification_details.is_identity_verification_expired {
+                            % if $officer.identity_verification_details.anti_money_laundering_supervisory_bodies ||
+                            % $officer.identity_verification_details.authorised_corporate_service_provider_name ||
+                            % $officer.identity_verification_details.identity_verified_on ||
+                            % $officer.identity_verification_details.preferred_name
+                        % {
+                                <div class="column-full govuk-!-margin-bottom-6">
+                                    <h3 class="heading-small govuk-!-static-margin-0"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></h3>
+                                    <p>
+                                        <% $officer.identity_verification_details.authorised_corporate_service_provider_name %>
+                                        <% l('has confirmed that they have verified the identity of') %>
+                                        <% $officer.identity_verification_details.preferred_name %>
+                                        <% l('to the standard set by Companies House and is satisfied that the required personal information is true.') %>
+                                    </p>
+                                    <p>
+                                        <% l('The verification checks were completed on') ~ ' ' ~ $c.isodate_as_string( $officer.identity_verification_details.identity_verified_on ) ~ '.' %>
+                                    </p>
+                                    <p>
+                                        <% $officer.identity_verification_details.authorised_corporate_service_provider_name ~ ' ' ~ l('is supervised by:') ~ ' ' ~ $officer.identity_verification_details.supervisory_bodies_string ~ '.' %>
+                                    </p>
+                                </div>
+                    % } } }
                 </div> <%# /grid-row %>
 
                 % if $officer.identification.identification_type == 'non-eea' {

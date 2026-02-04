@@ -5,7 +5,6 @@
  %#   $title   - the title heading of the tab (may contain HTML)
  %#   $company - the company details needed for display (uses company.company_number)
 
- <li <% ($active == $tabid ? 'class="govuk-tabs__list-item govuk-tabs__list-item--selected"' : 'class="govuk-tabs__list-item"') | raw %> >
-         <a class="govuk-tabs__tab" id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>"><% $title|raw %><span class="govuk-visually-hidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
-
+ <li <% ($active == $tabid ? 'class="govuk-tabs__list-item govuk-tabs__list-item--selected"' : 'class="govuk-tabs__list-item"') | raw %> role="presentation">
+         <a class="govuk-tabs__tab" id="<% $tabid %>" href="<% $c.url_for('/company/' ~ $company.company_number ~ $page) %>" role="tab" <% ($active == $tabid ? 'aria-selected=true' : 'aria-selected=false') %> ><% $title|raw %><span class="govuk-visually-hidden"> for <% $company.company_name %> (<% $company.company_number %>)</span></a>
  </li>

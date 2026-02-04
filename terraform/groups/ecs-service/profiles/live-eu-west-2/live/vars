@@ -15,7 +15,7 @@ min_task_count_search = 32
 max_task_count_search = 32
 required_cpus_search = 768
 required_memory_search = 1024
-enable_listener_search = true 
+enable_listener_search = false 
 use_ecs_cluster_search = true
 use_fargate_search = false
 

@@ -107,7 +107,7 @@
     <div id="skiplink-container">
         <div>
         <!--$alternative_skiplink provides a different ID as #content contains styling which can throw off certain screens-->
-        <a href="<% (! $alternative_skiplink) ? '#content' : '#page-content' %>"  class="govuk-skip-link" <% if $govuk_rebrand { %> data-module="govuk-skip-link" <% } %> >Skip to main content</a>
+        <a href="<% $search_skiplink ? '#search' : ( ! $alternative_skiplink ? '#content' : '#page-content' ) %>" class="govuk-skip-link" <% if $govuk_rebrand { %> data-module="govuk-skip-link" <% } %> >Skip to main content</a>
         </div>
     </div>
 
@@ -216,7 +216,7 @@
       % }
 
   % if ! $certified_copies {
-    <div class="small-text"><a class="govuk-link" href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not verify the accuracy of the information filed<span class="govuk-visually-hidden">(link opens a new window)</span></a></div>
+    <div class="small-text"><a class="govuk-link" href="http://resources.companieshouse.gov.uk/serviceInformation.shtml#compInfo" target="_blank">Companies House does not check the accuracy of the information filed<span class="govuk-visually-hidden">(link opens a new window)</span></a></div>
   % }
       </div>
 
@@ -278,9 +278,9 @@
 
   % if $insights_bar != false {
   <div id="chs-customer-insights">
-    <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/getcompanyinformation/" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="govuk-visually-hidden">(link opens a new window)</span></a>
+    <a class="govuk-link govuk-link--inverse" href="https://www.smartsurvey.co.uk/s/getcompanyinformation/" target="_blank" onclick="javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);">Tell us what you think of this service<span class="govuk-visually-hidden">(link opens a new window)</span></a>
     % if $c.config.show_feedback_page {
-        <a id="feedback-link" class="govuk-link secondary-customer-insights" target="_blank">Is there anything wrong with this page?<span class="govuk-visually-hidden">(link opens a new window)</span></a>
+        <a id="feedback-link" class="govuk-link secondary-customer-insights govuk-link--inverse" target="_blank">Is there anything wrong with this page?<span class="govuk-visually-hidden">(link opens a new window)</span></a>
     % }
   </div>
   % }
@@ -332,7 +332,7 @@
                   </a>
                 </li>
                 <li class="govuk-footer__inline-list-item">
-                  <a class="govuk-footer__link" href="https://www.gov.uk/government/organisations/companies-house#org-contacts" target="_blank">
+                  <a class="govuk-footer__link" href="https://www.gov.uk/find-contact-details-companies-house" target="_blank">
                     Contact us
                     <span class="visuallyhidden">
                       Link opens in new tab
