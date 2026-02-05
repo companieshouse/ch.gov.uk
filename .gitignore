@@ -22,3 +22,4 @@ t/output.xml
 ch.gov.uk-*.zip
 .idea/
 .vscode/
+**/.terraform/
