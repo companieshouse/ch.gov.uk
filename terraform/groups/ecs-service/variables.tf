@@ -354,7 +354,7 @@ variable "enable_instance_refresh_default" {
 }
 
 variable "instance_refresh_schedule_default" {
-  default     = "rate(6 hours)"
+  default     = "rate(4 hours)"
   description = "The cron-like or AWS Scheduler expression that defines the refresh cadence for the default cluster instances"
   type        = string
 }
