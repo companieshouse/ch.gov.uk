@@ -399,7 +399,7 @@ variable "enable_instance_refresh_officers" {
 }
 
 variable "instance_refresh_schedule_officers" {
-  default     = "rate(6 hours)"
+  default     = "rate(4 hours)"
   description = "The cron-like or AWS Scheduler expression that defines the refresh cadence for the Officers cluster instances"
   type        = string
 }
@@ -444,7 +444,7 @@ variable "enable_instance_refresh_search" {
 }
 
 variable "instance_refresh_schedule_search" {
-  default     = "rate(6 hours)"
+  default     = "rate(4 hours)"
   description = "The cron-like or AWS Scheduler expression that defines the refresh cadence for the Search cluster instances"
   type        = string
 }
