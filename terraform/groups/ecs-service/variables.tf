@@ -19,10 +19,16 @@ variable "aws_profile" {
 }
 
 # ------------------------------------------------------------------------------
-# Docker Container
+# Miscellaneous variables
 # ------------------------------------------------------------------------------
 variable "docker_registry" {
   description = "The FQDN of the Docker registry."
+  type        = string
+}
+
+variable "instance_refresh_lambda_s3_key" {
+  default     = ""
+  description = "The object key, including prefix, of the instance refresh lambda deployment package"
   type        = string
 }
 
@@ -341,6 +347,18 @@ variable "create_ecs_cluster_default" {
   type        = bool
 }
 
+variable "enable_instance_refresh_default" {
+  default     = false
+  description = "Defines whether the instance refresh lambda configuration is deployed for the default cluster (true) or not (false)"
+  type        = bool
+}
+
+variable "instance_refresh_schedule_default" {
+  default     = "rate(6 hours)"
+  description = "The cron-like or AWS Scheduler expression that defines the refresh cadence for the default cluster instances"
+  type        = string
+}
+
 variable "use_ecs_cluster_default" {
   default     = false
   description = "Defines whether the dedicated ECS cluster should be used for the default service (true) or not (false)"
@@ -374,6 +392,18 @@ variable "create_ecs_cluster_officers" {
   type        = bool
 }
 
+variable "enable_instance_refresh_officers" {
+  default     = false
+  description = "Defines whether the instance refresh lambda configuration is deployed for the Officers cluster (true) or not (false)"
+  type        = bool
+}
+
+variable "instance_refresh_schedule_officers" {
+  default     = "rate(6 hours)"
+  description = "The cron-like or AWS Scheduler expression that defines the refresh cadence for the Officers cluster instances"
+  type        = string
+}
+
 variable "use_ecs_cluster_officers" {
   default     = false
   description = "Defines whether the dedicated ECS cluster should be used for the Officers service (true) or not (false)"
@@ -405,6 +435,18 @@ variable "create_ecs_cluster_search" {
   default     = false
   description = "Defines whether a dedicated ECS cluster should be created for the Search service (true) or not (false)"
   type        = bool
+}
+
+variable "enable_instance_refresh_search" {
+  default     = false
+  description = "Defines whether the instance refresh lambda configuration is deployed for the Search cluster (true) or not (false)"
+  type        = bool
+}
+
+variable "instance_refresh_schedule_search" {
+  default     = "rate(6 hours)"
+  description = "The cron-like or AWS Scheduler expression that defines the refresh cadence for the Search cluster instances"
+  type        = string
 }
 
 variable "use_ecs_cluster_search" {

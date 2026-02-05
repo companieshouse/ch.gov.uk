@@ -22,7 +22,7 @@ terraform {
 # ------------------------------------------------------------------------------
 module "ecs_cluster_default" {
   count  = var.create_ecs_cluster_default ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.366"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -47,17 +47,31 @@ module "ecs_cluster_default" {
 
 module "cluster_secrets_default" {
   count  = var.create_ecs_cluster_default ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
+  source = "git@github.com:companieshouse/terraform-modules//aws/parameter-store?ref=1.0.366"
 
-  environment = var.environment
   name_prefix = local.stack_name_prefix_default
   secrets     = local.stack_parameter_store_secrets_default
   kms_key_id  = local.stack_kms_key_id_default
 }
 
+module "cluster_instance_refresh_default" {
+  count  = local.enable_cluster_instance_refresh_default ? 1 : 0
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/refresh-instances-lambda?ref=1.0.366"
+
+  environment = var.environment
+  service     = local.service_name
+
+  ecs_cluster_name                   = module.ecs_cluster_default[0].ecs_cluster_name
+  ecs_cluster_capacity_provider_name = module.ecs_cluster_default[0].ecs_cluster_capacity_provider_name
+  refresh_schedule_expression        = var.instance_refresh_schedule_default
+
+  lambda_s3_bucket_name = local.s3_release_bucket
+  lambda_s3_key         = var.instance_refresh_lambda_s3_key
+}
+
 module "ecs_cluster_officers" {
   count  = var.create_ecs_cluster_officers ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.366"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -82,17 +96,31 @@ module "ecs_cluster_officers" {
 
 module "cluster_secrets_officers" {
   count  = var.create_ecs_cluster_officers ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
+  source = "git@github.com:companieshouse/terraform-modules//aws/parameter-store?ref=1.0.366"
 
-  environment = var.environment
   name_prefix = local.stack_name_prefix_officers
   secrets     = local.stack_parameter_store_secrets_officers
   kms_key_id  = local.stack_kms_key_id_officers
 }
 
+module "cluster_instance_refresh_officers" {
+  count  = local.enable_cluster_instance_refresh_officers ? 1 : 0
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/refresh-instances-lambda?ref=1.0.366"
+
+  environment = var.environment
+  service     = local.service_name_officers
+
+  ecs_cluster_name                   = module.ecs_cluster_officers[0].ecs_cluster_name
+  ecs_cluster_capacity_provider_name = module.ecs_cluster_officers[0].ecs_cluster_capacity_provider_name
+  refresh_schedule_expression        = var.instance_refresh_schedule_officers
+
+  lambda_s3_bucket_name = local.s3_release_bucket
+  lambda_s3_key         = var.instance_refresh_lambda_s3_key
+}
+
 module "ecs_cluster_search" {
   count  = var.create_ecs_cluster_search ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.333"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.366"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -117,12 +145,26 @@ module "ecs_cluster_search" {
 
 module "cluster_secrets_search" {
   count  = var.create_ecs_cluster_search ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.333"
+  source = "git@github.com:companieshouse/terraform-modules//aws/parameter-store?ref=1.0.366"
 
-  environment = var.environment
   name_prefix = local.stack_name_prefix_search
   secrets     = local.stack_parameter_store_secrets_search
   kms_key_id  = local.stack_kms_key_id_search
+}
+
+module "cluster_instance_refresh_search" {
+  count  = local.enable_cluster_instance_refresh_search ? 1 : 0
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/refresh-instances-lambda?ref=1.0.366"
+
+  environment = var.environment
+  service     = local.service_name_search
+
+  ecs_cluster_name                   = module.ecs_cluster_search[0].ecs_cluster_name
+  ecs_cluster_capacity_provider_name = module.ecs_cluster_search[0].ecs_cluster_capacity_provider_name
+  refresh_schedule_expression        = var.instance_refresh_schedule_search
+
+  lambda_s3_bucket_name = local.s3_release_bucket
+  lambda_s3_key         = var.instance_refresh_lambda_s3_key
 }
 
 # ------------------------------------------------------------------------------
