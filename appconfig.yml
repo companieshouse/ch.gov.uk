@@ -51,7 +51,7 @@ external_url_for:
   authcode_request_email     : '<ACCOUNT_URL>/company/:company_number/authcode/request_email'
   follow_company             : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-follow'
   unfollow_company           : '<CHS_MONITOR_GUI_URL>/company/:company_number/confirm-unfollow'
-  file_accounts              : '<EXTERNAL_FILE_ACCOUNTS_URL>'
+  file_accounts              : '<ENTER_FILE_ACCOUNTS_URL>'
   file_cic_accounts          : '<EXTERNAL_FILE_CIC_ACCOUNTS_URL>'
   certificates_url           : '<CHS_URL>/company/:company_number/orderable/certificates'
   dissolved_certificates_url : '<CHS_URL>/company/:company_number/orderable/dissolved-certificates'
