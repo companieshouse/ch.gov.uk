@@ -371,8 +371,8 @@ module "ecs-service-default" {
   desired_task_count                   = var.desired_task_count
   max_task_count                       = var.max_task_count
   min_task_count                       = var.min_task_count
-  required_cpus                        = local.task_required_cpu_default
-  required_memory                      = local.task_required_mem_default
+  required_cpus                        = var.required_cpus
+  required_memory                      = var.required_memory
   service_autoscale_enabled            = var.service_autoscale_enabled
   service_autoscale_target_value_cpu   = var.service_autoscale_target_value_cpu
   service_autoscale_scale_in_cooldown  = var.service_autoscale_scale_in_cooldown

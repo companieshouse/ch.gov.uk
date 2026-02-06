@@ -2,9 +2,11 @@ environment = "staging"
 aws_profile = "staging-eu-west-2"
 
 # Default service configuration
-desired_task_count = 8
-min_task_count = 8
-max_task_count = 48
+desired_task_count = 32
+min_task_count = 32
+max_task_count = 32
+required_cpus = 768
+required_memory = 1024
 enable_listener = true 
 use_ecs_cluster_default = true
 use_fargate = false
@@ -40,8 +42,11 @@ service_scaleup_schedule   = "5 6 * * ? *"
 # ECS cluster variables
 # ------------------------------------------------------------------------------
 create_ecs_cluster_default = true
+ec2_instance_type_default = "c7i.4xlarge"
+
 create_ecs_cluster_officers = true
 ec2_instance_type_officers = "c7i.4xlarge"
+
 create_ecs_cluster_search = true
 ec2_instance_type_search = "c7i.4xlarge"
 
