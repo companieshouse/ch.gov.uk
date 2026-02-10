@@ -4,7 +4,8 @@ aws_profile = "development-eu-west-2"
 # Default service configuration
 desired_task_count = 2
 min_task_count = 2
-max_task_count = 6
+max_task_count = 2
+eric_memory = 256
 enable_listener = true
 use_ecs_cluster_default = true
 use_fargate = false
@@ -32,8 +33,11 @@ use_fargate_officers = false
 # ECS cluster variables
 # ------------------------------------------------------------------------------
 create_ecs_cluster_default = true
+ec2_instance_type_default = "c7i.large"
+
 create_ecs_cluster_officers = true
 ec2_instance_type_officers = "c7i.large"
+
 create_ecs_cluster_search = true
 ec2_instance_type_search = "c7i.large"
 enable_instance_refresh_search = true

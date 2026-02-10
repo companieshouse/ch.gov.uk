@@ -94,10 +94,6 @@ data "aws_ssm_parameter" "secrets_default" {
   name = each.key
 }
 
-data "aws_ec2_instance_type" "default" {
-  instance_type = var.ec2_instance_type_default
-}
-
 data "aws_subnets" "stack_application_default" {
   count = var.create_ecs_cluster_default ? 1 : 0
 
@@ -145,10 +141,6 @@ data "aws_ssm_parameters_by_path" "secrets_officers" {
   path = "/${local.name_prefix_officers}"
 }
 
-data "aws_ec2_instance_type" "officers" {
-  instance_type = var.ec2_instance_type_officers
-}
-
 data "aws_subnets" "stack_application_officers" {
   count = var.create_ecs_cluster_officers ? 1 : 0
 
@@ -194,10 +186,6 @@ data "vault_generic_secret" "service_secrets_search" {
 
 data "aws_ssm_parameters_by_path" "secrets_search" {
   path = "/${local.name_prefix_search}"
-}
-
-data "aws_ec2_instance_type" "search" {
-  instance_type = var.ec2_instance_type_search
 }
 
 data "aws_subnets" "stack_application_search" {

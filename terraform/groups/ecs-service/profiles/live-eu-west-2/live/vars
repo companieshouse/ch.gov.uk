@@ -2,9 +2,11 @@ environment = "live"
 aws_profile = "live-eu-west-2"
 
 # scaling configs default
-desired_task_count = 0
-min_task_count = 0
-max_task_count = 0
+desired_task_count = 32
+min_task_count = 32
+max_task_count = 32
+required_cpus = 768
+required_memory = 1024
 enable_listener = false
 use_ecs_cluster_default = true
 use_fargate = false
@@ -36,8 +38,11 @@ service_autoscale_enabled = false
 # ECS cluster variables
 # ------------------------------------------------------------------------------
 create_ecs_cluster_default = true
+ec2_instance_type_default = "c7i.4xlarge"
+
 create_ecs_cluster_officers = true
 ec2_instance_type_officers = "c7i.4xlarge"
+
 create_ecs_cluster_search = true
 ec2_instance_type_search = "c7i.4xlarge"
 enable_instance_refresh_search = true
