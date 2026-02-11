@@ -17,22 +17,21 @@
       <h2 class="heading-medium" id="about-service">
           About this service
       </h2>
-      <p>This accessibility statement applies to the ‘Find and update company information' service. </p>
-      <p>This service is run by <a class="govuk-link" href="https://www.gov.uk/government/organisations/companies-house">Companies House</a>. We want as many people as possible to be able to use this service. For example, that means you should be able to:</p>
+      <p>This accessibility statement applies to the ‘Find and update company information' service.</p>
+      <p>This website is run by <a class="govuk-link" href="https://www.gov.uk/government/organisations/companies-house">Companies House</a>. We want as many people as possible to be able to use this website. For example, that means you should be able to:</p>
 
       <ul class="list-bullet">
-        <li>change colours, contrast levels and fonts</li>
-        <li>zoom in up to 300% without the text disappearing off the screen</li>
-        <li>navigate most of the service using just a keyboard</li>
-        <li>navigate most of the service using speech recognition software</li>
-        <li>listen to most of the service using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)</li>
+        <li>change colours, contrast levels and fonts using browser or device settings</li>
+        <li>zoom in up to 400% without the text spilling off the screen</li>
+        <li>navigate most of the website using a keyboard or speech recognition software</li>
+        <li>listen to most of the website using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)</li>
       </ul>
 
     <br>
 
-    <p>We’ve also made the website text simple to understand.</p>
+    <p>We’ve also made the website text as simple as possible to understand.</p>
     <p>
-        <a class="govuk-link" href="https://mcmw.abilitynet.org.uk/">AbilityNet has advice on making your device easier to use if you have a disability.</a>
+        <a class="govuk-link" href="https://mcmw.abilitynet.org.uk/">AbilityNet</a> has advice on making your device easier to use if you have a disability.
     </p>
 
     <h2 class="heading-medium" id="how-accessible">
