@@ -4,19 +4,6 @@
       <h1 class="heading-xlarge">
         Accessibility statement for the Companies House service
       </h1>
-      <ul class="list-bullet">
-        <li><a href="#about-service">About this service</a></li>
-        <li><a href="#how-accessible">How accessible this service is</a></li>
-        <li><a href="#reporting-accessibility">Reporting accessibility problems with this service</a></li>
-        <li><a href="#enforcement">Enforcement procedure</a></li>
-        <li><a href="#technical-information">Technical information about this service’s accessibility</a></li>
-        <li><a href="#tested">How we tested this service</a></li>
-        <li><a href="#were-doing">What we’re doing to improve accessibility</a></li>
-      </ul>
-
-      <h2 class="heading-medium" id="about-service">
-          About this service
-      </h2>
       <p>This accessibility statement applies to the ‘Find and update company information' service.</p>
       <p>This website is run by <a class="govuk-link" href="https://www.gov.uk/government/organisations/companies-house">Companies House</a>. We want as many people as possible to be able to use this website. For example, that means you should be able to:</p>
 
@@ -35,7 +22,7 @@
     </p>
 
     <h2 class="heading-medium" id="how-accessible">
-        How accessible this service is
+        How accessible this website is
     </h2>
 
     <p>We know some parts of this service aren’t fully accessible:</p>
@@ -45,20 +32,17 @@
     </ul>
 
     <ul class="list-bullet">
-        <li>due to a known bug in the Chrome web browser, in some circumstances users of assistive technology such as screen readers may get presented with incorrect information when using our accounts filing service</li>
+        <li>some filters may reload the screen when clicked, which may be confusing for users.</li>
     </ul>
 
-     <ul class="list-bullet">
-        <li>some pagination links do meet recommended minimum size</li>
-    </ul>
+     <p>There are links from this website to <a class="govuk-link" href="http://resources.companieshouse.gov.uk">http://resources.companieshouse.gov.uk</a>, which is currently under review.</p>
 
-    <h2 class="heading-medium" id="reporting-accessibility">
-        Reporting accessibility problems with this service
+    <h2 class="heading-medium" id="feedback-and-contact">
+        Feedback and contact information
     </h2>
 
-    <p>We’re always looking to improve the accessibility of this service. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, you can find contact details on our 
-        <a class="govuk-link" href="https://www.gov.uk/guidance/accessibility-support-for-companies-house-users"> accessibility support for Companies House users</a>
-        page.   
+    <p>We’re always looking to improve the accessibility of our services. If you find any problems not listed on this page or have difficulty using any part of this service,
+        <a class="govuk-link" href="https://www.gov.uk/find-contact-details-companies-house">contact Companies House</a>.
     </p>
 
     <h2 class="heading-medium" id="enforcement">
@@ -71,7 +55,7 @@
     </p>
 
     <h2 class="heading-medium" id="technical-information">
-        Technical information about this service’s accessibility
+        Technical information about this website’s accessibility
     </h2>
 
     <p>Companies House is committed to making its website accessible in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.</p>
@@ -82,31 +66,65 @@
     </p>
 
     <h2 class="heading-medium">
+        Non-accessible content
+    </h2>
+
+    <p>The content listed below is non-accessible for the following reasons.</p>
+
+    <h3 class="heading-small">Non-compliance with the accessibility regulations</h3>
+
+    <h4 class="heading-medium">
       Users of screen reading technology
-    </h2>
+    </h4>
 
-    <p>In some circumstances, users of screen reader technology may get presented with incorrect information when using our accounts filing service. This doesn’t meet WCAG 2.2 Success Criterion 3.3.2 (Labels or Instructions). This is a known bug in the Chrome web browser - these types of bugs are usually fixed by future updates to the browser.</p>
+    <p>In some circumstances, users of screen reader technology may get presented with incorrect information when using our accounts filing service.
+        This doesn’t meet WCAG 2.2 Success Criterion 3.3.2 (Labels or Instructions). This is a known bug in the Chrome web browser - these types of
+        bugs are usually fixed by future updates to the browser.</p>
 
-    <h2 class="heading-medium">
+    <h4 class="heading-small">
         PDFs and other documents
-    </h2>
+    </h4>
 
-    <p>Many of our documents don’t meet accessibility standards. For example:</p>
+    <p>Many of our PDFs and other documents don’t meet accessibility standards. For example:</p>
     <ul class="list-bullet">
         <li>they may not be structured so they’re accessible to a screen reader, which doesn’t meet WCAG 2.2 success criterion 4.1.2 (name, role value) and 1.3.1 (info and relationships)</li>
         <li>they may contain images of text, which doesn’t meet WCAG success criterion 1.4.5 (images of text)</li>
         <li>they may also contain images that have non-descriptive alternative text, which doesn’t meet WCAG success criterion 1.1.1 (non-text content)</li>
         <li>there are also instances of PDFs where the language isn’t correctly declared, which doesn’t meet WCAG success criterion 3.1.1 (language of page)</li>
     </ul>
-    <h2 class="heading-medium">
-        Pagination links
+
+    <h4 class="heading-small">
+        Filtering checkboxes
+    </h4>
+
+    <p>On some screens where results can be filtered – including the Company Filing History page, the Company People
+    page and the Personal Appointments page - interacting with the filter checkboxes can result in the screen being
+    reloaded, which may disorientate users who rely on a keyboard to navigate. This doesn’t meet WCAG success criterion
+    3.2.2 (On input).
+    </p>
+
+    <h2 class="heading-medium" id="what-were-doing">
+        What we're doing to improve accessibility
     </h2>
 
-    <p>Pagination links do not meet a minimum size or have sufficient spacing around them, so may be difficult to activate for users with dexterity limitations. This doesn’t meet WCAG success criterion 2.5.8 target size (minimum).</p>
+    <p>To improve this service's accessibility, we:</p>
 
-    <h2 class="heading-medium" id="tested">
-        How we tested this service
+    <ul class="list-bullet">
+        <li>work with real users who have accessibility issues to make sure that our services meet their needs</li>
+        <li>carry out internal tests for compliance with Web Content Accessibility Guidelines 2.2 level A and level AA</li>
+        <li>recruit users through
+            <a class="govuk-link" href="https://www.gov.uk/government/news/help-improve-companies-house">our user panel</a>
+            and agencies to take part in usability sessions</li>
+        <li>build and test our services to meet
+            <a class="govuk-link" href="https://www.gov.uk/service-manual/helping-people-to-use-your-service/making-your-service-accessible-an-introduction#meeting-government-accessibility-requirements">government accessibility requirements</a>
+        </li>
+    </ul>
+
+    <h2 class="heading-medium" id="preparation">
+        Preparation of this accessibility statement
     </h2>
+
+    <p>This statement was prepared on 7 May 2020. It was last reviewed on 4 February 2026.</p>
 
     <p>This service was last externally audited in September 2025 by the GDS Accessibility Monitoring team.</p>
 
@@ -134,28 +152,5 @@
         <li>Your filings</li>
         <li>The company profile</li>
     </ul>
-
-    <h2 class="heading-medium" id="were-doing">
-        What we’re doing to improve accessibility
-    </h2>
-
-    <p>To improve this service's accessibility, we:</p>
-
-    <ul class="list-bullet">
-        <li>work with real users who have accessibility issues to make sure that our services meet their needs</li>
-        <li>carry out internal tests for compliance with Web Content Accessibility Guidelines 2.2 level A and level AA</li>
-        <li>recruit users through
-            <a class="govuk-link" href="https://www.gov.uk/government/news/help-improve-companies-house">our user panel</a>
-            and agencies to take part in usability sessions</li>
-        <li>build and test our services to meet
-            <a class="govuk-link" href="https://www.gov.uk/service-manual/helping-people-to-use-your-service/making-your-service-accessible-an-introduction#meeting-government-accessibility-requirements">government accessibility requirements</a>
-        </li>
-    </ul>
-
-    <br>
-    <p><a class="govuk-link" href="https://companieshouse.blog.gov.uk/category/user-research/">Read our blogs about usability</a>
-          to find out more about our user research work.</p>
-    <p>This statement was prepared on 7 May 2020. It was last updated on 16 December 2025.</p>
-
     </article>
 % }
