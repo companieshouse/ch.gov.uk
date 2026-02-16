@@ -1,7 +1,7 @@
 % cascade base { title => 'Accessibility statement - Find and update company information - GOV.UK', disable_header_search => 1, alternative_skiplink => true, disable_number_exclusion => 1 }
 % around content -> {
     <article class="text" id="page-content">
-      <h1 class="heading-xlarge">
+      <h1 class="govuk-heading-xl">
         Accessibility statement for the Companies House service
       </h1>
       <p>This accessibility statement applies to the ‘Find and update company information' service.</p>
@@ -14,14 +14,14 @@
         <li>listen to most of the website using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)</li>
       </ul>
 
-    <br>
+    <br/>
 
     <p>We’ve also made the website text as simple as possible to understand.</p>
     <p>
         <a class="govuk-link" href="https://mcmw.abilitynet.org.uk/">AbilityNet</a> has advice on making your device easier to use if you have a disability.
     </p>
 
-    <h2 class="heading-medium" id="how-accessible">
+    <h2 class="govuk-heading-l" id="how-accessible">
         How accessible this website is
     </h2>
 
@@ -37,7 +37,7 @@
 
      <p>There are links from this website to <a class="govuk-link" href="http://resources.companieshouse.gov.uk">http://resources.companieshouse.gov.uk</a>, which is currently under review.</p>
 
-    <h2 class="heading-medium" id="feedback-and-contact">
+    <h2 class="govuk-heading-l" id="feedback-and-contact">
         Feedback and contact information
     </h2>
 
@@ -45,7 +45,7 @@
         <a class="govuk-link" href="https://www.gov.uk/find-contact-details-companies-house">contact Companies House</a>.
     </p>
 
-    <h2 class="heading-medium" id="enforcement">
+    <h2 class="govuk-heading-l" id="enforcement">
         Enforcement procedure
     </h2>
 
@@ -54,7 +54,7 @@
         <a class="govuk-link" href="https://www.equalityadvisoryservice.com/">contact the Equality Advisory and Support Service (EASS)</a>.
     </p>
 
-    <h2 class="heading-medium" id="technical-information">
+    <h2 class="govuk-heading-l" id="technical-information">
         Technical information about this website’s accessibility
     </h2>
 
@@ -65,15 +65,15 @@
         AA standard, due to the non-compliances listed in the next section.
     </p>
 
-    <h2 class="heading-medium">
+    <h2 class="govuk-heading-l">
         Non-accessible content
     </h2>
 
     <p>The content listed below is non-accessible for the following reasons.</p>
 
-    <h3 class="heading-small">Non-compliance with the accessibility regulations</h3>
+    <h3 class="govuk-heading-m">Non-compliance with the accessibility regulations</h3>
 
-    <h4 class="heading-medium">
+    <h4 class="govuk-heading-s">
       Users of screen reading technology
     </h4>
 
@@ -81,7 +81,7 @@
         This doesn’t meet WCAG 2.2 Success Criterion 3.3.2 (Labels or Instructions). This is a known bug in the Chrome web browser - these types of
         bugs are usually fixed by future updates to the browser.</p>
 
-    <h4 class="heading-small">
+    <h4 class="govuk-heading-s">
         PDFs and other documents
     </h4>
 
@@ -92,8 +92,8 @@
         <li>they may also contain images that have non-descriptive alternative text, which doesn’t meet WCAG success criterion 1.1.1 (non-text content)</li>
         <li>there are also instances of PDFs where the language isn’t correctly declared, which doesn’t meet WCAG success criterion 3.1.1 (language of page)</li>
     </ul>
-
-    <h4 class="heading-small">
+    <br/>
+    <h4 class="govuk-heading-s">
         Filtering checkboxes
     </h4>
 
@@ -103,7 +103,7 @@
     3.2.2 (On input).
     </p>
 
-    <h2 class="heading-medium" id="what-were-doing">
+    <h2 class="govuk-heading-l" id="what-were-doing">
         What we're doing to improve accessibility
     </h2>
 
@@ -119,8 +119,8 @@
             <a class="govuk-link" href="https://www.gov.uk/service-manual/helping-people-to-use-your-service/making-your-service-accessible-an-introduction#meeting-government-accessibility-requirements">government accessibility requirements</a>
         </li>
     </ul>
-
-    <h2 class="heading-medium" id="preparation">
+    <br/>
+    <h2 class="govuk-heading-l" id="preparation">
         Preparation of this accessibility statement
     </h2>
 
