@@ -92,8 +92,6 @@ locals {
 
   task_secrets_default = concat(local.global_secret_list, local.service_secret_list_default)
 
-  task_required_cpu_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default && !var.use_fargate ? local.ec2_task_cpu_default : var.required_cpus
-  task_required_mem_default = var.use_ecs_cluster_default && var.create_ecs_cluster_default && !var.use_fargate ? local.ec2_task_mem_default : var.required_memory
   task_required_memory_kb   = var.required_memory * 1024
   task_environment = concat(local.ssm_global_version_map, local.ssm_service_version_map_default, [
     { "name" : "MAX_MEMORY_USAGE", "value" : "${local.task_required_memory_kb}" },
@@ -174,9 +172,6 @@ locals {
   # ------------------------------------------------------------------------------
   ec2_ami_id = var.ec2_ami_id == "" ? data.aws_ami.ec2.id : var.ec2_ami_id
 
-  ec2_os_reserved_cpu = 128
-  ec2_os_reserved_mem = 512
-
   # ------------------------------------------------------------------------------
   # Default service ECS cluster locals
   # ------------------------------------------------------------------------------
@@ -201,8 +196,8 @@ locals {
     "web-oauth2-request-key"   = local.stack_secrets_default["web_oauth2_request_key"]
   } : {}
 
-  asg_desired_instance_count_default = var.desired_task_count
-  asg_max_instance_count_default     = var.max_task_count * 2
+  asg_desired_instance_count_default = ceil(var.max_task_count / 12)
+  asg_max_instance_count_default     = local.asg_desired_instance_count_default * 2
   asg_min_instance_count_default     = 0
 
   ecs_cluster_id_default          = var.use_ecs_cluster_default && var.create_ecs_cluster_default ? module.ecs_cluster_default[0].ecs_cluster_id : data.aws_ecs_cluster.ecs_cluster.id
@@ -214,11 +209,6 @@ locals {
     var.enable_instance_refresh_default &&
     var.instance_refresh_lambda_s3_key != "" ? true : false
   )
-
-  ec2_total_cpu_default = data.aws_ec2_instance_type.default.default_vcpus * 1024
-  ec2_task_cpu_default  = local.ec2_total_cpu_default - (local.ec2_os_reserved_cpu + var.eric_cpus)
-  ec2_total_mem_default = data.aws_ec2_instance_type.default.memory_size
-  ec2_task_mem_default  = local.ec2_total_mem_default - (local.ec2_os_reserved_mem + var.eric_memory)
 
   # ------------------------------------------------------------------------------
   # Officers service ECS cluster locals
