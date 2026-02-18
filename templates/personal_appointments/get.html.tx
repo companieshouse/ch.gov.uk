@@ -66,10 +66,12 @@
                                 <% $c.cv_lookup( 'company_status', $appointment.appointed_to.company_status ) %>
                             </dd>
                         </dl>
-                        <dl class="column-two-thirds">
-                            <dt id="correspondence-address-field-<% $~appointment.count %>"><% l('Correspondence address') %></dt>
-                            <dd class="data" id="correspondence-address-value-<% $~appointment.count %>"><% $c.address_as_string($appointment.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 }) %></dd>
-                        </dl>
+                        % if $appointment.address {
+                            <dl class="column-two-thirds">
+                                <dt id="correspondence-address-field-<% $~appointment.count %>"><% l('Correspondence address') %></dt>
+                                <dd class="data" id="correspondence-address-value-<% $~appointment.count %>"><% $c.address_as_string($appointment.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 }) %></dd>
+                            </dl>
+                        % }
                     </div>
 
                     % if $appointment.principal_office_address {
@@ -250,7 +252,7 @@
                     </div> <%# /grid-row %>
 
                     % if $appointment.identification {
-                        % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" {
+                        % if $appointment.identification.identification_type != "registered-overseas-entity-corporate-managing-officer" && $appointment.identification.identification_type != "limited-partnership-corporate-partner" {
                             <h3 class="identification-type-<% $~appointment.count %>">
                                 % if ($appointment.identification.identification_type == 'non-eea') {
                                     Registered in a
@@ -287,6 +289,15 @@
                                 <dl class="column-third">
                                     <dt id="registration-number-field-<% $~appointment.count %>">Registration number</dt>
                                     <dd class="data" id="registration-number-value-<% $~appointment.count %>"><% $appointment.identification.registration_number %></dd>
+                                </dl>
+                            % }
+
+                            % if $appointment.identification.register_location {
+                                <dl class="column-third">
+                                    <dt id="register-location-field-<% $~appointment.count %>">Country registered in</dt>
+                                    <dd class="data" id="register-location-value-<% $~appointment.count %>">
+                                        <% $appointment.identification.register_location %>
+                                    </dd>
                                 </dl>
                             % }
                         </div>
