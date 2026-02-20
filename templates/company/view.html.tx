@@ -8,6 +8,11 @@
 
     % include '/includes/company/tabs_start.tx' { active => 'company-overview-tab' };
 
+    <p id="acsp-number-2">
+        <% l('ACSP number') %>
+        <strong><%= $session.signin_info.acsp_number %></strong>
+    </p>
+
     <dl>
     % if $company.company_number == $c.authorised_company and $company.registered_office_is_in_dispute {
               <dt> <span id="roa-dispute" ><% l('Registered office address replaced') %></span> <a id="dispute-help-link"  href="/help/replaced-address-help.html"><% l("what's this?") %></a></dt>
@@ -42,6 +47,11 @@
             % }
             % else {
                 % $c.address_as_string( $company.registered_office_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
+
+                % if ($company.type == 'limited-partnership' && $c.is_signed_in && $session.signin_info.acsp_number) {
+                    <a href="/limited-partnerships/update/company/<% $company.company_number %>/enter-registered-office-address">Update</a>
+                % }
+
                 % if $company.company_number == $c.authorised_company && !$c.config.disable_filing && $company.type != "oversea-company" {
                     <br />
                     <a href="<% $c.url_for %><%

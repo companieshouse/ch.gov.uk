@@ -1,13 +1,23 @@
 <div class="company-header">
         <div id="content" class="content-override"></div>
         <h1 class="heading-xlarge"><% $company.company_name %></h1>
-        <p id="company-number">
-        % if $company.type == 'uk-establishment' {
-        <% l('UK establishment number') %>
+
+        % if ($company.type == 'limited-partnership' && $c.is_signed_in && $session.signin_info.acsp_number) {
+            <a href="/limited-partnerships/update/company/<% $company.company_number %>/partnership-name">Update name</a>
         % }
-        % else {
-            <% l('Company number') %>
-          % }
+
+        <p id="acsp-number">
+            <% l('ACSP number') %>
+            <strong><%= $session.signin_info.acsp_number %></strong>
+        </p>
+
+        <p id="company-number">
+            % if $company.type == 'uk-establishment' {
+                <% l('UK establishment number') %>
+            % }
+            % else {
+                <% l('Company number') %>
+            % }
             <strong><% $company.company_number %></strong>
         </p>
 
