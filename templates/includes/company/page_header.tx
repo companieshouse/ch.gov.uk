@@ -2,8 +2,7 @@
         <div id="content" class="content-override"></div>
         <h1 class="heading-xlarge"><% $company.company_name %></h1>
 
-        % if (($company.subtype == 'lp' || $company.subtype == 'slp' || $company.subtype == 'pflp' || $company.subtype == 'spflp')
-        %     && $c.is_signed_in && $session.signin_info.acsp_number) {
+        % if ($c.company_is_digital_lp($company.subtype) == 1 && $c.is_signed_in && $session.signin_info.acsp_number) {
             <a href="/limited-partnerships/update/company/<% $company.company_number %>/partnership-name">Update name</a>
         % }
 

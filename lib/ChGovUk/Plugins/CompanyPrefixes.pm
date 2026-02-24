@@ -21,6 +21,13 @@ sub register {
         my ($c, $company_number, $subtype) = @_;
         return CH::Util::CompanyPrefixes::coHasNoSic($company_number, $subtype);
     });
+
+    trace "Registering %s::company_is_digital_lp helper", __PACKAGE__ [APP];
+    $app->helper(company_is_digital_lp => sub {
+        my ($c, $subtype) = @_;
+        return CH::Util::CompanyPrefixes::coIsDigitalLP($subtype);
+    });
+
     return;
 }
 
