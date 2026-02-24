@@ -48,7 +48,8 @@
             % else {
                 % $c.address_as_string( $company.registered_office_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
 
-                % if ($company.type == 'limited-partnership' && $c.is_signed_in && $session.signin_info.acsp_number) {
+                % if (($company.subtype == 'lp' || $company.subtype == 'slp' || $company.subtype == 'pflp' || $company.subtype == 'spflp')
+                %     && $c.is_signed_in && $session.signin_info.acsp_number) {
                     <a href="/limited-partnerships/update/company/<% $company.company_number %>/enter-registered-office-address">Update</a>
                 % }
 
