@@ -16,4 +16,8 @@ max_task_count_officers = 2
 eric_memory_officers = 256
 enable_listener_officers = true
 
+create_service_dashboard = false
+create_service_dashboard_officers = false
+create_service_dashboard_search = false
+
 ec2_key_pair_name = "chs-rebel1"
