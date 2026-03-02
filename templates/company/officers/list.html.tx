@@ -114,7 +114,11 @@
                     % }
 
                     % if $officer.appointed_on {
-                      % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
+                      % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer'
+                        % || $officer.officer_role == 'corporate-limited-partner-in-a-limited-partnership'
+                        % || $officer.officer_role == 'limited-partner-in-a-limited-partnership'
+                        % || $officer.officer_role == 'corporate-general-partner-in-a-limited-partnership'
+                        % || $officer.officer_role == 'general-partner-in-a-limited-partnership' {
                         <dl class="column-quarter">
                             <dt><% l('Notified on') %></dt>
                             <dd id="officer-appointed-on-<% $~officer.count %>" class="data">

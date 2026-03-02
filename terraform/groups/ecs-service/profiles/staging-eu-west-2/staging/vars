@@ -7,7 +7,7 @@ min_task_count = 32
 max_task_count = 32
 required_cpus = 768
 required_memory = 1024
-enable_listener = true 
+enable_listener = true
 use_ecs_cluster_default = true
 use_fargate = false
 

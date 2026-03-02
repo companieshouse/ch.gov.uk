@@ -1,0 +1,23 @@
+environment = "rebel1"
+aws_profile = "development-eu-west-2"
+
+# Default service configuration
+max_task_count = 2
+eric_memory = 256
+enable_listener = true
+
+# Search service configuration
+max_task_count_search = 2
+eric_memory_search = 256
+enable_listener_search = true
+
+# Officers service configuration
+max_task_count_officers = 2
+eric_memory_officers = 256
+enable_listener_officers = true
+
+create_service_dashboard = false
+create_service_dashboard_officers = false
+create_service_dashboard_search = false
+
+ec2_key_pair_name = "chs-rebel1"
