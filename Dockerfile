@@ -1,4 +1,6 @@
-FROM 169942020521.dkr.ecr.eu-west-1.amazonaws.com/base/perl:5.18-centos
+FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ch.gov.uk:latest
+
+COPY . .
 
 ENV MOJO_LISTEN=http://*:10000
 
