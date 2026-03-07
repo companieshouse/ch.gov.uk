@@ -47,6 +47,6 @@ ec2_instance_type_officers = "c7i.4xlarge"
 create_ecs_cluster_search = true
 ec2_instance_type_search = "c7i.4xlarge"
 enable_instance_refresh_search = true
-instance_refresh_schedule_search = "0 0,7,13,18 * * ? *"
+instance_refresh_schedule_search = "cron(0 0,7,13,18 * * ? *)"
 
 ec2_key_pair_name = "ch-aws-live"
