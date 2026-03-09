@@ -22,7 +22,7 @@ terraform {
 # ------------------------------------------------------------------------------
 module "ecs_cluster_default" {
   count  = var.create_ecs_cluster_default ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.367"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.369"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -47,7 +47,7 @@ module "ecs_cluster_default" {
 
 module "cluster_secrets_default" {
   count  = var.create_ecs_cluster_default ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/parameter-store?ref=1.0.367"
+  source = "git@github.com:companieshouse/terraform-modules//aws/parameter-store?ref=1.0.369"
 
   name_prefix = local.stack_name_prefix_default
   secrets     = local.stack_parameter_store_secrets_default
@@ -56,7 +56,7 @@ module "cluster_secrets_default" {
 
 module "cluster_instance_refresh_default" {
   count  = local.enable_cluster_instance_refresh_default ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/refresh-instances-lambda?ref=1.0.367"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/refresh-instances-lambda?ref=1.0.369"
 
   environment = var.environment
 
@@ -70,7 +70,7 @@ module "cluster_instance_refresh_default" {
 
 module "ecs_cluster_officers" {
   count  = var.create_ecs_cluster_officers ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.367"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.369"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -95,7 +95,7 @@ module "ecs_cluster_officers" {
 
 module "cluster_secrets_officers" {
   count  = var.create_ecs_cluster_officers ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/parameter-store?ref=1.0.367"
+  source = "git@github.com:companieshouse/terraform-modules//aws/parameter-store?ref=1.0.369"
 
   name_prefix = local.stack_name_prefix_officers
   secrets     = local.stack_parameter_store_secrets_officers
@@ -104,7 +104,7 @@ module "cluster_secrets_officers" {
 
 module "cluster_instance_refresh_officers" {
   count  = local.enable_cluster_instance_refresh_officers ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/refresh-instances-lambda?ref=1.0.367"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/refresh-instances-lambda?ref=1.0.369"
 
   environment = var.environment
 
@@ -118,7 +118,7 @@ module "cluster_instance_refresh_officers" {
 
 module "ecs_cluster_search" {
   count  = var.create_ecs_cluster_search ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.367"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-cluster?ref=1.0.369"
 
   aws_profile = var.aws_profile
   environment = var.environment
@@ -143,7 +143,7 @@ module "ecs_cluster_search" {
 
 module "cluster_secrets_search" {
   count  = var.create_ecs_cluster_search ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/parameter-store?ref=1.0.367"
+  source = "git@github.com:companieshouse/terraform-modules//aws/parameter-store?ref=1.0.369"
 
   name_prefix = local.stack_name_prefix_search
   secrets     = local.stack_parameter_store_secrets_search
@@ -152,7 +152,7 @@ module "cluster_secrets_search" {
 
 module "cluster_instance_refresh_search" {
   count  = local.enable_cluster_instance_refresh_search ? 1 : 0
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/refresh-instances-lambda?ref=1.0.367"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/refresh-instances-lambda?ref=1.0.369"
 
   environment = var.environment
 
