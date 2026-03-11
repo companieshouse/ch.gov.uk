@@ -6,5 +6,8 @@ APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 PORT=${PORT:=10000}
 
+echo "Setting up log4perl.conf"
+mv "${APP_DIR}/log4perl.production.conf" "${APP_DIR}/log4perl.conf"
+
 source /opt/perlbrew/etc/bashrc
 exec perlbrew exec env PERL5LIB="${APP_DIR}/local/lib/perl5" "${APP_DIR}/script/start_app" daemon -l "http://*:${PORT}"
