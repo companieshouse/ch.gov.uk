@@ -2,33 +2,33 @@ environment = "staging"
 aws_profile = "staging-eu-west-2"
 
 # Default service configuration
-desired_task_count = 32
-min_task_count = 32
+desired_task_count = 0
+min_task_count = 0
 max_task_count = 32
 required_cpus = 768
 required_memory = 1024
-enable_listener = true
+enable_listener = false
 use_ecs_cluster_default = true
 use_fargate = false
 
 # Search service configuration
-desired_task_count_search = 32
-min_task_count_search = 32
+desired_task_count_search = 0
+min_task_count_search = 0
 max_task_count_search = 32
 required_cpus_search = 768
 required_memory_search = 1024
-enable_listener_search = true
+enable_listener_search = false
 use_ecs_cluster_search = true
 use_fargate_search = false
 use_task_container_healthcheck_search = false
 
 # Officers service configuration
-desired_task_count_officers = 32
-min_task_count_officers = 32
+desired_task_count_officers = 0
+min_task_count_officers = 0
 max_task_count_officers = 32
 required_cpus_officers = 768
 required_memory_officers = 1024
-enable_listener_officers = true
+enable_listener_officers = false
 use_ecs_cluster_officers = true
 use_fargate_officers = false
 
