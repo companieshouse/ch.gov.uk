@@ -8,7 +8,11 @@
         % }
 
         % if $company.links.officers || $company.links.persons_with_significant_control || $company.links.persons_with_significant_control_statements || $company.super_secure_managing_officer_count >= 1{
-            % include "/includes/company/tab.tx" { tabid => 'people-tab',         page => '/officers',       title => 'People' };
+            % if $company.type == 'limited-partnership' {
+                % include "/includes/company/tab.tx" { tabid => 'people-tab', page => '/general-partners', title => 'People' };
+            % } else {
+                % include "/includes/company/tab.tx" { tabid => 'people-tab', page => '/officers', title => 'People' };
+            % }
         % }
 
         % if $company.links.charges && ($c.config.feature.mortgage || $c.can_do('/admin/mortgages')) {

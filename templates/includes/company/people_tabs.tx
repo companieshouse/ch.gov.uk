@@ -1,12 +1,30 @@
 	    <ul class="search-tabs" role="tablist">
 	        <% if $officers { %>
-	        	<li role="presentation" id='peoples-tab' class="active">
-	                <a role="tab" id='officers-link' class="govuk-link" href='#' aria-selected="true">Officers</a>
-	        	</li>
+                <% if ($company.type == 'limited-partnership') { %>
+                    <li role="presentation" id='general-partners-tab' class="active">
+                        <a role="tab" id='general-partners-link' class="govuk-link" href="<% $c.url_for("list_general_partners") %>" aria-selected="false">General Partners</a>
+                    </li>
+                    <li role="presentation" id='limited-partners-tab' class="active">
+                        <a role="tab" id='limited-partners-link' class="govuk-link" href="<% $c.url_for("list_limited_partners") %>" aria-selected="false">Limited Partners</a>
+                    </li>
+                <% } else { %>
+                    <li role="presentation" id='peoples-tab' class="active">
+                        <a role="tab" id='officers-link' class="govuk-link" href='#' aria-selected="true">Officers</a>
+                    </li>
+                <% } %>
 	        <% } else { %>
-	        	<li role="presentation" id='peoples-tab'>
-	                <a role="tab" id='officers-link' class="govuk-link" href="<% $c.url_for("company_officers") %>" aria-selected="false">Officers</a>
-	        	</li>
+                <% if ($company.type == 'limited-partnership') { %>
+                    <li role="presentation" id='general-partners-tab'>
+                        <a role="tab" id='general-partners-link' class="govuk-link" href="<% $c.url_for("list_general_partners") %>" aria-selected="false">General Partners</a>
+                    </li>
+                    <li role="presentation" id='limited-partners-tab'>
+                        <a role="tab" id='limited-partners-link' class="govuk-link" href="<% $c.url_for("list_limited_partners") %>" aria-selected="false">Limited Partners</a>
+                    </li>
+            <% } else { %>
+                    <li role="presentation" id='peoples-tab'>
+                        <a role="tab" id='officers-link' class="govuk-link" href="<% $c.url_for("company_officers") %>" aria-selected="false">Officers222</a>
+                    </li>
+                <% } %>
 	        <% } %>
 
             <% if ($c.config.feature.psc == 1) { %>

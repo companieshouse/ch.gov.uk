@@ -74,6 +74,10 @@ sub register {
     $company_bridge->get('/ukestablishments')->name('company_branches')->to('company-branches#view');
     $company_bridge->get('/more')->name("company_view_all")->to('company-view_all#view');
 
+    # Limited Partnership routes
+    $company_bridge->get('/general-partners')->name('list_general_partners')->to('company-general_partners#list');
+    $company_bridge->get('/limited-partners')->name('list_limited_partners')->to('company-limited_partners#list');
+
     # PSCs route
     $company_bridge->get('/persons-with-significant-control')->name('list_pscs')->to('company-pscs#list');
 
