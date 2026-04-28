@@ -87,7 +87,7 @@ sub list {
 
             $self->stash(categories => $categories);
             $self->stash(is_overseas_entity => $is_overseas_entity);
-            $self->stash(officers => {
+            $self->stash(limitedPartners => {
                 items          => $results->{items},
                 active_count   => $results->{active_count},
                 inactive_count => $results->{inactive_count},
@@ -168,7 +168,7 @@ sub list {
                 $self->stash(company_appointments =>
                     build_company_appointments($results, $is_active_filter_set, $is_overseas_entity));
                 $self->stash(categories => $categories);
-                $self->stash(officers => {});
+                $self->stash(limitedPartners => {});
                 return $self->render;
             }
 
@@ -237,7 +237,7 @@ sub list {
     );
     $model->page_size( $self->param('page_size') ) if $self->param('page_size');
 
-    $self->stash( officers => $model, );
+    $self->stash( limitedPartners => $model, );
 
     $self->render();
 
