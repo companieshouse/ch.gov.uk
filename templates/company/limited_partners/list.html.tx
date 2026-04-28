@@ -1,0 +1,396 @@
+% cascade base { title=> $company.company_name ~" people - Find and update company information - GOV.UK", require_js => "transactions/company/officer_listing_view" }
+% around content -> {
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes-->
+<script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes-->
+
+    % include '/includes/company/page_header.tx'
+
+    % include '/includes/company/tabs_start.tx' { active => 'people-tab' };
+
+    % include '/includes/company/people_tabs.tx' { active => 'officers-tab' };
+
+    <div class="js-only">
+        <form id="officer-filter" class="form grid-row">
+            <div class="column-half">
+                <h2 class="heading-medium filter-appointments" id="officer-filter-h2">
+                        Filter officers
+                </h2>
+                <fieldset>
+                    <legend class="govuk-visually-hidden">Filter officers, selecting an input will reload the page.</legend>
+                    % for $categories -> $category {
+                            <label for="officer-category-<% $category.id %>" class="block-label selection-button-checkbox">
+                                <input id="officer-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
+                                <% l($category.name) %>
+                            </label>
+                    % }
+                </fieldset>
+                <input class="button js-hidden" type="submit" value="Apply filter">
+            </div>
+        </form>
+    </div>
+
+    <h2 class="heading-medium" id="company-appointments">
+        <span class="govuk-visually-hidden">Officers:</span><% $company_appointments %>
+    </h2>
+
+    <div class="appointments-list">
+        % for $limitedPartners.items -> $officer {
+            <div class="appointment-<% $~officer.count %>">
+                % if $~officer.is_first {
+                    <h2 class="heading-medium">
+                        <span id="officer-name-<% $~officer.count %>">
+                            <a class="govuk-link" href="<% $officer.links.officer.appointments %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $officer.name %></a>
+                        </span>
+
+                % } else {
+                    <h2 class="heading-medium heading-with-border">
+                        <span id="officer-name-<% $~officer.count %>">
+                            <a class="govuk-link" href="<% $officer.links.officer.appointments %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $officer.name %></a>
+                        </span>
+                    </h2>
+
+                % }
+                </h2>
+
+                % if $officer.contact_details {
+                    <dl>
+                        <dt><% l('Correspondence name') %></dt>
+                        <dd id="officer-contact-details-<% $~officer.count %>" class="data">
+                            <% $officer.contact_details.contact_name %>
+                        </dd>
+                    </dl>
+                % }
+
+                % if $officer.address {
+                    <dl>
+                        <dt id="officer-address-field-<% $~officer.count %>"><% l('Correspondence address') %></dt>
+                        <dd class="data" id="officer-address-value-<% $~officer.count %>">
+                            % $c.address_as_string( $officer.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                        </dd>
+                    </dl>
+                % }
+
+                % if $officer.principal_office_address {
+                    <dl>
+                        <dt><% l('Principal office address') %></dt>
+                        <dd id="officer-principal-office-address-<% $~officer.count %>" class="data">
+                            % $c.address_as_string( $officer.principal_office_address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 } )
+                        </dd>
+                    </dl>
+                % }
+
+                <div class="grid-row">
+
+                    %# this is always displayed
+                    <dl class="column-quarter">
+                        <dt><% l('Role') %>
+                            % if $officer.resigned_on  {
+                                % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
+                                   <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
+                                 %} else {  
+                                   <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
+                                %} 
+                            % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' && $company.company_status != 'closed' && $company.company_status != 'removed' {
+                               <span id="officer-status-tag-<% $~officer.count %>" class="status-tag font-xsmall">Active</span>
+                            % }
+                        </dt>
+                        <dd id="officer-role-<% $~officer.count %>" class="data">
+                            <% $c.cv_lookup( 'officer_role', $officer.officer_role) %>
+                        </dd>
+                    </dl>
+
+                    % if $officer.date_of_birth {
+                        <dl class="column-quarter">
+                            <dt><% l('Date of birth') %></dt>
+                            <dd id="officer-date-of-birth-<% $~officer.count %>" class="data">
+                            % if ($officer._authorised_dob) {
+                                <% $c.isodate_as_string( $officer.date_of_birth ) %>
+                            % } else {
+                                <% $c.isodate_as_string( $officer.date_of_birth, "%B %Y" ) %>
+                            % }
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $officer.appointed_on {
+                      % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer'
+                        % || $officer.officer_role == 'corporate-limited-partner-in-a-limited-partnership'
+                        % || $officer.officer_role == 'limited-partner-in-a-limited-partnership'
+                        % || $officer.officer_role == 'corporate-general-partner-in-a-limited-partnership'
+                        % || $officer.officer_role == 'general-partner-in-a-limited-partnership' {
+                        <dl class="column-quarter">
+                            <dt><% l('Notified on') %></dt>
+                            <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.appointed_on ) %>
+                            </dd>
+                        </dl>
+                      % } else {
+                        <dl class="column-quarter">
+                            <dt><% l('Appointed on') %></dt>
+                            <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.appointed_on ) %>
+                            </dd>
+                        </dl>
+                       % }
+                    % } else if $officer.appointed_before {
+                        <dl class="column-quarter">
+                           <dt><% l('Appointed before') %></dt>
+                           <dd id="officer-appointed-before<% $~officer.count %>" class="data">
+                               <% $c.isodate_as_string( $officer.appointed_before ) %>
+                           </dd>
+                        </dl>
+                    % }
+
+                    % if $officer.resigned_on {
+                        % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
+                        <dl class="column-quarter">
+                            <dt><% l('Ceased on') %></dt>
+                            <dd id="officer-resigned-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.resigned_on ) %>
+                            </dd>
+                        </dl>
+                       % } else {
+                        <dl class="column-quarter">
+                            <dt><% l('Resigned on') %></dt>
+                            <dd id="officer-resigned-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.resigned_on ) %>
+                            </dd>
+                        </dl>
+                        % }
+                    % }
+
+                </div> <%# /grid-row%>
+
+                % if $officer.responsibilities {
+                    <dl>
+                        <dt><% l('Responsibilities') %></dt>
+                        <dd id="officer-responsibilities-<% $~officer.count %>" class="data">
+                            <% $officer.responsibilities %>
+                        </dd>
+                    </dl>
+                % }
+
+                <div class="grid-row">
+                    % if $officer.nationality {
+                        <dl class="column-quarter">
+                            <dt><% l('Nationality') %></dt>
+                            <dd id="officer-nationality-<% $~officer.count %>" class="data">
+                                <% $officer.nationality %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $officer.country_of_residence {
+                        <dl class="column-quarter">
+                            <dt><% l('Country of residence') %></dt>
+                            <dd id="officer-country-of-residence-<% $~officer.count %>" class="data">
+                                <% $officer.country_of_residence %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $officer.occupation {
+                        <dl class="column-quarter">
+                            <dt><% l('Occupation') %></dt>
+                            <dd id="officer-occupation-<% $~officer.count %>" class="data">
+                                <% $officer.occupation %>
+                            </dd>
+                        </dl>
+                    % }
+
+                </div> <%# /grid-row %>
+
+                <div class="grid-row">
+                    % if $officer.identity_verification_details.appointment_verification_end_on {
+                        % if not $officer.identity_verification_details.is_identity_verification_expired {
+                            <dl class="column-quarter">
+                                <dt><% l('Identity verification status') %></dt>
+                                <dd id="officer-identity-verification-details-appointment-verification-end-on-<% $~officer.count %>" class="data verified-status-data">
+                                    <span class="govuk-visually-hidden">Verified</span>
+                                    <span class="verified-status-icon">
+                                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 64 64">
+                                        <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
+                                            <defs>
+                                                <style>
+                                                .st0 {
+                                                    fill: #006435;
+                                                }
+                                                </style>
+                                            </defs>
+                                            <path class="st0" d="M32,2C15.4,2,2,15.4,2,32s13.4,30,30,30,30-13.4,30-30S48.6,2,32,2ZM25,50h0s0,0,0,0l-14-14.4,7-7.2,7,7.2,21-21.6,7,7.2-28,28.8Z"/>
+                                        </svg>
+                                    </span>
+                                    <span class="verified-status-text govuk-!-font-weight-bold govuk-!-margin-left-1"><% l('Verification requirements complete') %></span>
+                                </dd>
+                            </dl>
+                        % } else {
+                            <dl class="column-quarter">
+                                <dt></dt>
+                                <dd>
+                                    <!-- Placeholder for alternative path -->
+                                </dd>
+                            </dl>
+                        % }
+                    % }
+                    % else if $officer.identity_verification_details.appointment_verification_statement_due_on {
+                        <dl class="column-quarter">
+                            <dt><% l('Identity verification due') %></dt>
+                            <dd id="officer-identity-verification-details-appointment-verification-statement-due-on-<% $~officer.count %>" class="data">
+                                <% $c.isodate_as_string( $officer.identity_verification_details.appointment_verification_statement_due_on ) %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+
+                <div class="grid-row">
+                    % if $officer.identity_verification_details {
+                        % if not $officer.identity_verification_details.is_identity_verification_expired {
+                            % if $officer.identity_verification_details.anti_money_laundering_supervisory_bodies ||
+                            % $officer.identity_verification_details.authorised_corporate_service_provider_name ||
+                            % $officer.identity_verification_details.identity_verified_on ||
+                            % $officer.identity_verification_details.preferred_name
+                        % {
+                                <div class="column-full govuk-!-margin-bottom-6">
+                                    <h3 class="heading-small govuk-!-static-margin-0"><% l('Identity verified by an Authorised Corporate Service Provider (ACSP)') %></h3>
+                                    <p>
+                                        <% $officer.identity_verification_details.authorised_corporate_service_provider_name %>
+                                        <% l('has confirmed that they have verified the identity of') %>
+                                        <% $officer.identity_verification_details.preferred_name %>
+                                        <% l('to the standard set by Companies House and is satisfied that the required personal information is true.') %>
+                                    </p>
+                                    <p>
+                                        <% l('The verification checks were completed on') ~ ' ' ~ $c.isodate_as_string( $officer.identity_verification_details.identity_verified_on ) ~ '.' %>
+                                    </p>
+                                    <p>
+                                        <% $officer.identity_verification_details.authorised_corporate_service_provider_name ~ ' ' ~ l('is supervised by:') ~ ' ' ~ $officer.identity_verification_details.supervisory_bodies_string ~ '.' %>
+                                    </p>
+                                </div>
+                    % } } }
+                </div> <%# /grid-row %>
+
+                % if $officer.identification.identification_type == 'non-eea' {
+                    <h3 class=""><% l('Registered in a Non European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                % }
+                % else if $officer.identification.identification_type == 'eea' {
+                    <h3 class=""><% l('Registered in a European Economic Area') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                % }
+                % else if $officer.identification.identification_type == 'uk-limited-company' {
+                    <h3 class=""><% l('UK Limited Company') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                % }
+                % else if $officer.identification.identification_type == 'other-corporate-body-or-firm' {
+                    <h3 class=""><% l('Other Corporate Body or Firm') %> <a href="/help/corporate-officer-identification-type"><% l("What's this?") %></a></h3>
+                % }
+
+                <div class="grid-row">
+                    % if $officer.identification.legal_authority {
+                        <dl class="column-quarter">
+                            <dt><% l('Law governed') %></dt>
+                            <dd id="officer-legal-authority-<% $~officer.count %>" class="data">
+                                <% $officer.identification.legal_authority %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $officer.identification.legal_form {
+                        <dl class="column-quarter">
+                            <dt><% l('Legal form') %></dt>
+                            <dd id="officer-legal-form-<% $~officer.count %>" class="data">
+                                <% $officer.identification.legal_form %>
+                            </dd>
+                        </dl>
+                    % }
+                    % if $officer.identification.place_registered {
+                        <dl class="column-quarter">
+                            <dt><% l('Place registered') %></dt>
+                            <dd id="officer-register-location-<% $~officer.count %>" class="data">
+                                <% $officer.identification.place_registered %>
+                            </dd>
+                        </dl>
+                    % }
+                </div> <%# /grid-row %>
+
+                <div class="grid-row">
+                    % if $officer.identification.registration_number {
+                        <dl class="column-quarter">
+                            <dt><% l('Registration number') %></dt>
+                            <dd id="officer-registration-number-<% $~officer.count %>" class="data">
+                                <% $officer.identification.registration_number %>
+                            </dd>
+                        </dl>
+                    % }
+                    % if $officer.identification.register_location {
+                    <dl class="column-quarter">
+                        <dt><% l('Country registered in') %></dt>
+                        <dd id="officer-country-registered-in-<% $~officer.count %>" class="data">
+                            <% $officer.identification.register_location %>
+                        </dd>
+                    </dl>
+                    % }
+                </div> <%# /grid-row %>
+            </div>
+        % }
+    </div>
+
+    % if $company.super_secure_managing_officer_count >= 1 {
+        <div class="grid-row">
+            <div class="column-full">
+                % if $company.company_status != "removed" {
+                    <h2 class="heading-medium heading-with-border">Protected managing officer <span class="status-tag font-xsmall">Active</span></h2>
+                % } else {
+                    <h2 class="heading-medium heading-with-border">Protected managing officer</h2>
+                % }
+            </div>
+            <div class="column-half">
+                % if $company.super_secure_managing_officer_count == 1 {
+                    <p><strong>The detail of 1 managing officer is not shown because restrictions on using or disclosing any of the individual’s particulars are in force</strong></p>
+                % } else {
+                    <p><strong>The details of <% $company.super_secure_managing_officer_count %> managing officers are not shown because restrictions on using or disclosing any of the individual’s particulars are in force</strong></p>
+                % }
+            </div>
+        </div>
+    % }
+
+    % if $limitedPartners.total_results > $paging.entries_per_page {
+        <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-0 govuk-pagination" aria-label="Pagination">
+            % if ($paging.previous_page) {
+                <div class="govuk-pagination__prev">
+                    <a class="govuk-link govuk-pagination__link" href="<% $c.url_with.query([ page => $paging.previous_page ]) %>" rel="prev">
+                    <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                        <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
+                    </svg>
+                        <span class="govuk-pagination__link-title">
+                            Previous<span class="govuk-visually-hidden"> page</span>
+                        </span>
+                    </a>
+                </div>
+            % }
+            <ul class="govuk-pagination__list">
+            % for $paging.page_set -> $page {
+            <li class="govuk-pagination__item govuk-!-display-block <% if $paging.current_page_number == $page { %> govuk-pagination__item--current <% } %> ">
+                    <a class="govuk-link govuk-pagination__link" href="<% $c.url_for %>?page=<% $page %>"
+                        aria-label="Page <% $page %>"
+                        % if $paging.current_page_number == $page {
+                                aria-current="page"
+                            % }
+                                ><% $page %>
+                    </a>
+                </li>
+            % }
+            </ul>
+            % if ($paging.next_page) {
+                <div class="govuk-pagination__next">
+                    <a class="govuk-link govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $paging.next_page ]) %>" rel="next">
+                        <span class="govuk-pagination__link-title">
+                          Next<span class="govuk-visually-hidden"> page</span>
+                        </span>
+                        <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                            <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+                        </svg>
+                    </a>
+                </div>
+            % }
+        </nav>
+    %}
+    % include '/includes/company/tabs_end.tx' {};
+% }
