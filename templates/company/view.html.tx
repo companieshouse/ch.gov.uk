@@ -431,6 +431,16 @@
         % }
     </div>
 
+    % if ($c.company_is_lp_update_allowed($company)) {
+        <form action="/confirmation-statement/confirm-company?companyNumber=<% $company.company_number %>" method="POST">
+            <input type="hidden" name="_csrf" value="<% $csrf_token %>" />
+            <button type="submit" class="govuk-button" data-module="govuk-button" id="submit"
+                data-event-id="confirm-and-continue-button" data-govuk-button-init="">
+                  File Confirmation Statement
+            </button>
+        </form>
+    % }
+
     % if $company.show_officer_summary {
         <h2 class="heading-medium" id="header">
             Officers

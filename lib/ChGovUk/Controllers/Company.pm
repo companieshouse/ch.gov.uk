@@ -3,6 +3,7 @@ package ChGovUk::Controllers::Company;
 use Mojo::Base 'Mojolicious::Controller';
 use CH::Perl;
 use MIME::Base64 qw(encode_base64url decode_base64url);
+use CH::Util::CompanyPrefixes;
 
 #-------------------------------------------------------------------------------
 
@@ -19,6 +20,7 @@ sub view {
     if ($company_number =~ /^(IP|SP|NP|NO|RS|SR|RC|NR|IC|SI|NV|AC|SA|NA|PC)\w{6}$/) {
         return $self->render(template => "company/partial_data_available/view");
     }
+    $self->stash_gci_return_url($company);
 
     $self->render;
 }
@@ -56,6 +58,34 @@ sub stash_view_company_event {
     $view_company_event = "View ROE company" if ($company_type eq 'registered-overseas-entity');
 
     $self->stash(view_company_event => $view_company_event);
+}
+
+sub stash_gci_return_url {
+    my ($self, $company) = @_;
+
+    my $sessRef = $self->session;
+
+    my $signInInfo = $sessRef->{signin_info};
+
+    if ($signInInfo && $signInInfo->{acsp_number} && isDigitalLP($company)) {
+      if ($sessRef->{csrf_token}) {
+          my $csrf_token = $sessRef->{csrf_token};
+          $self->stash(csrf_token => $csrf_token);
+      }
+
+      my $gciReturnUrl = $self->req->url->to_abs->path->to_abs_string;
+
+      $sessRef->{extra_data}{gci_return_url} = $gciReturnUrl;
+    }
+}
+
+sub isDigitalLP {
+    my ($self, $company) = @_;
+
+    return 0 unless ($company && $company->{type} eq "limited-partnership" 
+      && coIsDigitalLP($company->{subtype}));
+
+    return 1;
 }
 
 #-------------------------------------------------------------------------------
