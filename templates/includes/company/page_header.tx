@@ -1,87 +1,87 @@
 <div class="company-header">
-    <div id="content" class="content-override"></div>
+        <div id="content" class="content-override"></div>
 
-    <div class="company-name-row" style="margin-bottom: 10px;">
-        <h1 class="heading-xlarge" style="display: inline;"><% $company.company_name %></h1>
-        % if ($c.is_signed_in && $c.company_is_digital_lp($company.subtype)) {
-            <a href="<% $c.external_url_for('update_lp_name', company_number => $company.company_number) %>" id="update-limited-partnership-name" style="margin-left: 5px; white-space: nowrap; vertical-align: top;">Update name</a>
-        % }
-    </div>
+        <div class="company-name-row" style="margin-bottom: 10px;">
+            <h1 class="heading-xlarge" style="display: inline;"><% $company.company_name %></h1>
+            % if ($c.is_signed_in && $c.company_is_digital_lp($company.subtype)) {
+                <a href="<% $c.external_url_for('update_lp_name', company_number => $company.company_number) %>" id="update-limited-partnership-name" style="margin-left: 5px; white-space: nowrap; vertical-align: top;">Update name</a>
+            % }
+        </div>
 
-    <p id="company-number">
+        <p id="company-number">
         % if $company.type == 'uk-establishment' {
-            <% l('UK establishment number') %>
-        % } else {
-            <% l('Company number') %>
+        <% l('UK establishment number') %>
         % }
+        % else {
+            <% l('Company number') %>
+          % }
+            <strong><% $company.company_number %></strong>
+        </p>
 
-        <strong><% $company.company_number %></strong>
-    </p>
-
-    % if ($company.corporate_annotation) {
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-                <div class="govuk-warning-text corporate-annotations-text govuk-!-margin-bottom-2">
-                    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                    <span class="govuk-visually-hidden">Important</span>
-                    % for $company.corporate_annotation -> $ca {
-                        % if $ca.type != "other" {
-                            <p class="govuk-warning-text__text"><% l($c.cv_lookup( 'corporate_annotation_type', $ca.type)) %></p>
-                        % } else {
-                            <p class="govuk-warning-text__text"><% $ca.description %></p>
+        % if ($company.corporate_annotation) {
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-warning-text corporate-annotations-text govuk-!-margin-bottom-2">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <span class="govuk-visually-hidden">Important</span>
+                        % for $company.corporate_annotation -> $ca {
+                            % if $ca.type != "other" {
+                                <p class="govuk-warning-text__text"><% l($c.cv_lookup( 'corporate_annotation_type', $ca.type)) %></p>
+                            % } else {
+                                <p class="govuk-warning-text__text"><% $ca.description %></p>
+                            % }
                         % }
-                    % }
+                    </div>
                 </div>
             </div>
-        </div>
-    % }
+        % }
 
-    <div class="actions">
-       % if !$c.config.disable_follow {
-           % if ($c.config.private_beta_follow && $c.is_signed_in) || !$c.config.private_beta_follow {
-               % if $following_company {
-                  <a href="<% $c.external_url_for('unfollow_company', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs]) %> " class="govuk-button" id="unfollow-this-company"
-                      % if $c.config.piwik.embed {
-                          onclick="javascript:_paq.push(['trackEvent', 'UnfollowCompany', 'UnfollowCompany']);"
-                      % }
-                  ><% l('Unfollow this company') %>
-                  </a>
-                % } else {
-                  <a href="<% $c.external_url_for('follow_company', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs ]) %>" class="govuk-button" id="follow-this-company"
-                      % if $c.config.piwik.embed {
-                          onclick="javascript:_paq.push(['trackEvent', 'FollowCompany', 'FollowCompany']);"
-                      % }
-                  ><% l('Follow this company') %>
-                  </a>
-                % }
-            % }
-        % }
-        % if $c.config.feature.enable_oe_auth_code {
-            % if $company.type == "registered-overseas-entity" {
-                  <a href="<% $c.external_url_for('authcode_request_email',company_number => $company.company_number) %>" id="request_authcode_email" class="govuk-button"
-                      % if $c.config.piwik.embed {
-                          onclick="javascript:_paq.push(['trackEvent', 'RequestOEAuthcodeEmail', 'RequestOEAuthcodeEmail']);"
-                      % }
-                  ><% l('Request authentication code') %>
-                  </a>
-            % }
-        % }
-        % if ($company.company_number == $c.authorised_company) && ($company.type != "registered-overseas-entity") {
-              <a href="<% $c.sign_url($c.external_url_for('make_authcode_change', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs])) %>" id="manage_auth_code" class="font-xsmall">Manage company authentication</a>
-        % }
-        % if !$c.config.disable_filing {
-            % if $company.can_file {
-                % if !$c.has_admin_permissions {
-                    % if $company.company_number != $c.authorised_company {
-                        <a href="<% $c.url_for('company_authorise').query(['return_to' => $c.url_for]) %>" id="file-for-this-company" class="govuk-button"
-                            % if $c.config.piwik.embed {
-                                onclick="javascript:_paq.push(['trackEvent', 'FileForCompany', 'FilingHistory']);"
-                            % }
-                        ><% l('File for this company') %>
-                        </a>
+        <div class="actions">
+           % if !$c.config.disable_follow {
+               % if ($c.config.private_beta_follow && $c.is_signed_in) || !$c.config.private_beta_follow {
+                   % if $following_company {
+                      <a href="<% $c.external_url_for('unfollow_company', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs]) %> " class="govuk-button" id="unfollow-this-company"
+                          % if $c.config.piwik.embed {
+                              onclick="javascript:_paq.push(['trackEvent', 'UnfollowCompany', 'UnfollowCompany']);"
+                          % }
+                      ><% l('Unfollow this company') %>
+                      </a>
+                    % } else {
+                      <a href="<% $c.external_url_for('follow_company', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs ]) %>" class="govuk-button" id="follow-this-company"
+                          % if $c.config.piwik.embed {
+                              onclick="javascript:_paq.push(['trackEvent', 'FollowCompany', 'FollowCompany']);"
+                          % }
+                      ><% l('Follow this company') %>
+                      </a>
                     % }
                 % }
             % }
-        % }
-    </div>
+            % if $c.config.feature.enable_oe_auth_code {
+                % if $company.type == "registered-overseas-entity" {
+                      <a href="<% $c.external_url_for('authcode_request_email',company_number => $company.company_number) %>" id="request_authcode_email" class="govuk-button"
+                          % if $c.config.piwik.embed {
+                              onclick="javascript:_paq.push(['trackEvent', 'RequestOEAuthcodeEmail', 'RequestOEAuthcodeEmail']);"
+                          % }
+                      ><% l('Request authentication code') %>
+                      </a>
+                % }
+            % }
+            % if ($company.company_number == $c.authorised_company) && ($company.type != "registered-overseas-entity") {
+                  <a href="<% $c.sign_url($c.external_url_for('make_authcode_change', company_number => $company.company_number).query(['return_to' => $c.url_for.to_abs])) %>" id="manage_auth_code" class="font-xsmall">Manage company authentication</a>
+            % }
+            % if !$c.config.disable_filing {
+                % if $company.can_file {
+                    % if !$c.has_admin_permissions {
+                        % if $company.company_number != $c.authorised_company {
+                            <a href="<% $c.url_for('company_authorise').query(['return_to' => $c.url_for]) %>" id="file-for-this-company" class="govuk-button"
+                                % if $c.config.piwik.embed {
+                                    onclick="javascript:_paq.push(['trackEvent', 'FileForCompany', 'FilingHistory']);"
+                                % }
+                            ><% l('File for this company') %>
+                            </a>
+                        % }
+                    % }
+                % }
+            % }
+      </div>
 </div>
