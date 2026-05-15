@@ -209,8 +209,6 @@ sub coIsLP
 sub coIsDigitalLP
 {
     my $subtype=shift;
-    unless ($subtype) { return undef };
-
     return (($subtype eq 'lp' || $subtype eq 'slp' || $subtype eq 'pflp' || $subtype eq 'spflp') ? 1 : 0);
 }
 

@@ -25,7 +25,7 @@ done_testing();
 
 sub test_method_register {
     subtest "Test method - register" => sub {
-        registers_helpers $PLUGIN, qw( company_is_llp company_has_no_sic );
+        registers_helpers $PLUGIN, qw( company_is_llp company_has_no_sic company_is_digital_lp );
     };
     return;
 }
