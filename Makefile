@@ -100,6 +100,6 @@ docker-build: deps
 	DOCKER_BUILDKIT=0 docker build -t $(DOCKER_IMAGE_TAG) .
 
 docker-test: docker-build
-	docker run --env-file test.env $(DOCKER_IMAGE_TAG) perlbrew exec perl $(PROVE_CMD) $(PROVE_ARGS) t/unit
+	docker run --rm --env-file test.env $(DOCKER_IMAGE_TAG) perlbrew exec perl $(PROVE_CMD) $(PROVE_ARGS) t/unit
 
 .PHONY: all build build-ecs clean dist package package-ecs test test-unit test-integration deps deps-ecs docker-build docker-test
