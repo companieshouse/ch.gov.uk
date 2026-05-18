@@ -22,6 +22,7 @@ PROVE_ARGS      ?= -It/lib -Ilib -I$(LOCAL)/lib/perl5 -lr
 TEST_UNIT_ENV   ?= COOKIE_SECRET=abcdef123456 URL_SIGNING_SALT=abcdef123456
 
 DOCKER_IMAGE_TAG   ?= 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/ch.gov.uk:latest
+TEST_ENV_FILE      ?= test.env
 
 all: dist
 
@@ -100,6 +101,6 @@ docker-build: deps
 	DOCKER_BUILDKIT=0 docker build -t $(DOCKER_IMAGE_TAG) .
 
 docker-test: docker-build
-	docker run --env-file test.env $(DOCKER_IMAGE_TAG) plenv exec perl $(PROVE_CMD) $(PROVE_ARGS) t/unit
+	docker run --env-file $(TEST_ENV_FILE) $(DOCKER_IMAGE_TAG) perlbrew exec perl $(PROVE_CMD) $(PROVE_ARGS) t/unit
 
 .PHONY: all build build-ecs clean dist package package-ecs test test-unit test-integration deps deps-ecs docker-build docker-test
