@@ -56,6 +56,7 @@ external_url_for:
   certificates_url           : '<CHS_URL>/company/:company_number/orderable/certificates'
   dissolved_certificates_url : '<CHS_URL>/company/:company_number/orderable/dissolved-certificates'
   certified_copies_url       : '<CHS_URL>/company/:company_number/orderable/certified-copies'
+  update_lp_name             : '<CHS_URL>/limited-partnerships/update/company/:company_number/partnership-name'
 
 admin_url_for:
   roles                        : <ACCOUNT_URL>/admin/roles

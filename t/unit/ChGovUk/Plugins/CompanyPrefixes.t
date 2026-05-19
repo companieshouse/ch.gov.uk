@@ -17,6 +17,7 @@ use_ok $PLUGIN;
     test_method_register();
     test_helper_company_is_llp();
     test_helper_company_has_no_sic();
+    test_helper_company_is_digital_lp();
 
 done_testing();
 
@@ -24,7 +25,7 @@ done_testing();
 
 sub test_method_register {
     subtest "Test method - register" => sub {
-        registers_helpers $PLUGIN, qw( company_is_llp company_has_no_sic );
+        registers_helpers $PLUGIN, qw( company_is_llp company_has_no_sic company_is_digital_lp );
     };
     return;
 }
@@ -57,3 +58,17 @@ sub test_helper_company_has_no_sic {
     return;
 }
 
+# ==============================================================================
+
+sub test_helper_company_is_digital_lp {
+    subtest "Test helper - company_is_digital_lp" => sub {
+        is($app->controller->company_is_digital_lp('lp'), 1, 'Company is digital LP');
+        is($app->controller->company_is_digital_lp('slp'), 1, 'Company is digital LP');
+        is($app->controller->company_is_digital_lp('pflp'), 1, 'Company is digital LP');
+        is($app->controller->company_is_digital_lp('spflp'), 1, 'Company is digital LP');
+        is($app->controller->company_is_digital_lp(''), 0, 'Company is not a digital LP'); # Either an LP but filed with a paper LP5 OR not an LP
+        is($app->controller->company_is_digital_lp('community-interest-company'), 0, 'Company is not a digital LP'); # Just not an LP
+        is($app->controller->company_is_digital_lp('private-fund-limited-partnership'), 0, 'Company is not a digital LP'); # An LP but filed with a paper LP7
+    };
+    return;
+}
