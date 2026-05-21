@@ -61,8 +61,20 @@
         <div class="grid-row">
             <dl class="column-full">
                 <dt id="ppob-label"><% l('Principal place of business')%></dt>
-                <dd class="text data" id="ppob">
-                    % $c.address_as_string( $company.service_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
+                <dd id="ppob" style="margin-top: 5px; margin-bottom: 10px">
+                    % my $ppob_address = $c.address_as_string( $company.service_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
+                    <span class="text data" id="ppob-address">
+                        <% $ppob_address %>
+                    </span>
+
+                    % if ($c.is_signed_in && $company.type == 'limited-partnership' && $c.company_is_digital_lp($company.subtype)) {
+                        <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'enter-principal-place-of-business') %>" id="ppob-update-link">
+                            Update
+                            <span class="govuk-visually-hidden">
+                                Principal place of business <% $ppob_address %>
+                            </span>
+                        </a>
+                    % }
                 </dd>
             </dl>
         </div>
