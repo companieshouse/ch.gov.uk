@@ -34,15 +34,26 @@
                   <dt><% l('Registered office address') %></dt>
             %   }
             % }
-            <dd class="text data">
+            <dd style="margin-top: 5px; margin-bottom: 10px">
             % if $company.type == "oversea-company" and $company.registered_office_address.size() == 0 {
                 <% l('Refer to parent registry') %>
             % } else if $company.type == "registered-overseas-entity" {
                 <% l($c.address_as_string( $company.service_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } )) %>
             % }
             % else {
-                % $c.address_as_string( $company.registered_office_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
-                % if $company.company_number == $c.authorised_company && !$c.config.disable_filing && $company.type != "oversea-company" {
+                % my $roa_address = $c.address_as_string( $company.registered_office_address, { suppress_double_commas => 1, include_care_of => 1, include_po_box => 1, title_case_care_of => 1 } );
+                <span class="text data" id="roa-address">
+                    <% $roa_address %>
+                </span>
+
+                % if ($c.is_signed_in && $company.type == 'limited-partnership' && $c.company_is_digital_lp($company.subtype)) {
+                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'enter-registered-office-address') %>" id="roa-update-link">
+                        Update
+                        <span class="govuk-visually-hidden">
+                            Registered office address <% $roa_address %>
+                        </span>
+                    </a>
+                % } else if $company.company_number == $c.authorised_company && !$c.config.disable_filing && $company.type != "oversea-company" && $company.type != 'limited-partnership' {
                     <br />
                     <a href="<% $c.url_for %><%
                        if $c.company_is_llp($company.company_number) {
