@@ -18,6 +18,7 @@ use_ok $PLUGIN;
     test_helper_company_is_llp();
     test_helper_company_has_no_sic();
     test_helper_company_is_digital_lp();
+    test_helper_company_is_lp_update_allowed();
 
 done_testing();
 
@@ -25,7 +26,7 @@ done_testing();
 
 sub test_method_register {
     subtest "Test method - register" => sub {
-        registers_helpers $PLUGIN, qw( company_is_llp company_has_no_sic company_is_digital_lp );
+        registers_helpers $PLUGIN, qw( company_is_llp company_has_no_sic company_is_digital_lp company_is_lp_update_allowed );
     };
     return;
 }
@@ -69,6 +70,80 @@ sub test_helper_company_is_digital_lp {
         is($app->controller->company_is_digital_lp(''), 0, 'Company is not a digital LP'); # Either an LP but filed with a paper LP5 OR not an LP
         is($app->controller->company_is_digital_lp('community-interest-company'), 0, 'Company is not a digital LP'); # Just not an LP
         is($app->controller->company_is_digital_lp('private-fund-limited-partnership'), 0, 'Company is not a digital LP'); # An LP but filed with a paper LP7
+    };
+    return;
+}
+
+# ==============================================================================
+
+sub test_helper_company_is_lp_update_allowed {
+    subtest "Test helper - company_is_lp_update_allowed" => sub {
+        my $controller = $app->controller;
+
+        {
+            package TestCompany;
+            sub new     { my ($class, %args) = @_; bless \%args, $class }
+            sub type    { $_[0]->{type} }
+            sub subtype { $_[0]->{subtype} }
+        }
+
+        my @cases = (
+            {
+                description  => 'allowed for a digital LP when signed in as an ACSP',
+                is_signed_in => 1,
+                acsp_number  => 'ACSP123',
+                type         => 'limited-partnership',
+                subtype      => 'lp',
+                expected     => 1,
+            },
+            {
+                description  => 'blocked when not signed in',
+                is_signed_in => 0,
+                acsp_number  => 'ACSP123',
+                type         => 'limited-partnership',
+                subtype      => 'lp',
+                expected     => 0,
+            },
+            {
+                description  => 'blocked when not an ACSP',
+                is_signed_in => 1,
+                acsp_number  => '',
+                type         => 'limited-partnership',
+                subtype      => 'lp',
+                expected     => 0,
+            },
+            {
+                description  => 'blocked for a non-LP company type',
+                is_signed_in => 1,
+                acsp_number  => 'ACSP123',
+                type         => 'ltd',
+                subtype      => '',
+                expected     => 0,
+            },
+            {
+                description  => 'blocked for a paper-filed (i.e. non-transitioned) LP',
+                is_signed_in => 1,
+                acsp_number  => 'ACSP123',
+                type         => 'limited-partnership',
+                subtype      => 'private-fund-limited-partnership',
+                expected     => 0,
+            },
+        );
+
+        no warnings 'redefine';
+        no strict 'refs';
+
+        for my $case (@cases) {
+            local *{ref($controller) . '::is_signed_in'} = sub { $case->{is_signed_in} };
+            $controller->session->{signin_info}->{acsp_number} = $case->{acsp_number};
+
+            my $company = TestCompany->new(
+                type    => $case->{type},
+                subtype => $case->{subtype},
+            );
+
+            is($controller->company_is_lp_update_allowed($company), $case->{expected}, $case->{description});
+        }
     };
     return;
 }
