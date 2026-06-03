@@ -164,18 +164,29 @@
     <div class="grid-row">
         <dl class="column-two-thirds">
             <dt><% l('Company type')%></dt>
-            <dd class="text data" id="company-type">
-                <% l($c.cv_lookup( 'company_summary', $company.type)) %>
-                 % if $c.config.pflp_feature_enabled {
-                   % if $company.subtype {
-                       % my $company_subtype = $c.cv_lookup( 'company_subtype', $company.subtype);
-                       <br><span class="normal" id="company_subtype"><% l($company_subtype) %></span>
-                   % }
-                 % }
-                 % else {
-                     % if $company.is_community_interest_company {
+            <dd id="company-type" style="margin-top: 5px; margin-bottom: 10px">
+                <span class="text data" id="company-type-value">
+                    <% l($c.cv_lookup( 'company_summary', $company.type)) %>
+                </span>
+                % if ($c.is_signed_in && $company.type == 'limited-partnership' && ($company.subtype == 'lp' || $company.subtype == 'slp')) {
+                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'redesignate-to-pflp') %>" id="update-limited-partnership-type">
+                        Update
+                        <span class="govuk-visually-hidden">
+                            and apply for designation as a private fund limited partnership (PFLP)
+                        </span>
+                    </a>
+                % }
+
+                % if $c.config.pflp_feature_enabled {
+                    % if $company.subtype {
+                        % my $company_subtype = $c.cv_lookup('company_subtype', $company.subtype);
+                        <br><span class="normal" id="company_subtype"><% l($company_subtype) %></span>
+                    % }
+                % }
+                % else {
+                    % if $company.is_community_interest_company {
                         <span class="normal" id="cic-indicator">&mdash; <% l('Community Interest Company (CIC)') %></span>
-                     % }
+                    % }
                 % }
             </dd>
         </dl>
