@@ -4,7 +4,7 @@
         <div class="company-name-row" style="margin-bottom: 10px;">
             <h1 class="heading-xlarge" style="display: inline;"><% $company.company_name %></h1>
 
-            % if ($c.is_signed_in && $company.type == 'limited-partnership' && $c.company_is_digital_lp($company.subtype)) {
+            % if ($c.company_is_lp_update_allowed($company)) {
                 <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'partnership-name') %>" id="update-limited-partnership-name" style="margin-left: 5px; white-space: nowrap; vertical-align: top;">Update name</a>
             % }
         </div>

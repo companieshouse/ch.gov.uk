@@ -26,6 +26,19 @@ sub register {
         my ($c, $subtype) = @_;
         return CH::Util::CompanyPrefixes::coIsDigitalLP($subtype);
     });
+    trace "Registering %s::company_is_lp_update_allowed helper", __PACKAGE__ [APP];
+    $app->helper(company_is_lp_update_allowed => sub {
+        my ($c, $company) = @_;
+
+        my $acsp_number = $c->session->{signin_info} && $c->session->{signin_info}->{acsp_number};
+
+        return coIsLPUpdateAllowed(
+            is_signed_in    => $c->is_signed_in,
+            company_type    => $company->{type},
+            company_subtype => $company->{subtype},
+            acsp_number     => $acsp_number,
+        );
+    });
     return;
 }
 

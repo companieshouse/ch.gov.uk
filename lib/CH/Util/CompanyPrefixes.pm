@@ -8,7 +8,7 @@ use vars qw(@ISA @EXPORT);
 
 @ISA = qw(Exporter);
 
-@EXPORT = qw( coAllowedOrder coFormatNumber coIsArchived coGetPrefix coIsIrish coIsAssurance coIsCompany coIsWebFiler mapSelectionToPrefix coIsLLP coIsNI coNItoUK coUKtoNI coIsRecordsHeldAtCH coIsLP coIsDigitalLP getCompanyCategory getCompanyCategoryByJurisdiction coHasNoSic);
+@EXPORT = qw( coAllowedOrder coFormatNumber coIsArchived coGetPrefix coIsIrish coIsAssurance coIsCompany coIsWebFiler mapSelectionToPrefix coIsLLP coIsNI coNItoUK coUKtoNI coIsRecordsHeldAtCH coIsLP coIsDigitalLP coIsLPUpdateAllowed getCompanyCategory getCompanyCategoryByJurisdiction coHasNoSic);
 
 #
 # ----------------------------------------------------------------------------
@@ -210,6 +210,25 @@ sub coIsDigitalLP
 {
     my $subtype=shift;
     return (($subtype eq 'lp' || $subtype eq 'slp' || $subtype eq 'pflp' || $subtype eq 'spflp') ? 1 : 0);
+}
+
+#   -----------------------------------------------------------------------------
+
+sub coIsLPUpdateAllowed
+{
+    my (%args) = @_;
+
+    my $is_signed_in    = $args{is_signed_in} ? 1 : 0;
+    my $company_type    = $args{company_type} // '';
+    my $company_subtype = $args{company_subtype} // '';
+    my $acsp_number     = $args{acsp_number};
+
+    return 0 unless $is_signed_in;
+    return 0 unless $company_type eq 'limited-partnership';
+    return 0 unless coIsDigitalLP($company_subtype);
+    return 0 unless defined $acsp_number && $acsp_number ne '';
+
+    return 1;
 }
 
 #   -----------------------------------------------------------------------------
