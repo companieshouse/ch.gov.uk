@@ -166,7 +166,7 @@
             <dt><% l('Company type')%></dt>
             <dd id="company-type" style="margin-top: 5px; margin-bottom: 10px">
                 <span class="text data" id="company-type-value">
-                    <% l($c.cv_lookup( 'company_summary', $company.type)) %>
+                    <% l($c.cv_lookup('company_summary', $company.type)) %>
                 </span>
                 % if ($c.company_is_lp_update_allowed($company) && ($company.subtype == 'lp' || $company.subtype == 'slp')) {
                     <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'redesignate-to-pflp') %>" id="update-limited-partnership-type">
@@ -207,7 +207,7 @@
                 <dd id="term" style="margin-top: 5px; margin-bottom: 10px">
                     % if ($company.term) {
                         <span class="text data" id="term-value">
-                            <% l('{term}', { term => $c.cv_lookup('term', $company.term) })%>
+                            <% l($term)%>
                         </span>
                     % }
 
