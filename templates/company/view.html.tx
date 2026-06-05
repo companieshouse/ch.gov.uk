@@ -199,12 +199,30 @@
         </dl>
     </div>
 
-    % if (($company.subtype == 'lp' || $company.subtype == 'slp') && $company.term) {
+    % if (($company.subtype == 'lp' || $company.subtype == 'slp') && ($company.term || $c.company_is_lp_update_allowed($company))) {
         <div class="grid-row">
             <dl class="column-full">
                 <dt id="term-label"><% l('Term of the partnership')%></dt>
-                <dd class="text data" id="term">
-                    <% l('{term}', { term => $c.cv_lookup('term', $company.term) })%>
+                % my $term = $c.cv_lookup('term', $company.term);
+                <dd id="term" style="margin-top: 5px; margin-bottom: 10px">
+                    % if ($company.term) {
+                        <span class="text data" id="term-value">
+                            <% l('{term}', { term => $c.cv_lookup('term', $company.term) })%>
+                        </span>
+                    % }
+
+                    % if ($c.company_is_lp_update_allowed($company)) {
+                        <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'partnership-term') %>" id="update-limited-partnership-term">
+                            Update
+                            <span class="govuk-visually-hidden">
+                                % if ($term) {
+                                    term of partnership - <% $term %>
+                                % } else {
+                                    term of partnership
+                                % }
+                            </span>
+                        </a>
+                    % }
                 </dd>
             </dl>
         </div>
