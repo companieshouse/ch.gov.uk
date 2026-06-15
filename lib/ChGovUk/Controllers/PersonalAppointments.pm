@@ -4,6 +4,7 @@ use Mojo::Base 'Mojolicious::Controller';
 
 use CH::Perl;
 use CH::Util::Pager;
+use CH::Util::CapitalContribution qw(add_formatted_capital_contribution_details);
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
 
@@ -61,7 +62,13 @@ sub get {
             trace 'Appointments for officer [%s]: %s', $officer_id, d:$results;
 
             foreach my $item (@{ $results->{items} // [] }) {
-                # Skip if identity verification details are missing
+                # Embellish the appointment item with some formatted capital contribution details
+                add_formatted_capital_contribution_details($item, sub {
+                    my ($key) = @_;
+                    return $self->cv_lookup('capital_contribution_sub_type', $key);
+                });
+
+                # Skip the remaining logic if identity verification details are missing
                 my $details = $item->{identity_verification_details} or next;
 
                 # Check if identity verification expired
