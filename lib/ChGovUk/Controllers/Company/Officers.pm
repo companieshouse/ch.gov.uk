@@ -5,6 +5,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use CH::Perl;
 use CH::Util::Pager;
 use CH::Util::DateHelper;
+use CH::Util::CapitalContribution qw(add_formatted_capital_contribution_details);
 use Locale::Simple;
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
@@ -121,6 +122,12 @@ sub list {
                         $details->{is_identity_verification_expired} = CH::Util::DateHelper->is_current_date_greater($end_date) ? 1 : 0;
                     }
                 }
+
+                # Embellish the officer item with some formatted capital contribution details
+                add_formatted_capital_contribution_details($item, sub {
+                    my ($key) = @_;
+                    return $self->cv_lookup('capital_contribution_sub_type', $key);
+                });
             }
 
             trace "Officer list for %s: %s", $company_number, d:$results [OFFICER LIST];

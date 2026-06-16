@@ -306,6 +306,17 @@
                             % }
                         </div>
                     % }
+                    <div class="grid-row">
+                        % if $appointment.contribution_currency_value {
+                            <dl class="column-quarter">
+                                <dt><% l('Capital contribution') %></dt>
+                                <dd id="officer-capital-contribution-<% $~appointment.count %>" class="data">
+                                    <div><% $appointment.contribution_currency_value_formatted %> (<% $appointment.contribution_currency_type %>)</div>
+                                    <div>Types of contribution: <% $appointment.contribution_sub_types_string %></div>
+                                </dd>
+                            </dl>
+                        % }
+                    </div>
                 </div>
             % }
         </div>
