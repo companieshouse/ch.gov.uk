@@ -169,7 +169,7 @@
 
                         % if $appointment.country_of_residence {
                             <dl class="column-third">
-                                <dt id="country-of-residence-field-<% $~appointment.count %>"><% l('Country of residence') %></dt>
+                                <dt id="country-of-residence-field-<% $~appointment.count %>"><% l('Place of residence') %></dt>
                                 <dd id="country-of-residence-value<% $~appointment.count %>" class="data">
                                     <% $appointment.country_of_residence %>
                                 </dd>

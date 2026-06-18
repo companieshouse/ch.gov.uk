@@ -170,7 +170,7 @@
 
                     % if $psc.country_of_residence {
                         <dl class="column-third">
-                            <dt><% l('Country of residence') %></dt>
+                            <dt><% l('Place of residence') %></dt>
                             <dd id="psc-country-of-residence-<% $~psc.count %>" class="data">
                                 <% $psc.country_of_residence %>
                             </dd>
