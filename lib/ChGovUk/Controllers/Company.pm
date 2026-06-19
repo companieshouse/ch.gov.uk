@@ -37,12 +37,7 @@ sub authorise {
 
     trace "Sign in: CPL Set state for authorize_url to: %s", $return [ACCOUNT];
 
-    my $scope;
-    if ($company_number =~ /^(FC|NF|SF)\d{6}$/) {
-        $scope = 'https://api.companieshouse.gov.uk/oversea-company/' . $company_number;
-    } else {
-        $scope = 'https://api.companieshouse.gov.uk/company/' . $company_number;
-    }
+    my $scope = $self->get_company_scope($company_number);
 
     my $destination = $self->oauth2_get_authorize_url(
                                     provider        => 'companies_house',
@@ -53,6 +48,18 @@ sub authorise {
 
     $self->redirect_to($destination);
     return;
+}
+
+#-------------------------------------------------------------------------------
+
+sub get_company_scope {
+    my ($self, $company_number) = @_;
+
+    if ($company_number =~ /^(FC|NF|SF)\d{6}$/) {
+        return 'https://api.companieshouse.gov.uk/oversea-company/' . $company_number;
+    } else {
+        return 'https://api.companieshouse.gov.uk/company/' . $company_number;
+    }
 }
 
 #-------------------------------------------------------------------------------
