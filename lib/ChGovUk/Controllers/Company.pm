@@ -31,22 +31,24 @@ sub view {
 sub authorise {
     my ($self) = @_;
 
+    my $company_number = $self->stash('company_number');
+
     my $return = $self->param('return_to') // $self->req->headers->referrer // $self->base_url;
 
     trace "Sign in: CPL Set state for authorize_url to: %s", $return [ACCOUNT];
 
     my $scope;
-    if ($self->stash('company_number') =~ /^(FC|NF|SF)\d{6}$/) {
-        $scope = 'https://api.companieshouse.gov.uk/oversea-company/' . $self->stash('company_number');
+    if ($company_number =~ /^(FC|NF|SF)\d{6}$/) {
+        $scope = 'https://api.companieshouse.gov.uk/oversea-company/' . $company_number;
     } else {
-        $scope = 'https://api.companieshouse.gov.uk/company/' . $self->stash('company_number');
+        $scope = 'https://api.companieshouse.gov.uk/company/' . $company_number;
     }
 
     my $destination = $self->oauth2_get_authorize_url(
                                     provider        => 'companies_house',
                                     state           => encode_base64url($return),
                                     scope           => $scope,
-                                    company_number  => $self->stash('company_number'),
+                                    company_number  => $company_number,
                                 );
 
     $self->redirect_to($destination);
