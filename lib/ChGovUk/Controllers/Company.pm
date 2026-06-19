@@ -37,6 +37,10 @@ sub authorise {
 
     my $scope = 'https://api.companieshouse.gov.uk/company/' . $self->stash('company_number');
 
+    if ($self->stash('company_number') =~ /^(FC|NF|SF)\d{6}$/) {
+        $scope = 'https://api.companieshouse.gov.uk/oversea-company/' . $self->stash('company_number');
+    }
+
     my $destination = $self->oauth2_get_authorize_url(
                                     provider        => 'companies_house',
                                     state           => encode_base64url($return),
