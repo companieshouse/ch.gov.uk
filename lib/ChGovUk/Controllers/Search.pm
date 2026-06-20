@@ -59,12 +59,16 @@ sub results {
     # pass the search type to the template for a different form action
     my $title_prefix;
 
+    my $page_limit    = $self->config->{elasticsearch}->{max_pages}   || 2500;
+    my $results_limit = $self->config->{elasticsearch}->{max_results} || 50000;
+
     if ($search_type eq 'companies') {
         $title_prefix = 'Company search results';
     } elsif ($search_type eq 'officers') {
         $title_prefix = 'Officer search results';
     } elsif ($search_type eq 'disqualified-officers') {
         $title_prefix = 'Disqualification search results';
+        $results_limit = $self->config->{elasticsearch}->{disqualified_max_results} || 50000;
     } else {
         $title_prefix = 'All search results';
     }
@@ -74,9 +78,6 @@ sub results {
         'title'         => $title_prefix . ' - Find and update company information - GOV.UK',
         'searchTerm' => $encoded_query  # Store the encoded query term
     );
-
-    my $page_limit    = $self->config->{elasticsearch}->{max_pages}   || 2500;
-    my $results_limit = $self->config->{elasticsearch}->{max_results} || 50000;
 
     $self->get_basket_link;
 
