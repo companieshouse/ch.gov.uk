@@ -55,7 +55,7 @@ sub authorise {
 sub get_company_scope {
     my ($self, $company_number) = @_;
 
-    if ($company_number =~ /^(FC|NF|SF)\d{6}$/) {
+    if ($company_number =~ /^(FC|NF|SF)[0-9]{6}$/) {
         return 'https://api.companieshouse.gov.uk/oversea-company/' . $company_number;
     } else {
         return 'https://api.companieshouse.gov.uk/company/' . $company_number;
