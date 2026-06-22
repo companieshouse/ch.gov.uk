@@ -81,12 +81,7 @@ sub stash_gci_return_url {
 
     my $signInInfo = $sessRef->{signin_info};
 
-    if ($signInInfo && $signInInfo->{acsp_number} && isDigitalLP($company)) {
-      if ($sessRef->{csrf_token}) {
-          my $csrf_token = $sessRef->{csrf_token};
-          $self->stash(csrf_token => $csrf_token);
-      }
-
+    if ($signInInfo && length $signInInfo->{acsp_number} && $self->isDigitalLP($company)) {
       my $gciReturnUrl = $self->req->url->to_abs->path->to_abs_string;
 
       $sessRef->{extra_data}{gci_return_url} = $gciReturnUrl;
@@ -95,9 +90,7 @@ sub stash_gci_return_url {
 
 sub isDigitalLP {
     my ($self, $company) = @_;
-
-    return 0 unless ($company && $company->{type} eq "limited-partnership" 
-      && coIsDigitalLP($company->{subtype}));
+    return 0 unless ($company && $company->{type} eq "limited-partnership" && coIsDigitalLP($company->{subtype}));
 
     return 1;
 }
