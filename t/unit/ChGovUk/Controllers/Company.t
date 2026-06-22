@@ -48,12 +48,12 @@ subtest "authorise scope uses oversea-company for FC/NF/SF with 6 digits" => sub
     is $scope, 'https://api.companieshouse.gov.uk/oversea-company/FC123456',
         'oversea-company scope for FC + 6 digits';
 
-    my $non_oversea = '00006400';
+    my $non_oversea = '12345678';
     my $scope2 = $non_oversea =~ /^(FC|NF|SF)\d{6}$/
         ? 'https://api.companieshouse.gov.uk/oversea-company/' . $non_oversea
         : 'https://api.companieshouse.gov.uk/company/' . $non_oversea;
 
-    is $scope2, 'https://api.companieshouse.gov.uk/company/00006400',
+    is $scope2, 'https://api.companieshouse.gov.uk/company/12345678',
         'company scope for a standard company number';
 };
 
