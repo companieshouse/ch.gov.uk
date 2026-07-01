@@ -52,7 +52,7 @@
 
                     % if $member.country_of_residence {
                         <dl class="column-quarter">
-                            <dt><% l('Country of residence') %></dt>
+                            <dt><% l('Place of residence') %></dt>
                             <dd id="member-country-of-residence-<% $~member.count %>" class="data">
                                 <% $member.country_of_residence %>
                             </dd>
