@@ -415,6 +415,7 @@ sub stash_view_pscs_event {
     my $company_type = $self->stash->{company}->{type};
     my $view_pscs_event = "View persons with significant control";
     $view_pscs_event = "View beneficial owners" if ($company_type eq 'registered-overseas-entity');
+    $view_pscs_event = "View Limited Partnership persons with significant control" if ($company_type eq 'limited-partnership');
 
     $self->stash(view_pscs_event => $view_pscs_event);
 }

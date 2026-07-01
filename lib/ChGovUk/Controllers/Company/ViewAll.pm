@@ -140,8 +140,9 @@ sub stash_view_snapshot_event {
   my ($self) = @_;
 
   my $company_type = $self->stash->{company}->{type};
-  my $view_snapshot_event = "View non-ROE company information snapshot";
+  my $view_snapshot_event = "View non-ROE/Limited Partnership company information snapshot";
   $view_snapshot_event = "View ROE company information snapshot" if ($company_type eq 'registered-overseas-entity');
+  $view_snapshot_event = "View Limited Partnership company information snapshot" if ($company_type eq 'limited-partnership');
 
   $self->stash(view_snapshot_event => $view_snapshot_event);
 }
