@@ -93,6 +93,9 @@ sub list {
                 resigned_count => $results->{resigned_count},
                 total_results  => $results->{total_results},
             });
+
+            $self->stash_view_officers_event();
+
             $self->stash(company_appointments =>
                 build_company_appointments($results, $is_active_filter_set, $is_overseas_entity));
 
@@ -189,6 +192,20 @@ sub list {
         },
     )->execute;
 }
+
+#-------------------------------------------------------------------------------
+
+sub stash_view_officers_event {
+    my ($self) = @_;
+
+    my $company_type = $self->stash->{company}->{type};
+
+    my $view_officers_event = "View officers";
+    $view_officers_event = "View Limited Partnership partners" if ($company_type eq 'limited-partnership');
+
+    $self->stash(view_officers_event => $view_officers_event);
+}
+
 
 #-------------------------------------------------------------------------------
 

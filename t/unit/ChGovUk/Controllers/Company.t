@@ -14,14 +14,14 @@ use_ok $CLASS;
 
 #-------------------------------------------------------------------------------
 
-subtest "\$view_company_event is 'View non-ROE company' for a non-ROE company" => sub {
+subtest "\$view_company_event is 'View non-ROE/Limited Partnership company' for a non-ROE company" => sub {
     plan tests => 1;
     $company_ctrl->stash(company => {
         company_number => "00006400",
         type           => "ltd",
     });
     $company_ctrl->view();
-    is $company_ctrl->stash->{view_company_event}, "View non-ROE company", "\$view_company_event should be 'View non-ROE company'";
+    is $company_ctrl->stash->{view_company_event}, "View non-ROE/Limited Partnership company", "\$view_company_event should be 'View non-ROE/Limited Partnership company'";
 };
 
 #-------------------------------------------------------------------------------
@@ -78,6 +78,18 @@ subtest "get_company_scope returns company URL for regular company numbers" => s
     my $scope3 = $company_ctrl->get_company_scope('OE000002');
     is $scope3, 'https://api.companieshouse.gov.uk/company/OE000002',
         'Overseas entity number should return company scope';
+};
+
+#-------------------------------------------------------------------------------
+
+subtest "\$view_company_event is 'View Limited Partnership company' for a Limited Partnership" => sub {
+    plan tests => 1;
+    $company_ctrl->stash(company => {
+        company_number => "LP123456",
+        type           => "limited-partnership",
+    });
+    $company_ctrl->view();
+    is $company_ctrl->stash->{view_company_event}, "View Limited Partnership company", "\$view_company_event should be 'View Limited Partnership company'";
 };
 
 #-------------------------------------------------------------------------------

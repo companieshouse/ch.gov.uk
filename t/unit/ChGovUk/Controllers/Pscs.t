@@ -344,7 +344,7 @@ sub test_get_all_active_statements {
 
 sub test_event_stashing {
 
-    subtest "\$view_pscs_event is 'View persons with significant control' for a non-ROE company" => sub {
+    subtest "\$view_pscs_event is 'View persons with significant control' for a non-ROE/Limited Partnership company" => sub {
         my $pscs_controller = $CLASS->new(
             stash => {
                 company => {
@@ -368,6 +368,17 @@ sub test_event_stashing {
         is $pscs_controller->stash->{view_pscs_event}, "View beneficial owners", "\$view_pscs_event should be 'View beneficial owners'";
     };
 
+    subtest "\$view_pscs_event is 'View Limited Partnership persons with significant control' for a Limited Partnership company" => sub {
+        my $pscs_controller = $CLASS->new(
+            stash => {
+                company => {
+                    company_number => "LP123456",
+                    type           => "limited-partnership",
+                }
+            });
+        $pscs_controller->stash_view_pscs_event();
+        is $pscs_controller->stash->{view_pscs_event}, "View Limited Partnership persons with significant control", "\$view_pscs_event should be 'View Limited Partnership persons with significant control'";
+    };
 }
 
 
