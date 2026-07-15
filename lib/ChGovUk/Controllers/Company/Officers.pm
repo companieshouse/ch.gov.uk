@@ -96,8 +96,11 @@ sub list {
 
             $self->stash_view_officers_event();
 
+            my $is_limited_partnership = $self->stash->{company}->{type} eq 'limited-partnership';
+            my $is_change_lp_officer_titles_set = $self->config->{feature}->{change_lp_officer_titles};
+
             $self->stash(company_appointments =>
-                build_company_appointments($results, $is_active_filter_set, $is_overseas_entity));
+                build_company_appointments($results, $is_active_filter_set, $is_overseas_entity, $is_limited_partnership, $is_change_lp_officer_titles_set));
 
             for my $item (@{ $results->{items} }) {
                 if ($item->{date_of_birth}) {
@@ -210,12 +213,17 @@ sub stash_view_officers_event {
 #-------------------------------------------------------------------------------
 
 # Builds a company appointments string such as '49 officers / 42 resignations'.
-sub build_company_appointments() {
-    my ($results, $is_active_filter_set, $is_overseas_entity) = @_;
+sub build_company_appointments {
+    my ($results, $is_active_filter_set, $is_overseas_entity, $is_limited_partnership, $is_change_lp_officer_titles_set) = @_;
 
     my $active_count = $results->{active_count};
     my $resigned_count = $results->{resigned_count};
     my $officer_count = $active_count + $results->{inactive_count} + $resigned_count;
+
+    # Note that Limited Partnerships always have at least two current officers/partners, so there is no need to handle
+    # the scenario of only a single officer being present
+    my $officers_label = 'officers ';
+    $officers_label = "partners " if ($is_change_lp_officer_titles_set && $is_limited_partnership);
 
     if (!$is_active_filter_set) {
         if ($officer_count == 0) {
@@ -225,14 +233,14 @@ sub build_company_appointments() {
                 ln('cessation', 'cessations', $resigned_count) :
                 ln('resignation', 'resignations', $resigned_count);
             return ' ' . $officer_count . ' ' .
-                ln('officer ', 'officers ', $officer_count) . '/ ' .
+                ln('officer ', $officers_label, $officer_count) . '/ ' .
                 $resigned_count . ' ' . $resignation_type;
         }
     } else {
         if ($active_count == 0) {
             return "There are no current officers available for this company."
         } else {
-            return ' ' . $active_count . ' ' . ln('current officer ', 'current officers ', $officer_count);
+            return ' ' . $active_count . ' ' . ln('current officer ', 'current ' . $officers_label, $officer_count);
         }
     }
 }
