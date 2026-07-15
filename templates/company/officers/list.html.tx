@@ -14,14 +14,28 @@
         <form id="officer-filter" class="form grid-row">
             <div class="column-half">
                 <h2 class="heading-medium filter-appointments" id="officer-filter-h2">
+                    <% if $c.config.feature.change_lp_officer_titles && $company.type == 'limited-partnership' { %>
+                        Filter partners
+                    <% } else { %>
                         Filter officers
+                    <% } %>
                 </h2>
                 <fieldset>
-                    <legend class="govuk-visually-hidden">Filter officers, selecting an input will reload the page.</legend>
+                    <legend class="govuk-visually-hidden">
+                        <% if $c.config.feature.change_lp_officer_titles && $company.type == 'limited-partnership' { %>
+                            Filter partners, selecting an input will reload the page.
+                        <% } else { %>
+                            Filter officers, selecting an input will reload the page.
+                        <% } %>
+                    </legend>
                     % for $categories -> $category {
                             <label for="officer-category-<% $category.id %>" class="block-label selection-button-checkbox">
                                 <input id="officer-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
-                                <% l($category.name) %>
+                                <% if $c.config.feature.change_lp_officer_titles && $company.type == 'limited-partnership' { %>
+                                    Current partners
+                                <% } else { %>
+                                    <% l($category.name) %>
+                                <% } %>
                             </label>
                     % }
                 </fieldset>
@@ -88,9 +102,9 @@
                             % if $officer.resigned_on  {
                                 % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
                                    <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
-                                 %} else {  
+                                 %} else {
                                    <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
-                                %} 
+                                %}
                             % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' && $company.company_status != 'closed' && $company.company_status != 'removed' {
                                <span id="officer-status-tag-<% $~officer.count %>" class="status-tag font-xsmall">Active</span>
                             % }
