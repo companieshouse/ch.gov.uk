@@ -134,6 +134,8 @@ sub list {
                     my ($key) = @_;
                     return $self->cv_lookup('capital_contribution_sub_type', $key);
                 });
+
+                $item->{appointment_id} = extract_appointment_id($item->{links}{self});
             }
 
             trace "Officer list for %s: %s", $company_number, d:$results [OFFICER LIST];
@@ -243,6 +245,13 @@ sub build_company_appointments {
             return ' ' . $active_count . ' ' . ln('current officer ', 'current ' . $officers_label, $officer_count);
         }
     }
+}
+
+sub extract_appointment_id {
+    my ($self_link) = @_;
+    my @parts = split('/', $self_link // '');
+
+    return $parts[-1];
 }
 
 1;
