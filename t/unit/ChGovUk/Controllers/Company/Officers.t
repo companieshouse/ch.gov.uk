@@ -128,4 +128,21 @@ subtest "build_company_appointments returns current partners count for LPs with 
     is $result, " 2 current partners ", "should return active partner count with current partners label for LPs when active filter is set";
 };
 
+#-------------------------------------------------------------------------------
+
+subtest "extract_appointment_id returns the last path segment from a self link" => sub {
+    plan tests => 1;
+    my $result = ChGovUk::Controllers::Company::Officers::extract_appointment_id(
+        '/company/LP123456/appointments/jM-Fv2b-eo05DE8IKCDyG9fmg5s');
+    is $result, 'jM-Fv2b-eo05DE8IKCDyG9fmg5s', "should return 'jM-Fv2b-eo05DE8IKCDyG9fmg5s' as appointment_id from self link";
+};
+
+#-------------------------------------------------------------------------------
+
+subtest "extract_appointment_id returns 'undef' for when self link is undefined" => sub {
+    plan tests => 1;
+    my $result = ChGovUk::Controllers::Company::Officers::extract_appointment_id(undef);
+    is $result, undef, "should return 'undef' when self link is undefined";
+};
+
 done_testing();

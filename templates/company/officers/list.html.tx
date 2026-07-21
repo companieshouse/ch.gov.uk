@@ -355,6 +355,15 @@
                     % }
                 </div> <%# /grid-row %>
             </div>
+
+            % if ($c.company_is_lp_update_allowed($company) && !$officer.resigned_on && $officer.appointment_id
+                    % && ($officer.officer_role == 'general-partner-in-a-limited-partnership' || $officer.officer_role == 'corporate-general-partner-in-a-limited-partnership')) {
+                % my $partner_sub_url = $officer.officer_role == 'corporate-general-partner-in-a-limited-partnership' ? 'update-general-partner-legal-entity' : 'update-general-partner-person';
+
+                <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'appointment/'  ~ $officer.appointment_id ~ '/' ~ $partner_sub_url) %>" id="update-limited-partnership-type">
+                    Update details for <% $officer.name %>
+                </a>
+            % }
         % }
     </div>
 
