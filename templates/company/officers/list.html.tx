@@ -366,6 +366,16 @@
                     <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'appointment/' ~ $officer.appointment_id ~ '/' ~ $update_partner_sub_url) %>" id="update-limited-partnership-partner-<% $~officer.count %>">
                         Update details for <% $officer.name %>
                     </a>
+                    <br><br>
+                % }
+
+                % my $remove_partner_sub_url = $officer.officer_role == 'corporate-general-partner-in-a-limited-partnership' ? 'when-did-the-general-partner-legal-entity-cease' :
+                %       $officer.officer_role == 'general-partner-in-a-limited-partnership' ? 'when-did-the-general-partner-person-cease' : '';
+
+                % if ($remove_partner_sub_url) {
+                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'appointment/' ~ $officer.appointment_id ~ '/' ~ $remove_partner_sub_url) %>" id="remove-limited-partnership-partner-<% $~officer.count %>">
+                        Remove <% $officer.name %>
+                    </a>
                 % }
             % }
         % }
