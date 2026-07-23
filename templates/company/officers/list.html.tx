@@ -10,17 +10,17 @@
 
     % include '/includes/company/people_tabs.tx' { active => 'officers-tab' };
 
+    % if ($c.company_is_lp_update_allowed($company)) {
+        <div class="govuk-button-group">
+            <a class="govuk-button govuk-button--secondary" href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'general-partner-type') %>" id="add-general-partner">Add a general partner</a>
+
+            <a class="govuk-button govuk-button--secondary" href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'limited-partner-type') %>" id="add-limited-partner">Add a limited partner</a>
+        </div>
+    % }
+
     <div class="js-only">
         <form id="officer-filter" class="form grid-row">
             <div class="column-half">
-
-                % if ($c.company_is_lp_update_allowed($company)) {
-                    <div class="govuk-button-group">
-                        <a class="govuk-button govuk-button--secondary" href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'general-partner-type') %>" id="add-general-partner">Add a general partner</a>
-
-                        <a class="govuk-button govuk-button--secondary" href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'limited-partner-type') %>" id="add-limited-partner">Add a limited partner</a>
-                    </div>
-                % }
 
                 <h2 class="heading-medium filter-appointments" id="officer-filter-h2">
                     <% if $c.config.feature.change_lp_officer_titles && $company.type == 'limited-partnership' { %>
