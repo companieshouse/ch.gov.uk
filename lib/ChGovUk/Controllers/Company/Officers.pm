@@ -127,6 +127,11 @@ sub list {
                     if (my $end_date = $details->{appointment_verification_end_on}) {
                         $details->{is_identity_verification_expired} = CH::Util::DateHelper->is_current_date_greater($end_date) ? 1 : 0;
                     }
+
+                    # Check if identity verification due date has past
+                    if (my $due_data = $details->{appointment_verification_statement_due_on}) {
+                        $details->{is_identity_verification__past_due} = CH::Util::DateHelper->is_current_date_greater($due_data) ? 1 : 0;
+                    }
                 }
 
                 # Embellish the officer item with some formatted capital contribution details
