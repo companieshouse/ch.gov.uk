@@ -17,6 +17,7 @@ use_ok $UTIL;
         as_local_string
         as_string
         is_current_date_greater
+        is_date_greater_than_30_days_from_now
         day_month_as_string
         days_between
         from_internal
@@ -37,6 +38,7 @@ use_ok $UTIL;
     test_method_as_string();
     test_method_as_local_string();
     test_method_is_current_date_greater();
+    test_method_is_date_greater_than_30_days_from_now();
     test_method_day_month_as_string();
     test_method_days_between();
     test_method_to_date_time();
@@ -533,6 +535,29 @@ sub test_method_is_current_date_greater {
      };
 
      return;
+}
+
+# ==============================================================================
+
+sub test_method_is_date_greater_than_30_days_from_now {
+    subtest "Test method - is_date_greater_than_30_days_from_now" => sub {
+        my $today = DateTime::Tiny->now;
+        my $date_in_20_days = DateTime::Tiny->new(
+            year   => $today->year,
+            month  => $today->month,
+            day    => $today->day + 20
+        );
+        is $UTIL->is_date_greater_than_30_days_from_now($date_in_20_days), "0", "0 returned when provided date is within next 30 days";
+
+        my $date_in_40_days = DateTime::Tiny->new(
+            year   => $today->year + (($today->month == 12) ? 1 : 0),
+            month  => $today->month + 1 > 12 ? 1 : $today->month + 1,
+            day    => $today->day + 10
+        );
+        is $UTIL->is_date_greater_than_30_days_from_now($date_in_40_days), "1", "1 returned when provided date is more than 30 days in the future";
+    };
+
+    return;
 }
 
 # ==============================================================================

@@ -214,6 +214,19 @@ sub is_current_date_greater {
 
 # ------------------------------------------------------------------------------
 
+sub is_date_greater_than_30_days_from_now {
+    my ($class, $date) = @_;
+    $date =~ s/\-//g;
+    my $date_tiny = $class->to_date_time($date);
+
+    my $today = DateTime::Tiny->now;
+    my $future_date = $class->add_date_YMD($today, 0, 0, 30);
+
+    return $class->is_date_greater($future_date, $date_tiny);
+}
+
+# ------------------------------------------------------------------------------
+
 sub add_date_YMD {
     my ($class, $date, $delta_year, $delta_month, $delta_day) = @_;
 
