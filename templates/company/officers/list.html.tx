@@ -257,7 +257,7 @@
                         % }
                     % }
                     % else if $officer.identity_verification_details.appointment_verification_statement_due_on {
-                        % if not $officer.identity_verification_details.is_identity_verification_past_due {
+                        % if $officer.identity_verification_details.is_identity_verification_past_due {
                             <dl class="column-quarter">
                                 <dt><% l('Identity verification status') %></dt>
                                 <dd id="officer-identity-verification-details-appointment-verification-end-on-<% $~officer.count %>" class="data verified-status-data">

@@ -130,7 +130,7 @@ sub list {
 
                     # Check if identity verification due date has past
                     if (my $due_data = $details->{appointment_verification_statement_due_on}) {
-                        $details->{is_identity_verification__past_due} = CH::Util::DateHelper->is_current_date_greater($due_data) ? 1 : 0;
+                        $details->{is_identity_verification_past_due} = CH::Util::DateHelper->is_current_date_greater($due_data) ? 1 : 0;
                     }
                 }
 
