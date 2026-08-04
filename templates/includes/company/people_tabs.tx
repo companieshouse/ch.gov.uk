@@ -1,17 +1,17 @@
 	    <ul class="search-tabs" role="tablist">
+            <% my $officers_label = ($c.config.feature.change_lp_officer_titles && $company.type == 'limited-partnership') ? 'Partners' : 'Officers'; %>
+
 	        <% if $officers { %>
 	        	<li role="presentation" id='peoples-tab' class="active">
 	                <a role="tab" id='officers-link' class="govuk-link" href='#' aria-selected="true">
-                        <% if $c.config.feature.change_lp_officer_titles && $company.type == 'limited-partnership' { %>
-                            Partners
-                        <% } else { %>
-                            Officers
-                        <% } %>
+                        <% $officers_label %>
 	                </a>
 	        	</li>
 	        <% } else { %>
 	        	<li role="presentation" id='peoples-tab'>
-	                <a role="tab" id='officers-link' class="govuk-link" href="<% $c.url_for("company_officers") %>" aria-selected="false">Officers</a>
+                    <a role="tab" id='officers-link' class="govuk-link" href="<% $c.url_for("company_officers") %>" aria-selected="false">
+                        <% $officers_label %>
+                    </a>
 	        	</li>
 	        <% } %>
 
