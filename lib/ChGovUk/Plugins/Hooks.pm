@@ -24,6 +24,32 @@ sub setup_before_dispatch_hook {
     $app->hook( before_dispatch => sub {
         my ($self) = @_;
 
+        my $rebrand = $self->config->{feature}->{govuk_rebrand} // 0;
+        $self->stash(govuk_rebrand => $rebrand);
+
+        my $cdn_url = $self->config->{cdn}->{url} // '';
+        if($cdn_url) {
+            $self->stash(cdn_url => $cdn_url);
+
+            my $govuk_frontend_version = $self->config->{cdn}->{govuk_frontend_version} // '5.11.0';
+            if($govuk_frontend_version) {
+                $rebrand = $rebrand ? '/rebrand' : '';
+                my $govuk_pathname = "govuk-frontend/v${govuk_frontend_version}";
+                my %govuk_assets = (
+                    "fonts"       => "${cdn_url}/fonts/${govuk_pathname}",
+                    "images"      => "${cdn_url}/images/${govuk_pathname}${rebrand}",
+                    "javascripts" => "${cdn_url}/javascripts/${govuk_pathname}",
+                    "stylesheets" => "${cdn_url}/stylesheets/${govuk_pathname}",
+                    "static"      => "${cdn_url}/static/${govuk_pathname}${rebrand}",
+                );
+                $self->stash(govuk_frontend_version => $govuk_frontend_version);
+                $self->stash(govuk_assets => \%govuk_assets);
+            }
+        }
+        if(exists $self->config->{accounts_template}->{url}) {
+            $self->stash(accounts_template_url => $self->config->{accounts_template}->{url});
+        }
+
         if ( $self->req->url->path =~ m{^/(opensearch\.xml|.*\bfavicon\.ico|advanced-search|alphabetical-search|.*\bjquery\.js|.*\.(png|svg|gif|php|woff|json|css|js)$)\b} ) {
             # on exclusion list
             # return error without creating a session
@@ -49,32 +75,6 @@ sub setup_before_dispatch_hook {
         }
 
         $self->stash( session => $self->session );
-
-        my $rebrand = $self->config->{feature}->{govuk_rebrand} // 0;
-        $self->stash(govuk_rebrand => $rebrand);
-
-        my $cdn_url = $self->config->{cdn}->{url} // '';
-        if($cdn_url) {
-            $self->stash(cdn_url => $cdn_url);
-
-            my $govuk_frontend_version = $self->config->{cdn}->{govuk_frontend_version} // '5.11.0';
-            if($govuk_frontend_version) {
-                $rebrand = $rebrand ? '/rebrand' : '';
-                my $govuk_pathname = "govuk-frontend/v${govuk_frontend_version}";
-                my %govuk_assets = (
-                    "fonts"       => "${cdn_url}/fonts/${govuk_pathname}",
-                    "images"      => "${cdn_url}/images/${govuk_pathname}${rebrand}",
-                    "javascripts" => "${cdn_url}/javascripts/${govuk_pathname}",
-                    "stylesheets" => "${cdn_url}/stylesheets/${govuk_pathname}",
-                    "static"      => "${cdn_url}/static/${govuk_pathname}${rebrand}",
-                );
-                $self->stash(govuk_frontend_version => $govuk_frontend_version);
-                $self->stash(govuk_assets => \%govuk_assets);
-            }
-        }
-        if(exists $self->config->{accounts_template}->{url}) {
-          $self->stash(accounts_template_url => $self->config->{accounts_template}->{url});
-        }
     } );
 
     return;
