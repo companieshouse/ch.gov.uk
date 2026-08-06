@@ -83,6 +83,9 @@ sub stash_gci_return_url {
     my $signInInfo = $sessRef->{signin_info};
 
     if ($signInInfo && length $signInInfo->{acsp_number} && $self->isDigitalLP($company)) {
+      if ($sessRef->{csrf_token}) {
+          $self->stash(csrf_token => $sessRef->{csrf_token});
+      }
       my $gciReturnUrl = $self->req->url->to_abs->path->to_abs_string;
 
       $sessRef->{extra_data}{gci_return_url} = $gciReturnUrl;
