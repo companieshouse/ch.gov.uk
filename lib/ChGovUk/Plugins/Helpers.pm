@@ -83,6 +83,11 @@ sub _parent_url_for {
 sub _piwik_goal_id {
     my ($app, $key) = @_;
 
+    unless (exists($app->config->{piwik}{$key})) {
+        error "Cannot find goal id [%s] in config", $key [HELPERS];
+        return;
+    }
+
     return $app->config->{piwik}{$key};
 }
 

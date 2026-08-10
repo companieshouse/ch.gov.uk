@@ -16,7 +16,7 @@
                 href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'general-partner-type') %>"
                 id="add-general-partner"
                 % if $c.config.piwik.embed {
-                    onclick="javascript:_paq.push(['trackGoal', <% $c.config.piwik.lp_add_general_partner_goal_id %>]);"
+                    onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_add_general_partner_goal_id') %>]);"
                 % }
             >
                 Add a general partner
@@ -26,7 +26,7 @@
                 href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'limited-partner-type') %>"
                 id="add-limited-partner"
                 % if $c.config.piwik.embed {
-                    onclick="javascript:_paq.push(['trackGoal', <% $c.config.piwik.lp_add_limited_partner_goal_id %>]);"
+                    onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_add_limited_partner_goal_id') %>]);"
                 % }
             >
                 Add a limited partner
