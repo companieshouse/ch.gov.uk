@@ -77,6 +77,16 @@ piwik:
   url: "<PIWIK_URL>"
   site_id: <PIWIK_SITE_ID>
   embed: <PIWIK_EMBED>
+  lp_add_general_partner_goal_id: <PIWIK_LP_ADD_GENERAL_PARTNER_GOAL_ID>
+  lp_update_general_partner_person_goal_id: <PIWIK_LP_UPDATE_GENERAL_PARTNER_PERSON_GOAL_ID>
+  lp_update_general_partner_legal_entity_goal_id: <PIWIK_LP_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_GOAL_ID>
+  lp_remove_general_partner_person_goal_id: <PIWIK_LP_REMOVE_GENERAL_PARTNER_PERSON_GOAL_ID>
+  lp_remove_general_partner_legal_entity_goal_id: <PIWIK_LP_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_GOAL_ID>
+  lp_add_limited_partner_goal_id: <PIWIK_LP_ADD_LIMITED_PARTNER_GOAL_ID>
+  lp_update_limited_partner_person_goal_id: <PIWIK_LP_UPDATE_LIMITED_PARTNER_PERSON_GOAL_ID>
+  lp_update_limited_partner_legal_entity_goal_id: <PIWIK_LP_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_GOAL_ID>
+  lp_remove_limited_partner_person_goal_id: <PIWIK_LP_REMOVE_LIMITED_PARTNER_PERSON_GOAL_ID>
+  lp_remove_limited_partner_legal_entity_goal_id: <PIWIK_LP_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_GOAL_ID>
 
 statsd:
   host: "<STATSD_HOST>"
