@@ -11,6 +11,7 @@ sub register {
     $app->helper(base_url         => \&_base_url);
     $app->helper(external_url_for => \&_external_url_for);
     $app->helper(parent_url_for   => \&_parent_url_for);
+    $app->helper(piwik_goal_id    => \&_piwik_goal_id);
 
 	# Helper to return the current URL for a different language
     $app->helper(url_for_lang => sub {
@@ -77,6 +78,13 @@ sub _parent_url_for {
     return $url_for;
 }
 
+# -----------------------------------------------------------------------------
+
+sub _piwik_goal_id {
+    my ($app, $key) = @_;
+
+    return $app->config->{piwik}{$key};
+}
 
 1;
 

@@ -12,9 +12,25 @@
 
     % if ($c.company_is_lp_update_allowed($company)) {
         <div class="govuk-button-group">
-            <a class="govuk-button govuk-button--secondary" href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'general-partner-type') %>" id="add-general-partner">Add a general partner</a>
+            <a class="govuk-button govuk-button--secondary"
+                href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'general-partner-type') %>"
+                id="add-general-partner"
+                % if $c.config.piwik.embed {
+                    onclick="javascript:_paq.push(['trackGoal', <% $c.config.piwik.lp_add_general_partner_goal_id %>]);"
+                % }
+            >
+                Add a general partner
+            </a>
 
-            <a class="govuk-button govuk-button--secondary" href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'limited-partner-type') %>" id="add-limited-partner">Add a limited partner</a>
+            <a class="govuk-button govuk-button--secondary"
+                href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'limited-partner-type') %>"
+                id="add-limited-partner"
+                % if $c.config.piwik.embed {
+                    onclick="javascript:_paq.push(['trackGoal', <% $c.config.piwik.lp_add_limited_partner_goal_id %>]);"
+                % }
+            >
+                Add a limited partner
+            </a>
         </div>
     % }
 
@@ -372,13 +388,30 @@
                 %       $officer.officer_role == 'limited-partner-in-a-limited-partnership' ? 'limited-partner-person' : '';
 
                 % if ($partner_type) {
-                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'appointment/' ~ $officer.appointment_id ~ '/update-' ~ $partner_type) %>" id="update-limited-partnership-partner-<% $~officer.count %>">
+                    % my $partner_type_with_underscores = $officer.officer_role == 'corporate-general-partner-in-a-limited-partnership' ? 'general_partner_legal_entity' :
+                    %       $officer.officer_role == 'general-partner-in-a-limited-partnership' ? 'general_partner_person' :
+                    %       $officer.officer_role == 'corporate-limited-partner-in-a-limited-partnership' ? 'limited_partner_legal_entity' :
+                    %       $officer.officer_role == 'limited-partner-in-a-limited-partnership' ? 'limited_partner_person' : '';
+
+                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'appointment/' ~ $officer.appointment_id ~ '/update-' ~ $partner_type) %>"
+                        id="update-limited-partnership-partner-<% $~officer.count %>"
+                        % if $c.config.piwik.embed {
+                            % my $update_goal_key = "lp_update_" ~ $partner_type_with_underscores ~ "_goal_id";
+                            onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id($update_goal_key) %>]);"
+                        % }
+                    >
                         Update details for <% $officer.name %>
                     </a>
 
                     <br><br>
 
-                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'appointment/' ~ $officer.appointment_id ~ '/when-did-the-' ~ $partner_type ~ '-cease') %>" id="remove-limited-partnership-partner-<% $~officer.count %>">
+                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'appointment/' ~ $officer.appointment_id ~ '/when-did-the-' ~ $partner_type ~ '-cease') %>"
+                        id="remove-limited-partnership-partner-<% $~officer.count %>"
+                        % if $c.config.piwik.embed {
+                            % my $remove_goal_key = "lp_remove_" ~ $partner_type_with_underscores ~ "_goal_id";
+                            onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id($remove_goal_key) %>]);"
+                        % }
+                    >
                         Remove <% $officer.name %>
                     </a>
                 % }
