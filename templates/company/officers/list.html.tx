@@ -120,14 +120,19 @@
                 % }
 
                 <div class="grid-row">
+                    % my $is_officer_an_lp_partner = $officer.officer_role == 'corporate-general-partner-in-a-limited-partnership'
+                    %     || $officer.officer_role == 'general-partner-in-a-limited-partnership'
+                    %     || $officer.officer_role == 'corporate-limited-partner-in-a-limited-partnership'
+                    %     || $officer.officer_role == 'limited-partner-in-a-limited-partnership';
 
                     %# this is always displayed
                     <dl class="column-quarter">
                         <dt><% l('Role') %>
                             % if $officer.resigned_on  {
-                                % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
+                                % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer'
+                                %     || $is_officer_an_lp_partner {
                                    <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
-                                 %} else {
+                                %} else {
                                    <span id="officer-status-tag-<% $~officer.count %>" class="status-tag ceased-tag font-xsmall">Resigned</span>
                                 %}
                             % } else if $company.company_status != 'dissolved' && $company.company_status != 'converted-closed' && $company.company_status != 'closed' && $company.company_status != 'removed' {
@@ -154,10 +159,7 @@
 
                     % if $officer.appointed_on {
                       % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer'
-                        % || $officer.officer_role == 'corporate-limited-partner-in-a-limited-partnership'
-                        % || $officer.officer_role == 'limited-partner-in-a-limited-partnership'
-                        % || $officer.officer_role == 'corporate-general-partner-in-a-limited-partnership'
-                        % || $officer.officer_role == 'general-partner-in-a-limited-partnership' {
+                      %   || $is_officer_an_lp_partner {
                         <dl class="column-quarter">
                             <dt><% l('Notified on') %></dt>
                             <dd id="officer-appointed-on-<% $~officer.count %>" class="data">
@@ -182,20 +184,21 @@
                     % }
 
                     % if $officer.resigned_on {
-                        % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer' {
-                        <dl class="column-quarter">
+                        % if $officer.officer_role == 'managing-officer' || $officer.officer_role == 'corporate-managing-officer'
+                        %   || $is_officer_an_lp_partner {
+                          <dl class="column-quarter">
                             <dt><% l('Ceased on') %></dt>
                             <dd id="officer-resigned-on-<% $~officer.count %>" class="data">
                                 <% $c.isodate_as_string( $officer.resigned_on ) %>
                             </dd>
-                        </dl>
-                       % } else {
-                        <dl class="column-quarter">
+                          </dl>
+                        % } else {
+                          <dl class="column-quarter">
                             <dt><% l('Resigned on') %></dt>
                             <dd id="officer-resigned-on-<% $~officer.count %>" class="data">
                                 <% $c.isodate_as_string( $officer.resigned_on ) %>
                             </dd>
-                        </dl>
+                          </dl>
                         % }
                     % }
 
