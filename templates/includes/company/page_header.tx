@@ -8,7 +8,7 @@
                 <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'partnership-name') %>"
                     id="update-limited-partnership-name" style="margin-left: 5px; white-space: nowrap; vertical-align: top;"
                     % if $c.config.piwik.embed {
-                        onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_name') %>]);"
+                        onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_name_goal_id') %>]);"
                     % }
                 >
                     Update name
