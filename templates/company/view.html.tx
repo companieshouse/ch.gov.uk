@@ -47,7 +47,12 @@
                 </span>
 
                 % if ($c.company_is_lp_update_allowed($company)) {
-                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'enter-registered-office-address') %>" id="roa-update-link">
+                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'enter-registered-office-address') %>"
+                        id="roa-update-link"
+                        % if $c.config.piwik.embed {
+                            onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_registered_office_address') %>]);"
+                        % }
+                    >
                         Update
                         <span class="govuk-visually-hidden">
                             Registered office address <% $roa_address %>
@@ -79,7 +84,12 @@
                     </span>
 
                     % if ($c.company_is_lp_update_allowed($company)) {
-                        <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'enter-principal-place-of-business') %>" id="ppob-update-link">
+                        <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'enter-principal-place-of-business') %>"
+                            id="ppob-update-link"
+                            % if $c.config.piwik.embed {
+                                onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_principal_office_address') %>]);"
+                            % }
+                        >
                             Update
                             <span class="govuk-visually-hidden">
                                 Principal place of business <% $ppob_address %>
@@ -169,7 +179,12 @@
                     <% l($c.cv_lookup('company_summary', $company.type)) %>
                 </span>
                 % if ($c.company_is_lp_update_allowed($company) && ($company.subtype == 'lp' || $company.subtype == 'slp')) {
-                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'redesignate-to-pflp') %>" id="update-limited-partnership-type">
+                    <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'redesignate-to-pflp') %>"
+                        id="update-limited-partnership-type"
+                        % if $c.config.piwik.embed {
+                            onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_type') %>]);"
+                        % }
+                    >
                         Update
                         <span class="govuk-visually-hidden">
                             and apply for designation as a private fund limited partnership (PFLP)
@@ -212,7 +227,12 @@
                     % }
 
                     % if ($c.company_is_lp_update_allowed($company)) {
-                        <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'partnership-term') %>" id="update-limited-partnership-term">
+                        <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'partnership-term') %>"
+                            id="update-limited-partnership-term"
+                            % if $c.config.piwik.embed {
+                                onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_term') %>]);"
+                            % }
+                        >
                             Update
                             <span class="govuk-visually-hidden">
                                 % if ($term) {
@@ -383,7 +403,7 @@
                 </p>
             % }
             <dl>
-        % } 
+        % }
         % else {
             <div class="column-half">
                 % if $company.confirmation_statement.overdue == 1 {
