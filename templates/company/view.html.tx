@@ -50,7 +50,7 @@
                     <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'enter-registered-office-address') %>"
                         id="roa-update-link"
                         % if $c.config.piwik.embed {
-                            onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_registered_office_address') %>]);"
+                            onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_registered_office_address_goal_id') %>]);"
                         % }
                     >
                         Update
@@ -87,7 +87,7 @@
                         <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'enter-principal-place-of-business') %>"
                             id="ppob-update-link"
                             % if $c.config.piwik.embed {
-                                onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_principal_office_address') %>]);"
+                                onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_principal_office_address_goal_id') %>]);"
                             % }
                         >
                             Update
@@ -182,7 +182,7 @@
                     <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'redesignate-to-pflp') %>"
                         id="update-limited-partnership-type"
                         % if $c.config.piwik.embed {
-                            onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_type') %>]);"
+                            onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_type_goal_id') %>]);"
                         % }
                     >
                         Update
@@ -230,7 +230,7 @@
                         <a href="<% $c.external_url_for('update_limited_partnership', company_number => $company.company_number, sub_url => 'partnership-term') %>"
                             id="update-limited-partnership-term"
                             % if $c.config.piwik.embed {
-                                onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_term') %>]);"
+                                onclick="javascript:_paq.push(['trackGoal', <% $c.piwik_goal_id('lp_update_term_goal_id') %>]);"
                             % }
                         >
                             Update

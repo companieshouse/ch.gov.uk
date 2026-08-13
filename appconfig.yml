@@ -87,11 +87,11 @@ piwik:
   lp_update_limited_partner_legal_entity_goal_id: <PIWIK_LP_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_GOAL_ID>
   lp_remove_limited_partner_person_goal_id: <PIWIK_LP_REMOVE_LIMITED_PARTNER_PERSON_GOAL_ID>
   lp_remove_limited_partner_legal_entity_goal_id: <PIWIK_LP_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_GOAL_ID>
-  lp_update_name: <PIWIK_LP_UPDATE_NAME>
-  lp_update_registered_office_address: <PIWIK_LP_UPDATE_REGISTERED_OFFICE_ADDRESS>
-  lp_update_principal_office_address: <PIWIK_LP_UPDATE_PRINCIPAL_OFFICE_ADDRESS>
-  lp_update_type: <PIWIK_LP_UPDATE_TYPE>
-  lp_update_term: <PIWIK_LP_UPDATE_TERM>
+  lp_update_name_goal_id: <PIWIK_LP_UPDATE_NAME_GOAL_ID>
+  lp_update_registered_office_address_goal_id: <PIWIK_LP_UPDATE_REGISTERED_OFFICE_ADDRESS_GOAL_ID>
+  lp_update_principal_office_address_goal_id: <PIWIK_LP_UPDATE_PRINCIPAL_OFFICE_ADDRESS_GOAL_ID>
+  lp_update_type_goal_id: <PIWIK_LP_UPDATE_TYPE_GOAL_ID>
+  lp_update_term_goal_id: <PIWIK_LP_UPDATE_TERM_GOAL_ID>
 
 statsd:
   host: "<STATSD_HOST>"
