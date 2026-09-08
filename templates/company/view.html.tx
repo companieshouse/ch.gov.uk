@@ -456,7 +456,7 @@
     %    }
     % }
     % if $company.foreign_company_details || $company.type == "registered-overseas-entity" {
-        <h2 class="heading-medium">Company details in the country of incorporation</h2>
+        <h2 class="heading-medium">Company details in the place of incorporation</h2>
        % my $foreign_details = $company.foreign_company_details;
         <div class="grid-row">
         % if $company.type == "registered-overseas-entity" {
