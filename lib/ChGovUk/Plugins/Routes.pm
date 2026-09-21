@@ -77,6 +77,9 @@ sub register {
     # PSCs route
     $company_bridge->get('/persons-with-significant-control')->name('list_pscs')->to('company-pscs#list');
 
+    # PSC Notifications route
+    $root->get('/persons-with-significant-control/:persons_with_significant_control_id/notifications')->name('get_psc_notifications')->to('psc_notifications#get');
+
     # Officer route
     $root->get('/officers/:officer_id/appointments')->name('get_officer_appointments')->to('personal_appointments#get');
 

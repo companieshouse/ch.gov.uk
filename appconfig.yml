@@ -73,6 +73,9 @@ filing_history:
 officer_appointments:
   items_per_page: 35
 
+psc_notifications:
+  items_per_page: 35
+
 piwik:
   url: "<PIWIK_URL>"
   site_id: <PIWIK_SITE_ID>
