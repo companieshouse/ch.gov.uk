@@ -9,7 +9,11 @@
     <div class="column-full-width">
         % include 'search/form.tx'
         <div class="grid-row">
-            <div class="column-two-thirds">
+            % if $search_type == 'disqualified-officers' {
+                <div class="column-two-thirds">
+            % } else {
+                <div class="column-full">
+            % }
                 % if $search_type == 'officers' {
                     <h2 class="govuk-heading-m">Officer results</h2>
                 % } elsif $search_type == 'disqualified-officers' {
@@ -27,7 +31,8 @@
                         </p>
                     <% } %>
                 </div>
-            </div>
+            </div> <!-- end of .column-two-thirds / .column-full -->
+            
             % if $results.kind == 'search#disqualified-officers' {
                 <div class="column-third" id="disqualification-column">
                     <div class="related-content font-xsmall" id="disqualification-info">
