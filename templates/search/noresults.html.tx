@@ -6,19 +6,23 @@
 % }
 %
 % around content -> {
-        <div class="column-full-width">
-%       include 'search/form.tx'
+    <div class="column-full-width">
+        % include 'search/form.tx'
         <div class="grid-row">
-            <div class="column-two-thirds">
-                    % if $search_type == 'officers' {
-                           <h2 class="govuk-heading-m">Officer results</h2>
-                         % } elsif $search_type == 'disqualified-officers' { 
-                            <h2 class="govuk-heading-m">Disqualification results</h2>
-                           % } elsif $search_type == 'all' {
-                           <h2 class="govuk-heading-m">All results </h2>
-                           % } else {
-                            <h2 class="govuk-heading-m">Company results</h2>
-                        % }
+            % if $search_type == 'disqualified-officers' {
+                <div class="column-two-thirds">
+            % } else {
+                <div class="column-full">
+            % }
+                % if $search_type == 'officers' {
+                    <h2 class="govuk-heading-m">Officer results</h2>
+                % } elsif $search_type == 'disqualified-officers' {
+                    <h2 class="govuk-heading-m">Disqualification results</h2>
+                % } elsif $search_type == 'all' {
+                    <h2 class="govuk-heading-m">All results</h2>
+                % } else {
+                    <h2 class="govuk-heading-m">Company results</h2>
+                % }
                 <div id="no-results" role="status">
                     <% if $results.searchTerm { %>
                         <h3 class="govuk-heading-s" id="no-results-heading" >No results found</h3>
@@ -27,7 +31,8 @@
                         </p>
                     <% } %>
                 </div>
-            </div>
+            </div> <!-- end of .column-two-thirds / .column-full -->
+            
             % if $results.kind == 'search#disqualified-officers' {
                 <div class="column-third" id="disqualification-column">
                     <div class="related-content font-xsmall" id="disqualification-info">
@@ -39,7 +44,6 @@
                     </div>
                 </div>
             % }
-        </div>
-    </article>
-  </div><!-- column-end -->
+        </div><!-- end of .grid-row -->
+    </div><!-- end of .column-full-width -->
 % }

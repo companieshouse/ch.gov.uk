@@ -10,158 +10,165 @@
 % # --------------------------------> set show_tabs to 1 for officers
 %
 
-<div class="column-full-width">
+    <div class="column-full-width">
 
-    % include "search/form.tx" {SHOW_TABS => 0, RESULTS_CONTAINER => 0}
+        % include "search/form.tx" {SHOW_TABS => 0, RESULTS_CONTAINER => 0}
 
-    <div class="grid-row">
-        <div class="column-two-thirds">
-  % if $results.total_results {
-                        % if $search_type == 'officers' {
-                           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Officer results</h2>
-                         % } elsif $search_type == 'disqualified-officers' { 
-                            <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Disqualification results</h2>
-                           % } elsif $search_type == 'all' {
-                           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">All results </h2>
-                           % } else {
-                            <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Company results</h2>
-                        % }
-   % }
-            <article id="services-information-results">
-            % if $results.total_results {
-                                    % if $search_type == 'officers' {
-                        <details class="govuk-details govuk-!-margin-top-4 govuk-!-margin-bottom-0" role="group">
-                            <summary class="govuk-details__summary" role="button" aria-controls="details-content-0" aria-expanded="false">
-                                <span class="govuk-details__summary-text">
-                                    Did you know you can search for officers by location?
-                                </span>
-                            </summary>
-                            <div class="govuk-details__text" id="details-content-0" aria-hidden="true">
-                                You can add location details when you search for a name, such as: <strong>John Smith location:"High Street, London"</strong>
-                                <br />or <strong>John Smith location:"CF14"</strong>
-                            </div>
-                        </details>
-                    % }
-				<ul id='results' class="results-list">
-
-                    % for $results.items -> $item {
-                        % if $item.kind == "searchresults#officer" {
-                            <li class="type-officer">
-                                <h3><a class="govuk-link" href="<% $item.links.self %>"><% $item.title %></a></h3>
-                                <% if $item.snippet { %>
-                                    <p class="meta crumbtrail inset">Matching appointment names: <br/><span><% $item.snippet %></span></p>
-                                <% } %>
-                                <p class="meta crumbtrail"><% $item.description %></p>
-                                <p><% $item.address_snippet %></p>
-                            </li>
-                        % } elsif $item.kind == "searchresults#company" {
-                            <li class="type-company">
-                                <h3>
-                                    <!-- $item._score -->
-                                    <a class="govuk-link" href="<% $item.links.self %>"
-                                        <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SearchSuggestions', 'SearchResult-<% $~item +1%>' ]);"<% } %>title="View company">
-                                        <% $item.title %>
-                                    </a>
-                                </h3>
-                                <% if $item.snippet { %>
-                                    <p class="meta crumbtrail inset">Matching previous names: <br/><span><% $item.snippet %></span></p>
-                                <% } %>
-                                <p class="meta crumbtrail"> <% $item.description %> </p>
-                                <p><% $item.address_snippet %></p>
-                            </li>
-                        % } elsif $item.kind == "searchresults#disqualified-officer" {
-                            <li class="type-disqualification">
-                                <h3><a class="govuk-link" href="<% $item.links.self %>"><% $item.title %></a></h3>
-                                <% if $item.snippet { %>
-                                    <p class="meta crumbtrail inset">Matching disqualification names: <br/><span><% $item.snippet %></span></p>
-                                <% } %>
-                                <p class="meta crumbtrail"><% $item.description %></p>
-                                <% if $item.address_snippet != "Not Available, Not Available, Not Available, Not Available, NOT AVAILABLE" { %>
-                                    <p><% $item.address_snippet %></p>
-                                <% } %>
-                            </li>
-                        % } # End-if
-                    % } # Next
-                </ul>
-
-            % } # End-if results.total_results
-
-            % if ( $pager.current_page == $pager.page_limit ) {
-                <p class="search-meta">
-                    <strong>You have reached the last available page. The closest <%= $pager.results_limit %> matches have been returned, please refine your search criteria.</strong>
-                </p>
-            % }
-        </div>
-
-        % if $results.kind == 'search#disqualified-officers' {
-            <div class="column-third" id="disqualification-column">
-                <div class="related-content font-xsmall" id="disqualification-info">
-                    <h2 class="govuk-heading-s govuk-!-margin-top-3">Disqualified directors</h2>
-                    <ul class="list">
-                        <li class="govuk-!-margin-bottom-3"><a class="govuk-link" href="/register-of-disqualifications/A" rel="external" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Search for a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
-                        <li class="govuk-!-margin-bottom-3"><a rel="external" class="govuk-link" href="https://www.gov.uk/report-a-disqualified-director">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
-                    </ul>
-                </div>
-            </div>
-        % }
-    </div>
-</article><!-- search-container -->
-
-% if $pager.show_pager {
-    <div class="search-meta" id="search-meta">
-        <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-2 govuk-pagination" aria-label="Pagination">
-            % if ($pager.previous_page) {
-                <div class="govuk-pagination__prev">
-                    <a class="govuk-link govuk-pagination__link" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>" rel="prev">
-                    <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
-                        <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
-                    </svg>
-                        <span class="govuk-pagination__link-title">
-                            Previous<span class="govuk-visually-hidden"> page</span>
-                        </span>
-                    </a>
-                </div>
-            % }
-
-            <ul class="govuk-pagination__list">
-            % for $pager.pages_in_set -> $page {
-                % if $page <= $pager.page_limit {
-                    <li class="govuk-pagination__item govuk-!-display-block <% if $pager.current_page == $page { %> govuk-pagination__item--current <% } %> ">
-                        <a
-                            class="govuk-link govuk-pagination__link"
-                            href="<% $c.url_with.query([ page => $page ]) %>"
-                            aria-label="Page <% $page %>"
-                            % if $pager.current_page == $page {
-                                aria-current="page"
-                            % }
-                        ><% $page %></a>
-                    </li>
-                % }
-            % }
-            </ul>
-            % if ($pager.current_page < $pager.page_limit && $pager.next_page) {
-                <div class="govuk-pagination__next">
-                    <a class="govuk-link govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>" rel="next">
-                        <span class="govuk-pagination__link-title">
-                          Next<span class="govuk-visually-hidden"> page</span>
-                        </span>
-                        <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
-                            <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
-                        </svg>
-                    </a>
-                </div>
-            % }
-        </nav>
-        <p>
-            <% $c.format_number($total_hits) %>
-            % if ($pager.total_entries==1) {
-                match
+        <div class="grid-row">
+            % if $search_type == 'disqualified-officers' {
+                <div class="column-two-thirds">
             % } else {
-                matches
+                <div class="column-full">
             % }
-            found
-        </p>
-    </div><!-- ends search-meta -->
-% }
-    </div><!-- column-end -->
+                % if $results.total_results {
+                    % if $search_type == 'officers' {
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Officer results</h2>
+                    % } elsif $search_type == 'disqualified-officers' {
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Disqualification results</h2>
+                    % } elsif $search_type == 'all' {
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-0">All results</h2>
+                            % if $c.config.feature.psc_search_feature {
+                                <p class="govuk-body govuk-!-margin-top-3">
+                                    Results include companies, officers, people with significant control (PSCs), and disqualifications. If you want to view just one of these categories, you can filter results using the tabs.
+                                </p>
+                            % }
+                    % } else {
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Company results</h2>
+                    % }
+                % }
+                <article id="services-information-results">
+                    % if $results.total_results {
+                        % if $search_type == 'officers' {
+                            <details class="govuk-details govuk-!-margin-top-4 govuk-!-margin-bottom-0" role="group">
+                                <summary class="govuk-details__summary" role="button" aria-controls="details-content-0" aria-expanded="false">
+                                            <span class="govuk-details__summary-text">
+                                                Did you know you can search for officers by location?
+                                            </span>
+                                </summary>
+                                <div class="govuk-details__text" id="details-content-0" aria-hidden="true">
+                                    You can add location details when you search for a name, such as: <strong>John Smith location:"High Street, London"</strong>
+                                    <br />or <strong>John Smith location:"CF14"</strong>
+                                </div>
+                            </details>
+                        % }
+                        <ul id='results' class="results-list">
+                            % for $results.items -> $item {
+                                % if $item.kind == "searchresults#officer" {
+                                    <li class="type-officer">
+                                        <h3><a class="govuk-link" href="<% $item.links.self %>"><% $item.title %></a></h3>
+                                        <% if $item.snippet { %>
+                                        <p class="meta crumbtrail inset">Matching appointment names: <br/><span><% $item.snippet %></span></p>
+                                        <% } %>
+                                        <p class="meta crumbtrail"><% $item.description %></p>
+                                        <p><% $item.address_snippet %></p>
+                                    </li>
+                                % } elsif $item.kind == "searchresults#company" {
+                                    <li class="type-company">
+                                        <h3>
+                                            <!-- $item._score -->
+                                            <a class="govuk-link" href="<% $item.links.self %>"
+                                            <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'SearchSuggestions', 'SearchResult-<% $~item +1%>' ]);"<% } %>title="View company">
+                                            <% $item.title %>
+                                            </a>
+                                        </h3>
+                                        <% if $item.snippet { %>
+                                        <p class="meta crumbtrail inset">Matching previous names: <br/><span><% $item.snippet %></span></p>
+                                        <% } %>
+                                        <p class="meta crumbtrail"> <% $item.description %> </p>
+                                        <p><% $item.address_snippet %></p>
+                                    </li>
+                                % } elsif $item.kind == "searchresults#disqualified-officer" {
+                                    <li class="type-disqualification">
+                                        <h3><a class="govuk-link" href="<% $item.links.self %>"><% $item.title %></a></h3>
+                                        <% if $item.snippet { %>
+                                        <p class="meta crumbtrail inset">Matching disqualification names: <br/><span><% $item.snippet %></span></p>
+                                        <% } %>
+                                        <p class="meta crumbtrail"><% $item.description %></p>
+                                        <% if $item.address_snippet != "Not Available, Not Available, Not Available, Not Available, NOT AVAILABLE" { %>
+                                        <p><% $item.address_snippet %></p>
+                                        <% } %>
+                                    </li>
+                                % } # End-if
+                            % } # Next
+                        </ul>
+                    % } # End-if results.total_results
+
+                    % if ( $pager.current_page == $pager.page_limit ) {
+                        <p class="search-meta">
+                            <strong>You have reached the last available page. The closest <%= $pager.results_limit %> matches have been returned, please refine your search criteria.</strong>
+                        </p>
+                    % }
+                </article><!-- search-container -->
+            </div> <!-- end of .column-two-thirds / .column-full -->
+
+            % if $results.kind == 'search#disqualified-officers' {
+                <div class="column-third" id="disqualification-column">
+                    <div class="related-content font-xsmall" id="disqualification-info">
+                        <h2 class="govuk-heading-s govuk-!-margin-top-3">Disqualified directors</h2>
+                        <ul class="list">
+                            <li class="govuk-!-margin-bottom-3"><a class="govuk-link" href="/register-of-disqualifications/A" rel="external" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'Disqualifications', 'Register']);"<% } %>>Search for a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                            <li class="govuk-!-margin-bottom-3"><a rel="external" class="govuk-link" href="https://www.gov.uk/report-a-disqualified-director">Report a disqualified director<span class="govuk-visually-hidden">(link opens in a new window)</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            % }
+        </div> <!-- end of .grid-row -->
+
+        % if $pager.show_pager {
+        <div class="search-meta" id="search-meta">
+            <nav class="govuk-!-margin-top-6 govuk-!-margin-bottom-2 govuk-pagination" aria-label="Pagination">
+                % if ($pager.previous_page) {
+                    <div class="govuk-pagination__prev">
+                        <a class="govuk-link govuk-pagination__link" href="<% $c.url_with.query([ page => $pager.previous_page ]) %>" rel="prev">
+                            <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
+                            </svg>
+                            <span class="govuk-pagination__link-title">
+                                Previous<span class="govuk-visually-hidden"> page</span>
+                            </span>
+                        </a>
+                    </div>
+                % }
+
+                <ul class="govuk-pagination__list">
+                    % for $pager.pages_in_set -> $page {
+                        % if $page <= $pager.page_limit {
+                            <li class="govuk-pagination__item govuk-!-display-block <% if $pager.current_page == $page { %> govuk-pagination__item--current <% } %> ">
+                                <a
+                                        class="govuk-link govuk-pagination__link"
+                                        href="<% $c.url_with.query([ page => $page ]) %>"
+                                        aria-label="Page <% $page %>"
+                                        % if $pager.current_page == $page {
+                                        aria-current="page"
+                                        % }
+                                ><% $page %></a>
+                            </li>
+                        % }
+                    % }
+                </ul>
+                % if ($pager.current_page < $pager.page_limit && $pager.next_page) {
+                    <div class="govuk-pagination__next">
+                        <a class="govuk-link govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $pager.next_page ]) %>" rel="next">
+                                <span class="govuk-pagination__link-title">
+                                  Next<span class="govuk-visually-hidden"> page</span>
+                                </span>
+                            <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                % }
+            </nav>
+            <p>
+                <% $c.format_number($total_hits) %>
+                % if ($pager.total_entries==1) {
+                    match
+                % } else {
+                    matches
+                % }
+                found
+            </p>
+        </div><!-- ends search-meta -->
+        % }
+    </div><!-- end of .column-full-width -->
 % }
