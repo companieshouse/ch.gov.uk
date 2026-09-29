@@ -13,7 +13,16 @@
 % } else {
 % if !$results {
     <h1 id="start-searching" class="main-title center"> Search the register </h1>
-    <p><label id="search-cta-label" for="site-search-text">Enter company name, number or officer name</label></p>
+    <p>
+        <label id="search-cta-label" for="site-search-text">
+            Enter company name, number,
+            % if $c.config.feature.psc_search_feature {
+                officer name, or the name of a person with significant control (PSC)
+            % } else {
+                or officer name
+            % }
+        </label>
+    </p>
 % }
     <div class="search-bar-active">
         <div class="searchfield">
