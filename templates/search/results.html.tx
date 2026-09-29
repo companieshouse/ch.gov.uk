@@ -27,9 +27,11 @@
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Disqualification results</h2>
                     % } elsif $search_type == 'all' {
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-0">All results</h2>
-                        <p class="govuk-body govuk-list govuk-!-margin-top-3">
-                            Results include companies, officers, people with significant control (PSCs) and disqualifications. If you want to view just one of these categories, you can filter results using the tabs.
-                        </p>
+                            % if $c.config.feature.psc_search_feature {
+                                <p class="govuk-body govuk-!-margin-top-3">
+                                    Results include companies, officers, people with significant control (PSCs), and disqualifications. If you want to view just one of these categories, you can filter results using the tabs.
+                                </p>
+                            % }
                     % } else {
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Company results</h2>
                     % }

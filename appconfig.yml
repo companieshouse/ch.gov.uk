@@ -130,6 +130,7 @@ feature:
     govuk_rebrand: <FEATURE_GOVUK_REBRAND>
     change_lp_officer_titles: <FEATURE_FLAG_CHANGE_LP_OFFICER_TITLES_08072026>
     oversea_file_accounts_button: <FEATURE_FLAG_ENABLE_OVERSEA_FILE_ACCOUNTS_BUTTON_20072026>
+    psc_search_feature: <PSC_SEARCH_FEATURE>
 
 image_service_start_date: <IMAGE_SERVICE_START_DATE>
 
