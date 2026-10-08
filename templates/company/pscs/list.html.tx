@@ -108,7 +108,7 @@
                     <h2 class="heading-medium">
                         <span id="psc-name-<% $~psc.count %>">
                            % if $psc.name {
-                               <span><b><% $psc.name %></b></span>
+                                <a class="govuk-link" href="<% $psc.links['persons_with_significant_control'].notifications %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $psc.name %></a>
                            % } else {
                                 % if ($psc.kind == 'super-secure-person-with-significant-control') {
                                     Protected person with significant control
@@ -129,7 +129,7 @@
                     <h2 class="heading-medium heading-with-border">
                         <span id="psc-name-<% $~psc.count %>">
                             % if $psc.name {
-                                <span><b><% $psc.name %></b></span>
+                                <a class="govuk-link" href="<% $psc.links['persons_with_significant_control'].notifications %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $psc.name %></a>
                             % } else {
                                 % if ($psc.kind == 'super-secure-person-with-significant-control') {
                                     Protected person with significant control
