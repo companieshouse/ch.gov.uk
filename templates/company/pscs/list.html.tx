@@ -109,7 +109,7 @@
                         <span id="psc-name-<% $~psc.count %>">
                            % if $psc.name {
                                 % if $c.config.feature.psc_search_feature {
-                                <a class="govuk-link" href="<% $psc.links['persons_with_significant_control'].notifications %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $psc.name %></a>
+                                <a class="govuk-link" href="<% $psc.links['persons_with_significant_control'].notifications %>"<% $psc.name %></a>
                                 % } else {
                                 <span><b><% $psc.name %></b></span>
                                 % }
@@ -134,7 +134,7 @@
                         <span id="psc-name-<% $~psc.count %>">
                             % if $psc.name {
                                 % if $c.config.feature.psc_search_feature {
-                                <a class="govuk-link" href="<% $psc.links['persons_with_significant_control'].notifications %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackGoal', 5]);"<% } %>><% $psc.name %></a>
+                                <a class="govuk-link" href="<% $psc.links['persons_with_significant_control'].notifications %>" <% $psc.name %></a>
                                 % } else {
                                 <span><b><% $psc.name %></b></span>
                                 % }
