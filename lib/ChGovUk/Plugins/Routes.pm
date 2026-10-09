@@ -84,6 +84,9 @@ sub register {
     $root->get('/disqualified-officers/corporate/:officer_id')->name('get_corporate_disqualification')->to('disqualified_officers#get_corporate');
     $root->get('/disqualified-officers/natural/:officer_id')->name('get_natural_disqualification')->to('disqualified_officers#get_natural');
 
+    # PSC route
+    $root->get('/persons-with-significant-control/:psc_id/notifications')->name('get_psc_notifications')->to('psc_notifications#get');
+
     # Image view
     $company_bridge->get('/filing-history/:filing_history_id/document')->name('filing_history_document')->to('company-document#document');
 
