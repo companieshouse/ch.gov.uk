@@ -7,6 +7,11 @@
     <p>
         <label for="site-search-text">Search for officers</label>
     </p>
+% } elsif $search_context == 'persons-with-significant-control' {
+    <form id="search" action="/search/persons-with-significant-control" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'search-header' : 'search-header js-search-hash' %>">
+    <p>
+        <label for="site-search-text">Search for persons with significant control</label>
+    </p>
 % } elsif $search_context == 'disqualified-officers' || $search_context == 'disqualified_officers' {
     <form id="search" action="/search/disqualified-officers" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'search-header' : 'search-header js-search-hash' %>">
     <p>
