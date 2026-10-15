@@ -1,11 +1,11 @@
 SERVICE_NAME         ?= ch.gov.uk
 
-PERL_DEPS_VERSION    ?= 1.1.21
+PERL_DEPS_VERSION    ?= 1.1.22
 PERL_DEPS_SERVER_URL ?= s3://release.ch.gov.uk/$(SERVICE_NAME)-deps
 PERL_DEPS_PACKAGE    ?= $(SERVICE_NAME)-deps-$(PERL_DEPS_VERSION).zip
 PERL_DEPS_URL        ?= $(PERL_DEPS_SERVER_URL)/$(PERL_DEPS_PACKAGE)
 
-PERL_DEPS_ECS_VERSION    ?= 2.0.6
+PERL_DEPS_ECS_VERSION    ?= 2.0.7
 PERL_DEPS_ECS_SERVER_URL ?= s3://shared-services.eu-west-2.releases.ch.gov.uk/$(SERVICE_NAME)-deps-ecs
 PERL_DEPS_ECS_PACKAGE    ?= $(SERVICE_NAME)-deps-ecs-$(PERL_DEPS_ECS_VERSION).zip
 PERL_DEPS_ECS_URL        ?= $(PERL_DEPS_ECS_SERVER_URL)/$(PERL_DEPS_ECS_PACKAGE)
@@ -21,7 +21,7 @@ PROVE_ARGS      ?= -It/lib -Ilib -I$(LOCAL)/lib/perl5 -lr
 
 TEST_UNIT_ENV   ?= COOKIE_SECRET=abcdef123456 URL_SIGNING_SALT=abcdef123456
 
-DOCKER_IMAGE_TAG   ?= 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/ch.gov.uk:latest
+DOCKER_IMAGE_TAG   ?= 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ch.gov.uk:latest
 
 all: dist
 
