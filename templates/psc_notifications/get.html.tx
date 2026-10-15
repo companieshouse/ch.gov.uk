@@ -1,0 +1,120 @@
+% cascade base { title => "PSC Notifications - Find and update company information - GOV.UK" }
+% around content -> {
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src='//<% $cdn_url %>/javascripts/vendor/selection-buttons.js'></script> <!-- Needed for new GDS-style radio buttons and checkboxes -->
+<script src='//<% $cdn_url %>/javascripts/vendor/application.js'></script>  <!-- Needed for new GDS-style radio buttons and checkboxes -->
+
+    <div id="content" class="content-override"></div>
+    <header class="text">
+        <h1 class="heading-xlarge" id="psc-name">PLACEHOLDER</h1>
+    </header>
+
+    <div class="js-only">
+        <form id="notifications-filter" class="form grid-row">
+            <div class="column-half">
+                <h2 class="heading-medium filter-notifications" id="psc-filter">
+                        Filter notifications
+                </h2>
+                <fieldset>
+                <legend class="govuk-visually-hidden">Filter notifications, selecting an input will reload the page.</legend>
+                % for $categories -> $category {
+                    <label for="notifications-category-<% $category.id %>" class="block-label selection-button-checkbox">
+                        <input id="notifications-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
+                        PLACEHOLDER
+                    </label>
+                % }
+                </fieldset>
+                <input class="button js-hidden" type="submit" value="Apply filter" />
+            </div>
+        </form>
+    </div>
+
+    <div class="notifications">
+        <h2 class="heading-medium" id="psc-notifications">
+            % if $notifications.total_results == 0 {
+                There are no notifications for this person with significant control
+            % } else {
+                Total number of notifications PLACEHOLDER
+            % }
+        </h2>
+
+        % if $psc.date_of_birth {
+            <dl style="margin-bottom: 50px;">
+                <dt id="psc-date-of-birth-field">Date of birth</dt>
+                <dd class="data" id="psc-date-of-birth-value">
+                    PLACEHOLDER
+                </dd>
+            </dl>
+        % }
+
+        <div class="notifications-list">
+            % for $notifications.items -> $notification {
+                <div class="notification-<% $~notification.count %>">
+                    <h2 class="heading-medium heading-with-border" id="notification-title-<% $~notification.count %>">
+                        PLACEHOLDER
+                    </h2>
+
+                    <div class="grid-row">
+                        % if $notification.notified_on {
+                            <dl class="column-third">
+                                <dt id="notification-date-field-<% $~notification.count %>"><% l('Notified on') %></dt>
+                                <dd class="data" id="notification-date-value-<% $~notification.count %>">
+                                    PLACEHOLDER
+                                </dd>
+                            </dl>
+                        % }
+
+                        % if $notification.status {
+                            <dl class="column-third">
+                                <dt id="notification-status-field-<% $~notification.count %>"><% l('Status') %></dt>
+                                <dd class="data" id="notification-status-value-<% $~notification.count %>">
+                                    PLACEHOLDER
+                                </dd>
+                            </dl>
+                        % }
+                    </div>
+
+                    % if $notification.description {
+                        <dl>
+                            <dt><% l('Details') %></dt>
+                            <dd id="notification-description-<% $~notification.count %>" class="data">
+                                PLACEHOLDER
+                            </dd>
+                        </dl>
+                    % }
+                </div>
+            % }
+        </div>
+    </div>
+
+    % if $notifications.total_results > $paging.entries_per_page {
+        <ul class="pager">
+            % if $paging.previous_page {
+                <li>
+                    <a class="page" id="previous-page" href="<% $c.url_for %>?page=<% $paging.previous_page %>">
+                        Previous
+                    </a>
+                </li>
+            % }
+            % for $paging.page_set -> $page {
+                <li>
+                    <a class="page" id="page-number-<% $~page.count %>" href="<% $c.url_for %>?page=<% $page %>">
+                        % if $paging.current_page_number == $page {
+                            <strong><% $page %></strong>
+                        % } else {
+                            <% $page %>
+                        %}
+                    </a>
+                </li>
+            % }
+            % if $paging.next_page {
+                <li>
+                    <a class="page" id="next-page" href="<% $c.url_for %>?page=<% $paging.next_page %>">
+                        Next
+                    </a>
+                </li>
+            % }
+        </ul>
+    % }
+
+%}

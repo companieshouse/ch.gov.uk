@@ -56,7 +56,7 @@ sub setup_before_dispatch_hook {
             $self->app->log->debug("FILTER before_dispatch unsupported URL [" . $self->req->url->path . "] - return 404 Not Found");
             $self->render_not_found;
             return;
-        } elsif ( $self->req->url->path !~ m{^/(|admin|signin|signout|oauth2|healthcheck|customer-feedback|company|company-name-availability|help|accounts|disqualified-officers|officers|register-of-disqualifications|user|search|basket)(?:/|$)} ) {
+        } elsif ( $self->req->url->path !~ m{^/(|admin|signin|signout|oauth2|healthcheck|customer-feedback|company|company-name-availability|help|accounts|disqualified-officers|officers|persons-with-significant-control|register-of-disqualifications|user|search|basket)(?:/|$)} ) {
             # not on inclusion list
             # identify candidates for exclusion above
             $self->app->log->debug("FILTER before_dispatch unexpected URL [" . $self->req->url->path . "] - candidate for filtering");
