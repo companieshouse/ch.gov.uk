@@ -63,6 +63,8 @@ sub results {
         $title_prefix = 'Company search results';
     } elsif ($search_type eq 'officers') {
         $title_prefix = 'Officer search results';
+    } elsif ($search_type eq 'persons-with-significant-control') {
+        $title_prefix = 'Persons with significant control search results';
     } elsif ($search_type eq 'disqualified-officers') {
         $title_prefix = 'Disqualification search results';
     } else {
@@ -89,6 +91,20 @@ sub results {
         current_page => $page,
         scroll_flag => 0
     );
+
+    # Temporary PSC placeholder: render the results layout without calling the search API
+    if ($search_type eq 'persons-with-significant-control') {
+        $self->stash(
+            results => {
+                kind => 'search#persons-with-significant-control',
+                total_results => 0,
+                items => [],
+                searchTerm => $encoded_query,
+            }
+        );
+
+        return $self->render(template => 'search/noresults');
+    }
 
     trace "Query term [%s]", $query [Search];
     trace "Page [%s], page size [%s]", $page, $page_size [Search];
