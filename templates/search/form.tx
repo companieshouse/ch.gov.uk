@@ -1,5 +1,7 @@
 % if $search_type == "officers" {
     <form id="content" action="/search/officers" method="get" accept-charset="utf-8" role="search"  class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
+% } elsif $search_type == 'persons-with-significant-control' {
+    <form id="content" action="/search/persons-with-significant-control" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
 % } elsif $search_type == 'disqualified-officers' {
     <form id="content" action="/search/disqualified-officers" method="get" accept-charset="utf-8" role="search" class="<% $header_or_body=='header'? 'site-search' : 'search-header js-search-hash' %>">
 % } elsif $search_type == 'all' {
