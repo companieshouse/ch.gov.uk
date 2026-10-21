@@ -58,28 +58,6 @@ sub get {
 
             my $results = $tx->success->json;
             trace 'Notifications for psc [%s]: %s', $psc_id, d:$results;
-#             trace 'Company Name for psc: [%s]', d:$results.company_name;
-
-            # To determine if required for PSCs
-            # foreach my $item (@{ $results->{items} // [] }) {
-            #     # Embellish the appointment item with some formatted capital contribution details
-            #     add_formatted_capital_contribution_details($item, sub {
-            #         my ($key) = @_;
-            #         return $self->cv_lookup('capital_contribution_sub_type', $key);
-            #     });
-
-            #     # Skip the remaining logic if identity verification details are missing
-            #     my $details = $item->{identity_verification_details} or next;
-
-            #     # Check if identity verification expired
-            #     if (my $end_date = $details->{appointment_verification_end_on}) {
-            #         $details->{is_identity_verification_expired} = CH::Util::DateHelper->is_current_date_greater($end_date) ? 1 : 0;
-            #     }
-
-            #     # Add supervisory_bodies_string to be displayed
-            #     my @list = @{ $details->{anti_money_laundering_supervisory_bodies} // [] } or next;
-            #     $details->{supervisory_bodies_string} = join ', ', @list;
-            # }
 
             my $psc = {
                 notifications   => $results->{items},
