@@ -15,19 +15,12 @@ use constant AVAILABLE_CATEGORIES => {
 sub get {
     my ($self) = @_;
 
-    trace 'Testing 123';
-
     $self->render_later;
-
-    trace 'testing 246';
 
     my $psc_id         = $self->param('persons_with_significant_control_id');
     my $page           = abs int($self->param('page')|| 1);
     my $items_per_page = $self->config->{psc_notifications}->{items_per_page} || 10;
     my $absolute_page  = abs int($page == 1 ? 0 : ($page - 1) * $items_per_page);
-
-    my %params = map { $_ => scalar $self->param($_) } $self->param;
-    trace 'All params: %s', d:\%params;
 
     my $pager = CH::Util::Pager->new(
         current_page     => $page,
@@ -95,8 +88,6 @@ sub get {
                 total_results   => $results->{total_results},
             };
 
-            trace 'PSC data: %s', d:$psc;
-
             $pager->total_entries($results->{total_results});
             trace 'Total notifications [%d] with [%d] entries per page', $pager->total_entries, $pager->entries_per_page;
 
@@ -112,13 +103,6 @@ sub get {
             # the active filter is set. If is_active_filter_set then we
             # supress the resigned_count on template.
             my $is_active_filter_set = $filter =~ m/active/ ? 1 : 0;
-
-#             $self->stash(
-#                 categories           => \@categories,
-#                 is_active_filter_set => $is_active_filter_set,
-#                 psc                  => $psc,
-#                 paging               => $paging,
-#             );
 
             # Group notifications so each company profile is fetched only once.psc_notifications
             my %notifications_by_company;
