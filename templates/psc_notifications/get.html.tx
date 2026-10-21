@@ -6,7 +6,7 @@
 
     <div id="content" class="content-override"></div>
     <header class="text">
-        <h1 class="heading-xlarge" id="psc-name">PLACEHOLDER</h1>
+        <h1 class="heading-xlarge" id="psc-name"></h1>
     </header>
 
     <div class="js-only">
@@ -20,7 +20,7 @@
                 % for $categories -> $category {
                     <label for="notifications-category-<% $category.id %>" class="block-label selection-button-checkbox">
                         <input id="notifications-category-<% $category.id %>" name="filter" value="<% $category.id %>" type="checkbox" <% $category.checked ? 'checked' : '' %> />
-                        PLACEHOLDER
+                        <% l($category.name) %>
                     </label>
                 % }
                 </fieldset>
@@ -31,10 +31,10 @@
 
     <div class="notifications">
         <h2 class="heading-medium" id="psc-notifications">
-            % if $notifications.total_results == 0 {
+            % if (!defined $psc.total_results || $psc.total_results == 0) {
                 There are no notifications for this person with significant control
             % } else {
-                Total number of notifications PLACEHOLDER
+                Total number of notifications <% $psc.total_results %>
             % }
         </h2>
 
@@ -42,44 +42,55 @@
             <dl style="margin-bottom: 50px;">
                 <dt id="psc-date-of-birth-field">Date of birth</dt>
                 <dd class="data" id="psc-date-of-birth-value">
-                    PLACEHOLDER
+                    <% $c.suppressed_date_as_string($psc.date_of_birth) %>
                 </dd>
             </dl>
         % }
 
         <div class="notifications-list">
-            % for $notifications.items -> $notification {
+            % for $psc.notifications -> $notification {
                 <div class="notification-<% $~notification.count %>">
                     <h2 class="heading-medium heading-with-border" id="notification-title-<% $~notification.count %>">
-                        PLACEHOLDER
+                        <a href="/company/<% $notification.notified_to.company_number %>">
+                            <% $notification.notified_to.company_name %> (<% $notification.notified_to.company_number %>)
+                        </a>
                     </h2>
 
-                    <div class="grid-row">
-                        % if $notification.notified_on {
-                            <dl class="column-third">
-                                <dt id="notification-date-field-<% $~notification.count %>"><% l('Notified on') %></dt>
-                                <dd class="data" id="notification-date-value-<% $~notification.count %>">
-                                    PLACEHOLDER
-                                </dd>
-                            </dl>
-                        % }
-
-                        % if $notification.status {
-                            <dl class="column-third">
-                                <dt id="notification-status-field-<% $~notification.count %>"><% l('Status') %></dt>
-                                <dd class="data" id="notification-status-value-<% $~notification.count %>">
-                                    PLACEHOLDER
-                                </dd>
-                            </dl>
-                        % }
-                    </div>
-
-                    % if $notification.description {
+                    % if $notification.notified_to.company_status {
                         <dl>
-                            <dt><% l('Details') %></dt>
-                            <dd id="notification-description-<% $~notification.count %>" class="data">
-                                PLACEHOLDER
+                            <dt id="notification-status-field-<% $~notification.count %>"><% l('Company status') %></dt>
+                            <dd class="data" id="notification-status-value-<% $~notification.count %>">
+                                <% $c.cv_lookup('company_status', $notification.notified_to.company_status) %>
                             </dd>
+                        </dl>
+                    % }
+
+                    % if $notification.address {
+                        <dl>
+                            <dt id="notification-address-field-<% $~notification.count %>"><% l('Correspondence address') %></dt>
+                            <dd class="data" id="notification-address-value-<% $~notification.count %>">
+                                <% $c.address_as_string($notification.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 }) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $notification.notified_on {
+                        <dl>
+                            <dt><% l('Notified on') %></dt>
+                            <dd class="data" id="notification-date-value-<% $~notification.count %>">
+                                <% $c.isodate_as_string($notification.notified_on) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $notification.natures_of_control {
+                        <dl>
+                            <dt><% l('Nature of control') %></dt>
+                            % for $notification.natures_of_control -> $noc {
+                                <dd class="data" id="notification-noc-<% $~notification.count %>-<% $noc %>">
+                                    <% $c.psc_lookup($noc, 'short_description') %>
+                                </dd>
+                            % }
                         </dl>
                     % }
                 </div>
@@ -87,7 +98,7 @@
         </div>
     </div>
 
-    % if $notifications.total_results > $paging.entries_per_page {
+    % if $psc.total_results > $paging.entries_per_page {
         <ul class="pager">
             % if $paging.previous_page {
                 <li>
