@@ -61,8 +61,8 @@ sub get {
 
             my $psc = {
                 notifications   => $results->{items},
-                #date_of_birth   => $results->{date_of_birth},
-                #name            => $results->{name},
+                date_of_birth   => $results->{date_of_birth},
+                name            => $results->{name},
                 total_results   => $results->{total_results},
             };
 
