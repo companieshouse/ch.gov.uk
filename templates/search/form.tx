@@ -18,7 +18,7 @@
     <p>
         <label id="search-cta-label" for="site-search-text">
             % if $c.config.feature.psc_search_feature {
-                Enter company name, number, officer name or the name of a person with significant control (PSC)
+                Enter company name, number, officer name or the name of people with significant control (PSC)
             % } else {
                 Enter company name, number or officer name
             % }
