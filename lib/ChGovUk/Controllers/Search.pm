@@ -92,20 +92,6 @@ sub results {
         scroll_flag => 0
     );
 
-    # Temporary PSC placeholder: render the results layout without calling the search API
-    if ($search_type eq 'persons-with-significant-control') {
-        $self->stash(
-            results => {
-                kind => 'search#persons-with-significant-control',
-                total_results => 0,
-                items => [],
-                searchTerm => $encoded_query,
-            }
-        );
-
-        return $self->render(template => 'search/noresults');
-    }
-
     trace "Query term [%s]", $query [Search];
     trace "Page [%s], page size [%s]", $page, $page_size [Search];
 
@@ -143,7 +129,7 @@ sub results {
 
             # FIXME Feels hacky that we need to format the date of birth here so that
             # it effects both server side and client side template rendering.
-            if ($search_type eq 'officers' or $search_type eq 'all') {
+            if ($search_type eq 'officers' or $search_type eq 'all' or $search_type eq 'persons-with-significant-control') {
                 for (@{ $json_results->{items} }) {
                     # We only show the full DOB for disqualified officers, so if we ARE NOT a disq officer, supress the DOB day.
                     if ($_->{kind} ne 'searchresults#disqualified-officer' && exists $_->{date_of_birth} && defined $_->{date_of_birth}) {
@@ -218,7 +204,11 @@ sub results {
 
     $start = [Time::HiRes::gettimeofday()];
     debug "TIMING search (search) '" . refaddr(\$start) . "'";
-    if ($method) {
+    if ($search_type eq 'persons-with-significant-control') {
+        my $psc_search = $self->ch_api->uri('/search/persons-with-significant-control');
+        $psc_search->query($args);
+        $psc_search->get->on( %$callbacks )->execute;
+    } elsif ($method) {
         $self->ch_api->search->$method($args)->get->on( %$callbacks )->execute;
     } else {
   	$self->ch_api->search($args)->get->on( %$callbacks )->execute;
