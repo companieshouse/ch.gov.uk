@@ -26,6 +26,19 @@ sub number {
 	return $in;
 }
 
+sub psc_display_name {
+    my ($self, $item) = @_;
+    my $name_elements = $item->{name_elements};
+    return $item->{title} unless ref $name_elements eq 'HASH';
+
+    my @name_parts = grep { defined $_ && length $_ }
+        @{$name_elements}{qw(title forename other_forenames)};
+    push @name_parts, uc $name_elements->{surname}
+        if defined $name_elements->{surname} && length $name_elements->{surname};
+
+    return @name_parts ? join(' ', @name_parts) : $item->{title};
+}
+
 # Search results page
 sub results {
     my ($self) = @_;
