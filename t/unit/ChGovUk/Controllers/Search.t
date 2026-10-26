@@ -131,4 +131,37 @@ subtest 'PSC search uses the PSC endpoint and renders the API response' => sub {
         'stores the formatted DOB for the template';
 };
 
+subtest 'PSC display name formats available name elements' => sub {
+    my $controller = $class->new;
+
+    is $controller->psc_display_name({
+        title => 'Dr Demo Middle1 Person',
+        name_elements => {
+            title => 'Dr',
+            forename => 'Demo',
+            other_forenames => 'Middle1',
+            surname => 'Person',
+        },
+    }), 'Dr Demo Middle1 PERSON', 'uppercases only the surname';
+
+    is $controller->psc_display_name({
+        title => 'Demo Person',
+        name_elements => {
+            forename => 'Demo',
+            surname => 'Person',
+        },
+    }), 'Demo PERSON', 'omits missing title and other forenames';
+};
+
+subtest 'PSC display name falls back to composed title when name elements are unavailable' => sub {
+    my $controller = $class->new;
+
+    is $controller->psc_display_name({ title => 'Dr Demo Person' }),
+        'Dr Demo Person', 'uses the existing title if name_elements is absent';
+    is $controller->psc_display_name({
+        title => 'Dr Demo Person',
+        name_elements => {},
+    }), 'Dr Demo Person', 'uses the existing title if name_elements has no name parts';
+};
+
 done_testing;
