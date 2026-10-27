@@ -7,6 +7,7 @@ use CH::Util::Pager;
 use Time::HiRes qw(tv_interval gettimeofday);
 use Scalar::Util qw(refaddr);
 use Mojo::IOLoop::Delay;
+use Mojo::URL;
 
 use constant AVAILABLE_CATEGORIES => {
     active => 'Current notifications',
@@ -47,11 +48,15 @@ sub get {
 
     my $start = [Time::HiRes::gettimeofday()];
     debug "TIMING psc.notifications '" . refaddr(\$start) . "'";
-    $self->ch_api->pscs($psc_id)->notifications({
+    my $notifications_url = Mojo::URL->new;
+    $notifications_url->path->parts(['persons-with-significant-control', $psc_id, 'notifications']);
+    $notifications_url->path->leading_slash(1);
+    $notifications_url->query({
         filter          => $filter,
         items_per_page  => $items_per_page,
         start_index     => $absolute_page,
-    })->get->on(
+    });
+    $self->ch_api->uri($notifications_url->to_string)->get->on(
         success => sub {
             my ($api, $tx) = @_;
             debug "TIMING psc.notifications success '" . refaddr(\$start) . "' elapsed: " . Time::HiRes::tv_interval($start);
@@ -69,11 +74,15 @@ sub get {
             $pager->total_entries($results->{total_results});
             trace 'Total notifications [%d] with [%d] entries per page', $pager->total_entries, $pager->entries_per_page;
 
+            my $is_out_of_range = $page > $pager->last_page;
+
             my $paging = {
                 current_page_number => $pager->current_page,
                 page_set            => $pager->pages_in_set,
                 next_page           => $pager->next_page,
-                previous_page       => $pager->previous_page,
+                previous_page       => $is_out_of_range
+                    ? $pager->last_page
+                    : $pager->previous_page,
                 entries_per_page    => $pager->entries_per_page,
             };
 
