@@ -3,7 +3,10 @@ use CH::Test;
 use Test::More;
 use Readonly;
 use Mojo::IOLoop;
+use Mojo::DOM;
+use Mojo::URL;
 use Mojo::Util qw(monkey_patch);
+use Text::Xslate;
 
 Readonly my $CLASS  => 'ChGovUk::Controllers::PscNotifications';
 Readonly my $PSC_ID => 'wXCfzvf6TN-uyJxGFbcMUY5P1XA';
@@ -28,7 +31,6 @@ methods_ok $CLASS, qw(get);
     package Local::FakeRequest;
 
     sub new           { my ($class, %args) = @_; return bless {%args}, $class }
-    sub notifications { my ($self, $query) = @_; $self->{api}->{notifications_query} = $query; return $self }
     sub profile       { return $_[0] }
     sub force_api_key { my ($self) = @_; push @{ $self->{api}->{forced} }, $self->{company_number}; return $self }
     sub get           { return $_[0] }
@@ -44,9 +46,11 @@ methods_ok $CLASS, qw(get);
         return bless { %args, company_calls => [], forced => [] }, $class;
     }
 
-    sub pscs {
-        my ($self, $psc_id) = @_;
-        $self->{psc_id} = $psc_id;
+    sub uri {
+        my ($self, $uri) = @_;
+        my $url = Mojo::URL->new($uri);
+        $self->{notifications_path} = $url->path->to_string;
+        $self->{notifications_query} = $url->query->to_hash;
         return Local::FakeRequest->new(api => $self, respond => $self->{notifications});
     }
 
@@ -123,12 +127,36 @@ sub run_get {
 
     my $c = $CLASS->new;
     $c->param(persons_with_significant_control_id => $PSC_ID);
+    $c->param(page => $args{page}) if defined $args{page};
     $c->get;
 
     my $ticks = 0;
     Mojo::IOLoop->one_tick while !$outcome{done} && $ticks++ < 10;
 
     return $c;
+}
+
+sub notification_page {
+    my ($c) = @_;
+    local *ChGovUk::Controllers::PscNotifications::url_for =
+        sub { Mojo::URL->new("/persons-with-significant-control/$PSC_ID/notifications") };
+    local *ChGovUk::Controllers::PscNotifications::suppressed_date_as_string =
+        sub { 'January 1980' };
+
+    my $renderer = Text::Xslate->new(
+        path       => [ { 'base.tx' => "% block content -> { ; }\n" }, 'templates' ],
+        syntax     => 'Kolon',
+        tag_start  => '<%',
+        tag_end    => '%>',
+        line_start => '%',
+        function   => { l => sub { $_[0] } },
+    );
+
+    return Mojo::DOM->new($renderer->render('psc_notifications/get.html.tx', {
+        %{ $c->stash },
+        c       => $c,
+        cdn_url => 'example.test',
+    }));
 }
 
 # ==============================================================================
@@ -140,7 +168,8 @@ subtest 'requests notifications for the PSC with paging parameters' => sub {
         profiles      => sub { fail 'profile should not be requested' },
     );
 
-    is $api->{psc_id}, $PSC_ID, 'PSC id passed to API';
+    is $api->{notifications_path}, "/persons-with-significant-control/$PSC_ID/notifications",
+        'PSC notifications path passed to API';
     is_deeply $api->{notifications_query},
         { filter => '', items_per_page => 10, start_index => 0 },
         'paging parameters passed to API';
@@ -266,6 +295,93 @@ subtest 'renders not found when the notifications request returns 404' => sub {
 
     is $outcome{not_found}, 1, 'not found rendered';
     is $outcome{rendered},  0, 'page not rendered';
+};
+
+for my $total (75, 106, 350, 351, 700) {
+    subtest "out-of-range page retains metadata and final page links for $total notifications" => sub {
+        local *ChGovUk::Controllers::PscNotifications::config =
+            sub { { psc_notifications => { items_per_page => 35 } } };
+
+        my $c = run_get(
+            page => 10000,
+            notifications => sub {
+                my ($handlers) = @_;
+                $handlers->{success}->(undef, tx(json => {
+                    name          => 'PAGINATION TEST',
+                    date_of_birth => { month => 1, year => 1980 },
+                    items         => [],
+                    total_results => $total,
+                }));
+            },
+            profiles => sub { fail 'profile should not be requested' },
+        );
+
+        my $last_page = int(($total + 34) / 35);
+        my $first_page = $last_page > 10 ? $last_page - 9 : 1;
+        my $paging = $c->stash('paging');
+
+        is $outcome{rendered}, 1, 'page rendered';
+        is $outcome{not_found}, 0, 'not found not rendered';
+        is_deeply $outcome{exceptions}, [], 'no exceptions rendered';
+        is $api->{notifications_query}{start_index}, 349965, 'requested offset not clamped';
+        is_deeply $c->stash('psc')->{notifications}, [], 'no notification entries';
+        is $c->stash('psc')->{name}, 'PAGINATION TEST', 'PSC name retained';
+        is $c->stash('psc')->{total_results}, $total, 'real total retained';
+        is_deeply $c->stash('psc')->{date_of_birth}, { month => 1, year => 1980 },
+            'date of birth retained';
+        is_deeply $paging->{page_set}, [ $first_page .. $last_page ],
+            'last ten valid pages, or all available pages';
+        is $paging->{previous_page}, $last_page, 'Previous targets last valid page';
+        is $paging->{next_page}, undef, 'no Next link';
+        is $paging->{current_page_number}, 10000, 'no valid page is selected';
+        is_deeply $api->{company_calls}, [], 'no company profile requests';
+
+        my $dom = notification_page($c);
+        is $dom->at('#psc-name')->all_text, 'PAGINATION TEST', 'PSC name displayed';
+        like $dom->at('#psc-notifications')->all_text, qr/Total number of notifications $total/,
+            'real total displayed';
+        ok $dom->at('#notifications-filter'), 'filter controls displayed';
+        is $dom->find('.notifications-list > div')->size, 0, 'no rendered notification entries';
+        is $dom->find('.pager strong')->size, 0, 'no highlighted page';
+        is $dom->find('#next-page')->size, 0, 'no rendered Next link';
+        is $dom->at('.pager li:first-child a')->attr('id'), 'previous-page',
+            'Previous is leftmost';
+        like $dom->at('#previous-page')->attr('href'), qr/\?page=$last_page$/,
+            'Previous links to last valid page';
+        is_deeply [
+            $dom->find('.pager a[id^="page-number-"]')->map(sub {
+                my $label = $_->all_text;
+                $label =~ s/\s+//g;
+                return 0 + $label;
+            })->each
+        ], [ $first_page .. $last_page ], 'correct numbered links rendered';
+    };
+}
+
+subtest 'last valid page keeps its entries and normal Previous target' => sub {
+    local *ChGovUk::Controllers::PscNotifications::config =
+        sub { { psc_notifications => { items_per_page => 35 } } };
+
+    my $c = run_get(
+        page => 3,
+        notifications => sub {
+            my ($handlers) = @_;
+            $handlers->{success}->(undef, tx(json => {
+                items         => [ map { notification('12345673') } 1 .. 5 ],
+                total_results => 75,
+            }));
+        },
+        profiles => profile_success(
+            '12345673' => { company_name => 'FIRST LTD', company_status => 'active' },
+        ),
+    );
+
+    is $outcome{rendered}, 1, 'page rendered';
+    is $api->{notifications_query}{start_index}, 70, 'last page offset';
+    is scalar @{ $c->stash('psc')->{notifications} }, 5, 'last page entries retained';
+    is $c->stash('paging')->{previous_page}, 2, 'Previous targets preceding page';
+    is $c->stash('paging')->{current_page_number}, 3, 'valid page selected';
+    is $c->stash('paging')->{next_page}, undef, 'no Next on last page';
 };
 
 done_testing;
