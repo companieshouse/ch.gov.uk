@@ -71,6 +71,22 @@ sub get {
                 total_results   => $results->{total_results},
             };
 
+            # Upper case the surname
+            $psc->{display_name} = $psc->{name};
+
+            for my $notification (@{ $psc->{notifications} // [] }) {
+                my $elements = $notification->{name_elements};
+                next unless ref $elements eq 'HASH';
+                next unless defined $elements->{surname} && length $elements->{surname};
+
+                my @name_parts = grep { defined $_ && length $_ }
+                    @{$elements}{qw(title forename other_forenames)};
+
+                push @name_parts, uc $elements->{surname};
+                $psc->{display_name} = join ' ', @name_parts;
+                last;
+            }
+
             $pager->total_entries($results->{total_results});
             trace 'Total notifications [%d] with [%d] entries per page', $pager->total_entries, $pager->entries_per_page;
 

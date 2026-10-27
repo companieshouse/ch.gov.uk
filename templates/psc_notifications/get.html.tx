@@ -6,7 +6,7 @@
 
     <div id="content" class="content-override"></div>
     <header class="text">
-        <h1 class="heading-xlarge" id="psc-name"><% $psc.name %></h1>
+        <h1 class="heading-xlarge" id="psc-name"><% $psc.display_name %></h1>
     </header>
 
     <div class="notifications">
