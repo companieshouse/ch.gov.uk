@@ -56,9 +56,24 @@
 
                     % if $notification.notified_on {
                         <dl>
-                            <dt><% l('Notified on') %></dt>
+                            <dt id="notification-date-field-<% $~notification.count %>"><% l('Notified on') %>
+                                % if !$notification.ceased_on {
+                                    <span id="notification-status-tag-<% $~notification.count %>" class="status-tag font-xsmall">Active</span>
+                                % }
+                            </dt>
                             <dd class="data" id="notification-date-value-<% $~notification.count %>">
                                 <% $c.isodate_as_string($notification.notified_on) %>
+                            </dd>
+                        </dl>
+                    % }
+
+                    % if $notification.ceased_on {
+                        <dl>
+                            <dt id="notification-ceased-field-<% $~notification.count %>"><% l('Ceased on') %>
+                                <span id="notification-ceased-tag-<% $~notification.count %>" class="status-tag ceased-tag font-xsmall">Ceased</span>
+                            </dt>
+                            <dd class="data" id="notification-ceased-value-<% $~notification.count %>">
+                                <% $c.isodate_as_string($notification.ceased_on) %>
                             </dd>
                         </dl>
                     % }
