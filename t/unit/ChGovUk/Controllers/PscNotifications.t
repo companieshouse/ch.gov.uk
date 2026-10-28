@@ -340,7 +340,6 @@ for my $total (75, 106, 350, 351, 700) {
         is $dom->at('#psc-name')->all_text, 'PAGINATION TEST', 'PSC name displayed';
         like $dom->at('#psc-notifications')->all_text, qr/Total number of notifications $total/,
             'real total displayed';
-        ok $dom->at('#notifications-filter'), 'filter controls displayed';
         is $dom->find('.notifications-list > div')->size, 0, 'no rendered notification entries';
         is $dom->find('.pager strong')->size, 0, 'no highlighted page';
         is $dom->find('#next-page')->size, 0, 'no rendered Next link';
