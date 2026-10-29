@@ -24,14 +24,14 @@
                     % if $search_type == 'officers' {
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Officer results</h2>
                     % } elsif $search_type == 'persons-with-significant-control' {
-                        <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Persons with significant control (PSCs) results</h2>
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-0">People with significant control (PSCs) results</h2>
                     % } elsif $search_type == 'disqualified-officers' {
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Disqualification results</h2>
                     % } elsif $search_type == 'all' {
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-0">All results</h2>
                             % if $c.config.feature.psc_search_feature {
                                 <p class="govuk-body govuk-!-margin-top-3">
-                                    Results include companies, officers, persons with significant control (PSCs) and disqualifications. If you want to view just one of these categories, you can filter results using the tabs.
+                                    Results include companies, officers, people with significant control (PSCs) and disqualifications. If you want to view just one of these categories, you can filter results using the tabs.
                                 </p>
                             % }
                     % } else {

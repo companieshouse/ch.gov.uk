@@ -17,8 +17,8 @@
     </li>
     % if $c.config.feature.psc_search_feature {
     <li id="pscs-tab-js">
-        <label class="govuk-visually-hidden" for="search_pscs-js">Search for persons with significant control</label>
-        <a id="search_pscs-js" href="<% $c.url_for("search") %>/persons-with-significant-control?#q={{term}}" class="govuk-link">Persons with significant control (PSCs)</a><span name="is_selected" id="search_pscs_is_selected" class="govuk-visually-hidden"></span>
+        <label class="govuk-visually-hidden" for="search_pscs-js">Search for people with significant control</label>
+        <a id="search_pscs-js" href="<% $c.url_for("search") %>/persons-with-significant-control?#q={{term}}" class="govuk-link">People with significant control (PSCs)</a><span name="is_selected" id="search_pscs_is_selected" class="govuk-visually-hidden"></span>
         <strong class="govuk-tag--green">New</strong>
     </li>
     % }

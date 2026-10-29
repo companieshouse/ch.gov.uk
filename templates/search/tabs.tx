@@ -32,12 +32,12 @@
         <% if $c.config.feature.psc_search_feature { %>
             <% if $search_type == 'persons-with-significant-control' { %>
                 <li id="pscs-tab" class="active">
-                    <a id="search_pscs" class="govuk-link" href="#"><span class="govuk-visually-hidden">Search for </span>Persons with significant control (PSCs)</a><span class="govuk-visually-hidden"> selected</span>
+                    <a id="search_pscs" class="govuk-link" href="#"><span class="govuk-visually-hidden">Search for </span>People with significant control (PSCs)</a><span class="govuk-visually-hidden"> selected</span>
                     <strong class="govuk-tag--green">New</strong>
                 </li>
             <% } else { %>
                 <li id="pscs-tab">
-                    <a id="search_pscs" class="govuk-link" href="<% $c.url_for("search") %>/persons-with-significant-control?q=<% $results.searchTerm %>"><span class="govuk-visually-hidden">Search for persons with significant control</span>Persons with significant control (PSCs)</a>
+                    <a id="search_pscs" class="govuk-link" href="<% $c.url_for("search") %>/persons-with-significant-control?q=<% $results.searchTerm %>"><span class="govuk-visually-hidden">Search for people with significant control</span>People with significant control (PSCs)</a>
                     <strong class="govuk-tag--green">New</strong>
                 </li>
             <% } %>
