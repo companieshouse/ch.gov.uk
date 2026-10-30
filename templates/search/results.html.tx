@@ -92,12 +92,12 @@
                                     </li>
                                 % } elsif $item.kind == "searchresults#persons-with-significant-control" {
                                     <li class="type-psc">
-                                        <h3><a class="govuk-link" href="<% $item.links.self %>"><% $item.title %></a></h3>
+                                        <h3><a class="govuk-link" href="<% $item.links.self %>"><% $c.psc_display_name($item) %></a></h3>
                                         <% if $item.snippet { %>
-                                        <p class="meta crumbtrail inset">Matching names: <br/><span><% $item.snippet %></span></p>
+                                        <p class="meta crumbtrail inset">Matching notification names: <br/><span><% $item.snippet %></span></p>
                                         <% } %>
                                         <p><strong>Person with significant control</strong></p>
-                                        <p class="meta crumbtrail">Total number of notifications <% $item.notification_count %><% if $item.date_of_birth { %> Born <% $item.date_of_birth %><% } %></p>
+                                        <p class="meta crumbtrail">Total number of notifications <% $item.notification_count %> - <% if $item.date_of_birth { %> Born <% $item.date_of_birth %><% } %></p>
                                         <% if $item.address { %>
                                         <p><% $c.address_as_string($item.address) %></p>
                                         <% } %>
