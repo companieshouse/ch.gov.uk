@@ -35,44 +35,52 @@
                             <% $notification.notified_to.company_name %> (<% $notification.notified_to.company_number %>)
                         </a>
                     </h2>
-
-                    % if $notification.notified_to.company_status {
-                        <dl>
-                            <dt id="notification-status-field-<% $~notification.count %>"><% l('Company status') %></dt>
-                            <dd class="data" id="notification-status-value-<% $~notification.count %>">
-                                <% $c.cv_lookup('company_status', $notification.notified_to.company_status) %>
-                            </dd>
-                        </dl>
-                    % }
-
-                    % if $notification.address {
-                        <dl>
-                            <dt id="notification-address-field-<% $~notification.count %>"><% l('Correspondence address') %></dt>
-                            <dd class="data" id="notification-address-value-<% $~notification.count %>">
-                                <% $c.address_as_string($notification.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 }) %>
-                            </dd>
-                        </dl>
-                    % }
-
-                    % if $notification.notified_on {
-                        <dl>
-                            <dt><% l('Notified on') %></dt>
-                            <dd class="data" id="notification-date-value-<% $~notification.count %>">
-                                <% $c.isodate_as_string($notification.notified_on) %>
-                            </dd>
-                        </dl>
-                    % }
-
-                    % if $notification.natures_of_control {
-                        <dl>
-                            <dt><% l('Nature of control') %></dt>
-                            % for $notification.natures_of_control -> $noc {
-                                <dd class="data" id="notification-noc-<% $~notification.count %>-<% $noc %>">
-                                    <% $c.psc_lookup($noc, 'short_description') %>
+                    <div class="grid-row">
+                        <dl class="column-third">
+                            % if $notification.notified_to.company_status {
+                            <dl>
+                                <dt id="notification-status-field-<% $~notification.count %>"><% l('Company status') %></dt>
+                                <dd class="data" id="notification-status-value-<% $~notification.count %>">
+                                    <% $c.cv_lookup('company_status', $notification.notified_to.company_status) %>
                                 </dd>
+                            </dl>
                             % }
                         </dl>
-                    % }
+                        <dl class="column-two-thirds">
+                            % if $notification.address {
+                            <dl>
+                                <dt id="notification-address-field-<% $~notification.count %>"><% l('Correspondence address') %></dt>
+                                <dd class="data" id="notification-address-value-<% $~notification.count %>">
+                                    <% $c.address_as_string($notification.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 }) %>
+                                </dd>
+                            </dl>
+                            % }
+                        </dl>
+                    </div>
+                    <div class="grid-row">
+                        <div class="column-third">
+                        % if $notification.notified_on {
+                            <dl>
+                                <dt><% l('Notified on') %></dt>
+                                <dd class="data" id="notification-date-value-<% $~notification.count %>">
+                                    <% $c.isodate_as_string($notification.notified_on) %>
+                                </dd>
+                            </dl>
+                        % }
+                        </div>
+                        <div class="column-two-thirds">
+                         % if $notification.natures_of_control {
+                            <dl>
+                                <dt><% l('Nature of control') %></dt>
+                                % for $notification.natures_of_control -> $noc {
+                                    <dd class="data" id="notification-noc-<% $~notification.count %>-<% $noc %>">
+                                        <% $c.psc_lookup($noc, 'short_description') %>
+                                    </dd>
+                                % }
+                            </dl>
+                        % }
+                        </div>
+                    </div>
                 </div>
             % }
         </div>
