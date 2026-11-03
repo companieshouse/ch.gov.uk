@@ -71,6 +71,16 @@
                         % }
                         </div>
                         <div class="column-third">
+                            % if $notification.ceased_on {
+                            <dl>
+                                <dt><% l('Ceased on') %></dt>
+                                <dd class="data" id="notification-ceased-on-value-<% $~notification.count %>">
+                                    <% $c.isodate_as_string($notification.ceased_on) %>
+                                </dd>
+                            </dl>
+                            % }
+                        </div>
+                        <div class="column-third">
                          % if $notification.nationality {
                             <dl>
                                 <dt><% l('Nationality') %></dt>
