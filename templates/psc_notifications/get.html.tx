@@ -47,7 +47,7 @@
                             % }
                         </div>
                     </div>
-                    <div class="grid-row">
+                    <!-- <div class="grid-row">
                         <dl class="column-third">
                             % if $notification.notified_to.company_status {
                             <dl>
@@ -58,7 +58,7 @@
                             </dl>
                             % }
                         </dl>
-                    </div>
+                    </div> -->
                     <div class="grid-row">
                         <div class="column-third">
                         % if $notification.notified_on {
@@ -79,8 +79,6 @@
                                 </dd>
                             </dl>
                          % }
-                        </div>
-                        <div class="column-third">
                         </div>
                     </div>
                     <div class="grid-row">
@@ -110,6 +108,28 @@
                                 <dt><% l('Identity verification due by') %></dt>
                                 <dd class="data" id="notification-ivddf-value-<% $~notification.count%>">
                                     <% $c.isodate_as_string($notification.identity_verification_details.appointment_verification_statement_due_on) %>
+                                </dd>
+                            </dl>
+                            % }
+                        </div>
+                    </div>
+                    <div class="grid-row">
+                        <div class="column-half">
+                            % if $notification.identification {
+                            <dl>
+                                <dt><% l('Governing law') %></dt>
+                                <dd class="data" id="notification-legal-authority-value-<% $~notification.count%>">
+                                    <% $notification.identification.legal_authority %>
+                                </dd>
+                            </dl>
+                            % }
+                        </div>
+                        <div class="column-half">
+                            % if $notification.identification {
+                            <dl>
+                                <dt><% l('Legal form') %></dt>
+                                <dd class="data" id="notification-legal-form-value-<% $~notification.count%>">
+                                    <% $notification.identification.legal_form %>
                                 </dd>
                             </dl>
                             % }
