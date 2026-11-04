@@ -35,165 +35,167 @@
                             <% $notification.notified_to.company_name %> (<% $notification.notified_to.company_number %>)
                         </a>
                     </h2>
+                    % if $notification.address {
                     <div class="grid-row">
                         <div class="column-full">
-                            % if $notification.address {
                             <dl>
                                 <dt id="notification-address-field-<% $~notification.count %>"><% l('Correspondence address') %></dt>
                                 <dd class="data" id="notification-address-value-<% $~notification.count %>">
                                     <% $c.address_as_string($notification.address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 }) %>
                                 </dd>
                             </dl>
-                            % }
                         </div>
                     </div>
+                    % }
+                    % if $notification.principal_office_address {
                     <div class="grid-row">
                         <div class="column-full">
-                            % if $notification.principal_office_address {
                             <dl>
                                 <dt id="notification-principle-office-address-field-<% $~notification.count %>"><% l('Principal office address') %></dt>
                                 <dd class="data" id="notification-principle-office-address-value-<% $~notification.count %>">
                                     <% $c.address_as_string($notification.principal_office_address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 }) %>
                                 </dd>
                             </dl>
-                            % }
                         </div>
                     </div>
-                    <!-- <div class="grid-row">
+                    % }
+                    <!--
+                    % if $notification.notified_to.company_status {
+                    <div class="grid-row">
                         <dl class="column-third">
-                            % if $notification.notified_to.company_status {
                             <dl>
                                 <dt id="notification-status-field-<% $~notification.count %>"><% l('Company status') %></dt>
                                 <dd class="data" id="notification-status-value-<% $~notification.count %>">
                                     <% $c.cv_lookup('company_status', $notification.notified_to.company_status) %>
                                 </dd>
                             </dl>
-                            % }
                         </dl>
-                    </div> -->
+                    </div>
+                    % }
+                    -->
                     <div class="grid-row">
-                        <div class="column-third">
                         % if $notification.notified_on {
+                        <div class="column-third">
                             <dl>
                                 <dt><% l('Notified on') %></dt>
                                 <dd class="data" id="notification-date-value-<% $~notification.count %>">
                                     <% $c.isodate_as_string($notification.notified_on) %>
                                 </dd>
                             </dl>
-                        % }
                         </div>
+                        % }
+                        % if $notification.ceased_on {
                         <div class="column-third">
-                            % if $notification.ceased_on {
                             <dl>
                                 <dt><% l('Ceased on') %></dt>
                                 <dd class="data" id="notification-ceased-on-value-<% $~notification.count %>">
                                     <% $c.isodate_as_string($notification.ceased_on) %>
                                 </dd>
                             </dl>
-                            % }
                         </div>
+                        % }
+                        % if $notification.nationality {
                         <div class="column-third">
-                         % if $notification.nationality {
                             <dl>
                                 <dt><% l('Nationality') %></dt>
                                 <dd class="data" id="notification-nationality-value-<% $~notification.count%>">
                                     <% $notification.nationality %>
                                 </dd>
                             </dl>
-                         % }
                         </div>
+                        % }
                     </div>
                     <div class="grid-row">
-                        <div class="column-third">
                         % if $notification.country_of_residence {
+                        <div class="column-third">
                             <dl>
                                 <dt><% l('Place of residence') %></dt>
                                 <dd class="data" id="notification-residence-value-<% $~notification.count %>">
                                     <% $notification.country_of_residence %>
                                 </dd>
                             </dl>
-                        % }
                         </div>
+                        % }
+                        % if $notification.identity_verification_details {
                         <div class="column-third">
-                            % if $notification.identity_verification_details {
                             <dl>
                                 <dt><% l('Identity verification due from') %></dt>
                                 <dd class="data" id="notification-ivddf-value-<% $~notification.count%>">
                                     <% $c.isodate_as_string($notification.identity_verification_details.appointment_verification_statement_date) %>
                                 </dd>
                             </dl>
-                            % }
                         </div>
+                        % }
+                        % if $notification.identity_verification_details {
                         <div class="column-third">
-                            % if $notification.identity_verification_details {
                             <dl>
                                 <dt><% l('Identity verification due by') %></dt>
                                 <dd class="data" id="notification-ivddf-value-<% $~notification.count%>">
                                     <% $c.isodate_as_string($notification.identity_verification_details.appointment_verification_statement_due_on) %>
                                 </dd>
                             </dl>
-                            % }
                         </div>
+                        % }
                     </div>
                     <div class="grid-row">
+                        % if $notification.identification {
                         <div class="column-half">
-                            % if $notification.identification {
                             <dl>
                                 <dt><% l('Governing law') %></dt>
                                 <dd class="data" id="notification-legal-authority-value-<% $~notification.count%>">
                                     <% $notification.identification.legal_authority %>
                                 </dd>
                             </dl>
-                            % }
                         </div>
+                        % }
+                        % if $notification.identification {
                         <div class="column-half">
-                            % if $notification.identification {
                             <dl>
                                 <dt><% l('Legal form') %></dt>
                                 <dd class="data" id="notification-legal-form-value-<% $~notification.count%>">
                                     <% $notification.identification.legal_form %>
                                 </dd>
                             </dl>
-                            % }
                         </div>
+                        % }
                     </div>
                     <div class="grid-row">
+                        % if $notification.identification.place_registered {
                         <div class="column-half">
-                            % if $notification.identification.place_registered {
                             <dl>
                                 <dt><% l('Place registered') %></dt>
                                 <dd class="data" id="notification-place-registered-value-<% $~notification.count%>">
                                     <% $notification.identification.place_registered %>
                                 </dd>
                             </dl>
-                            % }
                         </div>
+                        % }
+                        % if $notification.identification.registration_number {
                         <div class="column-half">
-                            % if $notification.identification.registration_number {
                             <dl>
                                 <dt><% l('Registration number') %></dt>
                                 <dd class="data" id="notification-registration-number-value-<% $~notification.count%>">
                                     <% $notification.identification.registration_number %>
                                 </dd>
                             </dl>
-                            % }
                         </div>
+                        % }
                     </div>
+                    % if $notification.identification.country_registered {
                     <div class="grid-row>
                         <div class="column-full">
-                            % if $notification.identification.country_registered {
                             <dl>
                                 <dt><% l('Country registered') %></dt>
                                 <dd class="data" id="notification-country-registered-value-<% $~notification.count%>">
                                     <% $notification.identification.country_registered %>
                                 </dd>
                             </dl>
-                            % }
                         </div>
                     </div>
+                    % }
+                    % if $notification.natures_of_control {
                     <div class="grid-row">
                         <div class="column-full">
-                            % if $notification.natures_of_control {
                             <dl>
                                 <dt><% l('Nature of control') %></dt>
                                 % for $notification.natures_of_control -> $noc {
@@ -202,9 +204,9 @@
                                     </dd>
                                 % }
                             </dl>
-                            % }
                         </div>
                     </div>
+                    % }
                 </div>
             % }
         </div>
