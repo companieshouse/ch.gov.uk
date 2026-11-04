@@ -51,7 +51,7 @@
                         <div class="column-full">
                             % if $notification.principal_office_address {
                             <dl>
-                                <dt id="notification-principle-office-address-field-<% $~notification.count %>"><% l('Correspondence address') %></dt>
+                                <dt id="notification-principle-office-address-field-<% $~notification.count %>"><% l('Principal office address') %></dt>
                                 <dd class="data" id="notification-principle-office-address-value-<% $~notification.count %>">
                                     <% $c.address_as_string($notification.principal_office_address, { include_care_of => 1, title_case_care_of => 1, include_po_box => 1 }) %>
                                 </dd>
