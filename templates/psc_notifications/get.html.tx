@@ -35,6 +35,15 @@
                             <% $notification.notified_to.company_name %> (<% $notification.notified_to.company_number %>)
                         </a>
                     </h2>
+                    % if $notification.is_sanctioned {
+                    <div class="grid-row">
+                        <div class="column-full">
+                            <p class="govuk-link" id="notification-sanction-declared-value-<% $~notification.count %>">
+                                <a target="_blank" href="https://www.gov.uk/government/publications/the-uk-sanctions-list">Sanction declared</a>
+                            </p>
+                        </div>
+                    </div>
+                    % }
                     % if $notification.address {
                     <div class="grid-row">
                         <div class="column-full">
