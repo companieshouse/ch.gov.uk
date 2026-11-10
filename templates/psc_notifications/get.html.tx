@@ -68,20 +68,6 @@
                         </div>
                     </div>
                     % }
-                    <!--
-                    % if $notification.notified_to.company_status {
-                    <div class="grid-row">
-                        <dl class="column-third">
-                            <dl>
-                                <dt id="notification-status-field-<% $~notification.count %>"><% l('Company status') %></dt>
-                                <dd class="data" id="notification-status-value-<% $~notification.count %>">
-                                    <% $c.cv_lookup('company_status', $notification.notified_to.company_status) %>
-                                </dd>
-                            </dl>
-                        </dl>
-                    </div>
-                    % }
-                    -->
                     <div class="grid-row">
                         % if $notification.notified_on {
                         <div class="column-third">
