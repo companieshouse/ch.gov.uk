@@ -22,7 +22,6 @@ sub get {
     my $page           = abs int($self->param('page')|| 1);
     my $items_per_page = $self->config->{psc_notifications}->{items_per_page} || 10;
     my $absolute_page  = abs int($page == 1 ? 0 : ($page - 1) * $items_per_page);
-    my $page_limit     = $self->config->{elasticsearch}->{max_pages}   || 2500;
 
     my $pager = CH::Util::Pager->new(
         current_page     => $page,
@@ -101,7 +100,6 @@ sub get {
                     ? $pager->last_page
                     : $pager->previous_page,
                 entries_per_page    => $pager->entries_per_page,
-                page_limit          => $page_limit
             };
 
             # If the filter string contains 'active' we are assuming

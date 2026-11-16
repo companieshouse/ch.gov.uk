@@ -225,21 +225,19 @@
 
                 <ul class="govuk-pagination__list">
                     % for $paging.page_set -> $page {
-                        % if $page <= $paging.page_limit {
-                            <li class="govuk-pagination__item govuk-!-display-block <% if $paging.current_page_number == $page { %> govuk-pagination__item--current <% } %> ">
-                                <a
-                                        class="govuk-link govuk-pagination__link"
-                                        href="<% $c.url_with.query([ page => $page ]) %>"
-                                        aria-label="Page <% $page %>"
-                                        % if $paging.current_page_number == $page {
-                                        aria-current="page"
-                                        % }
-                                ><% $page %></a>
-                            </li>
-                        % }
+                        <li class="govuk-pagination__item govuk-!-display-block <% if $paging.current_page_number == $page { %> govuk-pagination__item--current <% } %> ">
+                            <a
+                                    class="govuk-link govuk-pagination__link"
+                                    href="<% $c.url_with.query([ page => $page ]) %>"
+                                    aria-label="Page <% $page %>"
+                                    % if $paging.current_page_number == $page {
+                                    aria-current="page"
+                                    % }
+                            ><% $page %></a>
+                        </li>
                     % }
                 </ul>
-                % if ($paging.current_page_number < $paging.page_limit && $paging.next_page) {
+                % if ($paging.next_page) {
                     <div class="govuk-pagination__next">
                         <a class="govuk-link govuk-pagination__link" id="next-page" href="<% $c.url_with.query([ page => $paging.next_page ]) %>" rel="next">
                                 <span class="govuk-pagination__link-title">
