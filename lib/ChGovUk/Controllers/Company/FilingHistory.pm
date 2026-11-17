@@ -124,9 +124,9 @@ sub view {
                         my $transaction_date = $doc->{date};
                         my $formatted_transaction_date = date_convert($transaction_date);
 
-                        # Get content_type for filing that could be a zip. Zip filings will always have 1 page and be type 'AA',
+                        # Get content_type for filing that could be a zip. Zip filings will always have 1 page and be type 'AA' or 'AAMD',
                         # and will also only be available if they are filed after the zip_available_date (2021-03-01 by default).
-                        if (defined $doc->{links}->{document_metadata} && $doc->{type} eq 'AA' && $doc->{pages} == 1 &&
+                        if (defined $doc->{links}->{document_metadata} && ($doc->{type} eq 'AA' || $doc->{type} eq 'AAMD') && $doc->{pages} == 1 &&
                             $formatted_transaction_date > $formatted_zip_available_date) {
 
                             my $delay_end = $delay->begin(0);
