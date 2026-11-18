@@ -341,14 +341,14 @@ for my $total (75, 106, 350, 351, 700) {
         like $dom->at('#psc-notifications')->all_text, qr/Total number of notifications $total/,
             'real total displayed';
         is $dom->find('.notifications-list > div')->size, 0, 'no rendered notification entries';
-        is $dom->find('.pager strong')->size, 0, 'no highlighted page';
+        is $dom->find('.govuk-pagination strong')->size, 0, 'no highlighted page';
         is $dom->find('#next-page')->size, 0, 'no rendered Next link';
-        is $dom->at('.pager li:first-child a')->attr('id'), 'previous-page',
+        is $dom->at('.govuk-pagination > :first-child a')->attr('id'), 'previous-page',
             'Previous is leftmost';
         like $dom->at('#previous-page')->attr('href'), qr/\?page=$last_page$/,
             'Previous links to last valid page';
         is_deeply [
-            $dom->find('.pager a[id^="page-number-"]')->map(sub {
+            $dom->find('.govuk-pagination a[id^="page-number-"]')->map(sub {
                 my $label = $_->all_text;
                 $label =~ s/\s+//g;
                 return 0 + $label;
