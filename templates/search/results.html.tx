@@ -92,7 +92,12 @@
                                     </li>
                                 % } elsif $item.kind == "searchresults#persons-with-significant-control" {
                                     <li class="type-psc">
-                                        <h3><a class="govuk-link" href="<% $item.links.self %>"><% $c.psc_display_name($item) %></a></h3>
+                                        <h3>
+                                            <a class="govuk-link" href="<% $item.links.self %>"
+                                            <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'pscs', 'SearchResult']);"<% } %>>
+                                            <% $c.psc_display_name($item) %>
+                                            </a>
+                                        </h3>
                                         <% if $item.snippet { %>
                                         <p class="meta crumbtrail inset">Matching notification names: <br/><span><% $item.snippet %></span></p>
                                         <% } %>
