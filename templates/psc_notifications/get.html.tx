@@ -31,7 +31,7 @@
             % for $psc.notifications -> $notification {
                 <div class="notification-<% $~notification.count %>">
                     <h2 class="heading-medium heading-with-border" id="notification-title-<% $~notification.count %>">
-                        <a href="/company/<% $notification.notified_to.company_number %>">
+                        <a href="/company/<% $notification.notified_to.company_number %>" <% if $c.config.piwik.embed { %> onclick="javascript:_paq.push(['trackEvent', 'pscs', 'NotificationCompany']);"<% } %>>
                             <% $notification.notified_to.company_name %> (<% $notification.notified_to.company_number %>)
                         </a>
                     </h2>
