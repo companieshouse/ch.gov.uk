@@ -36,7 +36,15 @@ sub psc_display_name {
     push @name_parts, uc $name_elements->{surname}
         if defined $name_elements->{surname} && length $name_elements->{surname};
 
-    return @name_parts ? join(' ', @name_parts) : $item->{title};
+    my $display_name = @name_parts
+    ? join(' ', @name_parts)
+    : $item->{title};
+
+    if (@name_parts && ($item->{title} // '') =~ /( - Score: \S+)\s*\z/) {
+        $display_name .= $1;
+    }
+
+    return $display_name;
 }
 
 # Search results page
