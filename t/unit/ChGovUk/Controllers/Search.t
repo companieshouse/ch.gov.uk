@@ -151,6 +151,15 @@ subtest 'PSC display name formats available name elements' => sub {
             surname => 'Person',
         },
     }), 'Demo PERSON', 'omits missing title and other forenames';
+
+    is $controller->psc_display_name({
+        title => 'Dr Demo Person - Score: 0.987',
+        name_elements => {
+            title => 'Dr',
+            forename => 'Demo',
+            surname => 'Person',
+        },
+    }), 'Dr Demo PERSON - Score: 0.987', 'preserves the search score for result ordering checks';
 };
 
 subtest 'PSC display name falls back to composed title when name elements are unavailable' => sub {
